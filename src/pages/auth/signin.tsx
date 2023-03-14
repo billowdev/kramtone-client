@@ -107,6 +107,10 @@ function SignInPage({ }: Props) {
                 <Button type='submit' color='primary' variant="contained" disabled={props.isSubmitting}
                   style={btnstyle} fullWidth>{props.isSubmitting ? "Loading" : "ลงชื่อเข้าใช้"}</Button>
 
+                <Button type='button' color='secondary' variant="contained"
+                  style={btnstyle} fullWidth>{"สมัครสมาชิก"}</Button>
+
+
               </Form>
             )}
           </Formik>
