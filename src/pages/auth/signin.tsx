@@ -11,7 +11,9 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { signIn } from "@/store/slices/auth.slice";
 import { useAppDispatch } from "@/store/store";
 import { useRouter } from "next/router";
-import withAuth from './../../components/withAuth';
+import withAuth from '@/components/withAuth';
+import Theme from '@/components/Theme';
+import Image from 'next/image'
 
 type Props = {}
 interface FormValues {
@@ -23,9 +25,27 @@ interface FormValues {
 
 function SignInPage({ }: Props) {
   const dispatch = useAppDispatch();
-  const paperStyle = { padding: 20, height: '73vh', width: 300, margin: "0 auto" }
+  const paperStyle = { padding: 20, height: '100vh', width: "auto", margin: "0 auto" }
   const avatarStyle = { backgroundColor: '#103D81', alginContent: 'center' }
-  const btnstyle = { margin: '8px 0', }
+  // const btnstyle = { margin: '8px 0', }
+  const btnstyle = {
+    margin: '8px 0',
+    backgroundColor: Theme.palette.primary.main,
+    color: '#fff',
+    fontWeight: 'bold',
+    // boxShadow: `0px 1px 5px ${Theme.palette.primary.dark}`,
+    boxShadow: `0px 5px 10px rgba(0, 0, 0, 0.3)`,
+  };
+
+  const secondBtnstyle = {
+    margin: '8px 0',
+    backgroundColor: Theme.palette.common.white,
+    color: Theme.palette.secondary.dark,
+    fontWeight: 'bold',
+    // boxShadow: `0px 1px 5px ${Theme.palette.primary.dark}`,
+    boxShadow: `0px 5px 10px rgba(0, 0, 0, 0.3)`,
+  };
+
   const [passwordVisible, setPasswordVisible] = useState(false);
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
@@ -62,66 +82,99 @@ function SignInPage({ }: Props) {
 
   return (
     <MainLayout>
-      <Grid>
+      <Grid container>
         <Paper style={paperStyle}>
-          <Grid style={{ alignContent: 'center' }}>
-            <Avatar style={avatarStyle}><LockOutlinedIcon /></Avatar>
-            <h2>ลงชื่อเข้าใช้</h2>
-            {/* <Typography variant="h5">ลงชื่อเข้าใช้งานระบบ</Typography> */}
-          </Grid>
-          <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
-            {(props: FormikProps<FormValues>) => (
-              <Form>
-                <Field as={TextField} label='ชื่อผู้ใช้' name="username"
-                  placeholder='กรอก ชื่อผู้ใช้' fullWidth required
-                  helperText={<ErrorMessage name="username" />}
-                />
-                <Field as={TextField} label='รหัสผ่าน' name="password"
-                  placeholder='กรอก รหัสผ่าน' type={passwordVisible ? "text" : "password"} fullWidth required
-                  helperText={<ErrorMessage name="password" />}
-                  InputProps={{ // <-- This is where the toggle button is added.
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handlePasswordVisible}
-                          onMouseDown={handleMouseDownPassword}
-                        >
-                          {passwordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                        </IconButton>
-                      </InputAdornment>
-                    )
-                  }}
-                />
+          <Grid container spacing={3}>
 
-                <Field as={FormControlLabel}
-                  name='remember'
-                  control={
-                    <Checkbox
-                      color='primary'
+            <Grid item xs={12} sm={12} md={6}>
+              <Image
+                src={`/static/img/logo-white.png`}
+                alt={`logo image`}
+                width={300}
+                height={300}
+                loading="lazy"
+              />
+            </Grid>
+
+          <Grid style={{ alignContent: 'center' }} item xs={12} sm={12} md={6}>
+              {/* <Avatar style={avatarStyle}><LockOutlinedIcon /></Avatar> */}
+              {/* <h2>ลงชื่อเข้าใช้</h2> */}
+
+              <Typography variant="h5" style={{ 
+                fontWeight: 'bold', textAlign: 'center',  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginTop: 30}}>ลงชื่อเข้าใช้</Typography>
+
+              <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+                {(props: FormikProps<FormValues>) => (
+                  <Form>
+                    <Field as={TextField} label='ชื่อผู้ใช้' name="username"
+                      placeholder='กรอก ชื่อผู้ใช้' fullWidth required
+                      helperText={<ErrorMessage name="username" />}
                     />
-                  }
-                  label="Remember me"
-                />
+                    <Field as={TextField} label='รหัสผ่าน' name="password"
+                      placeholder='กรอก รหัสผ่าน' type={passwordVisible ? "text" : "password"} fullWidth required
+                      helperText={<ErrorMessage name="password" />}
+                      InputProps={{ // <-- This is where the toggle button is added.
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handlePasswordVisible}
+                              onMouseDown={handleMouseDownPassword}
+                            >
+                              {passwordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
+                    />
 
-                <Button type='submit' color='primary' variant="contained" disabled={props.isSubmitting}
-                  style={btnstyle} fullWidth>{props.isSubmitting ? "Loading" : "ลงชื่อเข้าใช้"}</Button>
+                    <Field as={FormControlLabel}
+                      name='remember'
+                      control={
+                        <Checkbox
+                          color='primary'
+                        />
+                      }
+                      label="จดจำรหัสผ่าน"
+                    />
 
-                <Button type='button' color='secondary' variant="contained"
-                  style={btnstyle} fullWidth>{"สมัครสมาชิก"}</Button>
+                    <Typography >
+                      <Link href="#" >
+                        ลืมรหัสผ่าน ?
+                      </Link>
+                    </Typography>
+                    <Box style={
+                      {
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }
+                    }>
+                      <Button type='button' color='secondary' variant="contained"
+                        style={secondBtnstyle} fullWidth>{"สมัครสมาชิก"}</Button>
+
+                      <Button type='submit' color='primary' variant="contained" disabled={props.isSubmitting}
+                        style={btnstyle} fullWidth>{props.isSubmitting ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}</Button>
+                    </Box>
 
 
-              </Form>
-            )}
-          </Formik>
-          <Typography >
-            <Link href="#" >
-              ลืมรหัสผ่าน ?
-            </Link>
-          </Typography>
+                  </Form>
+                )}
+              </Formik>
+   
+            </Grid>
 
+
+
+
+          </Grid>
         </Paper>
       </Grid>
+
+
     </MainLayout>
 
   )

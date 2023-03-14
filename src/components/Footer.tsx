@@ -61,7 +61,7 @@ export default function Footer({ }: Props) {
           <Typography align="center">หน้าจัดการกลุ่มผู้ผลิตหรือร้านค้า</Typography>
         </Link> :   
          <Link href="/auth/signin" style={footerLinkStyle}>
-         <Typography align="center">ลงชื่อเข้าใช้งานระบบสำหรับกลุ่มผู้ผลิตหรือร้านค้า</Typography>
+         <Typography align="center">ลงชื่อเข้าใช้</Typography>
        </Link>
          
         }

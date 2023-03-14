@@ -22,12 +22,12 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 import { makeStyles } from "@material-ui/core/styles";
-type Props = {};
+import Image from "next/image"
 
+type Props = {};
 
 
 
@@ -103,7 +103,13 @@ export default function Navbar({ }: Props) {
               textDecoration: 'none',
             }}
           >
-            KRAMTONE
+              <Image
+                  src={`/static/img/logo.png`}
+                  alt={`logo image`}
+                  width={50}
+                  height={50}
+                  loading="lazy"
+                />
           </Typography>
 
         </Toolbar>
