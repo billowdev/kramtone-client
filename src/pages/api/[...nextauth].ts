@@ -1,7 +1,7 @@
 import {
 	HTTP_METHOD_POST,
 	HTTP_METHOD_GET,
-	ACCESS_TOKEN_KEY
+	ACCESS_TOKEN_KEY,
 } from 'common/constants/api.constant'
 import { clearCookie, setCookie } from "@/utils/cookies.util";
 import httpClient from "@/utils/httpClient.util";
@@ -11,12 +11,14 @@ import * as jwt from 'jsonwebtoken';
 import { decryptAES } from '@/utils/aes-encrypt.util';
 import { API_REQUEST_SUCCESS } from 'common/constants/api.constant';
 import { ISignIn } from 'models/auth.model';
+import axios from 'axios';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.query.nextauth) {
 		const signinAction: string = req.query['nextauth'][2]
 		const sessionAction: string = req.query['nextauth'][1]
 		const signOutAction: string = req.query['nextauth'][2]
+
 		if (req.method === HTTP_METHOD_POST && signinAction === "signin") {
 			return signin(req, res);
 		} else if (req.method === HTTP_METHOD_GET && signOutAction === "signout") {
@@ -34,10 +36,18 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 async function signin(req: NextApiRequest, res: NextApiResponse) {
 	try {
 		const { username, password } = req.body
-		const { data: response } = await httpClient.post(`/users/signin`, { username, password });
-		// console.log("==========================")
-		// console.log("SignIn")
-		// console.log("==========================")
+		const headers = {
+
+		}
+		// const { data: response } = await httpClient.post(`/users/signin`, { username, password }, {});
+		const { data: response } = await axios.post(`/api/v1/users/signin`, { username, password }, {
+			baseURL: 'http://localhost:4000',
+			
+		});
+		console.log('================ function signin(req: NextApiRequest, res: NextApiResponse)====================');
+		console.log(response);
+		console.log('====================================');
+
 		if (response.status === API_REQUEST_SUCCESS) {
 			const decryptData = decryptAES<ISignIn>(response.payload)
 			const { token } = decryptData;
@@ -53,6 +63,9 @@ async function signin(req: NextApiRequest, res: NextApiResponse) {
 		}
 
 	} catch (error: any) {
+		console.log('====================================');
+		console.log(error);
+		console.log('====================================');
 		res.status(400).end();
 	}
 }

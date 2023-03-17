@@ -73,7 +73,7 @@ export default function Footer({ }: Props) {
       </Toolbar> */}
       <Link 
     href="https://github.com/billowdev" style={copyrightLinkStyle}>
-        <Typography align="center">© 2022 BillowDev All rights reserved</Typography>
+        <Typography align="center">© 2023 BillowDev All rights reserved</Typography>
       </Link>
     </Box>
 

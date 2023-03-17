@@ -11,7 +11,7 @@ type Product = {
   image: string,
   description: string,
 }
-const HomePage = ({ }: Props) => {
+const ProductTest = ({ }: Props) => {
 
   const products = [
     { id: '1', name: 'Product 1', image: 'M014-01.jpg', description: 'Product 1 description' },
@@ -126,4 +126,4 @@ const HomePage = ({ }: Props) => {
   </React.Fragment>;
 };
 
-export default HomePage;
+export default ProductTest;

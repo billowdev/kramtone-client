@@ -25,6 +25,7 @@ export const signIn = createAsyncThunk(
 	"auth/signin",
 	async (credential: SignAction) => {
 		const response = await authService.signIn(credential);
+
 		if (response.token === "") {
 			throw new Error("login failed");
 		}
@@ -79,7 +80,6 @@ export const authSlice = createSlice({
 				state.isAuthenticated = true;
 				state.accessToken = action.payload.accessToken;
 				state.sub = action.payload.sub;
-				state.uid = action.payload.uid;
 				state.role = action.payload.role;
 			}
 
@@ -89,7 +89,7 @@ export const authSlice = createSlice({
 			state.isAuthenticated = false;
 			state.isAuthenticating = false;
 			state.sub = "";
-			state.uid = "";
+			// state.uid = "";
 		})
 
 		// builder.addCase(signUp.fulfilled, (state, action) => {
@@ -110,7 +110,7 @@ export const authSlice = createSlice({
 			state.isAuthenticated = false;
 			state.isAuthenticating = false;
 			state.sub = "";
-			state.uid = "";
+			// state.uid = "";
 
 		});
 

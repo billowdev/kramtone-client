@@ -29,7 +29,6 @@ export interface SignUp {
 
 export type UserState = {
 	sub: string;
-	uid: string;
 	role: string;
 	username: string;
 	isAuthenticated: boolean;

@@ -1,7 +1,7 @@
 import React from 'react'
 import dynamic from "next/dynamic";
 
-const Map = dynamic(() => import("./map"), { ssr: false });
+
 type Props = {}
 
 const places = [
@@ -82,12 +82,23 @@ const places = [
 
 
 function HomePage({ }: Props) {
-  return (
-      <Map places={places} />
-    // <div>Welcome to homepage
-    // </div>
+  // const Map = dynamic(() => import("./map"), { ssr: false });
+  const Map = React.useMemo(() => dynamic(
+    () => import('./map'), // replace '@components/map' with your component's location
+    { 
+      loading: () => <p>A map is loading</p>,
+      ssr: false // This line is important. It's what prevents server-side render
+    }
+  ), [/* list variables which should trigger a re-render here */])
+  return <Map  places={places}  />
 
-  )
+  // return (
+    
+  //     <Map places={places} />
+  //   // <div>Welcome to homepage
+  //   // </div>
+
+  // )
 }
 
 export default HomePage

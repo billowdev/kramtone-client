@@ -11,7 +11,10 @@ type signProps = {
 
 // next local api
 export const signIn = async (user: signProps) => {
-	const { data: response } = await httpClient.post<IAuthPayload>(
+	console.log('====================================');
+	console.log('IAuthPayload');
+	console.log('====================================');
+	const { data: response } = await httpClient.post<any>(
 		`/user/auth/signin`,
 		user,
 		{

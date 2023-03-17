@@ -1,8 +1,21 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import type { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
+import React from 'react';
+const MapContainer = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), {
+	ssr: false, // disable server-side rendering
+  });
 
+  const TileLayer = dynamic(() => import('react-leaflet').then((mod) => mod.TileLayer), {
+	ssr: false, // disable server-side rendering
+  });
+  const Marker = dynamic(() => import('react-leaflet').then((mod) => mod.Marker), {
+	ssr: false, // disable server-side rendering
+  });
+  const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
+	ssr: false, // disable server-side rendering
+  });
 
 type Place = {
 	name: string;
@@ -16,6 +29,18 @@ type MapProps = {
 };
 
 const Map = ({ places }: MapProps) => {
+	// fix it can't yean build 
+	// stackoverflow
+	// https://stackoverflow.com/questions/57704196/leaflet-with-next-js
+	const [isBrowser, setIsBrowser] = React.useState(false);
+	React.useEffect(() => {
+	  setIsBrowser(true);
+	}, []);
+  
+	if (!isBrowser) {
+	  return null;
+	}
+  
 
 	// const center: LatLngExpression =  [13.736717, 100.523186]; // Centered on Bangkok
 	// const center: LatLngExpression = [17.2706, 101.7229]; // Centered on Northeast Thailand
@@ -37,14 +62,16 @@ const Map = ({ places }: MapProps) => {
 		[16.3453, 103.0333], // Southwest corner of Sakon Nakhon Province
 		[18.0813, 105.2619] // Northeast corner of Sakon Nakhon Province
 	];
-
 	return (
 		<MapContainer
 			center={center}
 			zoom={zoom}
 			bounds={bounds}
 			scrollWheelZoom={true}
-			style={{ height: '100vh' }}>
+			style={{height: 400, 
+				// width: "100%"
+			}}
+			>
 			<TileLayer
 
 				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -66,8 +93,6 @@ const Map = ({ places }: MapProps) => {
 				</Marker>
 			))}
 		</MapContainer>
-
-
 	);
 };
 
