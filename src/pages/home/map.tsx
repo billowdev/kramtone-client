@@ -1,5 +1,6 @@
 import type { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 
+
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -34,13 +35,15 @@ const Map = ({ places }: MapProps) => {
 	// https://stackoverflow.com/questions/57704196/leaflet-with-next-js
 	const [isBrowser, setIsBrowser] = React.useState(false);
 	React.useEffect(() => {
-	  setIsBrowser(true);
+		setIsBrowser(true);
 	}, []);
-  
+	
+
 	if (!isBrowser) {
 	  return null;
 	}
   
+
 
 	// const center: LatLngExpression =  [13.736717, 100.523186]; // Centered on Bangkok
 	// const center: LatLngExpression = [17.2706, 101.7229]; // Centered on Northeast Thailand
