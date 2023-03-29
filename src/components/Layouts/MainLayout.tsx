@@ -1,9 +1,7 @@
 import * as React from "react";
-import { styled, Theme, CSSObject } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import Header from "@/components/Layouts/Header";
-import Menu from "@/components/Layouts/Menu";
 import Footer from "@/components/Footer";
 import Navbar from '@/components/Navbar';
 

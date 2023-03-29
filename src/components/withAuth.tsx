@@ -34,7 +34,7 @@ const withAuth = (WrappedComponent: React.FC) => (props: any) => {
       // }
     } else {
       if (isAuthenticated) {
-        router.push(`/`); // default page after login
+        router.push(`/panel`); // default page after login
         return null;
       }
     }

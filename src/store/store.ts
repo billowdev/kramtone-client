@@ -5,12 +5,9 @@ import { useDispatch } from "react-redux";
 import authReducer from "./slices/auth.slice";
 import placeReducer from "./slices/place.slice";
 
-// import articleReducer from "./slices/articleSlice";
-
 const reducer = {
 	auth: authReducer,
 	place: placeReducer
-	// article: articleReducer,
 };
 
 export const store = configureStore({

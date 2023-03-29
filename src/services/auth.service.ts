@@ -23,7 +23,7 @@ export const signIn = async (user: signProps) => {
 
 // next local api
 export async function signOut() {
-	const { data: response } = await httpClient.get(`/user/auth/signout`, {
+	const { data: response } = await httpClient.get(`/auth/signout`, {
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
 	});
 	return response;

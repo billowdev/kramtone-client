@@ -146,30 +146,18 @@ export default function Menu({ open, onDrawerClose }: MenuProp) {
           </>
         )}
 
-        <Link href="/timer" passHref>
+<Link href="/aboutus" passHref>
           <ListItem
             button
-            className={router.pathname === "/timer" ? "Mui-selected" : ""}
+            className={router.pathname === "/aboutus" ? "Mui-selected" : ""}
           >
             <ListItemIcon>
-              <Timer10Icon />
+              <Person />
             </ListItemIcon>
-            <ListItemText primary="เวลานับถอยหลัง" />
+            <ListItemText primary="เกี่ยวกับผู้พัฒนาระบบ" />
           </ListItem>
         </Link>
-
-        <Link href="/stopwatch" passHref>
-          <ListItem
-            button
-            className={router.pathname === "/stopwatch" ? "Mui-selected" : ""}
-          >
-            <ListItemIcon>
-              <TimerIcon />
-            </ListItemIcon>
-            <ListItemText primary="จับเวลา" />
-          </ListItem>
-        </Link>
-        <Divider />
+     
 
         {userData && !userData.accessToken && (
           <>

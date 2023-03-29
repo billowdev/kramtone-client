@@ -12,7 +12,7 @@ import { signIn } from "@/store/slices/auth.slice";
 import { useAppDispatch } from "@/store/store";
 import { useRouter } from "next/router";
 import withAuth from '@/components/withAuth';
-import Theme from '@/components/Theme';
+import { Theme } from '../_app';
 import Image from 'next/image'
 import { toast } from 'react-hot-toast';
 
@@ -65,7 +65,7 @@ function SignInPage({ }: Props) {
   const onSubmit = async (values: FormValues, props: FormikHelpers<FormValues>) => {
     const { username, password } = values;
     const response = await dispatch(signIn({ username, password }))
-    
+
     if (response.meta.requestStatus === "rejected") {
       toast.error("เข้าสู่ระบบไม่สำเร็จ")
     } else {
@@ -98,15 +98,16 @@ function SignInPage({ }: Props) {
               />
             </Grid>
 
-          <Grid style={{ alignContent: 'center' }} item xs={12} sm={12} md={6}>
+            <Grid style={{ alignContent: 'center' }} item xs={12} sm={12} md={6}>
               {/* <Avatar style={avatarStyle}><LockOutlinedIcon /></Avatar> */}
               {/* <h2>ลงชื่อเข้าใช้</h2> */}
 
-              <Typography variant="h5" style={{ 
-                fontWeight: 'bold', textAlign: 'center',  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginTop: 30}}>ลงชื่อเข้าใช้</Typography>
+              <Typography variant="h5" style={{
+                fontWeight: 'bold', textAlign: 'center', display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginTop: 30
+              }}>ลงชื่อเข้าใช้</Typography>
 
               <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                 {(props: FormikProps<FormValues>) => (
@@ -166,7 +167,7 @@ function SignInPage({ }: Props) {
                   </Form>
                 )}
               </Formik>
-   
+
             </Grid>
 
           </Grid>
