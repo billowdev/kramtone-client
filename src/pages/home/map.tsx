@@ -6,23 +6,24 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 const MapContainer = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), {
 	ssr: false, // disable server-side rendering
-  });
+});
 
-  const TileLayer = dynamic(() => import('react-leaflet').then((mod) => mod.TileLayer), {
+const TileLayer = dynamic(() => import('react-leaflet').then((mod) => mod.TileLayer), {
 	ssr: false, // disable server-side rendering
-  });
-  const Marker = dynamic(() => import('react-leaflet').then((mod) => mod.Marker), {
+});
+const Marker = dynamic(() => import('react-leaflet').then((mod) => mod.Marker), {
 	ssr: false, // disable server-side rendering
-  });
-  const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
+});
+const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
 	ssr: false, // disable server-side rendering
-  });
+});
 
 type Place = {
 	name: string;
 	address: string;
 	lat: number;
 	lng: number;
+	image: string;
 };
 
 type MapProps = {
@@ -37,12 +38,12 @@ const Map = ({ places }: MapProps) => {
 	React.useEffect(() => {
 		setIsBrowser(true);
 	}, []);
-	
+
 
 	if (!isBrowser) {
-	  return null;
+		return null;
 	}
-  
+
 
 
 	// const center: LatLngExpression =  [13.736717, 100.523186]; // Centered on Bangkok
@@ -71,22 +72,24 @@ const Map = ({ places }: MapProps) => {
 			zoom={zoom}
 			bounds={bounds}
 			scrollWheelZoom={true}
-			style={{height: 400, 
-				// width: "100%"
+			style={{
+				height: "100vh",
+				width: "100%"
 			}}
-			>
+		>
 			<TileLayer
 
 				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-			{places.map(({ name, address, lat, lng }) => (
+			{places.map(({ name, address, lat, lng, image }) => (
 				<Marker key={name} position={[lat, lng]}>
+					
 					<Popup>
 						<div>
 							<h3>{name}</h3>
 							<p>{address}</p>
 							<Image
-								src="https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI"
+								src={image}
 								alt="My Image"
 								width={100}
 								height={100}

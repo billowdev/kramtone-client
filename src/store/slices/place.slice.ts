@@ -12,9 +12,9 @@ const initialState: any = {
 
 export const fetchPlace = createAsyncThunk("groupdata/fetchPlace", async () => {
 	const { data: response } = await axios.get(`https://raw.githubusercontent.com/billowdev/test-json/main/place.json`)
-	// console.log('====================================');
-	// console.log(response);
-	// console.log('====================================');
+	console.log('====================================');
+	console.log(response);
+	console.log('====================================');
 
 	return response.payload;
 });

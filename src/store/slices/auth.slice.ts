@@ -98,6 +98,7 @@ export const authSlice = createSlice({
 		// 	state.username = action.payload.name;
 		// 	state.isAuthenticated = false;
 		// });
+		
 		builder.addCase(signIn.fulfilled, (state, action) => {
 			// state.accessToken = action.payload.token;
 			// state.username = action.payload.username;

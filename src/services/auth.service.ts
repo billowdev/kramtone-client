@@ -11,11 +11,8 @@ type signProps = {
 
 // next local api
 export const signIn = async (user: signProps) => {
-	console.log('====================================');
-	console.log('IAuthPayload');
-	console.log('====================================');
-	const { data: response } = await httpClient.post<any>(
-		`/user/auth/signin`,
+	const { data: response } = await httpClient.post(
+		`/auth/signin`,
 		user,
 		{
 			baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,

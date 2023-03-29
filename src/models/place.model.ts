@@ -8,4 +8,5 @@ export interface PlacePayload {
 	address: string
 	lat: number
 	lng: number
+	image: string
 }

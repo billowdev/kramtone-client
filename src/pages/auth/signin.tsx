@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import withAuth from '@/components/withAuth';
 import Theme from '@/components/Theme';
 import Image from 'next/image'
+import { toast } from 'react-hot-toast';
 
 type Props = {}
 interface FormValues {
@@ -64,8 +65,9 @@ function SignInPage({ }: Props) {
   const onSubmit = async (values: FormValues, props: FormikHelpers<FormValues>) => {
     const { username, password } = values;
     const response = await dispatch(signIn({ username, password }))
+    
     if (response.meta.requestStatus === "rejected") {
-      alert("Login was failed")
+      toast.error("เข้าสู่ระบบไม่สำเร็จ")
     } else {
       router.push("/panel");
     }
@@ -166,9 +168,6 @@ function SignInPage({ }: Props) {
               </Formik>
    
             </Grid>
-
-
-
 
           </Grid>
         </Paper>

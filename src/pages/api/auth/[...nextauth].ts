@@ -15,9 +15,9 @@ import axios from 'axios';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.query.nextauth) {
-		const signinAction: string = req.query['nextauth'][2]
-		const sessionAction: string = req.query['nextauth'][1]
-		const signOutAction: string = req.query['nextauth'][2]
+		const signinAction: string = req.query['nextauth'][0]
+		const sessionAction: string = req.query['nextauth'][0]
+		const signOutAction: string = req.query['nextauth'][0]
 
 		if (req.method === HTTP_METHOD_POST && signinAction === "signin") {
 			return signin(req, res);
@@ -33,39 +33,32 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	}
 }
 
-async function signin(req: NextApiRequest, res: NextApiResponse) {
+async function signin(req: NextApiRequest, res: NextApiResponse<any>) {
 	try {
 		const { username, password } = req.body
-		const headers = {
-
-		}
 		// const { data: response } = await httpClient.post(`/users/signin`, { username, password }, {});
-		const { data: response } = await axios.post(`/api/v1/users/signin`, { username, password }, {
-			baseURL: 'http://localhost:4000',
+		const response = await httpClient.post(`/users/signin`, { username, password })
+			// const response = await axios.post(`/users/signin`, {username, password}, {
+			// 	baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
+			// });
 			
+		// const decryptData = decryptAES<ISignIn>(response.payload)
+		// const { token } = decryptData;
+		const { token } = response.data.payload
+
+		setCookie(res, ACCESS_TOKEN_KEY, token, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV !== "development",
+			sameSite: "strict",
+			path: "/",
 		});
-		console.log('================ function signin(req: NextApiRequest, res: NextApiResponse)====================');
-		console.log(response);
-		console.log('====================================');
-
-		if (response.status === API_REQUEST_SUCCESS) {
-			const decryptData = decryptAES<ISignIn>(response.payload)
-			const { token } = decryptData;
-			setCookie(res, ACCESS_TOKEN_KEY, token, {
-				httpOnly: true,
-				secure: process.env.NODE_ENV !== "development",
-				sameSite: "strict",
-				path: "/",
-			});
-			res.status(200).json(decryptData);
-		} else {
-			res.status(400).end();
-		}
-
+		// res.status(200).json(decryptData);
+		res.json(response.data)
 	} catch (error: any) {
-		console.log('====================================');
+		console.log("===========");
 		console.log(error);
-		console.log('====================================');
+		console.log("===========");
+		
 		res.status(400).end();
 	}
 }

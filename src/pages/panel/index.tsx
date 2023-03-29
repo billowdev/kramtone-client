@@ -12,12 +12,13 @@ function PanelPage({}: Props) {
   const userSession = useSelector(authSelector);
   return (
     <React.Fragment>
-      {userSession&&userSession.role === "user" ? (
+    
+      {userSession&&userSession.role === "admin" ? (
         // USER PANEL
-        <GroupShopPanel />
-      ) : (
         // ADMIN PANEL
         <AdminPanel />
+        ) : (
+        <GroupShopPanel />
       )}
     </React.Fragment>
   );
