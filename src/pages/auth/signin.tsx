@@ -15,6 +15,11 @@ import withAuth from '@/components/withAuth';
 import Image from 'next/image'
 import { toast } from 'react-hot-toast';
 import { useTheme } from '@material-ui/core/styles';
+import {CustomTheme} from "@/pages/_app"
+import {
+  getOneGroupDataAction,
+} from "@/store/slices/group-data.slice";
+
 type Props = {}
 interface FormValues {
   username: string;
@@ -30,7 +35,7 @@ function SignInPage({ }: Props) {
   // const btnstyle = { margin: '8px 0', }
   const btnstyle = {
     margin: '8px 0',
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: CustomTheme.palette.primary.main,
     color: '#fff',
     fontWeight: 'bold',
     // boxShadow: `0px 1px 5px ${Theme.palette.primary.dark}`,
@@ -39,8 +44,8 @@ function SignInPage({ }: Props) {
 
   const secondBtnstyle = {
     margin: '8px 0',
-    backgroundColor: theme.palette.common.white,
-    color: theme.palette.secondary.dark,
+    backgroundColor: CustomTheme.palette.common.white,
+    color: CustomTheme.palette.secondary.dark,
     fontWeight: 'bold',
     // boxShadow: `0px 1px 5px ${Theme.palette.primary.dark}`,
     boxShadow: `0px 5px 10px rgba(0, 0, 0, 0.3)`,
@@ -69,7 +74,14 @@ function SignInPage({ }: Props) {
       toast.error("เข้าสู่ระบบไม่สำเร็จ")
     } else {
       // router.push("/panel");
-        router.push("/panel", undefined, { shallow: false });
+        if(response.payload.user.role === "member") {
+          dispatch(getOneGroupDataAction(response.payload.user.groupId));
+          router.push("/panel/user/manage-group", undefined, { shallow: false })
+          
+        }else{
+          router.push("/panel", undefined, { shallow: false });
+        }
+      
         }
     setTimeout(() => {
       props.resetForm()

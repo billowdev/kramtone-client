@@ -57,7 +57,7 @@ export default function Footer({}: Props) {
             }}
           ></Box>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={4} md={4}>
+            <Grid item xs={12} sm={3} md={3}>
               <Link href="/" style={{ color: "#FFF" }}>
                 <Typography align="center">www.kramtone.com</Typography>
               </Link>
@@ -66,8 +66,8 @@ export default function Footer({}: Props) {
             <Grid
               item
               xs={12}
-              sm={5}
-              md={5}
+              sm={8}
+              md={6}
               style={{
                 display: "flex",
                 flexDirection: isSmallDevice ? "column" : "row",
@@ -110,7 +110,7 @@ export default function Footer({}: Props) {
               item
               xs={12}
               sm={3}
-              md={3}
+              md={2}
               style={{
                 // marginTop: isSmallDevice ? "16px" : "0px",
               }}

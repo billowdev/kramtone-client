@@ -33,6 +33,20 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormLabel from "@mui/material/FormLabel";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Fab,
+  IconButton,
+  Slide,
+  Stack,
+  Divider
+} from "@mui/material";
+
 import { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 
 type Props = {};
@@ -50,7 +64,6 @@ const Marker = dynamic(() => import('react-leaflet').then((mod) => mod.Marker), 
 const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
   ssr: false, // disable server-side rendering
 });
-
 
 function UserPanelManageGroup({}: Props) {
   const theme = useTheme();
@@ -76,7 +89,7 @@ function UserPanelManageGroup({}: Props) {
   }, [dispatch, userData]);
 
   const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
-  const [position, setPosition] =  React.useState<LatLngExpression>([parseFloat(groupData.lat), parseFloat(groupData.lng)]) // Centered on Sakon Nakhon Province
+  const position: LatLngExpression = [parseFloat(groupData.lat), parseFloat(groupData.lng)] // Centered on Sakon Nakhon Province
 	const zoom: number = 12;
 
 	const bounds: LatLngBoundsExpression = [
@@ -125,11 +138,102 @@ function UserPanelManageGroup({}: Props) {
 
 
   const showForm = ({ isValid }: FormikProps<any>) => {
-    return <Form></Form>;
+    return <Form>
+       <Card>
+          <CardContent sx={{ padding: 4 }}>
+          <FormLabel htmlFor="groupName" sx={{marginTop:"16px"}}>ชื่อกลุ่มผู้ผลิตหรือร้านค้า</FormLabel>
+            <Field
+              style={{ marginTop: 16 }}
+              fullWidth
+              value={groupData.groupName}
+              component={TextField}
+              name="groupName"
+              type="text"
+              label="ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
+            />
+            <Box sx={{marginTop:"16px"}}> 
+            <FormLabel htmlFor="groupName">ชื่อกลุ่มผู้ผลิตหรือร้านค้า</FormLabel>
+               <Field
+              style={{ marginTop: 16 }}
+              fullWidth
+              value={groupData.groupName}
+              component={TextField}
+              name="groupName"
+              type="text"
+              label="ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
+            />
+            </Box>
+             
+   </CardContent>
+          <CardActions>
+            <Button
+              disabled={!isValid}
+              fullWidth
+              variant="contained"
+              color="primary"
+              type="submit"
+              sx={{ marginRight: 1 }}
+            >
+              แก้ไข
+            </Button>
+              <Button variant="outlined" fullWidth onClick={() => setOpenDialog(false)}>
+                ยกเลิก
+              </Button>
+          </CardActions>
+        </Card>
+
+    </Form>;
   };
 
+  const [openDialog, setOpenDialog] = React.useState<boolean>(false);
   
+  const showDialog = () => {
+    if (groupData === null) {
+      return;
+    }
 
+    return (
+      <Dialog
+        open={openDialog}
+        keepMounted
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">
+        <Typography gutterBottom variant="h5">
+              แก้ไขข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
+            </Typography>
+            <Divider />
+        </DialogTitle>
+        <DialogContent>
+          <Formik
+        validate={(values) => {
+          let errors: any = {};
+          return errors;
+        }}
+        initialValues={initialValues}
+        onSubmit={async (values, { setSubmitting }) => {
+
+          setSubmitting(false);
+        }}
+      >
+        {(props) => showForm(props)}
+      </Formik>
+
+        </DialogContent>
+        {/* <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="info">
+            ยกเลิก
+          </Button>
+          <Button onClick={()=>{
+            console.log("edit")
+          }} color="primary">
+            แก้ไข
+          </Button>
+        </DialogActions> */}
+      </Dialog>
+    );
+  };
 
   return (
     <Layout>
@@ -401,15 +505,20 @@ function UserPanelManageGroup({}: Props) {
               fontWeight: "bold",
               boxShadow: `0px 5px 10px rgba(0, 0, 0, 0.3)`,
             }}
-            onClick={() => {
-              console.log("edit onclick");
-              console.log(groupData);
-            }}
+            onClick={
+             ()=>{
+              setOpenDialog(true);
+             }
+            }
           >
             แก้ไขข้อมูล
           </Button>
         </Container>
       </Container>
+
+
+      {showDialog()}
+
     </Layout>
   );
 }

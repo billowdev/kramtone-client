@@ -4,12 +4,11 @@ import AdminPanel from "./admin/index";
 import { useSelector } from 'react-redux';
 import { authSelector } from "@/store/slices/auth.slice";
 import withAuth from '@/components/withAuth';
-
 type Props = {};
 
 function PanelPage({}: Props) {
-
   const userSession = useSelector(authSelector);
+ 
   return (
     <React.Fragment>
     
