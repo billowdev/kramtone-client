@@ -26,6 +26,9 @@
       "@/auth/*": [
         "auth/*"
       ],
+      "@/pages/*": [
+        "pages/*"
+      ],
       "@/components/*": [
         "components/*"
       ],

@@ -8,7 +8,7 @@ import { Toaster } from "react-hot-toast";
 import { fetchSession } from "@/store/slices/auth.slice";
 const drawerWidth = 240;
 
-export const Theme = createTheme({
+export const CustomTheme = createTheme({
 		components: {
 			MuiDrawer: {
 				styleOverrides: {
@@ -96,7 +96,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 	return (
 		<Provider store={store}>
-			<ThemeProvider theme={Theme}>
+			<ThemeProvider theme={CustomTheme}>
 				<Component {...pageProps} />
 				<Toaster />
 			</ThemeProvider>

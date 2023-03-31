@@ -15,13 +15,18 @@ import Image from "next/image";
 import { Layers, BarChart, Person } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import GroupsIcon from "@mui/icons-material/Groups";
-import HistoryIcon from "@mui/icons-material/History";
-import Timer10Icon from "@mui/icons-material/Timer10";
 const drawerWidth = 240;
-import TimerIcon from "@mui/icons-material/Timer";
 import { authSelector } from "@/store/slices/auth.slice";
 import { useSelector } from "react-redux";
 import LoginIcon from '@mui/icons-material/Login';
+import {CustomTheme} from "@/pages/_app"
+import MenuListItem from "./MenuListItem";
+import { useAppDispatch } from "@/store/store";
+import LogoutIcon from '@mui/icons-material/Logout';
+import CheckroomIcon from '@mui/icons-material/Checkroom';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+
+
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
   transition: theme.transitions.create("width", {
@@ -39,7 +44,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
   overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
+    width: `calc(${theme.spacing(7)} + 1px)`,
   },
 });
 
@@ -78,7 +83,13 @@ export default function Menu({ open, onDrawerClose }: MenuProp) {
   const theme = useTheme();
   const router = useRouter();
   const userData = useSelector(authSelector);
+  
+  const handleLogout = ()=>{
+    console.log("logout")
+    dispatch(signOut);
+  }
 
+  
   return (
     <Drawer variant="permanent" open={open}>
       <DrawerHeader>
@@ -117,65 +128,106 @@ export default function Menu({ open, onDrawerClose }: MenuProp) {
         {userData && userData?.sub && (
           <>
             {/* manage profile */}
-            <Link href="/profile" passHref>
-              <ListItem
-                button
-                className={router.pathname === "/profile" ? "Mui-selected" : ""}
-              >
-                <ListItemIcon>
-                  <GroupsIcon />
-                </ListItemIcon>
-                <ListItemText primary="จัดการข้อมูลกลุ่มผู้ผลิต" />
-              </ListItem>
-            </Link>
+          <MenuListItem   
+          href="/panel/user/manage-group"
+            icon={GroupsIcon}
+            text="จัดการข้อมูลกลุ่ม"
+            open={open}
+          />
 
-            {/* History */}
-            <Link href="/history" passHref>
-              <ListItem
-                button
-                className={router.pathname === "/history" ? "Mui-selected" : ""}
-              >
-                <ListItemIcon>
-                  <HistoryIcon />
-                </ListItemIcon>
-                <ListItemText primary="ประวัติการบันทึกเวลา" />
-              </ListItem>
-            </Link>
+        <MenuListItem   
+          href="/panel/user/manage-product"
+            icon={ShoppingBagIcon}
+            text="จัดการสินค้า"
+            open={open}
 
-            <Divider />
+          />
+           <MenuListItem   
+          href="/panel/user/manage-category"
+            icon={CheckroomIcon}
+            text="จัดการประเภทสินค้า"
+          />
+   <MenuListItem   
+          href="/panel/user/manage-colorscheme"
+            icon={GroupsIcon}
+            text="จัดการโทนสีที่มีในร้าน"
+            open={open}
+          />
+            
           </>
         )}
+        <Box style={{ margin: "50px 0"}} > 
+        <Divider />
+        </Box>
+        <MenuListItem   
+          href="/manage-profile"
+            icon={Person}
+            text="ตั้งค่าบัญชีผู้ใช้"
+            open={open}
+          />
 
-<Link href="/aboutus" passHref>
+        <MenuListItem   
+          href="/aboutus"
+            icon={Person}
+            text="เกี่ยวกับผู้พัฒนาระบบ"
+            open={open}
+          />
+    
+
+		<Box boxShadow={2} style={{ borderRadius: "50px", margin: "20px 10px"}}>
+		  <ListItem
+			button
+			classes={{ selected: "Mui-selected" }}
+			style={{
+			  backgroundColor:  "#FFF",
+			  borderRadius: "50px",
+        paddingTop: "16px",
+			  paddingBottom: "16px"
+			}}
+		  >
+			<ListItemIcon>
+			 <LogoutIcon style={{ color:  "#000",  margin: `${open ? '0 0 0 0px' : '0 0 0 -8px'}` }}  />
+			</ListItemIcon>
+			<ListItemText primary={"ออกจากระบบ"}
+			  style={{ color:  "#000",  margin: '0 0 0 -16px'}}
+			/>
+		  </ListItem>
+		</Box>
+{/* 
+
+      <Link href="/auth/signout" passHref>
+        <Box boxShadow={2} style={{ borderRadius: "50px" }}>
           <ListItem
             button
-            className={router.pathname === "/aboutus" ? "Mui-selected" : ""}
+            className={router.pathname === "/auth/signout" ? "Mui-selected" : ""}
+            
           >
             <ListItemIcon>
-              <Person />
+              <LoginIcon />
             </ListItemIcon>
-            <ListItemText primary="เกี่ยวกับผู้พัฒนาระบบ" />
+            <ListItemText primary="ออกจากระบบ" />
           </ListItem>
-        </Link>
-     
+        </Box>
+      </Link> */}
 
-        {userData && !userData.accessToken && (
+        {/* {userData && !userData.accessToken && (
           <>
-            <Link href="/auth/signin" passHref>
-              <ListItem
-                button
-                className={
-                  router.pathname === "/auth/signin" ? "Mui-selected" : ""
-                }
-              >
-                <ListItemIcon>
-                  <LoginIcon />
-                </ListItemIcon>
-                <ListItemText primary="เข้าระบบ" />
-              </ListItem>
-            </Link>
+ <Link href="/auth/signin" passHref>
+  <Box boxShadow={2} style={{ borderRadius: "50px" }}>
+    <ListItem
+      button
+      className={router.pathname === "/auth/signin" ? "Mui-selected" : ""}
+      
+    >
+      <ListItemIcon>
+        <LoginIcon />
+      </ListItemIcon>
+      <ListItemText primary="เข้าระบบ" />
+    </ListItem>
+  </Box>
+</Link>
           </>
-        )}
+        )} */}
       </List>
     </Drawer>
   );
