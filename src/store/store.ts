@@ -4,10 +4,12 @@ import { useDispatch } from "react-redux";
 
 import authReducer from "./slices/auth.slice";
 import placeReducer from "./slices/place.slice";
+import groupDataReducer from "./slices/group-data.slice";
 
 const reducer = {
 	auth: authReducer,
-	place: placeReducer
+	place: placeReducer,
+	groupData: groupDataReducer
 };
 
 export const store = configureStore({

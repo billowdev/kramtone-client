@@ -12,10 +12,9 @@ import { signIn } from "@/store/slices/auth.slice";
 import { useAppDispatch } from "@/store/store";
 import { useRouter } from "next/router";
 import withAuth from '@/components/withAuth';
-import { CustomTheme } from '../_app';
 import Image from 'next/image'
 import { toast } from 'react-hot-toast';
-
+import { useTheme } from '@material-ui/core/styles';
 type Props = {}
 interface FormValues {
   username: string;
@@ -23,15 +22,15 @@ interface FormValues {
   remember: boolean;
 }
 
-
 function SignInPage({ }: Props) {
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const paperStyle = { padding: 20, height: '100vh', width: "auto", margin: "0 auto" }
   const avatarStyle = { backgroundColor: '#103D81', alginContent: 'center' }
   // const btnstyle = { margin: '8px 0', }
   const btnstyle = {
     margin: '8px 0',
-    backgroundColor: CustomTheme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main,
     color: '#fff',
     fontWeight: 'bold',
     // boxShadow: `0px 1px 5px ${Theme.palette.primary.dark}`,
@@ -40,8 +39,8 @@ function SignInPage({ }: Props) {
 
   const secondBtnstyle = {
     margin: '8px 0',
-    backgroundColor: CustomTheme.palette.common.white,
-    color: CustomTheme.palette.secondary.dark,
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.secondary.dark,
     fontWeight: 'bold',
     // boxShadow: `0px 1px 5px ${Theme.palette.primary.dark}`,
     boxShadow: `0px 5px 10px rgba(0, 0, 0, 0.3)`,
@@ -70,7 +69,7 @@ function SignInPage({ }: Props) {
       toast.error("เข้าสู่ระบบไม่สำเร็จ")
     } else {
       // router.push("/panel");
-      router.push("/panel", undefined, { shallow: false });
+        router.push("/panel", undefined, { shallow: false });
         }
     setTimeout(() => {
       props.resetForm()

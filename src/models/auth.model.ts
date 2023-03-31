@@ -30,6 +30,7 @@ export interface SignUp {
 export type UserState = {
 	sub: string;
 	role: string;
+	gid: string;
 	username: string;
 	isAuthenticated: boolean;
 	isAuthenticating: boolean;
@@ -51,7 +52,7 @@ export interface SignUpAction {
 
 export type SessionResponseType = {
 	sub: string,
-	uid: string,
+	gid: string,
 	role: string,
 	accessToken: string;
 	iat: string,

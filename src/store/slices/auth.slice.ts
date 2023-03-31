@@ -18,6 +18,7 @@ const initialState: UserState = {
 	isAuthenticating: true,
 	sub: "",
 	role: "",
+	gid: "",
 	username: ""
 };
 
@@ -81,6 +82,7 @@ export const authSlice = createSlice({
 				state.accessToken = action.payload.accessToken;
 				state.sub = action.payload.sub;
 				state.role = action.payload.role;
+				state.gid = action.payload.gid;
 			}
 
 		});
@@ -89,7 +91,7 @@ export const authSlice = createSlice({
 			state.isAuthenticated = false;
 			state.isAuthenticating = false;
 			state.sub = "";
-			// state.uid = "";
+			state.gid ="";
 		})
 
 		// builder.addCase(signUp.fulfilled, (state, action) => {
@@ -111,7 +113,7 @@ export const authSlice = createSlice({
 			state.isAuthenticated = false;
 			state.isAuthenticating = false;
 			state.sub = "";
-			// state.uid = "";
+			state.gid = "";
 
 		});
 
