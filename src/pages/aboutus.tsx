@@ -1,4 +1,4 @@
-import Layout from "@/components/Layouts/Layout";
+import Layout from "@/components/OldLayouts/OldLayout";
 import { Paper } from "@mui/material";
 import React from "react";
 import Iframe from "react-iframe";

@@ -16,16 +16,25 @@ import { Layers, BarChart, Person } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import GroupsIcon from "@mui/icons-material/Groups";
 const drawerWidth = 240;
-import { authSelector } from "@/store/slices/auth.slice";
+import { useAppDispatch } from "@/store/store";
 import { useSelector } from "react-redux";
 import LoginIcon from '@mui/icons-material/Login';
 import {CustomTheme} from "@/pages/_app"
 import MenuListItem from "./MenuListItem";
-import { useAppDispatch } from "@/store/store";
 import LogoutIcon from '@mui/icons-material/Logout';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-
+import SettingsIcon from '@mui/icons-material/Settings';
+import InfoIcon from '@mui/icons-material/Info';
+import { signOut, authSelector } from "@/store/slices/auth.slice";
+import { toast } from 'react-hot-toast';
+import Swal from 'sweetalert2';
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles((theme) => ({
+  sweetalert: {
+    zIndex: 1500 // adjust the value to make sure the dialog appears on top
+  }
+}));
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -55,6 +64,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
+  
 }));
 
 const Drawer = styled(MuiDrawer, {
@@ -79,17 +89,58 @@ type MenuProp = {
   onDrawerClose: () => void;
 };
 
+
 export default function Menu({ open, onDrawerClose }: MenuProp) {
   const theme = useTheme();
   const router = useRouter();
   const userData = useSelector(authSelector);
-  
+  const dispatch = useAppDispatch()
+
   const handleLogout = ()=>{
     console.log("logout")
     dispatch(signOut);
+
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+    })
+    
+    swalWithBootstrapButtons.fire({
+      title: 'ออกจากระบบ?',
+      text: "คุณต้องการออกจากระบบใช่หรือไม่?",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'ออกจากระบบ',
+      cancelButtonText: 'ยกเลิก',
+      reverseButtons: true,
+      customClass: classes.sweetalert
+    }).then((result) => {
+      if (result.isConfirmed) {
+        toast.success('ออกจากระบบเรียบร้อย')
+        // swalWithBootstrapButtons.fire(
+        //   'ออกจากระบบ!',
+        //   'ออกจากระบบเรียบร้อย',
+        //   'success'
+        // )
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        // swalWithBootstrapButtons.fire(
+        //   'Cancelled',
+        //   'Your imaginary file is safe :)',
+        //   'error'
+        // )
+      }
+    })
+
   }
 
-  
+  const classes = useStyles();
+
   return (
     <Drawer variant="permanent" open={open}>
       <DrawerHeader>
@@ -143,9 +194,10 @@ export default function Menu({ open, onDrawerClose }: MenuProp) {
 
           />
            <MenuListItem   
-          href="/panel/user/manage-category"
+            href="/panel/user/manage-category"
             icon={CheckroomIcon}
             text="จัดการประเภทสินค้า"
+            open={open}
           />
    <MenuListItem   
           href="/panel/user/manage-colorscheme"
@@ -161,20 +213,20 @@ export default function Menu({ open, onDrawerClose }: MenuProp) {
         </Box>
         <MenuListItem   
           href="/manage-profile"
-            icon={Person}
+            icon={SettingsIcon}
             text="ตั้งค่าบัญชีผู้ใช้"
             open={open}
           />
 
         <MenuListItem   
           href="/aboutus"
-            icon={Person}
+            icon={InfoIcon}
             text="เกี่ยวกับผู้พัฒนาระบบ"
             open={open}
           />
     
 
-		<Box boxShadow={2} style={{ borderRadius: "50px", margin: "20px 10px"}}>
+		<Box boxShadow={2} style={{ borderRadius: "50px", margin: "20px 10px"}} onClick={handleLogout}>
 		  <ListItem
 			button
 			classes={{ selected: "Mui-selected" }}

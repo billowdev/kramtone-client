@@ -5,14 +5,14 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Formik, Form, Field, ErrorMessage, FormikProps, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import MainLayout from '@/components/Layouts/MainLayout';
+import MainLayout from '@/components/MainLayout';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { signIn } from "@/store/slices/auth.slice";
 import { useAppDispatch } from "@/store/store";
 import { useRouter } from "next/router";
 import withAuth from '@/components/withAuth';
-import { Theme } from '../_app';
+import { CustomTheme } from '../_app';
 import Image from 'next/image'
 import { toast } from 'react-hot-toast';
 
@@ -31,7 +31,7 @@ function SignInPage({ }: Props) {
   // const btnstyle = { margin: '8px 0', }
   const btnstyle = {
     margin: '8px 0',
-    backgroundColor: Theme.palette.primary.main,
+    backgroundColor: CustomTheme.palette.primary.main,
     color: '#fff',
     fontWeight: 'bold',
     // boxShadow: `0px 1px 5px ${Theme.palette.primary.dark}`,
@@ -40,8 +40,8 @@ function SignInPage({ }: Props) {
 
   const secondBtnstyle = {
     margin: '8px 0',
-    backgroundColor: Theme.palette.common.white,
-    color: Theme.palette.secondary.dark,
+    backgroundColor: CustomTheme.palette.common.white,
+    color: CustomTheme.palette.secondary.dark,
     fontWeight: 'bold',
     // boxShadow: `0px 1px 5px ${Theme.palette.primary.dark}`,
     boxShadow: `0px 5px 10px rgba(0, 0, 0, 0.3)`,
@@ -69,8 +69,9 @@ function SignInPage({ }: Props) {
     if (response.meta.requestStatus === "rejected") {
       toast.error("เข้าสู่ระบบไม่สำเร็จ")
     } else {
-      router.push("/panel");
-    }
+      // router.push("/panel");
+      router.push("/panel", undefined, { shallow: false });
+        }
     setTimeout(() => {
       props.resetForm()
       props.setSubmitting(false)

@@ -22,7 +22,7 @@ export const CustomTheme = createTheme({
 			},
 		},
 		typography: {
-			fontFamily: "Kanit",
+			fontFamily: "Roboto",
 			fontWeightLight: 300,
 			fontWeightRegular: 400,
 			fontWeightMedium: 500,
@@ -30,6 +30,7 @@ export const CustomTheme = createTheme({
 		},
 		spacing: 8,
 		palette: {
+			mode: 'light',
 			primary: {
 				main: "#103D81",
 				light: "#3B5B8E",

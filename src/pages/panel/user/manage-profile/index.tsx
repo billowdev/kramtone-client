@@ -1,10 +1,11 @@
 import React from 'react'
+import Layout from '@/components/Layouts/Layout';
 
 type Props = {}
 
 function UserPanelProfile({}: Props) {
   return (
-	<div>UserPanelProfile</div>
+	<Layout>UserPanelProfile</Layout>
   )
 }
 

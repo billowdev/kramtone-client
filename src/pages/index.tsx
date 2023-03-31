@@ -1,6 +1,6 @@
 import React from "react";
 import PanelPage from "./panel";
-import MainLayout from '@/components/Layouts/MainLayout';
+import MainLayout from '@/components/MainLayout';
 import { Paper, Button, Typography, Grid, Modal, Backdrop, Fade, CardMedia, Card, CardActionArea } from "@mui/material";
 import { NextSeo } from 'next-seo';
 import Image from 'next/image'
