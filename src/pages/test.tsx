@@ -1,12 +1,10 @@
 import React from 'react'
-import ThemeLayout from '@/components/ThemeLayouts/Layout'
-import Chart from '@/components/ThemeLayouts/Chart';
-import Deposits from '@/components/ThemeLayouts/Deposits';
-import Orders from '@/components/ThemeLayouts/Orders';
+import ThemeLayout from '@/components/Layouts/Layout'
+import Chart from '@/components/Layouts/Chart';
+import Deposits from '@/components/Layouts/Deposits';
+import Orders from '@/components/Layouts/Orders';
 import Copyright from '@/components/Copyright';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
+import {Container, Grid, Paper} from '@mui/material';
 import Link from '@mui/material/Link';
 type Props = {}
 
