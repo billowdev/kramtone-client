@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -11,11 +11,9 @@ import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import { useRouter } from "next/router";
-
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems, secondaryListItems } from './listItems';
-
 import Copyright from '@/components/Copyright';
 import AppBarComponent from './AppBar';
 import { CustomTheme } from '../../pages/_app';
@@ -32,6 +30,7 @@ import { useAppDispatch } from "@/store/store";
 import { useSelector } from "react-redux";
 import LogoutIcon from '@mui/icons-material/Logout';
 import ListItemText from "@mui/material/ListItemText";
+import ColorLensIcon from '@mui/icons-material/ColorLens';
 
 
 interface LayoutProps {
@@ -168,9 +167,10 @@ function Layout({ children }: LayoutProps) {
             text="จัดการประเภทสินค้า"
             open={open}
           />
+
    <CustomMenuListItem   
           href="/panel/user/manage-colorscheme"
-            icon={GroupsIcon}
+            icon={ColorLensIcon}
             text="จัดการโทนสีที่มีในร้าน"
             open={open}
           />

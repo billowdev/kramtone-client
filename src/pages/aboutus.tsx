@@ -1,7 +1,8 @@
-import Layout from "@/components/OldLayouts/OldLayout";
+import Layout from "@/components/Layouts/Layout";
 import { Paper } from "@mui/material";
 import React from "react";
 import Iframe from "react-iframe";
+import CopyrightComponent from '@/components/Copyright'
 
 type Props = {};
 
@@ -18,6 +19,7 @@ const AboutUs = ({}: Props) => {
           position="relative"
         />
       </Paper>
+      <CopyrightComponent /> 
     </Layout>
   );
 };
