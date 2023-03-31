@@ -33,8 +33,9 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormLabel from "@mui/material/FormLabel";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-type Props = {};
+import { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 
+type Props = {};
 const MapContainer = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), {
   ssr: false, // disable server-side rendering
 });
@@ -52,18 +53,9 @@ const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
 
 
 function UserPanelManageGroup({}: Props) {
-  
-	const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
-	const zoom: number = 12;
-
-	const bounds: LatLngBoundsExpression = [
-		[16.3453, 103.0333], // Southwest corner of Sakon Nakhon Province
-		[18.0813, 105.2619] // Northeast corner of Sakon Nakhon Province
-	];
-
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
-  const dispatch = useAppDispatch();
+  const dispatch:any = useAppDispatch();
   const { groupData } = useSelector(groupDataSelector);
   const userData = useSelector(authSelector);
   // console.log("goupdata page")
@@ -81,7 +73,17 @@ function UserPanelManageGroup({}: Props) {
     if (userData) {
       dispatch(getOneGroupDataAction(userData.gid));
     }
-  }, [dispatch]);
+  }, [dispatch, userData]);
+
+  const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
+  const [position, setPosition] =  React.useState<LatLngExpression>([parseFloat(groupData.lat), parseFloat(groupData.lng)]) // Centered on Sakon Nakhon Province
+	const zoom: number = 12;
+
+	const bounds: LatLngBoundsExpression = [
+		[16.3453, 103.0333], // Southwest corner of Sakon Nakhon Province
+		[18.0813, 105.2619] // Northeast corner of Sakon Nakhon Province
+	];
+ 
 
   const initialValues: GroupDataPayload = {
     groupName: groupData.groupName,
@@ -373,7 +375,7 @@ function UserPanelManageGroup({}: Props) {
           >
             <MapContainer center={center} zoom={zoom} style={{ height: "500px", width: "100%" }}>
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  <Marker position={[groupData.lat, groupData.lng]}>     
+                  <Marker position={position}>     
                       <Popup autoClose={false} >
                     <span>หมุดของคุณ</span>
                   </Popup>

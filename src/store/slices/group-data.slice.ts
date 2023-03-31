@@ -35,15 +35,15 @@ const initialState: GroupDataState = {
 
 
 
-export const getAllGroupDataAction = createAsyncThunk("GROUP_DATA/GET_ALL", async (): Promise<GroupDataArrayPayload> => {
-	const response: GroupDataArrayResponse = await groupDataService.getAllGroupData()
+export const getAllGroupDataAction = createAsyncThunk("GROUP_DATA/GET_ALL", async (): Promise<any> => {
+	const response = await groupDataService.getAllGroupData()
 	// console.log("===========slice===========")
 	// console.log(response)
 	return response;
 });
 
-export const getOneGroupDataAction = createAsyncThunk("GROUP_DATA/GET_ONE", async (id:string):Promise<GroupDataPayload> => {
-	const response: GroupDataResponse = await groupDataService.getOneGroupData(id)
+export const getOneGroupDataAction = createAsyncThunk("GROUP_DATA/GET_ONE", async (id:string):Promise<any> => {
+	const response = await groupDataService.getOneGroupData(id)
 	return response;
 });
 
