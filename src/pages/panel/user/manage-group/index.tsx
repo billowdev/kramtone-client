@@ -33,6 +33,8 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormLabel from "@mui/material/FormLabel";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { groupDataImageURL } from "@/common/utils/utils";
+
 
 import {
   Dialog,
@@ -280,7 +282,33 @@ function UserPanelManageGroup({}: Props) {
         </Grid>
 
         <Grid container spacing={2} style={{ marginTop: "16px" }}>
+
+        <Grid item xs={12} md={12} lg={12}>
+              <Paper
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                      gap: "4rem",
+                      flexDirection: {
+                        xs: "column",
+                        md: "row",
+                      },
+                      overflow: 'hidden'
+                    }}
+                  >
+                      <Image
+                        
+                        alt="product image"
+                        src={groupDataImageURL(groupData.banner)}
+                        width={1120}
+                        height={160}
+                      />
+                    </Paper>
+              </Grid>
+
           <Grid item xs={12}>
+      
+
             <Paper
               sx={{
                 p: 2,
@@ -296,7 +324,7 @@ function UserPanelManageGroup({}: Props) {
                 <Image
                   objectFit="cover"
                   alt="product image"
-                  src="/static/img/logo.png"
+                  src={groupDataImageURL(groupData.logo)}
                   width={250}
                   height={250}
                 />
