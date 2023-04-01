@@ -235,6 +235,9 @@ function UserPanelManageGroup({}: Props) {
     );
   };
 
+  const handleOnEditClick = () =>{
+    router.push('/panel/user/manage-group/edit?gid=' + userData.gid)
+  }
   return (
     <Layout>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -507,7 +510,8 @@ function UserPanelManageGroup({}: Props) {
             }}
             onClick={
              ()=>{
-              setOpenDialog(true);
+              handleOnEditClick()
+              // setOpenDialog(true);
              }
             }
           >
