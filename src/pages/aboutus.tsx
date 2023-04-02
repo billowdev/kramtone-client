@@ -19,7 +19,7 @@ const AboutUs = ({}: Props) => {
           position="relative"
         />
       </Paper>
-      <CopyrightComponent /> 
+      
     </Layout>
   );
 };
