@@ -98,6 +98,7 @@ interface PageProps {
 const UserPanelEditGroup : React.FC<PageProps> = ({ groupData, accessToken }) => {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
+  const isMediumDevice = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch: any = useAppDispatch();
 
   const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
@@ -125,13 +126,16 @@ const UserPanelEditGroup : React.FC<PageProps> = ({ groupData, accessToken }) =>
       );
     } else if (values.logo) {
       return (
+        <div className="w-full relative pt-[100%]">
         <Image
-          objectFit="cover"
           alt="group logo image"
           src={groupDataImageURL(values.logo)}
-          width={250}
-          height={250}
+          width={isSmallDevice? 150 : 250}
+          height={isSmallDevice? 150 : 250}
+    
+          className="w-full h-full top-0 left-0 object-cover rounded-2xl"
         />
+           </div>
       );
     }
   };
@@ -140,21 +144,19 @@ const UserPanelEditGroup : React.FC<PageProps> = ({ groupData, accessToken }) =>
     if (values.banner_obj) {
       return (
         <Image
-          objectFit="cover"
           alt="group banner image"
           src={values.banner_obj}
-          width={250}
-          height={250}
+          width={isSmallDevice? 200 : 400}
+          height={isSmallDevice? 30 : 60}
         />
       );
     } else if (values.banner) {
       return (
         <Image
-          objectFit="cover"
           alt="group banner image"
           src={groupDataImageURL(values.banner)}
-          width={400}
-          height={60}
+          width={isSmallDevice? 200 : 400}
+          height={isSmallDevice? 30 : 60}
         />
       );
     }
@@ -184,21 +186,20 @@ const UserPanelEditGroup : React.FC<PageProps> = ({ groupData, accessToken }) =>
           <Typography variant="h5">ข้อมูลกลุ่ม</Typography>
           <Divider sx={{ width: "50%", margin: "16px" }} />
         </Box>
-
+        {/* isMediumDevice */}
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={12} md={12} lg={6}>
             <FormLabel htmlFor="logo" sx={{ fontWeight: "bold" }}>
               ภาพโลโก้ ขนาด 250 x 250 px
             </FormLabel>
 
-            <Box sx={{ padding: 4 }}>
+            <Box sx={{ padding: isSmallDevice? 0 : 4 }}>
               <div>{showPreviewLogo(values)}</div>
-
               <div>
                 <Image
                   alt="product image"
                   src="/static/img/default.png"
-                  width={25}
+                  width={ 25}
                   height={20}
                 />
                 <span style={{ color: "#00B0CD", marginLeft: 10 }}>
@@ -227,9 +228,8 @@ const UserPanelEditGroup : React.FC<PageProps> = ({ groupData, accessToken }) =>
             <FormLabel htmlFor="banner" sx={{ fontWeight: "bold" }}>
               ภาพแบนเนอร์ ขนาด 1200 x 160 px
             </FormLabel>
-            <Box sx={{ padding: 4 }}>
+            <Box sx={{ padding: isSmallDevice? 0 : 4 }}>
               <div>{showPreviewBanner(values)}</div>
-
               <div>
                 <Image
                   alt="product image"
@@ -260,7 +260,7 @@ const UserPanelEditGroup : React.FC<PageProps> = ({ groupData, accessToken }) =>
               </div>
             </Box>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={12} md={12} lg={6}>
             <Box sx={{ marginTop: "16px" }}>
               <FormLabel htmlFor="email" sx={{ fontWeight: "bold" }}>
                 ชื่อกลุ่มผู้ผลิตหรือร้านค้า
@@ -391,7 +391,7 @@ const UserPanelEditGroup : React.FC<PageProps> = ({ groupData, accessToken }) =>
             disabled={!dirty || !isValid}
             sx={{ marginRight: 1 }}
           >
-            บันทึกข้อมูล
+            {isSmallDevice ? "บันทึก" : "บันทึกข้อมูล"}
           </Button>
           <Link href="/panel/user/manage-group" passHref>
             <Button variant="outlined" fullWidth>

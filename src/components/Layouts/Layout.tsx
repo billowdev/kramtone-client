@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import {ListItem, ListItemIcon} from '@mui/material';
@@ -31,7 +30,20 @@ import { useSelector } from "react-redux";
 import LogoutIcon from '@mui/icons-material/Logout';
 import ListItemText from "@mui/material/ListItemText";
 import ColorLensIcon from '@mui/icons-material/ColorLens';
-
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Fab,
+  Grid,
+  Slide,
+  Stack,
+  TextField,
+} from "@mui/material";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -74,47 +86,42 @@ function Layout({ children }: LayoutProps) {
   const userData = useSelector(authSelector);
   const dispatch = useAppDispatch()
 
-  const handleLogout = ()=>{
-    console.log("logout")
-    dispatch(signOut);
+  const [openDialog, setOpenDialog] = React.useState<boolean>(false);
 
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        confirmButton: 'btn btn-success',
-        cancelButton: 'btn btn-danger'
-      },
-      buttonsStyling: false
-    })
-    
-    swalWithBootstrapButtons.fire({
-      title: 'ออกจากระบบ?',
-      text: "คุณต้องการออกจากระบบใช่หรือไม่?",
-      icon: 'info',
-      showCancelButton: true,
-      confirmButtonText: 'ออกจากระบบ',
-      cancelButtonText: 'ยกเลิก',
-      reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        toast.success('ออกจากระบบเรียบร้อย')
-        // swalWithBootstrapButtons.fire(
-        //   'ออกจากระบบ!',
-        //   'ออกจากระบบเรียบร้อย',
-        //   'success'
-        // )
-        dispatch(signOut())
-      } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel
-      ) {
-        // swalWithBootstrapButtons.fire(
-        //   'Cancelled',
-        //   'Your imaginary file is safe :)',
-        //   'error'
-        // )
-      }
-    })
+
+  const handleLogout = async ()=>{
+    dispatch(signOut())
+    setOpenDialog(false);
   }
+
+  const showSignOutDialog = () => {
+    return (
+      <Dialog
+        open={openDialog}
+        keepMounted
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">
+          ออกจากระบบ?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+          คุณต้องการออกจากระบบใช่หรือไม่?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="info">
+            ยกเลิก
+          </Button>
+          <Button onClick={handleLogout} color="primary">
+            ออกจากระบบ
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+
 
 
   return (
@@ -193,7 +200,11 @@ function Layout({ children }: LayoutProps) {
             open={open}
           />
 
-<Box boxShadow={2} style={{ borderRadius: "50px", margin: "20px 10px"}} onClick={handleLogout}>
+<Box boxShadow={2} style={{ borderRadius: "50px", margin: "20px 10px"}} onClick={
+  ()=>{
+    setOpenDialog(true);
+  }
+}>
 		  <ListItem
 			button
 			classes={{ selected: "Mui-selected" }}
@@ -229,6 +240,7 @@ function Layout({ children }: LayoutProps) {
           {children}
           <Copyright sx={{ pt: 4 }} />
         </Box>
+        {showSignOutDialog()}
       </Box>
     </ThemeProvider>
   );

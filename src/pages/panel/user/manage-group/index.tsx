@@ -24,7 +24,7 @@ import {
 } from "@/store/slices/group-data.slice";
 import { useSelector } from "react-redux";
 import { Field, Form, Formik, FormikProps } from "formik";
-import { authSelector } from "@/store/slices/auth.slice";
+import { authSelector, fetchSession } from "@/store/slices/auth.slice";
 import withAuth from "@/components/withAuth";
 import Link from "next/link";
 import { GroupDataPayload } from "@/models/group-data.model";
@@ -34,7 +34,6 @@ import FormLabel from "@mui/material/FormLabel";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { groupDataImageURL } from "@/common/utils/utils";
-
 
 import {
   Dialog,
@@ -73,9 +72,12 @@ function UserPanelManageGroup({}: Props) {
   const dispatch:any = useAppDispatch();
   const { groupData } = useSelector(groupDataSelector);
   const userData = useSelector(authSelector);
-  // console.log("goupdata page")
-  // console.log(groupData)
-  // console.log(userData.gid)
+  const isLoading = groupData === undefined;
+  
+  // React.useEffect(() => {
+  //   dispatch(fetchSession());
+  // }, []);
+
   React.useEffect(() => {
     //  async function fethData() {
     //   const data = await  dispatch(getAllGroupDataAction());
@@ -89,6 +91,8 @@ function UserPanelManageGroup({}: Props) {
       dispatch(getOneGroupDataAction(userData.gid));
     }
   }, [dispatch, userData]);
+
+ 
 
   const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
   const position: LatLngExpression = [parseFloat(groupData.lat), parseFloat(groupData.lng)] // Centered on Sakon Nakhon Province
@@ -340,32 +344,15 @@ function UserPanelManageGroup({}: Props) {
                       {groupData.groupName}
                     </Typography>
                   </Box>
-
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
-                      ประเภทกลุ่ม :
+                    ประเภทกลุ่ม :
                     </Typography>
-                    <RadioGroup
-                      row
-                      aria-labelledby="group-type-row-radio-buttons-group-label"
-                      name="group-type-row-radio-buttons-group"
-                      sx={typeographyValueStyle}
-                    >
-                      <FormControlLabel
-                        value="shop"
-                        checked={groupData.groupType === "shop"}
-                        control={<Radio />}
-                        label={"ร้านค้า"}
-                      />
-                      <FormControlLabel
-                        value="producer"
-                        checked={groupData.groupType === "producer"}
-                        control={<Radio />}
-                        label={"กลุ่มผู้ผลิต"}
-                      />
-                    </RadioGroup>
+                    <Typography sx={typeographyValueStyle}>
+                      {groupData.groupType === "shop"? "ร้านค้า" : "กลุ่มผู้ผลิต"}
+                    </Typography>
                   </Box>
-
+                
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
                       ชื่อประธาน / เจ้าของร้าน :
