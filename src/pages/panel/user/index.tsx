@@ -14,7 +14,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-
+import WidgetsIcon from '@mui/icons-material/Widgets';
 
 
 import { useTheme } from "@material-ui/core/styles";
@@ -36,9 +36,9 @@ function GroupShopPanel({}: Props) {
               sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}
             >
               {isSmallDevice ? (
-                <ColorLensIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+                <WidgetsIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
               ) : (
-                <ColorLensIcon
+                <WidgetsIcon
                   sx={{ fontSize: "2.5rem", marginLeft: "16px" }}
                 />
               )}
@@ -161,7 +161,7 @@ function GroupShopPanel({}: Props) {
                 />
               </ListItem>
             </Box>
-            
+
                 </Grid>
               </Grid>
 
