@@ -19,6 +19,8 @@ import { CustomTheme } from "../../pages/_app";
 import CustomMenuListItem from "@/components/Layouts/CustomMenuListItem";
 import Link from "next/link";
 import { signOut, authSelector } from "@/store/slices/auth.slice";
+import { groupDataSelector } from "@/store/slices/group-data.slice";
+
 import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
 import { useAppDispatch } from "@/store/store";
@@ -31,6 +33,9 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ListItemText from "@mui/material/ListItemText";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
+import WidgetsIcon from '@mui/icons-material/Widgets';
+import HomeIcon from '@mui/icons-material/Home';
+
 import {
   Box,
   Button,
@@ -45,6 +50,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -85,6 +91,9 @@ function Layout({ children }: LayoutProps) {
   };
   const router = useRouter();
   const userData = useSelector(authSelector);
+  const groupData = useSelector(groupDataSelector);
+  const isLoading = groupData?.groupData?.groupName === undefined;
+  
   const dispatch = useAppDispatch();
 
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
@@ -134,56 +143,75 @@ function Layout({ children }: LayoutProps) {
               px: [1],
             }}
           >
-            <IconButton
-              //  onClick={onDrawerClose}
-              size="small"
-            >
-              ร้านศักดิ์ดา ครามสกล
-            </IconButton>
+        <IconButton size="small">
+          {groupData?.groupData?.groupName || "หน้าระบบหลังบ้าน"}
+        </IconButton>
+
             <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
             </IconButton>
           </Toolbar>
           <Divider />
           <List component="nav">
-            {userData && userData?.sub && (
-              <>
-                {/* manage profile */}
+            
+              {userData && userData.role === "member" && (
+               <>
                 <CustomMenuListItem
-                  href="/panel/user/manage-group"
+                href="/panel/user/"
+                icon={WidgetsIcon}
+                text="เมนูหลัก"
+                open={open}
+                />
+
+                <CustomMenuListItem   
+                href="/panel/user/manage-group"
                   icon={GroupsIcon}
                   text="จัดการข้อมูลกลุ่ม"
                   open={open}
                 />
-
-                <CustomMenuListItem
-                  href="/panel/user/manage-product"
+      
+              <CustomMenuListItem   
+                href="/panel/user/manage-product"
                   icon={ShoppingBagIcon}
                   text="จัดการสินค้า"
                   open={open}
+      
                 />
-                <CustomMenuListItem
+                 <CustomMenuListItem   
                   href="/panel/user/manage-category"
                   icon={CheckroomIcon}
                   text="จัดการประเภทสินค้า"
                   open={open}
                 />
-
-                <CustomMenuListItem
-                  href="/panel/user/manage-colorscheme"
-                  icon={ColorLensIcon}
+         <CustomMenuListItem   
+                href="/panel/user/manage-colorscheme"
+                  icon={GroupsIcon}
                   text="จัดการโทนสีที่มีในร้าน"
                   open={open}
                 />
-              </>
-            )}
+      
+         
+               </>
+
+                )}
+
             <Divider sx={{ my: 1 }} />
             <CustomMenuListItem
-              href="/manage-profile"
-              icon={SettingsIcon}
-              text="ตั้งค่าบัญชีผู้ใช้"
-              open={open}
-            />
+                        href="/panel/user/manage-profile"
+                        icon={SettingsIcon}
+                        text="ตั้งค่าบัญชีผู้ใช้"
+                        open={open}
+                      />
+{/* 
+            {userData && userData.role === "admin" && (
+                     
+                          
+                  
+
+                )} */}
+
+
+           
 
             <CustomMenuListItem
               href="/aboutus"
@@ -191,6 +219,13 @@ function Layout({ children }: LayoutProps) {
               text="เกี่ยวกับผู้พัฒนาระบบ"
               open={open}
             />
+
+          <CustomMenuListItem   
+          href="/"
+            icon={HomeIcon}
+            text="กลับสู่หน้าหลัก"
+          />
+      
 
             <Box
               boxShadow={2}

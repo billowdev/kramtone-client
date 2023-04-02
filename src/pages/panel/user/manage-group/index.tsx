@@ -72,11 +72,11 @@ function UserPanelManageGroup({}: Props) {
   const dispatch:any = useAppDispatch();
   const { groupData } = useSelector(groupDataSelector);
   const userData = useSelector(authSelector);
-  const isLoading = groupData === undefined;
-  
-  // React.useEffect(() => {
-  //   dispatch(fetchSession());
-  // }, []);
+  const isLoading = userData === undefined;
+
+  React.useEffect(() => {
+    dispatch(fetchSession());
+  }, []);
 
   React.useEffect(() => {
     //  async function fethData() {

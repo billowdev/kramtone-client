@@ -15,7 +15,7 @@ import ColorLensIcon from "@mui/icons-material/ColorLens";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import WidgetsIcon from '@mui/icons-material/Widgets';
-
+import HomeIcon from '@mui/icons-material/Home';
 
 import { useTheme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
@@ -27,6 +27,40 @@ function GroupShopPanel({}: Props) {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 
+  
+  const [openDialog, setOpenDialog] = React.useState<boolean>(false);
+
+  const handleLogout = async () => {
+    dispatch(signOut());
+    setOpenDialog(false);
+  };
+
+  const showSignOutDialog = () => {
+    return (
+      <Dialog
+        open={openDialog}
+        keepMounted
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">ออกจากระบบ?</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            คุณต้องการออกจากระบบใช่หรือไม่?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="info">
+            ยกเลิก
+          </Button>
+          <Button onClick={handleLogout} color="primary">
+            ออกจากระบบ
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+  
   return (
     <Layout>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -108,7 +142,6 @@ function GroupShopPanel({}: Props) {
           href="/panel/user/manage-colorscheme"
             icon={ColorLensIcon}
             text="จัดการโทนสีที่มีในร้าน"
-            open={open}
           />
                 </Grid>
               </Grid>
@@ -122,17 +155,20 @@ function GroupShopPanel({}: Props) {
           href="/manage-profile"
             icon={SettingsIcon}
             text="ตั้งค่าบัญชีผู้ใช้"
-            open={open}
           />
-
+    <CustomMenuListItem   
+          href="/"
+            icon={HomeIcon}
+            text="กลับสู่หน้าหลักของเว็บไซต์"
+          />
       
                 </Grid>
+
                 <Grid item xs={8}>
                 <CustomMenuListItem   
           href="/aboutus"
             icon={InfoIcon}
             text="เกี่ยวกับผู้พัฒนาระบบ"
-            open={open}
           />
 
 <Box

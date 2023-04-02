@@ -20,8 +20,6 @@ function PanelPage({}: Props) {
     <React.Fragment>
     
       {userSession&&userSession.role === "admin" ? (
-        // USER PANEL
-        // ADMIN PANEL
         <AdminPanel />
         ) : (
         <GroupShopPanel />

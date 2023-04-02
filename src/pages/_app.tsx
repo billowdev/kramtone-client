@@ -6,6 +6,10 @@ import * as React from "react";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { Toaster } from "react-hot-toast";
 import { fetchSession } from "@/store/slices/auth.slice";
+import {
+	getOneGroupDataAction,
+  } from "@/store/slices/group-data.slice";
+
 const drawerWidth = 240;
 
 export const CustomTheme = createTheme({
@@ -90,9 +94,15 @@ export const CustomTheme = createTheme({
 
 function MyApp({ Component, pageProps }: AppProps) {
 	React.useEffect(() => {
-		store.dispatch(fetchSession());
-	}, []);
-
+		async function fetchData() {
+			const response = await store.dispatch(fetchSession());
+			if(response.payload?.gid){
+				store.dispatch(getOneGroupDataAction(response.payload.gid));
+			}
+		}
+		fetchData();
+		
+	  }, []);
 
 
 	return (
