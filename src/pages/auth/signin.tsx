@@ -57,8 +57,7 @@ function SignInPage({}: Props) {
     margin: "0 auto",
   };
   const avatarStyle = { backgroundColor: "#103D81", alginContent: "center" };
-  // const btnstyle = { margin: '8px 0', }
-  const btnstyle = {
+  const btnStyle = {
     margin: "8px 0",
     backgroundColor: CustomTheme.palette.primary.main,
     color: "#fff",
@@ -72,6 +71,7 @@ function SignInPage({}: Props) {
     backgroundColor: CustomTheme.palette.common.white,
     color: CustomTheme.palette.secondary.dark,
     fontWeight: "bold",
+    marginRight: "8px",
     // boxShadow: `0px 1px 5px ${Theme.palette.primary.dark}`,
     boxShadow: `0px 5px 10px rgba(0, 0, 0, 0.3)`,
   };
@@ -210,22 +210,23 @@ function SignInPage({}: Props) {
                       </CardContent>
 
                       <CardActions>
-                        <Button
+                       <Link href="/auth/signup" style={{display: 'contents'}}>
+                       <Button
                           type="button"
                           color="secondary"
                           variant="contained"
                           style={secondBtnstyle}
                           fullWidth
-                        >
+                          >
                           {"สมัครสมาชิก"}
-                        </Button>
-
+                        </Button> 
+                       </Link>
                         <Button
                           type="submit"
                           color="primary"
                           variant="contained"
                           disabled={props.isSubmitting}
-                          style={btnstyle}
+                          style={btnStyle}
                           fullWidth
                         >
                           {props.isSubmitting
