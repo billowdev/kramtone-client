@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import httpClient from "@/utils/httpClient.util";
+import httpClient from "@/common/utils/httpClient.util";
 import { GeographyResponseType, ProvinceResponseType } from './types/thai-address.type';
 
 

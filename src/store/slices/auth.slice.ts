@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import * as authService from "@/services/auth.service"
-import httpClient from "@/utils/httpClient.util";
+import httpClient from "@/common/utils/httpClient.util";
 import { AxiosRequestConfig } from "axios";
 import Router from "next/router";
 import { AuthResponseType, IAuthPayload, UserState } from "@/models/auth.model";

@@ -5,7 +5,7 @@ import {
   isAuthenticatedSelector,
   isAuthenticatingSelector,
 } from "@/store/slices/auth.slice";
-import { isClient } from "@/utils/utils";
+import { isClient } from "@/common/utils/utils";
 
 // eslint-disable-next-line react/display-name
 const withAuth = (WrappedComponent: React.FC) => (props: any) => {

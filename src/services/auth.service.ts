@@ -1,5 +1,5 @@
 import { AuthResponseType, IAuthPayload, SessionResponseType, SignUp } from "@/models/auth.model"
-import httpClient from "@/utils/httpClient.util";
+import httpClient from "@/common/utils/httpClient.util";
 import axios from "axios";
 import { METHODS } from "http";
 import { ApiResponseType } from "common/types/api-response.type";

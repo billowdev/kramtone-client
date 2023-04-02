@@ -34,8 +34,8 @@ export interface GroupDataResponse {
 	createdAt?: string
 	updatedAt?: string
 	logo_file?: any | Blob;
-	logo_obj: URL | string;
+	logo_obj?: URL | string;
 	banner_file?: any | Blob;
-	banner_obj: URL | string;
+	banner_obj?: URL | string;
   }
   

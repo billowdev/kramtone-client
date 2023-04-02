@@ -1,5 +1,5 @@
 import { GroupDataPayload, GroupDataArrayPayload, GroupDataArrayResponse, GroupDataResponse } from "@/models/group-data.model";
-import httpClient from "@/utils/httpClient.util";
+import httpClient from "@/common/utils/httpClient.util";
 import axios from 'axios'
 
 export const getOneGroupData = async (id: string): Promise<GroupDataResponse> => {

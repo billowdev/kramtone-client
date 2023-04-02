@@ -38,7 +38,7 @@
       "@/models/*": [
         "models/*"
       ],
-      "@/utils/*": [
+      "@/common/utils/*": [
         "common/utils/*"
       ],
       "@/config/*": [

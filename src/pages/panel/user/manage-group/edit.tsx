@@ -58,10 +58,7 @@ import {
 
 import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 
-interface Props {
-  groupData: GroupDataPayload;
-  accessToken: string;
-}
+
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -93,49 +90,33 @@ const validationSchema = yupObject().shape({
   groupType: yupString().required("กรุณาเลือกประเภทกลุ่ม"),
 });
 
-function UserPanelEditGroup({ groupData, accessToken }: Props) {
+interface PageProps {
+  groupData?: GroupDataPayload;
+  accessToken?: string;
+}
+
+const UserPanelEditGroup : React.FC<PageProps> = ({ groupData, accessToken }) => {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const dispatch: any = useAppDispatch();
 
   const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
   const position: LatLngExpression = [
-    parseFloat(groupData.lat),
-    parseFloat(groupData.lng),
+    parseFloat(groupData?.lat ?? "17.1634"),
+     parseFloat(groupData?.lng ?? "104.1476"),
   ]; // Centered on Sakon Nakhon Province
   const zoom: number = 12;
 
-  const initialValues: GroupDataPayload = {
-    groupName: groupData.groupName,
-    groupType: groupData.groupType,
-    agency: groupData.agency,
-    logo: groupData.logo,
-    banner: groupData.banner,
-    phone: groupData.phone,
-    email: groupData.email,
-    hno: groupData.hno,
-    village: groupData.village,
-    lane: groupData.lane,
-    road: groupData.road,
-    subdistrict: groupData.subdistrict,
-    district: groupData.district,
-    province: groupData.province,
-    zipCode: groupData.zipCode,
-    lat: groupData.lat,
-    lng: groupData.lng,
-  };
-  const [updateValue, setUpdateValue] =
-    React.useState<GroupDataPayload>(initialValues);
+  // const [updateValue, setUpdateValue] = React.useState<GroupDataPayload>(groupData);
 
   const [groupTypeState, setGroupTypeState] = React.useState<string>(
-    initialValues.groupType
+    groupData?.groupType ?? "shop"
   );
 
   const showPreviewLogo = (values: any) => {
     if (values.logo_obj) {
       return (
         <Image
-          objectFit="cover"
           alt="group logo image"
           src={values.logo_obj}
           width={250}
@@ -179,7 +160,9 @@ function UserPanelEditGroup({ groupData, accessToken }: Props) {
     }
   };
 
-  const setUpdateGroupPartOneValue = () => {};
+  const setUpdateGroupPartOneValue = (values:any) => {};
+
+
   const showForm = ({
     values,
     dirty,
@@ -482,7 +465,7 @@ function UserPanelEditGroup({ groupData, accessToken }: Props) {
 
                 <Box sx={{ padding: 4 }}>
                   <Formik
-                    initialValues={initialValues}
+                    initialValues={groupData!}
                     validationSchema={validationSchema}
                     onSubmit={async (values, { setSubmitting }) => {
                       setUpdateGroupPartOneValue(values);
@@ -524,7 +507,7 @@ function UserPanelEditGroup({ groupData, accessToken }: Props) {
         </Grid>
       </Container>
     </Layout>
-  );
+ )
 }
 
 export default withAuth(UserPanelEditGroup);
@@ -544,6 +527,6 @@ export const getServerSideProps: GetServerSideProps = async (
       },
     };
   } else {
-    return { props: {} };
+    return { props: { } };
   }
 };

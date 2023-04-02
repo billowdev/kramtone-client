@@ -3,12 +3,12 @@ import {
 	HTTP_METHOD_GET,
 	ACCESS_TOKEN_KEY,
 } from 'common/constants/api.constant'
-import { clearCookie, setCookie } from "@/utils/cookies.util";
-import httpClient from "@/utils/httpClient.util";
+import { clearCookie, setCookie } from "@/common/utils/cookies.util";
+import httpClient from "@/common/utils/httpClient.util";
 import type { NextApiRequest, NextApiResponse } from "next";
 import cookie from "cookie";
 import * as jwt from 'jsonwebtoken';
-import { decryptAES } from '@/utils/aes-encrypt.util';
+import { decryptAES } from '@/common/utils/aes-encrypt.util';
 import { API_REQUEST_SUCCESS } from 'common/constants/api.constant';
 import { ISignIn } from 'models/auth.model';
 import axios from 'axios';
