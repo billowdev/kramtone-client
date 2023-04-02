@@ -471,6 +471,7 @@ function UserPanelManageGroup({}: Props) {
                   </Box>
                 </Grid>
 
+      
 
                 <Grid item xs={12} md={6}>
                   <Box sx={boxStyle}>
@@ -486,30 +487,7 @@ function UserPanelManageGroup({}: Props) {
             </Paper>
           </Grid>
 
-          <Grid item xs={12} md={12} lg={12}>
-          <Paper
-            sx={{
-            p: 2,
-            display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            }}
-          >
-            <MapContainer center={center} zoom={zoom} style={{ height: "500px", width: "100%" }}>
-                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  <Marker position={position}>     
-                      <Popup autoClose={false} >
-                    <span>หมุดของคุณ</span>
-                  </Popup>
-                  </Marker> 
-                  </MapContainer>
-          </Paper>
-          </Grid>
-
-
-        </Grid>
-
-        <Container
+          <Container
           maxWidth="lg"
           sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}
         >
@@ -533,6 +511,30 @@ function UserPanelManageGroup({}: Props) {
             แก้ไขข้อมูล
           </Button>
         </Container>
+        
+          <Grid item xs={12} md={12} lg={12}>
+          <Paper
+            sx={{
+            p: 2,
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            }}
+          >
+            <MapContainer center={center} zoom={zoom} style={{ height: "500px", width: "100%" }}>
+                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                  <Marker position={position}>     
+                      <Popup autoClose={false} >
+                    <span>หมุดของคุณ</span>
+                  </Popup>
+                  </Marker> 
+                  </MapContainer>
+          </Paper>
+          </Grid>
+
+
+        </Grid>
+
       </Container>
 
 
