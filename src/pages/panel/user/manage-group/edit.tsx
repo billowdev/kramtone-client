@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef,ReactNode } from "react";
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
@@ -61,8 +61,11 @@ import {
 	DistrictResponseType, DistrictType,
 	SubdistrictResponseType, SubdistrictType,
 } from "@/models/thai-address.model";
-
+import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
+import { TransitionProps } from "@mui/material/transitions";
+
+
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -97,14 +100,15 @@ const validationSchema = yupObject().shape({
 interface PageProps {
   groupData?: GroupDataPayload;
   accessToken?: string;
-  grographies?: GeographyType
+  provinces?: ProvinceType;
 }
 
 const UserPanelEditGroup: React.FC<PageProps> = ({
   groupData,
   accessToken,
-  grographies
+  provinces,
 }) => {
+
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const isMediumDevice = useMediaQuery(theme.breakpoints.down("md"));
@@ -122,6 +126,20 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   const [groupTypeState, setGroupTypeState] = React.useState<string>(
     groupData?.groupType ?? "shop"
   );
+  const [provinceState, setProvinceState] = React.useState<string>(
+    groupData?.province ?? ""
+  );
+    const selectRef = React.useRef(null);
+
+  const [selectedProvince, setSelectedProvince] = React.useState<ProvinceType | null>(null);
+  const handleProvinceChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const selectedId = event.target.value as number;
+    const selected = provinces.find((p:ProvinceType) => p.id === selectedId);
+    setProvinceState(selected?.nameTH)
+    setSelectedProvince(selected);
+    console.log(selected?.nameTH)
+    console.log(selected)
+  };
 
   const showPreviewLogo = (values: any) => {
     if (values.logo_obj) {
@@ -170,7 +188,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     }
   };
 
-  const setUpdateGroupPartOneValue = (values: any) => {};
+  const setUpdateValue = (values: any) => {};
 
   const showForm = ({
     values,
@@ -462,21 +480,38 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
       />
       <ErrorMessage name="village" />
     </Box>
+  
+    <Box sx={{ marginTop: "16px" }} >
+  <FormControl fullWidth>
+    <FormLabel htmlFor="province" style={{ fontWeight: 'bold', marginTop: '16px' }}>
+      จังหวัด <span style={{ color: 'red' }}>*</span>
+    </FormLabel>
+    <Select
+      id="province"
+      className="selectProvince"
+      labelId="province-label"
+      displayEmpty
+      value={selectedProvince?.id || ''}
+      onChange={handleProvinceChange}
+      style={{ marginTop: '16px' }}
+    >
+      <MenuItem value="">
+        {groupData?.province || "-- โปรดเลือกจังหวัด --"}
+      </MenuItem>
+      {provinces&&provinces.map((province: ProvinceType) => (
+        <MenuItem key={province.id} value={province.id}>
+          {province.nameTH}
+        </MenuItem>
+      ))}
+    </Select>
+    <ErrorMessage name="province" />
+  </FormControl>
+</Box>
+   
 
-    <Box sx={{ marginTop: "16px" }}>
-      <FormLabel htmlFor="province" sx={{ fontWeight: "bold" }}>
-      จังหวัด <span style={{ color: "red" }}>*</span>
-      </FormLabel>
-      <Field
-        name="province"
-        type="text"
-        fullWidth
-        label="จังหวัด"
-        as={TextField}
-        sx={{ marginTop: "16px" }}
-      />
-      <ErrorMessage name="province" />
-    </Box>
+  
+
+   
 
   </Grid>
 </Grid>
@@ -571,7 +606,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     initialValues={groupData!}
                     validationSchema={validationSchema}
                     onSubmit={async (values, { setSubmitting }) => {
-                      setUpdateGroupPartOneValue(values);
+                      setUpdateValue(values);
                       // setOpenDialog(true);
                       console.log(values);
                       setSubmitting(false);
@@ -599,7 +634,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 style={{ height: "500px", width: "100%" }}
               >
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <Marker position={position}>
+                <Marker position={position}
+                
+                >
                   <Popup autoClose={false}>
                     <span>หมุดของคุณ</span>
                   </Popup>
@@ -622,8 +659,7 @@ export const getServerSideProps: GetServerSideProps = async (
   if (gid) {
     const groupData = await groupDataService.getOneGroupData(gid);
     const accessToken = context.req.cookies["access_token"];
-    const grographies = await thaiAddressService.getGrographies();
-    // const provinces = await thaiAddressService.getProvinces(geography[4].id);
+    const provinces = await thaiAddressService.getProvinces();
     // const districts = await thaiAddressService.getDistricts(provinces[4].id);
     // const subdistricts = await thaiAddressService.getSubdistricts(districts[4].id);
     // console.log("======== edit group data ===========")
@@ -633,7 +669,7 @@ export const getServerSideProps: GetServerSideProps = async (
       props: {
         groupData,
         accessToken,
-        grographies
+        provinces
       },
     };
   } else {

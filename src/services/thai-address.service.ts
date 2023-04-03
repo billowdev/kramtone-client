@@ -14,11 +14,17 @@ export const getGrographies = async (): Promise<GeographyType> => {
 	return payload
 };
 
-export const getProvinces = async (geographyId: string): Promise<ProvinceType> => {
+export const getProvinceByGrography = async (geographyId: string): Promise<ProvinceType> => {
 	const { data: response } = await axios.get<ProvinceResponseType>(`${process.env.NEXT_PUBLIC_THAI_ADDRESS_API}/provinces.json`)
 	const {payload} = response
 	const filteredPayload = payload.filter((item: ProvinceType) => item.geographyId === parseInt(geographyId));
 	return filteredPayload
+};
+
+export const getProvinces = async (): Promise<ProvinceType> => {
+	const { data: response } = await axios.get<ProvinceResponseType>(`${process.env.NEXT_PUBLIC_THAI_ADDRESS_API}/provinces.json`)
+	const {payload} = response
+	return payload
 };
 
 export const getDistricts = async (provinceId: string): Promise<DistrictType> => {
