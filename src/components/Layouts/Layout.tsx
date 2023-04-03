@@ -157,7 +157,7 @@ function Layout({ children }: LayoutProps) {
               {userData && userData.role === "member" && (
                <>
                 <CustomMenuListItem
-                href="/panel/user/"
+                href="/panel/user"
                 icon={WidgetsIcon}
                 text="เมนูหลัก"
                 open={open}
@@ -185,7 +185,7 @@ function Layout({ children }: LayoutProps) {
                 />
          <CustomMenuListItem   
                 href="/panel/user/manage-colorscheme"
-                  icon={GroupsIcon}
+                  icon={ColorLensIcon}
                   text="จัดการโทนสีที่มีในร้าน"
                   open={open}
                 />

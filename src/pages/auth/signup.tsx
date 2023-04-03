@@ -39,6 +39,7 @@ import { getOneGroupDataAction } from "@/store/slices/group-data.slice";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Card, CardContent, CardActions } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
+import ReactDOMServer from "react-dom/server";
 
 type Props = {};
 interface FormValues {
@@ -93,58 +94,60 @@ function SignUpPage({}: Props) {
   });
 
   const classes = useStyles();
+
   const errorStyle = {
     color: "red",
   };
   const validationSchema = Yup.object().shape({
     username: Yup.string()
-      .min(
-        4,
-        <span style={errorStyle}>ชื่อผู้ใช้ต้องมีอย่างน้อย 4 ตัวอักษร</span>
-      )
-      .max(
-        64,
-        <span style={errorStyle}>ชื่อผู้ใช้ต้องมีไม่เกิน 64 ตัวอักษร</span>
-      )
-      .required(<span style={errorStyle}>กรุณากรอกชื่อผู้ใช้</span>),
-    name: Yup.string()
-      .required(<span style={errorStyle}>กรุณากรอกชื่อ</span>)
-      .max(
-        100,
-        <span style={errorStyle}>ชื่อต้องมีความยาวไม่เกิน 100 ตัวอักษร</span>
-      )
-      .trim(),
-    surname: Yup.string()
-      .required(<span style={errorStyle}>กรุณากรอกนามสกุล</span>)
+    .min(
+      4,
+      ReactDOMServer.renderToString(<span style={errorStyle}>ชื่อผู้ใช้ต้องมีอย่างน้อย 4 ตัวอักษร</span>)
+    )
+    .max(
+      64,
+      ReactDOMServer.renderToString(<span style={errorStyle}>ชื่อผู้ใช้ต้องมีไม่เกิน 64 ตัวอักษร</span>)
+    )
+    .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกชื่อผู้ใช้</span>)),
+      name: Yup.string()
+      .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกชื่อ</span>))
       .max(
         100,
-        <span style={errorStyle}>นามสกุลต้องมีความยาวไม่เกิน 100 ตัวอักษร</span>
+        ReactDOMServer.renderToString(<span style={errorStyle}>ชื่อต้องมีความยาวไม่เกิน 100 ตัวอักษร</span>)
+      ).trim(),
+      surname: Yup.string()
+      .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกนามสกุล</span>))
+      .max(
+        100,
+        ReactDOMServer.renderToString(<span style={errorStyle}>นามสกุลต้องมีความยาวไม่เกิน 100 ตัวอักษร</span>)
       ),
-    email: Yup.string()
-      .required(<span style={errorStyle}>กรุณากรอกอีเมล</span>)
+      email: Yup.string()
+      .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกอีเมล</span>))
       .max(
         120,
-        <span style={errorStyle}>อีเมลต้องมีความยาวไม่เกิน 120 ตัวอักษร</span>
+        ReactDOMServer.renderToString(<span style={errorStyle}>อีเมลต้องมีความยาวไม่เกิน 120 ตัวอักษร</span>)
       ),
-    phone: Yup.string()
+      phone: Yup.string()
       .max(
         10,
-        <span style={errorStyle}>เบอร์โทรต้องมีไม่เกิน 10 ตัวอักษร</span>
+        ReactDOMServer.renderToString(<span style={errorStyle}>เบอร์โทรต้องมีไม่เกิน 10 ตัวอักษร</span>)
       )
-      .required(<span style={errorStyle}>กรุณากรอกเบอร์โทร</span>),
-    password: Yup.string()
-      .required(<span style={errorStyle}>กรุณากรอกรหัสผ่าน</span>)
+      .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกเบอร์โทร</span>)),
+      password: Yup.string()
+      .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกรหัสผ่าน</span>))
       .min(
         6,
-        <span style={errorStyle}>
-          รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร
-        </span>
+        ReactDOMServer.renderToString(
+          <span style={errorStyle}>
+            รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร
+          </span>
+        )
       ),
     passwordConfirmation: Yup.string()
-      .required(<span style={errorStyle}>กรุณากรอกรหัสผ่าน</span>)
+      .required( ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกรหัสผ่าน</span>))
       .test(
         "passwords-match",
-        <span style={errorStyle}>รหัสผ่านไม่ตรงกัน</span>,
+        ReactDOMServer.renderToString( <span style={errorStyle}>รหัสผ่านไม่ตรงกัน</span>),
         function (value) {
           return this.parent.password === value;
         }
@@ -162,8 +165,8 @@ function SignUpPage({}: Props) {
       toast.error("สมัครสมาชิกไม่สำเร็จ");
     } else {
       // router.push("/panel");
-      if (response.payload.user.role === "member") {
-        dispatch(getOneGroupDataAction(response.payload.user.groupId));
+      if (response?.payload?.user?.role === "member") {
+        dispatch(getOneGroupDataAction(response?.payload?.user?.groupId));
         router.push("/panel/user/manage-group", undefined, { shallow: false });
       } else {
         router.push("/panel", undefined, { shallow: false });
@@ -204,8 +207,8 @@ function SignUpPage({}: Props) {
               >
                 {(props: FormikProps<FormValues>) => (
                   <Form>
-                    <Card sx={{ background: "none", boxShadow: "none" }}>
-                      <CardContent sx={{ padding: 4 }}>
+                    <Card style={{ background: "none", boxShadow: "none" }}>
+                      <CardContent style={{ padding: 4 }}>
                         <Typography
                           variant="h5"
                           style={{

@@ -144,8 +144,8 @@ function SignInPage({}: Props) {
               >
                 {(props: FormikProps<FormValues>) => (
                   <Form>
-                    <Card sx={{ background: 'none', boxShadow: 'none' }}>
-                      <CardContent sx={{ padding: 4 }}>
+                    <Card style={{ background: 'none', boxShadow: 'none' }}>
+                      <CardContent style={{ padding: 4 }}>
                         <Typography
                           variant="h5"
                           style={{

@@ -338,7 +338,7 @@ function UserPanelManageGroup({}: Props) {
                 <React.Fragment>
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
-                      ชื่อกลุ่ม / ร้านค้า :
+                      ชื่อกลุ่ม / ร้านค้า 
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData.groupName}
@@ -346,7 +346,7 @@ function UserPanelManageGroup({}: Props) {
                   </Box>
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
-                    ประเภทกลุ่ม :
+                    ประเภทกลุ่ม
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData.groupType === "shop"? "ร้านค้า" : "กลุ่มผู้ผลิต"}
@@ -355,7 +355,7 @@ function UserPanelManageGroup({}: Props) {
                 
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
-                      ชื่อประธาน / เจ้าของร้าน :
+                      ชื่อประธาน / เจ้าของร้าน
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData.agency}
@@ -364,7 +364,7 @@ function UserPanelManageGroup({}: Props) {
 
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
-                      เบอร์โทร :
+                      เบอร์โทร
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData.phone}
@@ -403,7 +403,7 @@ function UserPanelManageGroup({}: Props) {
                 <Grid item xs={12} md={6}>
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
-                      บ้านเลขที่/หมู่ :
+                      บ้านเลขที่/หมู่
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData.hno}
@@ -432,7 +432,7 @@ function UserPanelManageGroup({}: Props) {
                 <Grid item xs={12} md={6}>
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
-                      หมู่บ้าน :
+                      หมู่บ้าน
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData.village}
@@ -443,7 +443,7 @@ function UserPanelManageGroup({}: Props) {
                 <Grid item xs={12} md={6}>
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
-                      ตำบล :
+                      ตำบล
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData.subdistrict}
@@ -453,7 +453,7 @@ function UserPanelManageGroup({}: Props) {
                 <Grid item xs={12} md={6}>
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
-                      อำเภอ :
+                      อำเภอ
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData.district}
@@ -463,7 +463,7 @@ function UserPanelManageGroup({}: Props) {
                 <Grid item xs={12} md={6}>
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
-                      จังหวัด :
+                      จังหวัด
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData.province}
@@ -476,7 +476,7 @@ function UserPanelManageGroup({}: Props) {
                 <Grid item xs={12} md={6}>
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
-                      รหัสไปรษณีย์ :
+                      รหัสไปรษณีย์
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData.zipCode}

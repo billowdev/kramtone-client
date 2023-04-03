@@ -97,7 +97,7 @@ const validationSchema = yupObject().shape({
 interface PageProps {
   groupData?: GroupDataPayload;
   accessToken?: string;
-  grographies: GeographyType
+  grographies?: GeographyType
 }
 
 const UserPanelEditGroup: React.FC<PageProps> = ({
