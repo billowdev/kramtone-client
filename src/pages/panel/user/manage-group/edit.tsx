@@ -100,7 +100,7 @@ const validationSchema = yupObject().shape({
 interface PageProps {
   groupData?: GroupDataPayload;
   accessToken?: string;
-  provinces?: ProvinceType;
+  provinces?: ProvinceType[]  | undefined;
 }
 
 const UserPanelEditGroup: React.FC<PageProps> = ({
@@ -132,11 +132,12 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     const selectRef = React.useRef(null);
 
   const [selectedProvince, setSelectedProvince] = React.useState<ProvinceType | null>(null);
+  
   const handleProvinceChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const selectedId = event.target.value as number;
-    const selected = provinces.find((p:ProvinceType) => p.id === selectedId);
-    setProvinceState(selected?.nameTH)
-    setSelectedProvince(selected);
+    const selected = provinces?.find((p:ProvinceType | undefined) => p?.id === selectedId);
+    setProvinceState(selected?.nameTH!)
+    setSelectedProvince(selected!);
     console.log(selected?.nameTH)
     console.log(selected)
   };

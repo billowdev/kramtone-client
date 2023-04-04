@@ -109,7 +109,6 @@ function AdminPanel({}: Props) {
           href="/manage-profile"
             icon={SettingsIcon}
             text="ตั้งค่าบัญชีผู้ใช้"
-            open={open}
           />
 
                 </Grid>
@@ -118,15 +117,14 @@ function AdminPanel({}: Props) {
           href="/aboutus"
             icon={InfoIcon}
             text="เกี่ยวกับผู้พัฒนาระบบ"
-            open={open}
           />
 
 <Box
               boxShadow={2}
               style={{ borderRadius: "50px", margin: "20px 10px" }}
-              onClick={() => {
-                setOpenDialog(true);
-              }}
+              // onClick={() => {
+              //   setOpenDialog(true);
+              // }}
             >
               <ListItem
                 button

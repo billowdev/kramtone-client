@@ -1,7 +1,7 @@
 import React from "react";
 import Layout from "@/components/Layouts/Layout";
 import { Grid, Paper, Typography, Container, Box, Divider } from "@mui/material";
-import { ListItem,  } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, ListItem, DialogContentText, Button, DialogActions} from "@mui/material";
 
 import CustomMenuListItem from "@/components/Layouts/CustomMenuListItem";
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -16,17 +16,19 @@ import CheckroomIcon from "@mui/icons-material/Checkroom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import HomeIcon from '@mui/icons-material/Home';
+import { signOut } from "@/store/slices/auth.slice";
 
 import { useTheme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "next/link";
+import { useAppDispatch } from "@/store/store";
 
 type Props = {};
 
 function GroupShopPanel({}: Props) {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
-
+  const dispatch:any = useAppDispatch();
   
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
 

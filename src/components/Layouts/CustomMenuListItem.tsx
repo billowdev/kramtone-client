@@ -25,7 +25,7 @@ type Props = {
 	href: string;
 	icon: React.ElementType;
 	text: string;
-	open: boolean
+	open?: boolean
 }
 
 const CustomMenuListItem: React.FC<Props> = ({ href, icon, text, open }) => {

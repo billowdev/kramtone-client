@@ -76,7 +76,7 @@ function UserPanelManageGroup({}: Props) {
 
   React.useEffect(() => {
     dispatch(fetchSession());
-  }, []);
+  }, [dispatch]);
 
   React.useEffect(() => {
     //  async function fethData() {

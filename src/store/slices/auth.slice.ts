@@ -20,7 +20,6 @@ const initialState: UserState = {
 	role: "",
 	gid: "",
 	username: "",
-	name: "",
 };
 
 export const signIn = createAsyncThunk(

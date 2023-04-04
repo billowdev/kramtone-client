@@ -44,5 +44,4 @@ export const getSession = async (): Promise<SessionResponseType> => {
 	const { session, accessToken } = response
 
 	return { ...session, accessToken }
-
 };
