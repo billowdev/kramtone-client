@@ -27,14 +27,13 @@ import { Field, Form, Formik, FormikProps } from "formik";
 import { authSelector, fetchSession } from "@/store/slices/auth.slice";
 import withAuth from "@/components/withAuth";
 import Link from "next/link";
-import { GroupDataPayload } from "@/models/group-data.model";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormLabel from "@mui/material/FormLabel";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { groupDataImageURL } from "@/common/utils/utils";
-
+import { GetStaticProps, InferGetStaticPropsType, GetStaticPropsContext } from 'next';
 import {
   Dialog,
   DialogActions,
@@ -47,10 +46,20 @@ import {
   Stack,
   Divider
 } from "@mui/material";
+import * as groupDataService from "@/services/group-data.service"
+import * as authService from "@/services/auth.service"
+import { GroupDataPayload} from "@/models/group-data.model"
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  NextPage,
+} from "next";
 
 import { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 
-type Props = {};
+type Props = {
+  groupDataProp? : GroupDataPayload,
+};
 const MapContainer = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), {
   ssr: false, // disable server-side rendering
 });
@@ -66,7 +75,9 @@ const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
   ssr: false, // disable server-side rendering
 });
 
-function UserPanelManageGroup({}: Props) {
+function UserPanelManageGroup({
+  groupDataProp
+}: Props) {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const dispatch:any = useAppDispatch();
@@ -95,13 +106,8 @@ function UserPanelManageGroup({}: Props) {
  
 
   const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
-  const position: LatLngExpression = [parseFloat(groupData.lat), parseFloat(groupData.lng)] // Centered on Sakon Nakhon Province
+  const position: LatLngExpression = [parseFloat(groupDataProp.lat), parseFloat(groupDataProp.lng)] // Centered on Sakon Nakhon Province
 	const zoom: number = 12;
-
-	const bounds: LatLngBoundsExpression = [
-		[16.3453, 103.0333], // Southwest corner of Sakon Nakhon Province
-		[18.0813, 105.2619] // Northeast corner of Sakon Nakhon Province
-	];
  
 
   const initialValues: GroupDataPayload = {
@@ -545,3 +551,19 @@ function UserPanelManageGroup({}: Props) {
 }
 
 export default withAuth(UserPanelManageGroup);
+
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const accessToken = context.req.cookies['access_token']
+  const {gid} = await authService.getSessionServerSide(accessToken)
+  const groupDataProp = await groupDataService.getOneGroupData(gid);
+
+  return {
+    props: {
+      groupDataProp
+    },
+  };
+};
+

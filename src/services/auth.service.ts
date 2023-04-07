@@ -1,7 +1,6 @@
 import { AuthResponseType, IAuthPayload, SessionResponseType, SignUp } from "@/models/auth.model"
 import httpClient from "@/common/utils/httpClient.util";
 import axios from "axios";
-import { METHODS } from "http";
 import { ApiResponseType } from "common/types/api-response.type";
 
 type signProps = {
@@ -44,4 +43,15 @@ export const getSession = async (): Promise<SessionResponseType> => {
 	const { session, accessToken } = response
 
 	return { ...session, accessToken }
+};
+
+export const getSessionServerSide = async (token:string): Promise<any> => {
+	const {data:response} = await axios.get(`/users/session`, {
+		headers: {
+			Authorization: `Bearer ${token}`
+		},
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API,
+	})
+
+	return  response.payload
 };
