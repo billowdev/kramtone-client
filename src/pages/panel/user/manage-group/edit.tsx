@@ -68,6 +68,7 @@ import {
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 import { TransitionProps } from "@mui/material/transitions";
+import { makeStyles } from '@material-ui/core/styles';
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -105,12 +106,68 @@ interface PageProps {
   provinces?: ProvinceType[] | undefined;
 }
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    marginTop: theme.spacing(2),
+    "& > *": {
+      width: "50%",
+      margin: theme.spacing(2),
+    },
+  },
+  divider: {
+    width: "50%",
+    margin: theme.spacing(2),
+  },
+  formLabel: {
+    fontWeight: "bold",
+  },
+  radioGroup: {
+    marginTop: theme.spacing(2),
+  },
+  input: {
+    padding: theme.spacing(2),
+    [theme.breakpoints.down("sm")]: {
+      padding: 0,
+    },
+  },
+  uploadWrapper: {
+    display: "flex",
+    alignItems: "center",
+    marginTop: theme.spacing(2),
+    "& > *": {
+      marginRight: theme.spacing(2),
+    },
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      alignItems: "flex-start",
+    },
+  },
+  inputLabel: {
+    color: "#00B0CD",
+    fontWeight: "bold",
+    cursor: "pointer",
+  },
+  previewImage: {
+    marginTop: theme.spacing(2),
+  },
+  errorMessage: {
+    color: "red",
+  },
+}));
+
+
 const UserPanelEditGroup: React.FC<PageProps> = ({
   groupData,
   accessToken,
   provinces,
 }) => {
   const theme = useTheme();
+  const classes = useStyles();
+
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const isMediumDevice = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch: any = useAppDispatch();
@@ -135,39 +192,67 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     groupData?.district ?? ""
   );
 
+  const [subdistrictState, setSubdistrictState] = React.useState<string>(
+    groupData?.subdistrict ?? ""
+  );
+
   const selectRef = React.useRef(null);
+    const [districts, setDistrict] = React.useState<DistrictType[]>([])
+    const [subdistricts, setSubDistrict] = React.useState<SubistrictType[]>([])
 
   const [selectedProvince, setSelectedProvince] =
     React.useState<ProvinceType | null>(null);
 
-  const handleProvinceChange = (
+  const handleProvinceChange = async (
+    setFieldValue,
     event: React.ChangeEvent<{ value: unknown }>
   ) => {
     const selectedId = event.target.value as number;
     const selected = provinces?.find(
       (p: ProvinceType | undefined) => p?.id === selectedId
     );
-    setProvinceState(selected?.nameTH!);
+    const provinceName = selected?.nameTH!
+    const provinceId = selected?.id!
+    setProvinceState(provinceName);
     setSelectedProvince(selected!);
-    console.log(selected?.nameTH);
-    console.log(selected);
+      setFieldValue("province", provinceName);
+    const districtData = await thaiAddressService.getDistricts(provinceId!)
+    setDistrict(districtData)
   };
 
   const [selectedDistrict, setSelectedDistrict] =
   React.useState<DistrictType | null>(null);
 
-const handleDistrictChange = (
+const handleDistrictChange = async(
   event: React.ChangeEvent<{ value: unknown }>
 ) => {
   const selectedId = event.target.value as number;
-  const selected = provinces?.find(
-    (p: ProvinceType) => p?.id === selectedId
-  );
+  const selected = districts?.find(
+    (p: DistrictType) => p?.id === selectedId);
   setDistrictState(selected?.nameTH!);
   setSelectedDistrict(selected);
-  console.log(selected?.nameTH);
+  const subdistrictData = await thaiAddressService.getSubdistricts(selected?.id)
+  setSubDistrict(subdistrictData)
+  // console.log(selected?.nameTH);
+  // console.log(subdistrictData);
+};
+
+const [selectedSubdistrict, setSelectedSubdistrict] =
+  React.useState<SubdistrictType | null>(null);
+
+const handleSubdistrictChange = async(
+  event: React.ChangeEvent<{ value: unknown }>
+) => {
+  const selectedId = event.target.value as number;
+  const selected = subdistricts?.find(
+    (p: SubdistrictType) => p?.id === selectedId);
+  setSubdistrictState(selected?.nameTH!);
+  setSelectedSubdistrict(selected);
+  // console.log(selected?.nameTH);
   console.log(selected);
 };
+
+
 
   const showPreviewLogo = (values: any) => {
     if (values.logo_obj) {
@@ -225,7 +310,7 @@ const handleDistrictChange = (
     setFieldValue,
   }: FormikProps<GroupDataPayload>) => {
     return (
-      <Form>
+      <Form >
         <Grid container spacing={2}>
           {/* First row with one column */}
           <Grid item xs={12}>
@@ -238,9 +323,10 @@ const handleDistrictChange = (
                 marginTop: "16px",
               }}
             >
-              <Divider style={{ width: "50%", margin: "16px" }} />
-              <Typography variant="h5">ข้อมูลกลุ่ม</Typography>
-              <Divider style={{ width: "50%", margin: "16px" }} />
+           <Divider className={classes.divider} />
+          <Typography variant="h5">ข้อมูลกลุ่ม</Typography>
+          <Divider className={classes.divider} />
+
             </Box>
             {/* isMediumDevice */}
             <Grid container spacing={2}>
@@ -317,7 +403,7 @@ const handleDistrictChange = (
                 </Box>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6}>
-                <Box style={{ marginTop: "16px" }}>
+                <Box sx={{ marginTop: "16px" }}>
                   <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
                     ชื่อกลุ่มผู้ผลิตหรือร้านค้า
                     <span style={{ color: "red" }}>*</span>
@@ -328,7 +414,7 @@ const handleDistrictChange = (
                     type="text"
                     label="ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
                     as={TextField}
-                    style={{ marginTop: "16px" }}
+                    sx={{ marginTop: "16px" }}
                   />
                   <ErrorMessage name="groupName" />
                 </Box>
@@ -482,24 +568,24 @@ const handleDistrictChange = (
                     </FormLabel>
                     <Select
                       id="district"
-                      className="selectProvince"
+                      className="selectDistrict"
                       labelId="district-label"
                       displayEmpty
-                      value={selectedProvince?.id || ""}
-                      onChange={handleProvinceChange}
+                      value={selectedDistrict?.id || ""}
+                      onChange={handleDistrictChange}
                       style={{ marginTop: "16px" }}
                     >
                       <MenuItem value="">
-                        {groupData?.province || "-- โปรดเลือกอำเภอ --"}
+                        {groupData?.district ? groupData.district : "-- โปรดเลือกอำเภอ --"}
                       </MenuItem>
-                      {provinces &&
-                        provinces.map((province: ProvinceType) => (
-                          <MenuItem key={province.id} value={province.id}>
-                            {province.nameTH}
+                      {provinces && districts &&
+                        districts.map((district: DistrictType) => (
+                          <MenuItem key={district.id} value={district.id}>
+                            {district.nameTH}
                           </MenuItem>
                         ))}
                     </Select>
-                    <ErrorMessage name="province" />
+                    <ErrorMessage name="district" />
                   </FormControl>
                 </Box>
               </Grid>
@@ -547,11 +633,11 @@ const handleDistrictChange = (
                       labelId="province-label"
                       displayEmpty
                       value={selectedProvince?.id || ""}
-                      onChange={handleProvinceChange}
+                      onChange={(e) => handleProvinceChange( setFieldValue, e )}
                       style={{ marginTop: "16px" }}
                     >
                       <MenuItem value="">
-                        {groupData?.province || "-- โปรดเลือกจังหวัด --"}
+                        {groupData?.province || "-- โปรดเลือกจังหวัด --" || selectedProvince.nameTH}
                       </MenuItem>
                       {provinces &&
                         provinces.map((province: ProvinceType) => (
@@ -564,6 +650,39 @@ const handleDistrictChange = (
                   </FormControl>
                 </Box>
 
+                <Box style={{ marginTop: "16px" }}>
+                  <FormControl fullWidth>
+                    <FormLabel
+                      htmlFor="subdistrict"
+                      style={{ fontWeight: "bold", marginTop: "16px" }}
+                    >
+                      ตำบล <span style={{ color: "red" }}>*</span>
+                    </FormLabel>
+                    <Select
+                      id="subdistrict"
+                      className="selectSubdistrict"
+                      labelId="subdistrict-label"
+                      displayEmpty
+                      value={selectedSubdistrict?.id || ""}
+                      onChange={handleSubdistrictChange}
+                      style={{ marginTop: "16px" }}
+                    >
+                      <MenuItem value="">
+                        {groupData?.subdistrict ? groupData.subdistrict : "-- โปรดเลือกตำบล --"}
+                      
+                      </MenuItem>
+                      {provinces&& districts && subdistricts &&
+                        subdistricts.map((subdistrict: SubdistrictType) => (
+                          <MenuItem key={subdistrict.id} value={subdistrict.id}>
+                            {subdistrict.nameTH}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                    <ErrorMessage name="subdistrict" />
+                  </FormControl>
+                </Box>
+
+
               </Grid>
             </Grid>
           </Grid>
@@ -574,7 +693,7 @@ const handleDistrictChange = (
             type="submit"
             variant="contained"
             fullWidth
-            disabled={!dirty || !isValid}
+            disabled={!isValid}
             style={{ marginRight: 1 }}
           >
             {isSmallDevice ? "บันทึก" : "บันทึกข้อมูล"}

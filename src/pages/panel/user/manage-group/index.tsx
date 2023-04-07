@@ -106,7 +106,7 @@ function UserPanelManageGroup({
  
 
   const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
-  const position: LatLngExpression = [parseFloat(groupDataProp.lat), parseFloat(groupDataProp.lng)] // Centered on Sakon Nakhon Province
+  const position: LatLngExpression = [parseFloat(groupDataProp.lat!), parseFloat(groupDataProp.lng!)] // Centered on Sakon Nakhon Province
 	const zoom: number = 12;
  
 
