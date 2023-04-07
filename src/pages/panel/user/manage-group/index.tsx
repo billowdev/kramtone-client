@@ -106,7 +106,7 @@ function UserPanelManageGroup({
  
 
   const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
-  const position: LatLngExpression = [parseFloat(groupDataProp.lat!), parseFloat(groupDataProp.lng!)] // Centered on Sakon Nakhon Province
+  const position: LatLngExpression = [parseFloat(groupDataProp?.lat!), parseFloat(groupDataProp?.lng!)] // Centered on Sakon Nakhon Province
 	const zoom: number = 12;
  
 
@@ -248,7 +248,13 @@ function UserPanelManageGroup({
   };
 
   const handleOnEditClick = () =>{
-    router.push('/panel/user/manage-group/edit?gid=' + userData.gid)
+    // router.push('/panel/user/manage-group/edit?gid=' + userData.gid)
+    // const editUrl = '/panel/user/manage-group/edit?gid=' + userData.gid;
+    // return (
+    //   <Link href={editUrl}>
+    //     <a>Edit Group</a>
+    //   </Link>
+    // );
   }
   return (
     <Layout>
@@ -497,25 +503,30 @@ function UserPanelManageGroup({
           maxWidth="lg"
           sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}
         >
-          <Button
-            color="primary"
-            variant="contained"
-            style={{
-              margin: "8px 0",
-              backgroundColor: theme.palette.primary.main,
-              color: "#fff",
-              fontWeight: "bold",
-              boxShadow: `0px 5px 10px rgba(0, 0, 0, 0.3)`,
-            }}
-            onClick={
-             ()=>{
-              handleOnEditClick()
-              // setOpenDialog(true);
-             }
-            }
-          >
-            แก้ไขข้อมูล
-          </Button>
+          
+          <Link href={'/panel/user/manage-group/edit?gid=' + userData.gid}>
+            <Button
+                  color="primary"
+                  variant="contained"
+                  style={{
+                    margin: "8px 0",
+                    backgroundColor: theme.palette.primary.main,
+                    color: "#fff",
+                    fontWeight: "bold",
+                    boxShadow: `0px 5px 10px rgba(0, 0, 0, 0.3)`,
+                  }}
+                  onClick={
+                  ()=>{
+                    handleOnEditClick()
+                    // setOpenDialog(true);
+                  }
+                  }
+                >
+                  แก้ไขข้อมูล
+                </Button>
+          
+          </Link>
+        
         </Container>
         
           <Grid item xs={12} md={12} lg={12}>
@@ -556,14 +567,23 @@ export default withAuth(UserPanelManageGroup);
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const accessToken = context.req.cookies['access_token']
-  const {gid} = await authService.getSessionServerSide(accessToken)
-  const groupDataProp = await groupDataService.getOneGroupData(gid);
-
-  return {
-    props: {
-      groupDataProp
-    },
-  };
+  try {
+    const accessToken = context.req.cookies['access_token']
+    const {gid} = await authService.getSessionServerSide(accessToken!)
+    const groupDataProp = await groupDataService.getOneGroupData(gid);
+  
+    return {
+      props: {
+        groupDataProp
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        
+      },
+    };
+  }
+ 
 };
 

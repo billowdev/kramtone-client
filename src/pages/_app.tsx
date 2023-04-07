@@ -11,6 +11,7 @@ import {
 } from "@/store/slices/group-data.slice";
 
 import { SessionResponseType } from "@/models/auth.model";
+import { ServerStyleSheets } from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -109,17 +110,20 @@ function MyApp({ Component, pageProps }: AppProps) {
 	//   }, []);
 
 	React.useEffect(() => {
-		async function fetchData() {
-			const response = await store.dispatch(fetchSession());
-			if (response.payload) {
-				// @ts-ignore
-				const { gid } = response.payload
-				store.dispatch(getOneGroupDataAction(gid));
-			}
-		}
-		fetchData();
-	}, []);
+		store.dispatch(fetchSession());
+	  }, []);
 
+	// React.useEffect(() => {
+	// 	async function fetchData() {
+	// 		const response = await store.dispatch(fetchSession());
+	// 		if (response.payload) {
+	// 			@ts-ignore
+	// 			const { gid } = response.payload
+	// 			store.dispatch(getOneGroupDataAction(gid));
+	// 		}
+	// 	}
+	// 	fetchData();
+	// }, []);
 
 	return (
 		<Provider store={store}>

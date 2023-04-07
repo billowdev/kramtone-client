@@ -1,17 +1,17 @@
 import React, { useRef, ReactNode } from "react";
+import Layout from "@/components/Layouts/Layout";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
+import router from "next/router";
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
-  GetStaticProps,
-  NextPage,
 } from "next";
-import Layout from "@/components/Layouts/Layout";
 import {
   Container,
   Grid,
   Paper,
   Typography,
-  TextField,
   FormControlLabel,
   Box,
   CardContent,
@@ -19,21 +19,14 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
+import { TextField } from "formik-material-ui";
 import GroupsIcon from "@mui/icons-material/Groups";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
-import router from "next/router";
 import { RootState, useAppDispatch } from "@/store/store";
-import {
-  getOneGroupDataAction,
-  groupDataSelector,
-} from "@/store/slices/group-data.slice";
 import { useSelector } from "react-redux";
 import { ErrorMessage, Field, Form, Formik, FormikProps } from "formik";
-import { authSelector } from "@/store/slices/auth.slice";
 import withAuth from "@/components/withAuth";
 import Link from "next/link";
-import { GroupDataPayload, GroupDataResponse } from "@/models/group-data.model";
+import { GroupDataPayload } from "@/models/group-data.model";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormLabel from "@mui/material/FormLabel";
@@ -55,6 +48,7 @@ import {
   Stack,
   Divider,
 } from "@mui/material";
+
 import {
   GeographyResponseType,
   GeographyType,
@@ -67,8 +61,7 @@ import {
 } from "@/models/thai-address.model";
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
-import { TransitionProps } from "@mui/material/transitions";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -159,7 +152,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const UserPanelEditGroup: React.FC<PageProps> = ({
   groupData,
   accessToken,
@@ -197,62 +189,69 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   );
 
   const selectRef = React.useRef(null);
-    const [districts, setDistrict] = React.useState<DistrictType[]>([])
-    const [subdistricts, setSubDistrict] = React.useState<SubistrictType[]>([])
+  const [districts, setDistrict] = React.useState<DistrictType[]>([]);
+  const [subdistricts, setSubDistrict] = React.useState<SubdistrictType[]>([]);
 
   const [selectedProvince, setSelectedProvince] =
     React.useState<ProvinceType | null>(null);
 
   const handleProvinceChange = async (
-    setFieldValue,
+    setFieldValue: any,
     event: React.ChangeEvent<{ value: unknown }>
   ) => {
-    const selectedId = event.target.value as number;
+    const selectedId = event.target.value;
     const selected = provinces?.find(
       (p: ProvinceType | undefined) => p?.id === selectedId
     );
-    const provinceName = selected?.nameTH!
-    const provinceId = selected?.id!
+    const provinceName = selected?.nameTH!;
+    const provinceId = selected?.id!;
     setProvinceState(provinceName);
     setSelectedProvince(selected!);
-      setFieldValue("province", provinceName);
-    const districtData = await thaiAddressService.getDistricts(provinceId!)
-    setDistrict(districtData)
+    setFieldValue("province", provinceName);
+    const districtData = await thaiAddressService.getDistricts(provinceId.toString());
+    setDistrict(districtData);
   };
 
   const [selectedDistrict, setSelectedDistrict] =
-  React.useState<DistrictType | null>(null);
+    React.useState<DistrictType | null>(null);
 
-const handleDistrictChange = async(
-  event: React.ChangeEvent<{ value: unknown }>
-) => {
-  const selectedId = event.target.value as number;
-  const selected = districts?.find(
-    (p: DistrictType) => p?.id === selectedId);
-  setDistrictState(selected?.nameTH!);
-  setSelectedDistrict(selected);
-  const subdistrictData = await thaiAddressService.getSubdistricts(selected?.id)
-  setSubDistrict(subdistrictData)
-  // console.log(selected?.nameTH);
-  // console.log(subdistrictData);
-};
+  const handleDistrictChange = async (
+    setFieldValue: any,
+    event: React.ChangeEvent<{ value: unknown }>
+  ) => {
+    const selectedId = event.target.value as number;
+    const selected = districts?.find((p: DistrictType) => p?.id === selectedId);
+    const districtName = selected?.nameTH!;
+    const districtId = selected?.id!;
+    setFieldValue("district", districtName!);
+    setDistrictState(districtName!);
+    setSelectedDistrict(selected!);
 
-const [selectedSubdistrict, setSelectedSubdistrict] =
-  React.useState<SubdistrictType | null>(null);
+    const subdistrictData = await thaiAddressService.getSubdistricts(districtId.toString());
+    setSubDistrict(subdistrictData);
+    // console.log(selected?.nameTH);
+    // console.log(subdistrictData);
+  };
 
-const handleSubdistrictChange = async(
-  event: React.ChangeEvent<{ value: unknown }>
-) => {
-  const selectedId = event.target.value as number;
-  const selected = subdistricts?.find(
-    (p: SubdistrictType) => p?.id === selectedId);
-  setSubdistrictState(selected?.nameTH!);
-  setSelectedSubdistrict(selected);
-  // console.log(selected?.nameTH);
-  console.log(selected);
-};
+  const [selectedSubdistrict, setSelectedSubdistrict] =
+    React.useState<SubdistrictType | null>(null);
 
+  const handleSubdistrictChange = async (
+    setFieldValue: any,
+    event: React.ChangeEvent<{ value: unknown }>
+  ) => {
+    const selectedId = event.target.value as number;
+    const selected = subdistricts?.find(
+      (p: SubdistrictType) => p?.id === selectedId
+    );
+    const subdistrictName = selected?.nameTH!;
+    setFieldValue("subdistrict", subdistrictName!);
+    setSubdistrictState(subdistrictName!);
+    setSelectedSubdistrict(selected!);
 
+    // console.log(selected?.nameTH);
+    console.log(selected);
+  };
 
   const showPreviewLogo = (values: any) => {
     if (values.logo_obj) {
@@ -305,12 +304,11 @@ const handleSubdistrictChange = async(
 
   const showForm = ({
     values,
-    dirty,
     isValid,
     setFieldValue,
   }: FormikProps<GroupDataPayload>) => {
     return (
-      <Form >
+      <Form>
         <Grid container spacing={2}>
           {/* First row with one column */}
           <Grid item xs={12}>
@@ -320,13 +318,12 @@ const handleSubdistrictChange = async(
                 justifyContent: "center",
                 alignItems: "center",
                 flexDirection: "column",
-                marginTop: "16px",
+                marginTop: 16,
               }}
             >
-           <Divider className={classes.divider} />
-          <Typography variant="h5">ข้อมูลกลุ่ม</Typography>
-          <Divider className={classes.divider} />
-
+              <Divider className={classes.divider} />
+              <Typography variant="h5">ข้อมูลกลุ่ม</Typography>
+              <Divider className={classes.divider} />
             </Box>
             {/* isMediumDevice */}
             <Grid container spacing={2}>
@@ -403,7 +400,7 @@ const handleSubdistrictChange = async(
                 </Box>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6}>
-                <Box sx={{ marginTop: "16px" }}>
+                <Box style={{ marginTop: 3 }}>
                   <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
                     ชื่อกลุ่มผู้ผลิตหรือร้านค้า
                     <span style={{ color: "red" }}>*</span>
@@ -413,13 +410,13 @@ const handleSubdistrictChange = async(
                     fullWidth
                     type="text"
                     label="ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
-                    as={TextField}
-                    sx={{ marginTop: "16px" }}
+                    component={TextField}
+                    style={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="groupName" />
                 </Box>
 
-                <Box style={{ marginTop: "16px" }}>
+                <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="groupType" style={{ fontWeight: "bold" }}>
                     ประเภทกลุ่ม <span style={{ color: "red" }}>*</span>
                   </FormLabel>
@@ -449,7 +446,7 @@ const handleSubdistrictChange = async(
                   <ErrorMessage name="groupType" />
                 </Box>
 
-                <Box style={{ marginTop: "16px" }}>
+                <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="agency" style={{ fontWeight: "bold" }}>
                     ชื่อประธาน / เจ้าของร้าน{" "}
                     <span style={{ color: "red" }}>*</span>
@@ -459,13 +456,13 @@ const handleSubdistrictChange = async(
                     type="text"
                     fullWidth
                     label="ชื่อประธาน / เจ้าของร้าน"
-                    as={TextField}
-                    style={{ marginTop: "16px" }}
+                     component={TextField}
+                    sx={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="agency" />
                 </Box>
 
-                <Box style={{ marginTop: "16px" }}>
+                <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="phone" style={{ fontWeight: "bold" }}>
                     เบอร์โทร <span style={{ color: "red" }}>*</span>
                   </FormLabel>
@@ -474,13 +471,13 @@ const handleSubdistrictChange = async(
                     type="text"
                     fullWidth
                     label="เบอร์โทร"
-                    as={TextField}
-                    style={{ marginTop: "16px" }}
+                     component={TextField}
+                    sx={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="phone" />
                 </Box>
 
-                <Box style={{ marginTop: "16px" }}>
+                <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
                     อีเมล <span style={{ color: "red" }}>*</span>
                   </FormLabel>
@@ -489,8 +486,8 @@ const handleSubdistrictChange = async(
                     type="email"
                     fullWidth
                     label="อีเมล"
-                    as={TextField}
-                    style={{ marginTop: "16px" }}
+                     component={TextField}
+                    sx={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="email" />
                 </Box>
@@ -505,17 +502,17 @@ const handleSubdistrictChange = async(
                 justifyContent: "center",
                 alignItems: "center",
                 flexDirection: "column",
-                marginTop: "16px",
+                marginTop: 3,
               }}
             >
-              <Divider style={{ width: "50%", margin: "16px" }} />
+              <Divider style={{ width: "50%", margin: 8 }} />
               <Typography variant="h5">ข้อมูลที่อยู่</Typography>
-              <Divider style={{ width: "50%", margin: "16px" }} />
+              <Divider style={{ width: "50%", margin: 8 }} />
             </Box>
 
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <Box style={{ marginTop: "16px" }}>
+                <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="hno" style={{ fontWeight: "bold" }}>
                     บ้านเลขที่/หมู่ <span style={{ color: "red" }}>*</span>
                   </FormLabel>
@@ -524,13 +521,13 @@ const handleSubdistrictChange = async(
                     type="text"
                     fullWidth
                     label="บ้านเลขที่/หมู่"
-                    as={TextField}
-                    style={{ marginTop: "16px" }}
+                     component={TextField}
+                    sx={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="hno" />
                 </Box>
 
-                <Box style={{ marginTop: "16px" }}>
+                <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="lane" style={{ fontWeight: "bold" }}>
                     ซอย
                   </FormLabel>
@@ -539,12 +536,12 @@ const handleSubdistrictChange = async(
                     type="text"
                     fullWidth
                     label="ซอย"
-                    as={TextField}
-                    style={{ marginTop: "16px" }}
+                     component={TextField}
+                    sx={{ marginTop: 3 }}
                   />
                 </Box>
 
-                <Box style={{ marginTop: "16px" }}>
+                <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="zipCode" style={{ fontWeight: "bold" }}>
                     รหัสไปรษณีย์
                   </FormLabel>
@@ -553,16 +550,16 @@ const handleSubdistrictChange = async(
                     type="text"
                     fullWidth
                     label="รหัสไปรษณีย์"
-                    as={TextField}
-                    style={{ marginTop: "16px" }}
+                     component={TextField}
+                    sx={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="zipCode" />
                 </Box>
-                <Box style={{ marginTop: "16px" }}>
+                <Box sx={{ marginTop: 3 }}>
                   <FormControl fullWidth>
                     <FormLabel
                       htmlFor="province"
-                      style={{ fontWeight: "bold", marginTop: "16px" }}
+                      style={{ fontWeight: "bold", marginTop: 3 }}
                     >
                       อำเภอ <span style={{ color: "red" }}>*</span>
                     </FormLabel>
@@ -572,13 +569,16 @@ const handleSubdistrictChange = async(
                       labelId="district-label"
                       displayEmpty
                       value={selectedDistrict?.id || ""}
-                      onChange={handleDistrictChange}
-                      style={{ marginTop: "16px" }}
+                      onChange={(e) => handleDistrictChange(setFieldValue, e)}
+                      sx={{ marginTop: 3 }}
                     >
                       <MenuItem value="">
-                        {groupData?.district ? groupData.district : "-- โปรดเลือกอำเภอ --"}
+                        {groupData?.district
+                          ? groupData.district
+                          : "-- โปรดเลือกอำเภอ --"}
                       </MenuItem>
-                      {provinces && districts &&
+                      {provinces &&
+                        districts &&
                         districts.map((district: DistrictType) => (
                           <MenuItem key={district.id} value={district.id}>
                             {district.nameTH}
@@ -591,7 +591,7 @@ const handleSubdistrictChange = async(
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <Box style={{ marginTop: "16px" }}>
+                <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="road" style={{ fontWeight: "bold" }}>
                     ถนน
                   </FormLabel>
@@ -600,32 +600,32 @@ const handleSubdistrictChange = async(
                     type="text"
                     fullWidth
                     label="ถนน"
-                    as={TextField}
-                    style={{ marginTop: "16px" }}
+                     component={TextField}
+                    sx={{ marginTop: 3 }}
                   />
                 </Box>
-                <Box style={{ marginTop: "16px" }}>
-                  <FormLabel htmlFor="village" style={{ fontWeight: "bold" }}>
-                    หมู่บ้าน <span style={{ color: "red" }}>*</span>
+                <Box sx={{ marginTop: 3 }}>
+                  <FormLabel htmlFor="village" sx={{ fontWeight: "bold" }}>
+                    หมู่บ้าน <span sx={{ color: "red" }}>*</span>
                   </FormLabel>
                   <Field
                     name="village"
                     type="text"
                     fullWidth
                     label="หมู่บ้าน"
-                    as={TextField}
-                    style={{ marginTop: "16px" }}
+                     component={TextField}
+                    sx={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="village" />
                 </Box>
 
-                <Box style={{ marginTop: "16px" }}>
+                <Box sx={{ marginTop: 3 }}>
                   <FormControl fullWidth>
                     <FormLabel
                       htmlFor="province"
-                      style={{ fontWeight: "bold", marginTop: "16px" }}
+                      sx={{ fontWeight: "bold", marginTop: 3 }}
                     >
-                      จังหวัด <span style={{ color: "red" }}>*</span>
+                      จังหวัด <span sx={{ color: "red" }}>*</span>
                     </FormLabel>
                     <Select
                       id="province"
@@ -633,11 +633,12 @@ const handleSubdistrictChange = async(
                       labelId="province-label"
                       displayEmpty
                       value={selectedProvince?.id || ""}
-                      onChange={(e) => handleProvinceChange( setFieldValue, e )}
-                      style={{ marginTop: "16px" }}
+                      onChange={(e) => handleProvinceChange(setFieldValue, e)}
+                      sx={{ marginTop: 3 }}
                     >
                       <MenuItem value="">
-                        {groupData?.province || "-- โปรดเลือกจังหวัด --" || selectedProvince.nameTH}
+                        {groupData?.province ||
+                          "-- โปรดเลือกจังหวัด --" }
                       </MenuItem>
                       {provinces &&
                         provinces.map((province: ProvinceType) => (
@@ -650,13 +651,13 @@ const handleSubdistrictChange = async(
                   </FormControl>
                 </Box>
 
-                <Box style={{ marginTop: "16px" }}>
+                <Box sx={{ marginTop: 3}}>
                   <FormControl fullWidth>
                     <FormLabel
                       htmlFor="subdistrict"
-                      style={{ fontWeight: "bold", marginTop: "16px" }}
+                      sx={{ fontWeight: "bold", marginTop: 2 }}
                     >
-                      ตำบล <span style={{ color: "red" }}>*</span>
+                      ตำบล <span sx={{ color: "red" }}>*</span>
                     </FormLabel>
                     <Select
                       id="subdistrict"
@@ -664,14 +665,19 @@ const handleSubdistrictChange = async(
                       labelId="subdistrict-label"
                       displayEmpty
                       value={selectedSubdistrict?.id || ""}
-                      onChange={handleSubdistrictChange}
-                      style={{ marginTop: "16px" }}
+                      onChange={(e) =>
+                        handleSubdistrictChange(setFieldValue, e)
+                      }
+                      sx={{ marginTop: 3 }}
                     >
                       <MenuItem value="">
-                        {groupData?.subdistrict ? groupData.subdistrict : "-- โปรดเลือกตำบล --"}
-                      
+                        {groupData?.subdistrict
+                          ? groupData.subdistrict
+                          : "-- โปรดเลือกตำบล --"}
                       </MenuItem>
-                      {provinces&& districts && subdistricts &&
+                      {provinces &&
+                        districts &&
+                        subdistricts &&
                         subdistricts.map((subdistrict: SubdistrictType) => (
                           <MenuItem key={subdistrict.id} value={subdistrict.id}>
                             {subdistrict.nameTH}
@@ -681,7 +687,6 @@ const handleSubdistrictChange = async(
                     <ErrorMessage name="subdistrict" />
                   </FormControl>
                 </Box>
-
 
               </Grid>
             </Grid>
@@ -694,7 +699,7 @@ const handleSubdistrictChange = async(
             variant="contained"
             fullWidth
             disabled={!isValid}
-            style={{ marginRight: 1 }}
+            sx={{ marginRight: 1 }}
           >
             {isSmallDevice ? "บันทึก" : "บันทึกข้อมูล"}
           </Button>
@@ -710,22 +715,22 @@ const handleSubdistrictChange = async(
 
   return (
     <Layout>
-      <Container maxWidth="lg" style={{ marginTop: 4, marginBottom: 4 }}>
+      <Container maxWidth="lg" sx={{ marginTop: 4, marginBottom: 4 }}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12}>
             <Paper
-              style={{
+              sx={{
                 padding: 1,
                 display: "flex",
                 flexDirection: "row",
-                gap: "16px",
+                gap: 16,
               }}
             >
               {isSmallDevice ? (
-                <GroupsIcon style={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+                <GroupsIcon sx={{ fontSize: "1.5rem", marginLeft: 8 }} />
               ) : (
                 <GroupsIcon
-                  style={{ fontSize: "2.5rem", marginLeft: "16px" }}
+                  sx={{ fontSize: "2.5rem", marginLeft: 16 }}
                 />
               )}
               <React.Fragment>
@@ -741,13 +746,12 @@ const handleSubdistrictChange = async(
                   </Typography>
                 ) : (
                   <Typography
-                    variant="h5"
+                    variant="h6"
                     style={{
                       fontWeight: "bold",
                       alignSelf: "center",
                     }}
                   >
-                    {" "}
                     หน้าจัดการข้อมูลกลุ่ม / ร้านค้า
                   </Typography>
                 )}
@@ -756,11 +760,11 @@ const handleSubdistrictChange = async(
           </Grid>
         </Grid>
 
-        <Grid container spacing={2} style={{ marginTop: "16px" }}>
+        <Grid container spacing={2} sx={{ marginTop: 3 }}>
           <Grid item xs={12}>
             <Paper
               sx={{
-                p: 2,
+                p: 6,
                 display: "flex",
                 gap: "4rem",
                 flexDirection: {
@@ -770,7 +774,7 @@ const handleSubdistrictChange = async(
               }}
             >
               <Grid item xs={12} md={12} lg={12}>
-                     <Box style={{ padding: 4 }}>
+                <Box sx={{ padding: 4 }}>
                   <Formik
                     initialValues={groupData!}
                     validationSchema={validationSchema}
@@ -794,7 +798,7 @@ const handleSubdistrictChange = async(
                 p: 2,
                 display: "flex",
                 flexDirection: "column",
-                gap: "16px",
+                gap: 16,
               }}
             >
               <MapContainer
@@ -827,11 +831,6 @@ export const getServerSideProps: GetServerSideProps = async (
     const groupData = await groupDataService.getOneGroupData(gid);
     const accessToken = context.req.cookies["access_token"];
     const provinces = await thaiAddressService.getProvinces();
-    // const districts = await thaiAddressService.getDistricts(provinces[4].id);
-    // const subdistricts = await thaiAddressService.getSubdistricts(districts[4].id);
-    // console.log("======== edit group data ===========")
-    // console.log(subdistricts)
-    // console.log("======== edit group data ===========")
     return {
       props: {
         groupData,
