@@ -19,7 +19,7 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
-import { TextField } from "formik-material-ui";
+
 import GroupsIcon from "@mui/icons-material/Groups";
 import { RootState, useAppDispatch } from "@/store/store";
 import { useSelector } from "react-redux";
@@ -36,6 +36,11 @@ import * as groupDataService from "@/services/group-data.service";
 import { object as yupObject, string as yupString } from "yup";
 import { groupDataImageURL } from "@/common/utils/utils";
 import * as thaiAddressService from "@/services/thai-address.service";
+
+// import { TextField } from "formik-material-ui";
+
+import TextField from '@material-ui/core/TextField';
+
 import {
   Dialog,
   DialogActions,
@@ -59,9 +64,10 @@ import {
   SubdistrictResponseType,
   SubdistrictType,
 } from "@/models/thai-address.model";
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import { FormControl, InputLabel,  Select, Input, FormHelperText} from "@material-ui/core";
 import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 import { makeStyles } from "@material-ui/core/styles";
+import MenuItem from '@mui/material/MenuItem';
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -113,7 +119,8 @@ const useStyles = makeStyles((theme) => ({
   },
   divider: {
     width: "50%",
-    margin: theme.spacing(2),
+    margin: theme.spacing(3),
+    marginTop : "16px"
   },
   formLabel: {
     fontWeight: "bold",
@@ -318,12 +325,13 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 justifyContent: "center",
                 alignItems: "center",
                 flexDirection: "column",
-                marginTop: 16,
+                marginTop: 3,
               }}
             >
-              <Divider className={classes.divider} />
+                  <Divider style={{ width: "50%", margin: 8 }} />
               <Typography variant="h5">ข้อมูลกลุ่ม</Typography>
-              <Divider className={classes.divider} />
+              <Divider style={{ width: "50%", margin: 8 }} />
+
             </Box>
             {/* isMediumDevice */}
             <Grid container spacing={2}>
@@ -400,6 +408,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 </Box>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6}>
+                
                 <Box style={{ marginTop: 3 }}>
                   <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
                     ชื่อกลุ่มผู้ผลิตหรือร้านค้า
@@ -410,7 +419,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     fullWidth
                     type="text"
                     label="ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
-                    component={TextField}
+                    component={TextField}         
                     style={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="groupName" />
@@ -511,7 +520,113 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
             </Box>
 
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Box sx={{ marginTop: 3 }}>
+                  <FormControl fullWidth>
+                    <FormLabel
+                      htmlFor="province"
+                      sx={{ fontWeight: "bold"}}
+                    >
+                      จังหวัด <span sx={{ color: "red" }}>*</span>
+                    </FormLabel>
+                    <Select
+                      id="province"
+                      className="selectProvince"
+                      labelId="province-label"
+                      displayEmpty
+                      value={selectedProvince?.id || ""}
+                      onChange={(e) => handleProvinceChange(setFieldValue, e)}
+                      sx={{ marginTop: 3 }}
+                    >
+                      <MenuItem value="">
+                        {groupData?.province ||
+                          "-- โปรดเลือกจังหวัด --" }
+                      </MenuItem>
+                      {provinces &&
+                        provinces.map((province: ProvinceType) => (
+                          <MenuItem key={province.id} value={province.id}>
+                            {province.nameTH}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                    <ErrorMessage name="province" />
+                  </FormControl>
+                </Box>
+
+        
+      
+
+                <Box sx={{ marginTop: 3 }}>
+                  <FormControl fullWidth>
+                    <FormLabel
+                      htmlFor="province"
+                      style={{ fontWeight: "bold"}}
+                    >
+                      อำเภอ <span style={{ color: "red" }}>*</span>
+                    </FormLabel>
+                    <Select
+                      id="district"
+                      className="selectDistrict"
+                      labelId="district-label"
+                      displayEmpty
+                      value={selectedDistrict?.id || ""}
+                      onChange={(e) => handleDistrictChange(setFieldValue, e)}
+                      sx={{ marginTop: 3 }}
+                    >
+                      <MenuItem value="">
+                        {groupData?.district
+                          ? groupData.district
+                          : "-- โปรดเลือกอำเภอ --"}
+                      </MenuItem>
+                      {provinces &&
+                        districts &&
+                        districts.map((district: DistrictType) => (
+                          <MenuItem key={district.id} value={district.id}>
+                            {district.nameTH}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                    <ErrorMessage name="district" />
+                  </FormControl>
+                </Box>
+
+                <Box sx={{ marginTop: 3}}>
+                  <FormControl fullWidth>
+                    <FormLabel
+                      htmlFor="subdistrict"
+                      sx={{ fontWeight: "bold"}}
+                    >
+                      ตำบล <span sx={{ color: "red" }}>*</span>
+                    </FormLabel>
+                    <Select
+                      id="subdistrict"
+                      className="selectSubdistrict"
+                      labelId="subdistrict-label"
+                      displayEmpty
+                      value={selectedSubdistrict?.id || ""}
+                      onChange={(e) =>
+                        handleSubdistrictChange(setFieldValue, e)
+                      }
+                      sx={{ marginTop: 3 }}
+                    >
+                      <MenuItem value="">
+                        {groupData?.subdistrict
+                          ? groupData.subdistrict
+                          : "-- โปรดเลือกตำบล --"}
+                      </MenuItem>
+                      {provinces &&
+                        districts &&
+                        subdistricts &&
+                        subdistricts.map((subdistrict: SubdistrictType) => (
+                          <MenuItem key={subdistrict.id} value={subdistrict.id}>
+                            {subdistrict.nameTH}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                    <ErrorMessage name="subdistrict" />
+                  </FormControl>
+                </Box>
+
+
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="hno" style={{ fontWeight: "bold" }}>
                     บ้านเลขที่/หมู่ <span style={{ color: "red" }}>*</span>
@@ -555,42 +670,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   />
                   <ErrorMessage name="zipCode" />
                 </Box>
-                <Box sx={{ marginTop: 3 }}>
-                  <FormControl fullWidth>
-                    <FormLabel
-                      htmlFor="province"
-                      style={{ fontWeight: "bold", marginTop: 3 }}
-                    >
-                      อำเภอ <span style={{ color: "red" }}>*</span>
-                    </FormLabel>
-                    <Select
-                      id="district"
-                      className="selectDistrict"
-                      labelId="district-label"
-                      displayEmpty
-                      value={selectedDistrict?.id || ""}
-                      onChange={(e) => handleDistrictChange(setFieldValue, e)}
-                      sx={{ marginTop: 3 }}
-                    >
-                      <MenuItem value="">
-                        {groupData?.district
-                          ? groupData.district
-                          : "-- โปรดเลือกอำเภอ --"}
-                      </MenuItem>
-                      {provinces &&
-                        districts &&
-                        districts.map((district: DistrictType) => (
-                          <MenuItem key={district.id} value={district.id}>
-                            {district.nameTH}
-                          </MenuItem>
-                        ))}
-                    </Select>
-                    <ErrorMessage name="district" />
-                  </FormControl>
-                </Box>
-              </Grid>
+    
 
-              <Grid item xs={12} sm={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="road" style={{ fontWeight: "bold" }}>
                     ถนน
@@ -619,76 +700,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   <ErrorMessage name="village" />
                 </Box>
 
-                <Box sx={{ marginTop: 3 }}>
-                  <FormControl fullWidth>
-                    <FormLabel
-                      htmlFor="province"
-                      sx={{ fontWeight: "bold", marginTop: 3 }}
-                    >
-                      จังหวัด <span sx={{ color: "red" }}>*</span>
-                    </FormLabel>
-                    <Select
-                      id="province"
-                      className="selectProvince"
-                      labelId="province-label"
-                      displayEmpty
-                      value={selectedProvince?.id || ""}
-                      onChange={(e) => handleProvinceChange(setFieldValue, e)}
-                      sx={{ marginTop: 3 }}
-                    >
-                      <MenuItem value="">
-                        {groupData?.province ||
-                          "-- โปรดเลือกจังหวัด --" }
-                      </MenuItem>
-                      {provinces &&
-                        provinces.map((province: ProvinceType) => (
-                          <MenuItem key={province.id} value={province.id}>
-                            {province.nameTH}
-                          </MenuItem>
-                        ))}
-                    </Select>
-                    <ErrorMessage name="province" />
-                  </FormControl>
-                </Box>
+               
+          
+               
 
-                <Box sx={{ marginTop: 3}}>
-                  <FormControl fullWidth>
-                    <FormLabel
-                      htmlFor="subdistrict"
-                      sx={{ fontWeight: "bold", marginTop: 2 }}
-                    >
-                      ตำบล <span sx={{ color: "red" }}>*</span>
-                    </FormLabel>
-                    <Select
-                      id="subdistrict"
-                      className="selectSubdistrict"
-                      labelId="subdistrict-label"
-                      displayEmpty
-                      value={selectedSubdistrict?.id || ""}
-                      onChange={(e) =>
-                        handleSubdistrictChange(setFieldValue, e)
-                      }
-                      sx={{ marginTop: 3 }}
-                    >
-                      <MenuItem value="">
-                        {groupData?.subdistrict
-                          ? groupData.subdistrict
-                          : "-- โปรดเลือกตำบล --"}
-                      </MenuItem>
-                      {provinces &&
-                        districts &&
-                        subdistricts &&
-                        subdistricts.map((subdistrict: SubdistrictType) => (
-                          <MenuItem key={subdistrict.id} value={subdistrict.id}>
-                            {subdistrict.nameTH}
-                          </MenuItem>
-                        ))}
-                    </Select>
-                    <ErrorMessage name="subdistrict" />
-                  </FormControl>
-                </Box>
-
-              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -726,32 +741,32 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 gap: 16,
               }}
             >
-              {isSmallDevice ? (
-                <GroupsIcon sx={{ fontSize: "1.5rem", marginLeft: 8 }} />
+
+                       {isSmallDevice ? (
+                <GroupsIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
               ) : (
-                <GroupsIcon
-                  sx={{ fontSize: "2.5rem", marginLeft: 16 }}
-                />
+                <GroupsIcon sx={{ fontSize: "2.5rem", marginLeft: "16px" }} />
               )}
               <React.Fragment>
                 {isSmallDevice ? (
                   <Typography
-                    style={{
+                    sx={{
                       fontWeight: "bold",
                       alignSelf: "center",
                     }}
                   >
                     {" "}
-                    หน้าจัดการข้อมูลกลุ่ม <br /> / ร้านค้า{" "}
+                    หน้าแก้ไขข้อมูลกลุ่ม <br /> / ร้านค้า{" "}
                   </Typography>
                 ) : (
                   <Typography
-                    variant="h6"
-                    style={{
+                    variant="h5"
+                    sx={{
                       fontWeight: "bold",
                       alignSelf: "center",
                     }}
                   >
+                    {" "}
                     หน้าจัดการข้อมูลกลุ่ม / ร้านค้า
                   </Typography>
                 )}
