@@ -251,6 +251,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     // console.log(subdistrictData);
   };
 
+  const [openDialog, setOpenDialog] = React.useState<boolean>(false);
+
   const [selectedSubdistrict, setSelectedSubdistrict] =
     React.useState<SubdistrictType | null>(null);
 
@@ -321,6 +323,37 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   };
 
   const setUpdateValue = (values: any) => {};
+
+    const handleUpdateData = () =>{
+
+    }
+  const showDialog = () => {
+    return (
+      <Dialog
+        open={openDialog}
+        keepMounted
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">
+          ยืนยันการแก้ไขข้อมูล
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            คุณต้องการแก้ไขข้อมูลใช่หรือไม่
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleUpdateData} color="primary">
+            ยืนยัน
+          </Button>
+          <Button onClick={() => setOpenDialog(false)} color="info">
+            ยกเลิก
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
 
   const showForm = ({
     values,
@@ -826,8 +859,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     validationSchema={validationSchema}
                     onSubmit={async (values, { setSubmitting }) => {
                       setUpdateValue(values);
-                      // setOpenDialog(true);
-                      console.log(values);
+                      setOpenDialog(true);
+                      // console.log(values);
                       setSubmitting(false);
                     }}
                   >
@@ -863,6 +896,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
           </Grid>
         </Grid>
       </Container>
+      {showDialog()}
     </Layout>
   );
 };
