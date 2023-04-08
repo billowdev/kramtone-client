@@ -212,7 +212,7 @@ function UserPanelManageGroup({
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">
-        <Typography gutterBottom variant="h5">
+        <Typography gutterBottom >
               แก้ไขข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
             </Typography>
             <Divider />
@@ -338,7 +338,7 @@ function UserPanelManageGroup({
             >
               <Grid item xs={12} md={4} lg={3}>
                 <Image
-                  objectFit="cover"
+                  style={{objectFit:"cover"}}
                   alt="product image"
                   src={groupDataImageURL(groupData.logo)}
                   width={250}

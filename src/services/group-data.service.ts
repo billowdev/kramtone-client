@@ -14,7 +14,7 @@ export const getAllGroupData = async (): Promise<GroupDataArrayResponse> => {
 
 
 export const createGroupData = async (data: FormData, accessToken: string): Promise<any> => {
-	await axios.post(`/groups/create`, data, {
+	await axios.post(`/groups`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
 		},
@@ -23,7 +23,11 @@ export const createGroupData = async (data: FormData, accessToken: string): Prom
 };
 
 export const updateGroupData = async (id: string, data: FormData, accessToken: string): Promise<void> => {
-	await axios.patch(`/groups/update/${id}`, data, {
+	console.log('Form Data:');
+	for (const [key, value] of data.entries()) {
+		console.log(key, value);
+	}
+	await axios.patch(`/groups/${id}`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
 		},

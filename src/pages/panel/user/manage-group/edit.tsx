@@ -33,8 +33,9 @@ import * as groupDataService from "@/services/group-data.service";
 import { object as yupObject, string as yupString } from "yup";
 import { groupDataImageURL } from "@/common/utils/utils";
 import * as thaiAddressService from "@/services/thai-address.service";
-
+import { updateGroupDataAction } from "@/store/slices/group-data.slice"
 // import { TextField } from "formik-material-ui";
+import toast from "react-hot-toast";
 
 import TextField from "@material-ui/core/TextField";
 
@@ -174,19 +175,24 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   const isMediumDevice = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch: any = useAppDispatch();
 
-  const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
+  const [currentLat, setCurrentLat] = React.useState<number>(parseFloat(groupData?.lat!));
+  const [currentLng, setCurrentLng] = React.useState<number>(parseFloat(groupData?.lng!));
+  const [currentLatLng, setCurrentLatLng] = React.useState<[number, number]>([parseFloat(groupData?.lat!), parseFloat(groupData?.lng!)]);
+
+  const center: LatLngExpression = [currentLatLng[0], currentLatLng[1]]; // Centered on Sakon Nakhon Province
+
   const position: LatLngExpression = [
     parseFloat(groupData?.lat ?? "17.1634"),
     parseFloat(groupData?.lng ?? "104.1476"),
   ]; // Centered on Sakon Nakhon Province
   const zoom: number = 12;
 
-  // const [updateValue, setUpdateValue] = React.useState<GroupDataPayload>(groupData);
+  const [updateValue, setUpdateValue] = React.useState<GroupDataPayload>(groupData!);
 
   const [groupTypeState, setGroupTypeState] = React.useState<string>(
     groupData?.groupType ?? "shop"
   );
-  
+
   const [zipCodeState, setZipCodeState] = React.useState<string>(
     groupData?.zipCode ?? ""
   );
@@ -203,6 +209,16 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   );
 
   const selectRef = React.useRef(null);
+
+
+  const handleMarkerDragEnd = (event: any) => {
+    // console.log([parseFloat(event.target.getLatLng()['lat']), parseFloat(event.target.getLatLng()['lng'])])
+    setCurrentLat(event.target.getLatLng()['lat']);
+    setCurrentLng(event.target.getLatLng()['lng']);
+    setCurrentLatLng([parseFloat(event.target.getLatLng()['lat']), parseFloat(event.target.getLatLng()['lng'])])
+  }
+
+
   const [districts, setDistrict] = React.useState<DistrictType[]>([]);
   const [subdistricts, setSubDistrict] = React.useState<SubdistrictType[]>([]);
 
@@ -269,18 +285,18 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     setFieldValue("subdistrict", subdistrictName!);
     setSubdistrictState(subdistrictName!);
     setSelectedSubdistrict(selected!);
-    setZipCodeState(subdistrictZipCode.toString())
+    setZipCodeState(subdistrictZipCode?.toString())
     console.log(zipCodeState)
     // console.log(selected?.nameTH);
     console.log(selected);
   };
 
   const showPreviewLogo = (values: any) => {
-    if (values.logo_obj) {
+    if (values.logoObj) {
       return (
         <Image
           alt="group logo image"
-          src={values.logo_obj}
+          src={values.logoObj}
           width={250}
           height={250}
         />
@@ -301,11 +317,11 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   };
 
   const showPreviewBanner = (values: any) => {
-    if (values.banner_obj) {
+    if (values.bannerObj) {
       return (
         <Image
           alt="group banner image"
-          src={values.banner_obj}
+          src={values.bannerObj}
           width={isSmallDevice ? 200 : 400}
           height={isSmallDevice ? 30 : 60}
         />
@@ -322,11 +338,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     }
   };
 
-  const setUpdateValue = (values: any) => {};
 
-    const handleUpdateData = () =>{
-
-    }
   const showDialog = () => {
     return (
       <Dialog
@@ -344,7 +356,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleUpdateData} color="primary">
+          <Button onClick={handleEditConfirm} color="primary">
             ยืนยัน
           </Button>
           <Button onClick={() => setOpenDialog(false)} color="info">
@@ -353,6 +365,80 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
         </DialogActions>
       </Dialog>
     );
+  };
+  const handleEditConfirm = async () => {
+    // if (updateValue) {
+      // let data : FormData = new FormData();
+      // data.append("groupName", String(updateValue.groupName));
+      // data.append("groupType", String(updateValue.groupType));
+      let formData : FormData = new FormData();
+      console.log(formData)
+      // // console.log("=============")
+      // // console.log(updateValue.groupName)
+      // // console.log(updateValue.groupName)
+      // // console.log("=============")
+      // // data.append("is_node", String(updateValue.is_node));
+      // // data.append("lat", String(currentLat));
+      // // data.append("lng", String(currentLng));
+      // // data.append("name", String(updateValue.name));
+      if (updateValue.logoFile) {
+        console.log(updateValue.logoFile)
+        formData.append("logoFile", updateValue.logoFile);
+        formData.append("bannerFile", updateValue.bannerFile);
+      }
+
+      // Add each property to the form data
+      // formData.append('groupName', String(updateValue.groupName));
+      // formData.append('groupType', String(updateValue.groupType));
+      // formData.append('agency', String(updateValue.agency));
+      // formData.append('logo', String(updateValue.logo));
+      // formData.append('banner', String(updateValue.banner));
+      // formData.append('phone', String(updateValue.phone));
+      // formData.append('email', String(updateValue.email));
+      // formData.append('hno', String(updateValue.hno));
+      // formData.append('village', String(updateValue.village));
+      // formData.append('lane', String(updateValue.lane));
+      // formData.append('road', String(updateValue.road));
+      // formData.append('subdistrict', String(updateValue.subdistrict));
+      // formData.append('district', String(updateValue.district));
+      // formData.append('province', String(updateValue.province));
+      // formData.append('zipCode', String(updateValue.zipCode));
+      // formData.append('lat', String(updateValue.lat));
+      // formData.append('lng', String(updateValue.lng));
+
+      formData.append('groupData', JSON.stringify({
+        'groupName': updateValue.groupName,
+        'groupType': updateValue.groupType,
+        'agency': updateValue.agency,
+        // 'logo': updateValue.logoFile.filename ?? groupData?.logo,
+        // 'banner': updateValue.bannerFile.filename ??  groupData.banner,
+        'phone': updateValue.phone,
+        'email': updateValue.email,
+        'hno': updateValue.hno,
+        'village': updateValue.village,
+        'lane': updateValue.lane,
+        'road': updateValue.road,
+        'subdistrict': updateValue.subdistrict,
+        'district': updateValue.district,
+        'province': updateValue.province,
+        'zipCode': updateValue.zipCode,
+        'lat': updateValue.lat,
+        'lng': updateValue.lng,
+      }));
+
+      
+
+      const updateStatus = await dispatch(updateGroupDataAction({ id: updateValue.id, body: formData, accessToken }))
+      // const updateStatus = await dispatch(updateGroupDataAction(formData))
+
+      if (updateStatus.meta.requestStatus === "fulfilled") {
+        toast.success("แก้ไขข้อมูลสำเร็จ")
+        // router.push("/panel/buildings")
+      } else {
+        toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+      }
+      setOpenDialog(false);
+    // }
   };
 
   const showForm = ({
@@ -401,9 +487,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       type="file"
                       onChange={(e: React.ChangeEvent<any>) => {
                         e.preventDefault();
-                        setFieldValue("logo_file", e.target.files[0]); // for upload
+                        setFieldValue("logoFile", e.target.files[0]); // for upload
                         setFieldValue(
-                          "logo_obj",
+                          "logoObj",
                           URL.createObjectURL(e.target.files[0])
                         ); // for preview image
                       }}
@@ -436,9 +522,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       type="file"
                       onChange={(e: React.ChangeEvent<any>) => {
                         e.preventDefault();
-                        setFieldValue("banner_file", e.target.files[0]); // for upload
+                        setFieldValue("bannerFile", e.target.files[0]); // for upload
                         setFieldValue(
-                          "banner_obj",
+                          "bannerObj",
                           URL.createObjectURL(e.target.files[0])
                         ); // for preview image
                       }}
@@ -620,7 +706,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       style={{ marginTop: "16px" }}
                     >
                       <MenuItem value="">
-                          {districtState || "-- โปรดเลือกอำเภอ --"}
+                        {districtState || "-- โปรดเลือกอำเภอ --"}
                       </MenuItem>
                       {provinces &&
                         districts &&
@@ -656,8 +742,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       style={{ marginTop: "16px" }}
                     >
                       <MenuItem value="">
-      
-                             {subdistrictState || "-- โปรดเลือกตำบล --"}
+
+                        {subdistrictState || "-- โปรดเลือกตำบล --"}
                       </MenuItem>
                       {provinces &&
                         districts &&
@@ -683,8 +769,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     type="text"
                     fullWidth
                     value={zipCodeState}
-                    
-                    onChange={(e : React.ChangeEvent<any>)=>{
+
+                    onChange={(e: React.ChangeEvent<any>) => {
                       setZipCodeState(e.target.value);
                     }}
                     label="รหัสไปรษณีย์"
@@ -886,7 +972,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 style={{ height: "500px", width: "100%" }}
               >
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <Marker position={position}>
+                <Marker position={center} draggable={true} eventHandlers={{
+          dragend: handleMarkerDragEnd
+        }}
+        >     
                   <Popup autoClose={false}>
                     <span>หมุดของคุณ</span>
                   </Popup>

@@ -6,6 +6,7 @@ import { placeSelector } from './../../store/slices/place.slice';
 import { useAppDispatch } from "@/store/store";
 import { fetchPlace } from '@/store/slices/place.slice';
 import { useSelector } from 'react-redux';
+import { Typography } from '@mui/material';
 type Props = {}
 
 
@@ -28,7 +29,7 @@ function HomePage({ }: Props) {
   const Map = React.useMemo(() => dynamic(
     () => import('./map'), // replace '@components/map' with your component's location
     { 
-      loading: () => <p>A map is loading</p>,
+      loading: () => <Typography>A map is loading</Typography>,
       ssr: false // This line is important. It's what prevents server-side render
     }
     

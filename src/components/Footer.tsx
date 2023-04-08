@@ -114,10 +114,12 @@ export default function Footer({}: Props) {
                 </Link>
               ) : (
                 <Link href="/auth/signin" style={footerLinkStyle}>
-                  <Typography align="center">
-                  
-                    {isSmallDevice ? "เข้าสู่ระบบ" : <Typography>เข้าสู่ระบบ / <br /> สำหรับกลุ่มผู้ผลิตหรือร้านค้า</Typography>}
-                  </Typography>
+                    {isSmallDevice ?   <Typography align="center">
+                    เข้าสู่ระบบ
+                  </Typography> :  <Typography align="center">
+                  เข้าสู่ระบบสำหรับกลุ่มผู้ผลิต
+                  </Typography> }
+                
                 </Link>
               )}
             </Grid>

@@ -47,6 +47,17 @@ export const getOneGroupDataAction = createAsyncThunk("GROUP_DATA/GET_ONE", asyn
 	return response;
 });
 
+export const updateGroupDataAction = createAsyncThunk(
+	"GROUP_DATA/UPDATE",
+	async (data:any) => {
+		// console.log(data.body)
+		 
+		
+		await groupDataService.updateGroupData(data.id, data.body, data.accessToken);
+	}
+);
+
+
 // export const createGroupDataAction = createAsyncThunk("GROUP_DATA/GET_ONE", async () => {
 // 	const response = await groupDataService.createGroupData()
 // 	return response.payload;

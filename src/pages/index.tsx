@@ -29,7 +29,6 @@ const ProductTest = ({ }: Props) => {
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = (product: Product) => {
-    console.log(product)
     setSelectedProduct(product);
     setOpen(true);
   };
@@ -38,10 +37,10 @@ const ProductTest = ({ }: Props) => {
     setOpen(false);
   };
 
-  return <React.Fragment>
+
+  return (
     <MainLayout>
-      <>
-        <NextSeo
+      <NextSeo
           title="Product Grid"
           description="A grid of products with optimized images using Next.js"
         />
@@ -51,7 +50,6 @@ const ProductTest = ({ }: Props) => {
           open={open}
           onClose={handleClose}
           closeAfterTransition
-     
         >
           <Fade in={open}>
             {selectedProduct ? (
@@ -101,29 +99,14 @@ const ProductTest = ({ }: Props) => {
                   รายละเอียดเพิ่มเติม
                 </Button>
               </Card>
-              {/* <Paper elevation={3} style={{ padding: '20px', margin: '20px' }}>
-                <Typography variant="h5">{product.name}</Typography>
-                <Image
-                  src={product.image}
-                  alt={`${product.name} image`}
-                  width={300}
-                  height={300}
-                  loading="lazy"
-                />
-                <Typography variant="subtitle1">{product.description}</Typography>
-                <Button variant="contained" color="primary">
-                  Buy Now
-                </Button>
-                <Button onClick={() => { handleOpen(product) }}>Show Modal</Button>
-              </Paper> */}
             </Grid>
           ))}
         </Grid>
-      </>
 
+       
     </MainLayout>
-    {/* <PanelPage></PanelPage> */}
-  </React.Fragment>;
+  )
+
 };
 
 export default ProductTest;
