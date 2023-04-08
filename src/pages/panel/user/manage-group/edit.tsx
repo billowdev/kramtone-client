@@ -3,10 +3,7 @@ import Layout from "@/components/Layouts/Layout";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import router from "next/router";
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-} from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import {
   Container,
   Grid,
@@ -39,7 +36,7 @@ import * as thaiAddressService from "@/services/thai-address.service";
 
 // import { TextField } from "formik-material-ui";
 
-import TextField from '@material-ui/core/TextField';
+import TextField from "@material-ui/core/TextField";
 
 import {
   Dialog,
@@ -64,10 +61,16 @@ import {
   SubdistrictResponseType,
   SubdistrictType,
 } from "@/models/thai-address.model";
-import { FormControl, InputLabel,  Select, Input, FormHelperText} from "@material-ui/core";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  Input,
+  FormHelperText,
+} from "@material-ui/core";
 import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 import { makeStyles } from "@material-ui/core/styles";
-import MenuItem from '@mui/material/MenuItem';
+import MenuItem from "@mui/material/MenuItem";
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -120,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     width: "50%",
     margin: theme.spacing(3),
-    marginTop : "16px"
+    marginTop: "16px",
   },
   formLabel: {
     fontWeight: "bold",
@@ -215,7 +218,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     setProvinceState(provinceName);
     setSelectedProvince(selected!);
     setFieldValue("province", provinceName);
-    const districtData = await thaiAddressService.getDistricts(provinceId.toString());
+    const districtData = await thaiAddressService.getDistricts(
+      provinceId.toString()
+    );
     setDistrict(districtData);
   };
 
@@ -234,7 +239,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     setDistrictState(districtName!);
     setSelectedDistrict(selected!);
 
-    const subdistrictData = await thaiAddressService.getSubdistricts(districtId.toString());
+    const subdistrictData = await thaiAddressService.getSubdistricts(
+      districtId.toString()
+    );
     setSubDistrict(subdistrictData);
     // console.log(selected?.nameTH);
     // console.log(subdistrictData);
@@ -328,10 +335,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 marginTop: 3,
               }}
             >
-                  <Divider style={{ width: "50%", margin: 8 }} />
+              <Divider style={{ width: "50%", margin: 8 }} />
               <Typography variant="h5">ข้อมูลกลุ่ม</Typography>
               <Divider style={{ width: "50%", margin: 8 }} />
-
             </Box>
             {/* isMediumDevice */}
             <Grid container spacing={2}>
@@ -407,8 +413,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   </div>
                 </Box>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={6}>
-                
+              <Grid item xs={12} sm={12} md={6} lg={6}>
                 <Box style={{ marginTop: 3 }}>
                   <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
                     ชื่อกลุ่มผู้ผลิตหรือร้านค้า
@@ -419,7 +424,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     fullWidth
                     type="text"
                     label="ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
-                    component={TextField}         
+                    component={TextField}
                     style={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="groupName" />
@@ -465,7 +470,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     type="text"
                     fullWidth
                     label="ชื่อประธาน / เจ้าของร้าน"
-                     component={TextField}
+                    component={TextField}
                     sx={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="agency" />
@@ -480,7 +485,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     type="text"
                     fullWidth
                     label="เบอร์โทร"
-                     component={TextField}
+                    component={TextField}
                     sx={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="phone" />
@@ -495,7 +500,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     type="email"
                     fullWidth
                     label="อีเมล"
-                     component={TextField}
+                    component={TextField}
                     sx={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="email" />
@@ -520,13 +525,11 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
             </Box>
 
             <Grid container spacing={2}>
-              <Box sx={{ marginTop: 3 }}>
+              <Grid item xs={12} md={6}>
+                <Box sx={{ marginTop: 3 }}>
                   <FormControl fullWidth>
-                    <FormLabel
-                      htmlFor="province"
-                      sx={{ fontWeight: "bold"}}
-                    >
-                      จังหวัด <span sx={{ color: "red" }}>*</span>
+                    <FormLabel htmlFor="province" sx={{ fontWeight: "bold" }}>
+                      จังหวัด <span style={{ color: "red" }}>*</span>
                     </FormLabel>
                     <Select
                       id="province"
@@ -535,11 +538,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       displayEmpty
                       value={selectedProvince?.id || ""}
                       onChange={(e) => handleProvinceChange(setFieldValue, e)}
-                      sx={{ marginTop: 3 }}
+                      style={{ marginTop: "16px" }}
                     >
                       <MenuItem value="">
-                        {groupData?.province ||
-                          "-- โปรดเลือกจังหวัด --" }
+                        {groupData?.province || "-- โปรดเลือกจังหวัด --"}
                       </MenuItem>
                       {provinces &&
                         provinces.map((province: ProvinceType) => (
@@ -551,15 +553,14 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     <ErrorMessage name="province" />
                   </FormControl>
                 </Box>
+              </Grid>
 
-        
-      
-
+              <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormControl fullWidth>
                     <FormLabel
                       htmlFor="province"
-                      style={{ fontWeight: "bold"}}
+                      style={{ fontWeight: "bold" }}
                     >
                       อำเภอ <span style={{ color: "red" }}>*</span>
                     </FormLabel>
@@ -570,7 +571,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       displayEmpty
                       value={selectedDistrict?.id || ""}
                       onChange={(e) => handleDistrictChange(setFieldValue, e)}
-                      sx={{ marginTop: 3 }}
+                      style={{ marginTop: "16px" }}
                     >
                       <MenuItem value="">
                         {groupData?.district
@@ -588,14 +589,16 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     <ErrorMessage name="district" />
                   </FormControl>
                 </Box>
+              </Grid>
 
-                <Box sx={{ marginTop: 3}}>
+              <Grid item xs={12} md={6}>
+                <Box sx={{ marginTop: 3 }}>
                   <FormControl fullWidth>
                     <FormLabel
                       htmlFor="subdistrict"
-                      sx={{ fontWeight: "bold"}}
+                      sx={{ fontWeight: "bold" }}
                     >
-                      ตำบล <span sx={{ color: "red" }}>*</span>
+                      ตำบล <span style={{ color: "red" }}>*</span>
                     </FormLabel>
                     <Select
                       id="subdistrict"
@@ -606,7 +609,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       onChange={(e) =>
                         handleSubdistrictChange(setFieldValue, e)
                       }
-                      sx={{ marginTop: 3 }}
+                      style={{ marginTop: "16px" }}
                     >
                       <MenuItem value="">
                         {groupData?.subdistrict
@@ -625,8 +628,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     <ErrorMessage name="subdistrict" />
                   </FormControl>
                 </Box>
+              </Grid>
 
-
+              <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="hno" style={{ fontWeight: "bold" }}>
                     บ้านเลขที่/หมู่ <span style={{ color: "red" }}>*</span>
@@ -636,12 +640,14 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     type="text"
                     fullWidth
                     label="บ้านเลขที่/หมู่"
-                     component={TextField}
+                    component={TextField}
                     sx={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="hno" />
                 </Box>
+              </Grid>
 
+              <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="lane" style={{ fontWeight: "bold" }}>
                     ซอย
@@ -651,27 +657,13 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     type="text"
                     fullWidth
                     label="ซอย"
-                     component={TextField}
+                    component={TextField}
                     sx={{ marginTop: 3 }}
                   />
                 </Box>
+              </Grid>
 
-                <Box sx={{ marginTop: 3 }}>
-                  <FormLabel htmlFor="zipCode" style={{ fontWeight: "bold" }}>
-                    รหัสไปรษณีย์
-                  </FormLabel>
-                  <Field
-                    name="zipCode"
-                    type="text"
-                    fullWidth
-                    label="รหัสไปรษณีย์"
-                     component={TextField}
-                    sx={{ marginTop: 3 }}
-                  />
-                  <ErrorMessage name="zipCode" />
-                </Box>
-    
-
+              <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="road" style={{ fontWeight: "bold" }}>
                     ถนน
@@ -681,29 +673,45 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     type="text"
                     fullWidth
                     label="ถนน"
-                     component={TextField}
+                    component={TextField}
                     sx={{ marginTop: 3 }}
                   />
                 </Box>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="village" sx={{ fontWeight: "bold" }}>
-                    หมู่บ้าน <span sx={{ color: "red" }}>*</span>
+                    หมู่บ้าน <span style={{ color: "red" }}>*</span>
                   </FormLabel>
                   <Field
                     name="village"
                     type="text"
                     fullWidth
                     label="หมู่บ้าน"
-                     component={TextField}
+                    component={TextField}
                     sx={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="village" />
                 </Box>
+              </Grid>
 
-               
-          
-               
-
+              <Grid item xs={12} md={6}>
+                <Box sx={{ marginTop: 3 }}>
+                  <FormLabel htmlFor="zipCode" style={{ fontWeight: "bold" }}>
+                    รหัสไปรษณีย์ <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+                  <Field
+                    name="zipCode"
+                    type="text"
+                    fullWidth
+                    label="รหัสไปรษณีย์"
+                    component={TextField}
+                    sx={{ marginTop: 3 }}
+                  />
+                  <ErrorMessage name="zipCode" />
+                </Box>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -741,8 +749,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 gap: 16,
               }}
             >
-
-                       {isSmallDevice ? (
+              {isSmallDevice ? (
                 <GroupsIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
               ) : (
                 <GroupsIcon sx={{ fontSize: "2.5rem", marginLeft: "16px" }} />
