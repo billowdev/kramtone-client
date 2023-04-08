@@ -186,6 +186,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   const [groupTypeState, setGroupTypeState] = React.useState<string>(
     groupData?.groupType ?? "shop"
   );
+  
+  const [zipCodeState, setZipCodeState] = React.useState<string>(
+    groupData?.zipCode ?? ""
+  );
   const [provinceState, setProvinceState] = React.useState<string>(
     groupData?.province ?? ""
   );
@@ -259,10 +263,12 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
       (p: SubdistrictType) => p?.id === selectedId
     );
     const subdistrictName = selected?.nameTH!;
+    const subdistrictZipCode = selected?.zipCode!;
     setFieldValue("subdistrict", subdistrictName!);
     setSubdistrictState(subdistrictName!);
     setSelectedSubdistrict(selected!);
-
+    setZipCodeState(subdistrictZipCode.toString())
+    console.log(zipCodeState)
     // console.log(selected?.nameTH);
     console.log(selected);
   };
@@ -421,8 +427,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   </FormLabel>
                   <Field
                     name="groupName"
+                    inputProps={{ maxLength: 100 }}
                     fullWidth
                     type="text"
+                    defaultValue={groupData?.groupName}
                     label="ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
                     component={TextField}
                     style={{ marginTop: 3 }}
@@ -456,7 +464,6 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       label={"กลุ่มผู้ผลิต"}
                     />
                   </RadioGroup>
-
                   <ErrorMessage name="groupType" />
                 </Box>
 
@@ -468,6 +475,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   <Field
                     name="agency"
                     type="text"
+                    inputProps={{ maxLength: 160 }}
+                    defaultValue={groupData?.agency}
                     fullWidth
                     label="ชื่อประธาน / เจ้าของร้าน"
                     component={TextField}
@@ -483,6 +492,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   <Field
                     name="phone"
                     type="text"
+                    inputProps={{ maxLength: 10 }}
+                    defaultValue={groupData?.phone}
                     fullWidth
                     label="เบอร์โทร"
                     component={TextField}
@@ -498,6 +509,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   <Field
                     name="email"
                     type="email"
+                    inputProps={{ maxLength: 120 }}
+                    defaultValue={groupData?.email}
                     fullWidth
                     label="อีเมล"
                     component={TextField}
@@ -541,7 +554,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       style={{ marginTop: "16px" }}
                     >
                       <MenuItem value="">
-                        {groupData?.province || "-- โปรดเลือกจังหวัด --"}
+                        {provinceState || "-- โปรดเลือกจังหวัด --"}
                       </MenuItem>
                       {provinces &&
                         provinces.map((province: ProvinceType) => (
@@ -574,9 +587,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       style={{ marginTop: "16px" }}
                     >
                       <MenuItem value="">
-                        {groupData?.district
-                          ? groupData.district
-                          : "-- โปรดเลือกอำเภอ --"}
+                          {districtState || "-- โปรดเลือกอำเภอ --"}
                       </MenuItem>
                       {provinces &&
                         districts &&
@@ -612,9 +623,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       style={{ marginTop: "16px" }}
                     >
                       <MenuItem value="">
-                        {groupData?.subdistrict
-                          ? groupData.subdistrict
-                          : "-- โปรดเลือกตำบล --"}
+      
+                             {subdistrictState || "-- โปรดเลือกตำบล --"}
                       </MenuItem>
                       {provinces &&
                         districts &&
@@ -632,6 +642,29 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
               <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
+                  <FormLabel htmlFor="zipCode" style={{ fontWeight: "bold" }}>
+                    รหัสไปรษณีย์ <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+                  <Field
+                    name="zipCode"
+                    type="text"
+                    fullWidth
+                    value={zipCodeState}
+                    
+                    onChange={(e : React.ChangeEvent<any>)=>{
+                      setZipCodeState(e.target.value);
+                    }}
+                    label="รหัสไปรษณีย์"
+                    inputProps={{ maxLength: 10 }}
+                    component={TextField}
+                    sx={{ marginTop: 3 }}
+                  />
+                  <ErrorMessage name="zipCode" />
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="hno" style={{ fontWeight: "bold" }}>
                     บ้านเลขที่/หมู่ <span style={{ color: "red" }}>*</span>
                   </FormLabel>
@@ -639,6 +672,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     name="hno"
                     type="text"
                     fullWidth
+                    inputProps={{ maxLength: 5 }}
+                    defaultValue={groupData?.hno}
                     label="บ้านเลขที่/หมู่"
                     component={TextField}
                     sx={{ marginTop: 3 }}
@@ -656,6 +691,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     name="lane"
                     type="text"
                     fullWidth
+                    defaultValue={groupData?.lane}
+                    inputProps={{ maxLength: 50 }}
                     label="ซอย"
                     component={TextField}
                     sx={{ marginTop: 3 }}
@@ -671,6 +708,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   <Field
                     name="road"
                     type="text"
+                    defaultValue={groupData?.road}
+                    inputProps={{ maxLength: 50 }}
                     fullWidth
                     label="ถนน"
                     component={TextField}
@@ -686,6 +725,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   </FormLabel>
                   <Field
                     name="village"
+                    defaultValue={groupData?.village}
                     type="text"
                     fullWidth
                     label="หมู่บ้าน"
@@ -696,22 +736,6 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 </Box>
               </Grid>
 
-              <Grid item xs={12} md={6}>
-                <Box sx={{ marginTop: 3 }}>
-                  <FormLabel htmlFor="zipCode" style={{ fontWeight: "bold" }}>
-                    รหัสไปรษณีย์ <span style={{ color: "red" }}>*</span>
-                  </FormLabel>
-                  <Field
-                    name="zipCode"
-                    type="text"
-                    fullWidth
-                    label="รหัสไปรษณีย์"
-                    component={TextField}
-                    sx={{ marginTop: 3 }}
-                  />
-                  <ErrorMessage name="zipCode" />
-                </Box>
-              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -774,7 +798,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     }}
                   >
                     {" "}
-                    หน้าจัดการข้อมูลกลุ่ม / ร้านค้า
+                    หน้าแก้ไขข้อมูลกลุ่ม / ร้านค้า
                   </Typography>
                 )}
               </React.Fragment>

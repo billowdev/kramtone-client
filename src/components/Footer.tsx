@@ -1,17 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
-import { makeStyles } from "@material-ui/core/styles";
-import { Container, Grid, Typography, Toolbar } from "@material-ui/core";
+import {  Grid, Typography, Toolbar } from "@material-ui/core";
 import { authSelector } from "@/store/slices/auth.slice";
 import { useSelector } from "react-redux";
-import { fetchSession } from "@/store/slices/auth.slice";
 import Link from "next/link";
 import Divider from "@mui/material/Divider";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -124,13 +115,14 @@ export default function Footer({}: Props) {
               ) : (
                 <Link href="/auth/signin" style={footerLinkStyle}>
                   <Typography align="center">
-                    เข้าสู่ระบบ / สำหรับกลุ่มผู้ผลิตหรือร้านค้า
+                  
+                    {isSmallDevice ? "เข้าสู่ระบบ" : <Typography>เข้าสู่ระบบ / <br /> สำหรับกลุ่มผู้ผลิตหรือร้านค้า</Typography>}
                   </Typography>
                 </Link>
               )}
             </Grid>
           </Grid>
-          ;
+          
         </Toolbar>
       </Box>
 
