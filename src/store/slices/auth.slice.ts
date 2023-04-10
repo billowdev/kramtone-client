@@ -129,7 +129,10 @@ export const authSlice = createSlice({
 export const authSelector = (store: RootState) => store.auth;
 export const isAuthenticatedSelector = (store: RootState): boolean =>
 	store.auth.isAuthenticated;
-export const isAuthenticatingSelector = (store: RootState): boolean =>
-	store.auth.isAuthenticating;
+export const isAuthenticatingSelector = (store: RootState): boolean => store.auth.isAuthenticating;
+
+export const userRoleSelector = (store: RootState): any => store.auth.role;
+
+	
 
 export default authSlice.reducer;

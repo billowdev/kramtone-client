@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import {
   isAuthenticatedSelector,
   isAuthenticatingSelector,
+  userRoleSelector
 } from "@/store/slices/auth.slice";
 import { isClient } from "@/common/utils/utils";
 
@@ -15,8 +16,8 @@ const withAuth = (WrappedComponent: React.FC) => (props: any) => {
     const { route } = router;
     const isAuthenticated = useSelector(isAuthenticatedSelector);
     const isAuthenticating = useSelector(isAuthenticatingSelector);
-    
-
+    const userRole = useSelector(userRoleSelector);
+ 
     // is fetching session (eg. show spinner)
     if (isAuthenticating) {
       return null;
@@ -28,13 +29,41 @@ const withAuth = (WrappedComponent: React.FC) => (props: any) => {
         router.push(`/auth/signin`);
         return null;
       } 
+
+      if (route.startsWith("/panel/admin") && userRole !== "admin") {
+        router.push(`/404`);
+        return null;
+      }
+
+ 
+
+
       // else if (route == "/") {
       //   router.push(`/home`); // default page after login when call root path
       //   return null;
       // }
+
+       // If user is trying to access /panel/admin, validate user role
+     
+
+      // if(route === "/panel/admin" && userRole !== "admin") {
+      //   router.push(`/404`);
+      //   return null;
+      // } else if (userRole === "admin") {
+      //   router.push(`/panel/admin`);
+      //   return null;
+      // } else {
+      //   router.push(`/`);
+      //   return null;
+      // }
+
     } else {
       if (isAuthenticated) {
-        router.push(`/panel`); // default page after login
+
+      
+
+
+        router.push(`/panel`);
         return null;
       }
     }

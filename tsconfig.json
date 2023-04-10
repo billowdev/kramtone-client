@@ -59,7 +59,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/pages/panel/index.tsx"  ],
   "exclude": [
     "node_modules"
   ]

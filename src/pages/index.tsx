@@ -1,5 +1,5 @@
 import React from "react";
-import PanelPage from "./panel";
+import PanelPage from "./panel/index";
 import MainLayout from '@/components/MainLayout';
 import { Paper, Button, Typography, Grid, Modal, Backdrop, Fade, CardMedia, Card, CardActionArea } from "@mui/material";
 import { NextSeo } from 'next-seo';

@@ -23,17 +23,17 @@ export const createGroupData = async (data: FormData, accessToken: string): Prom
 };
 
 export const updateGroupData = async (id: string, data: FormData, accessToken: string): Promise<void> => {
-	console.log('Form Data:');
-	for (const [key, value] of data.entries()) {
-		console.log(key, value);
-	}
-	await axios.patch(`/groups/${id}`, data, {
+	// console.log('Form Data:');
+	// for (const [key, value] of data.entries()) {
+	// 	console.log(key, value);
+	// }
+	const {data:response} = await axios.patch(`/groups/${id}`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
 		},
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
 	});
-
+	console.log(response)
 
 };
 

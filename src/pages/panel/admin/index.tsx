@@ -1,4 +1,5 @@
 import React from "react";
+import withAuth from "@/components/withAuth";
 import Layout from "@/components/Layouts/Layout";
 import { Grid, Paper, Typography, Container, Box, Divider } from "@mui/material";
 import { ListItem,  } from "@mui/material";
@@ -156,4 +157,4 @@ function AdminPanel({}: Props) {
   );
 }
 
-export default AdminPanel;
+export default withAuth(AdminPanel);

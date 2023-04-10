@@ -114,7 +114,7 @@ function GroupShopPanel({}: Props) {
                 p: 2,
                 display: "flex",
                 flexDirection: "column",
-                height: "100vh",
+                height: "100%",
               }}
             >
               <Typography variant="h5" gutterBottom>
@@ -122,56 +122,74 @@ function GroupShopPanel({}: Props) {
               </Typography>
 
               <Grid container spacing={2} columns={16}>
-                <Grid item xs={8}>
-                  <CustomMenuListItem
+
+              <Grid item xs={12} sm={12} md={6}>
+              <CustomMenuListItem
                     href="/panel/user/manage-group"
                     icon={GroupsIcon}
                     text="จัดการข้อมูลกลุ่ม"
                   />
+                </Grid>
+                
+                <Grid item xs={12} sm={12} md={6}>
                   <CustomMenuListItem
                     href="/panel/user/manage-product"
                     icon={ShoppingBagIcon}
                     text="จัดการสินค้า"
                   />
                 </Grid>
-                <Grid item xs={8}>
-                  <CustomMenuListItem
+                <Grid item xs={12} sm={12} md={6}>
+                <CustomMenuListItem
                     href="/panel/user/manage-category"
                     icon={CheckroomIcon}
                     text="จัดการประเภทสินค้า"
                   />
-                   <CustomMenuListItem   
+                </Grid>
+                <Grid item xs={12} sm={12} md={6}>
+               
+                <CustomMenuListItem   
           href="/panel/user/manage-colorscheme"
             icon={ColorLensIcon}
             text="จัดการโทนสีที่มีในร้าน"
           />
                 </Grid>
+             
               </Grid>
 
               <Divider sx={{ my: 1 }} />
 
               <Grid container spacing={2} columns={16}>
-                <Grid item xs={8}>
-             
-        <CustomMenuListItem   
+
+              <Grid item xs={12} sm={12} md={6}>
+                  <CustomMenuListItem   
           href="/manage-profile"
             icon={SettingsIcon}
             text="ตั้งค่าบัญชีผู้ใช้"
           />
+       
+               </Grid>
+
+               <Grid item xs={12} sm={12} md={6}>
+                
     <CustomMenuListItem   
           href="/"
             icon={HomeIcon}
             text="กลับสู่หน้าหลักของเว็บไซต์"
           />
-      
-                </Grid>
+       
+               </Grid>
 
-                <Grid item xs={8}>
-                <CustomMenuListItem   
+               <Grid item xs={12} sm={12} md={6}>
+               
+           <CustomMenuListItem   
           href="/aboutus"
             icon={InfoIcon}
             text="เกี่ยวกับผู้พัฒนาระบบ"
           />
+               </Grid>
+
+               <Grid item xs={12} sm={12} md={6}>
+               
 
 <Box
               boxShadow={2}
@@ -200,6 +218,9 @@ function GroupShopPanel({}: Props) {
               </ListItem>
             </Box>
 
+       
+     
+            
                 </Grid>
               </Grid>
 

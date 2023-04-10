@@ -186,8 +186,33 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     parseFloat(groupData?.lng ?? "104.1476"),
   ]; // Centered on Sakon Nakhon Province
   const zoom: number = 12;
+  const [imageData, setImageData] = React.useState<Partial<GroupDataPayload>>({
+    logoFile: "",
+    logoObj: "",
+    bannerFile: "",
+    bannerObj: "",
+  })
+  const [updateGroupData, setUpdateGroupData] = React.useState<GroupDataPayload>({
+    id: groupData?.id!,
+    groupName: groupData?.groupName ?? '',
+    groupType: groupData?.groupType ?? 'shop',
+    agency: groupData?.agency ?? '',
+    logo: groupData?.logo ?? '',
+    banner: groupData?.banner ?? '',
+    phone: groupData?.phone ?? '',
+    email: groupData?.email ?? '',
+    hno: groupData?.hno ?? '',
+    village: groupData?.village ?? '',
+    lane: groupData?.lane ?? '',
+    road: groupData?.road ?? '',
+    subdistrict: groupData?.subdistrict ?? '',
+    district: groupData?.district ?? '',
+    province: groupData?.province ?? '',
+    zipCode: groupData?.zipCode ?? '',
+    lat: groupData?.lat ?? '',
+    lng: groupData?.lng ?? '',
+  });
 
-  const [updateValue, setUpdateValue] = React.useState<GroupDataPayload>(groupData!);
 
   const [groupTypeState, setGroupTypeState] = React.useState<string>(
     groupData?.groupType ?? "shop"
@@ -208,16 +233,21 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     groupData?.subdistrict ?? ""
   );
 
-  const selectRef = React.useRef(null);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>, name: string) => {
+    const files = event?.target?.files?.[0]
+    setImageData(prevState => ({ ...prevState, [name]: files }));
+  };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, name: string) => {
+    const { value } = event.target;
+    setUpdateGroupData(prevState => ({ ...prevState, [name]: value }));
+  };
 
   const handleMarkerDragEnd = (event: any) => {
-    // console.log([parseFloat(event.target.getLatLng()['lat']), parseFloat(event.target.getLatLng()['lng'])])
     setCurrentLat(event.target.getLatLng()['lat']);
     setCurrentLng(event.target.getLatLng()['lng']);
     setCurrentLatLng([parseFloat(event.target.getLatLng()['lat']), parseFloat(event.target.getLatLng()['lng'])])
   }
-
 
   const [districts, setDistrict] = React.useState<DistrictType[]>([]);
   const [subdistricts, setSubDistrict] = React.useState<SubdistrictType[]>([]);
@@ -263,8 +293,6 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
       districtId.toString()
     );
     setSubDistrict(subdistrictData);
-    // console.log(selected?.nameTH);
-    // console.log(subdistrictData);
   };
 
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
@@ -286,9 +314,6 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     setSubdistrictState(subdistrictName!);
     setSelectedSubdistrict(selected!);
     setZipCodeState(subdistrictZipCode?.toString())
-    console.log(zipCodeState)
-    // console.log(selected?.nameTH);
-    console.log(selected);
   };
 
   const showPreviewLogo = (values: any) => {
@@ -367,77 +392,42 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     );
   };
   const handleEditConfirm = async () => {
-    // if (updateValue) {
-      // let data : FormData = new FormData();
-      // data.append("groupName", String(updateValue.groupName));
-      // data.append("groupType", String(updateValue.groupType));
-      let formData : FormData = new FormData();
-      console.log(formData)
-      // // console.log("=============")
-      // // console.log(updateValue.groupName)
-      // // console.log(updateValue.groupName)
-      // // console.log("=============")
-      // // data.append("is_node", String(updateValue.is_node));
-      // // data.append("lat", String(currentLat));
-      // // data.append("lng", String(currentLng));
-      // // data.append("name", String(updateValue.name));
-      if (updateValue.logoFile) {
-        console.log(updateValue.logoFile)
-        formData.append("logoFile", updateValue.logoFile);
-        formData.append("bannerFile", updateValue.bannerFile);
-      }
+    let formData: FormData = new FormData();
+    if (imageData.logoFile) {
+      formData.append("logoFile", imageData.logoFile);
+    }
+    if (imageData.bannerFile) {
+      formData.append("bannerFile", imageData.bannerFile);
+    }
 
-      // Add each property to the form data
-      // formData.append('groupName', String(updateValue.groupName));
-      // formData.append('groupType', String(updateValue.groupType));
-      // formData.append('agency', String(updateValue.agency));
-      // formData.append('logo', String(updateValue.logo));
-      // formData.append('banner', String(updateValue.banner));
-      // formData.append('phone', String(updateValue.phone));
-      // formData.append('email', String(updateValue.email));
-      // formData.append('hno', String(updateValue.hno));
-      // formData.append('village', String(updateValue.village));
-      // formData.append('lane', String(updateValue.lane));
-      // formData.append('road', String(updateValue.road));
-      // formData.append('subdistrict', String(updateValue.subdistrict));
-      // formData.append('district', String(updateValue.district));
-      // formData.append('province', String(updateValue.province));
-      // formData.append('zipCode', String(updateValue.zipCode));
-      // formData.append('lat', String(updateValue.lat));
-      // formData.append('lng', String(updateValue.lng));
+    formData.append('groupData', JSON.stringify({
+      'groupName': updateGroupData.groupName,
+      'groupType': groupTypeState,
+      'agency': updateGroupData.agency,
+      'phone': updateGroupData.phone,
+      'email': updateGroupData.email,
+      'hno': updateGroupData.hno,
+      'village': updateGroupData.village,
+      'lane': updateGroupData.lane,
+      'road': updateGroupData.road,
+      'subdistrict': updateGroupData.subdistrict,
+      'district': updateGroupData.district,
+      'province': updateGroupData.province,
+      'zipCode': zipCodeState,
+      'lat': currentLat,
+      'lng': currentLng,
+    }));
 
-      formData.append('groupData', JSON.stringify({
-        'groupName': updateValue.groupName,
-        'groupType': updateValue.groupType,
-        'agency': updateValue.agency,
-        // 'logo': updateValue.logoFile.filename ?? groupData?.logo,
-        // 'banner': updateValue.bannerFile.filename ??  groupData.banner,
-        'phone': updateValue.phone,
-        'email': updateValue.email,
-        'hno': updateValue.hno,
-        'village': updateValue.village,
-        'lane': updateValue.lane,
-        'road': updateValue.road,
-        'subdistrict': updateValue.subdistrict,
-        'district': updateValue.district,
-        'province': updateValue.province,
-        'zipCode': updateValue.zipCode,
-        'lat': updateValue.lat,
-        'lng': updateValue.lng,
-      }));
 
-      
+    const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }))
 
-      const updateStatus = await dispatch(updateGroupDataAction({ id: updateValue.id, body: formData, accessToken }))
-      // const updateStatus = await dispatch(updateGroupDataAction(formData))
-
-      if (updateStatus.meta.requestStatus === "fulfilled") {
-        toast.success("แก้ไขข้อมูลสำเร็จ")
-        // router.push("/panel/buildings")
-      } else {
-        toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
-      }
-      setOpenDialog(false);
+    if (updateStatus.meta.requestStatus === "fulfilled") {
+      toast.success("แก้ไขข้อมูลสำเร็จ")
+      router.push("/panel/user/manage-group")
+    } else {
+      toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+    }
+    setOpenDialog(false);
     // }
   };
 
@@ -485,13 +475,16 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     </span>
                     <input
                       type="file"
-                      onChange={(e: React.ChangeEvent<any>) => {
-                        e.preventDefault();
-                        setFieldValue("logoFile", e.target.files[0]); // for upload
-                        setFieldValue(
-                          "logoObj",
-                          URL.createObjectURL(e.target.files[0])
-                        ); // for preview image
+                      // onChange={(e: React.ChangeEvent<any>) => {
+                      //   e.preventDefault();
+                      //   setFieldValue("logoFile", e.target.files[0]); // for upload
+                      //   setFieldValue(
+                      //     "logoObj",
+                      //     URL.createObjectURL(e.target.files[0])
+                      //   ); // for preview image
+                      // }}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        handleImageChange(e, 'logoFile')
                       }}
                       name="logo"
                       click-type="type1"
@@ -549,7 +542,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     inputProps={{ maxLength: 100 }}
                     fullWidth
                     type="text"
-                    defaultValue={groupData?.groupName}
+                    defaultValue={updateGroupData.groupName}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleInputChange(e, 'groupName')
+                    }}
                     label="ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
                     component={TextField}
                     style={{ marginTop: 3 }}
@@ -567,7 +563,6 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     value={groupTypeState}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setGroupTypeState(event.target.value);
-                      setFieldValue("groupType", event.target.value);
                     }}
                     aria-labelledby="group-type-row-radio-buttons-group-label"
                     name="groupType"
@@ -599,6 +594,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     fullWidth
                     label="ชื่อประธาน / เจ้าของร้าน"
                     component={TextField}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleInputChange(e, 'agency')
+                    }}
                     sx={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="agency" />
@@ -613,6 +611,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     type="text"
                     inputProps={{ maxLength: 10 }}
                     defaultValue={groupData?.phone}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleInputChange(e, 'phone')
+                    }}
                     fullWidth
                     label="เบอร์โทร"
                     component={TextField}
@@ -630,6 +631,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     type="email"
                     inputProps={{ maxLength: 120 }}
                     defaultValue={groupData?.email}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleInputChange(e, 'email')
+                    }}
                     fullWidth
                     label="อีเมล"
                     component={TextField}
@@ -769,7 +773,6 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     type="text"
                     fullWidth
                     value={zipCodeState}
-
                     onChange={(e: React.ChangeEvent<any>) => {
                       setZipCodeState(e.target.value);
                     }}
@@ -792,7 +795,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     type="text"
                     fullWidth
                     inputProps={{ maxLength: 5 }}
-                    defaultValue={groupData?.hno}
+                    defaultValue={updateGroupData?.hno}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleInputChange(e, 'hno')
+                    }}
                     label="บ้านเลขที่/หมู่"
                     component={TextField}
                     sx={{ marginTop: 3 }}
@@ -810,7 +816,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     name="lane"
                     type="text"
                     fullWidth
-                    defaultValue={groupData?.lane}
+                    defaultValue={updateGroupData?.lane}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleInputChange(e, 'lane')
+                    }}
                     inputProps={{ maxLength: 50 }}
                     label="ซอย"
                     component={TextField}
@@ -827,7 +836,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   <Field
                     name="road"
                     type="text"
-                    defaultValue={groupData?.road}
+                    defaultValue={updateGroupData?.road}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleInputChange(e, 'road')
+                    }}
                     inputProps={{ maxLength: 50 }}
                     fullWidth
                     label="ถนน"
@@ -844,7 +856,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   </FormLabel>
                   <Field
                     name="village"
-                    defaultValue={groupData?.village}
+                    defaultValue={updateGroupData?.village}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleInputChange(e, 'village')
+                    }}
                     type="text"
                     fullWidth
                     label="หมู่บ้าน"
@@ -944,9 +959,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     initialValues={groupData!}
                     validationSchema={validationSchema}
                     onSubmit={async (values, { setSubmitting }) => {
-                      setUpdateValue(values);
+                      setImageData(values);
                       setOpenDialog(true);
-                      // console.log(values);
                       setSubmitting(false);
                     }}
                   >
@@ -973,9 +987,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
               >
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <Marker position={center} draggable={true} eventHandlers={{
-          dragend: handleMarkerDragEnd
-        }}
-        >     
+                  dragend: handleMarkerDragEnd
+                }}
+                >
                   <Popup autoClose={false}>
                     <span>หมุดของคุณ</span>
                   </Popup>

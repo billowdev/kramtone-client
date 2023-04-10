@@ -5,6 +5,7 @@ import Image from "next/image";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import CardMedia from "@mui/material/CardMedia";
+import Link from "next/link"
 
 export default function Error() {
   const Item = styled(Paper)(({ theme }) => ({
@@ -32,7 +33,9 @@ export default function Error() {
               The page you’re looking for doesn’t exist.
             </Typography>
             <Typography variant="h6">ไม่พบหน้าเพจที่คุณต้องการ</Typography>
+            <Link href="/">
             <Button variant="contained">กลับสู่หน้าหลัก</Button>
+              </Link>
           </Grid>
           
           <Grid item xs={12} sm={8} md={8} >

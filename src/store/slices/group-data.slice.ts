@@ -50,9 +50,6 @@ export const getOneGroupDataAction = createAsyncThunk("GROUP_DATA/GET_ONE", asyn
 export const updateGroupDataAction = createAsyncThunk(
 	"GROUP_DATA/UPDATE",
 	async (data:any) => {
-		// console.log(data.body)
-		 
-		
 		await groupDataService.updateGroupData(data.id, data.body, data.accessToken);
 	}
 );

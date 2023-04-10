@@ -106,7 +106,7 @@ function SignInPage({}: Props) {
         dispatch(getOneGroupDataAction(response.payload.user.groupId));
         router.push("/panel/user/manage-group", undefined, { shallow: false });
       } else {
-        router.push("/panel", undefined, { shallow: false });
+        router.push("/panel/admin", undefined, { shallow: false });
       }
     }
     setTimeout(() => {
