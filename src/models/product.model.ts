@@ -1,3 +1,4 @@
+import { CategoryPayload } from "./category.model"
 import { GroupDataPayload } from "./group-data.model"
 
 export interface ProductResponse {
@@ -22,16 +23,12 @@ export interface ProductResponse {
 	price: string
 	createdAt?: string
 	updatedAt?: string
-	category?: Category
+	category?: CategoryPayload
 	productImages?: ProductImage[]
 	groupData?: GroupDataPayload
   }
   
 
-  export interface Category {
-	id: string
-	name: string
-  }
   export interface ProductImage {
 	id: string
 	image: string

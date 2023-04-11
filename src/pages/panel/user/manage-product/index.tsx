@@ -45,9 +45,8 @@ import {
   Typography,
 } from "@mui/material";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import {EditDialog, AddDialog, DeleteDialog} from "./components"
+import {EditDialog, DeleteDialog} from "@/components/User/ManageProduct"
 // import EditDialog from "./components"
-
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -85,15 +84,15 @@ const CustomToolbar: React.FunctionComponent<{
 type Props = {
   gid?: string,
   accessToken?: string,
-  productArray?:ProductPayload
+  // productArray?: ProductPayload[]
 }
 
 
-function UserPanelManageProduct({ gid, accessToken, productArray }: Props) {
+function UserPanelManageProduct({ gid, accessToken }: Props) {
   const theme = useTheme();
 
   const dispatch = useAppDispatch();
-  // const productArray = useSelector(productSelector);
+  const productData = useSelector(productSelector);
   const [openAddDialog, setOpenAddDialog] = React.useState<boolean>(false);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState<boolean>(false);
   const [openEditDialog, setOpenEditDialog] = React.useState<boolean>(false);
@@ -102,7 +101,7 @@ function UserPanelManageProduct({ gid, accessToken, productArray }: Props) {
 
   React.useEffect(() => {
     dispatch(getAllProductByGroupAction(gid!));
-  }, [dispatch]);
+  }, [dispatch, gid]);
 
   const [filterButtonEl, setFilterButtonEl] =
   React.useState<HTMLButtonElement | null>(null);
@@ -114,6 +113,7 @@ function UserPanelManageProduct({ gid, accessToken, productArray }: Props) {
   //     // dispatch(deleteProductAction({id:sid, gid}!))
       console.log(selectedProduct)
     }
+    setOpenDeleteDialog(false);
   }
 
   const handleDeleteCancel = () => {
@@ -124,6 +124,7 @@ function UserPanelManageProduct({ gid, accessToken, productArray }: Props) {
     if(selectedProduct) {
       console.log(selectedProduct)
     }
+    setOpenEditDialog(false);
   }
 
   const handleEditCancel = () => {
@@ -209,10 +210,10 @@ function UserPanelManageProduct({ gid, accessToken, productArray }: Props) {
          <DataGrid
     
         sx={{ backgroundColor: "white", height: "100vh", width: "80vw" }}
-        rows={productArray ?? []}
+        rows={productData?.productArray ?? []}
         columns={columns}
-        pageSize={25}
-        rowsPerPageOptions={[25]}
+        // pageSize={25}
+        // rowsPerPageOptions={[25]}
         components={{
           Toolbar: CustomToolbar,
         }}
@@ -241,12 +242,13 @@ export const getServerSideProps: GetServerSideProps = async (
   try {
     const accessToken = context.req.cookies['access_token']
     const { gid } = await authService.getSessionServerSide(accessToken!)
-    const productArray = await productService.getAllProductByGroup(gid)
+
+    // const productArray = await productService.getAllProductByGroup(gid)
     return {
       props: {
         gid,
         accessToken,
-        productArray
+        // productArray
       },
     };
   } catch (error) {
