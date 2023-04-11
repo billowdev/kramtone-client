@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import * as authService from "@/services/auth.service"
-import httpClient from "@/utils/httpClient.util";
+import httpClient from "@/common/utils/httpClient.util";
 import { AxiosRequestConfig } from "axios";
 import Router from "next/router";
 import { AuthResponseType, IAuthPayload, UserState } from "@/models/auth.model";
@@ -18,7 +18,8 @@ const initialState: UserState = {
 	isAuthenticating: true,
 	sub: "",
 	role: "",
-	username: ""
+	gid: "",
+	username: "",
 };
 
 export const signIn = createAsyncThunk(
@@ -81,6 +82,7 @@ export const authSlice = createSlice({
 				state.accessToken = action.payload.accessToken;
 				state.sub = action.payload.sub;
 				state.role = action.payload.role;
+				state.gid = action.payload.gid;
 			}
 
 		});
@@ -89,7 +91,7 @@ export const authSlice = createSlice({
 			state.isAuthenticated = false;
 			state.isAuthenticating = false;
 			state.sub = "";
-			// state.uid = "";
+			state.gid ="";
 		})
 
 		// builder.addCase(signUp.fulfilled, (state, action) => {
@@ -111,7 +113,7 @@ export const authSlice = createSlice({
 			state.isAuthenticated = false;
 			state.isAuthenticating = false;
 			state.sub = "";
-			// state.uid = "";
+			state.gid = "";
 
 		});
 
@@ -127,7 +129,10 @@ export const authSlice = createSlice({
 export const authSelector = (store: RootState) => store.auth;
 export const isAuthenticatedSelector = (store: RootState): boolean =>
 	store.auth.isAuthenticated;
-export const isAuthenticatingSelector = (store: RootState): boolean =>
-	store.auth.isAuthenticating;
+export const isAuthenticatingSelector = (store: RootState): boolean => store.auth.isAuthenticating;
+
+export const userRoleSelector = (store: RootState): any => store.auth.role;
+
+	
 
 export default authSlice.reducer;

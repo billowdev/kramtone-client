@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -38,11 +41,14 @@
       "@/models/*": [
         "models/*"
       ],
-      "@/utils/*": [
+      "@/common/utils/*": [
         "common/utils/*"
       ],
       "@/config/*": [
         "common/config/*"
+      ],
+      "@/common/types/*": [
+        "common/types/*"
       ],
       "@/*": [
         "/*"
@@ -53,7 +59,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/pages/panel/index.tsx"  ],
   "exclude": [
     "node_modules"
   ]

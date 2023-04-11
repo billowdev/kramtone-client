@@ -1,5 +1,4 @@
-import { ApiResponseType } from 'common/types/api-response.type';
-
+import {ApiResponseType} from "@/common/types/api-response.type"
 
 export interface GeographyType {
 	id: number;
@@ -13,33 +12,30 @@ export interface ProvinceType {
 	code: string;
 	nameTH: string;
 	nameEN: string;
-	GeographyId: number;
+	geographyId: number;
 }
 
-export type ProvinceResponseType = ApiResponseType<ProvinceType>
+export type ProvinceResponseType = ApiResponseType<Array<ProvinceType>>
 
 export interface DistrictType {
 	id: number;
 	code: number;
 	nameTH: string;
 	nameEN: string;
-	ProvinceId: number;
+	provinceId: number;
 }
 
-export type DistrictResponseType = ApiResponseType<DistrictType>
+export type DistrictResponseType = ApiResponseType<Array<DistrictType>>
 
-export interface SubDistrictType {
+export interface SubdistrictType {
 	id: number;
 	zipCode: number;
 	nameTH: string;
 	nameEN: string;
-	DistrictId: number;
+	districtId: number;
 }
 
-export type SubDistrictResponseType = ApiResponseType<SubDistrictType>
-
-
-
+export type SubdistrictResponseType = ApiResponseType<Array<SubdistrictType>>
 
 
 

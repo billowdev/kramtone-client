@@ -4,6 +4,7 @@ import type { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import React from 'react';
+import { Typography } from '@mui/material';
 const MapContainer = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), {
 	ssr: false, // disable server-side rendering
 });
@@ -87,7 +88,7 @@ const Map = ({ places }: MapProps) => {
 					<Popup>
 						<div>
 							<h3>{name}</h3>
-							<p>{address}</p>
+							<Typography>{address}</Typography>
 							<Image
 								src={image}
 								alt="My Image"

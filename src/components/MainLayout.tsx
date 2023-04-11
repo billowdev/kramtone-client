@@ -24,7 +24,7 @@ export default function MainLayout({ children }: LayoutProps) {
   const [open, setOpen] = React.useState(true);
 
   return (
-    <>
+    <React.Fragment>
       <CssBaseline />
       <Navbar />
       <Box component="main" sx={{ flexGrow: 1, p: 5 }}>
@@ -32,6 +32,6 @@ export default function MainLayout({ children }: LayoutProps) {
         {children}
       </Box>
       <Footer />
-    </>
+    </React.Fragment>
   );
 }
