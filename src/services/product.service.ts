@@ -32,7 +32,7 @@ export const updateProduct = async (id: string, data: FormData, accessToken: str
 	// for (const [key, value] of data.entries()) {
 	// 	console.log(key, value);
 	// }
-	const {data:response} = await axios.patch(`/groups/${id}`, data, {
+	const {data:response} = await axios.patch(`/product/${id}`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
 		},
@@ -42,8 +42,8 @@ export const updateProduct = async (id: string, data: FormData, accessToken: str
 
 };
 
-export const deleteGroupData = async (id: string): Promise<void> => {
-	await httpClient.delete(`/groups/${id}`, {
+export const deleteProduct = async (id: string): Promise<void> => {
+	await httpClient.delete(`/product/${id}`, {
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
 	});
 };

@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "@/store/store";
 import { ProductPayload, ProductArrayPayload, ProductArrayResponse } from "@/models/product.model";
 import axios from 'axios'
 import * as  productService from '@/services/product.service';
 import { GroupDataResponse } from '../../models/group-data.model';
+import { RootState, store } from "@/store/store";
 
 interface ProductState {
 	product: Partial<ProductPayload>,

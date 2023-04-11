@@ -16,15 +16,15 @@ export interface ProductResponse {
   
 
   export interface ProductPayload {
-	id: string
+	id?: string
 	name: string
 	desc: string
 	price: string
-	createdAt: string
-	updatedAt: string
-	category: Category
-	productImages: ProductImage[]
-	groupData: GroupDataPayload
+	createdAt?: string
+	updatedAt?: string
+	category?: Category
+	productImages?: ProductImage[]
+	groupData?: GroupDataPayload
   }
   
 

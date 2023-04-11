@@ -9,6 +9,9 @@ import { TransitionProps } from "@mui/material/transitions";
 import Link from "next/link";
 import AddIcon from "@mui/icons-material/Add";
 import withAuth from "@/components/withAuth";
+import { useTheme } from "@material-ui/core/styles";
+
+import * as productService from "@/services/product.service"
 import * as authService from "@/services/auth.service"
 import {ProductPayload} from "@/models/product.model"
 import { useSelector } from "react-redux";
@@ -34,12 +37,18 @@ import {
   DialogTitle,
   Fab,
   Grid,
+  Container,
   IconButton,
   Slide,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import {EditDialog, AddDialog, DeleteDialog} from "./components"
+// import EditDialog from "./components"
+
+
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>;
@@ -56,7 +65,7 @@ const CustomToolbar: React.FunctionComponent<{
 }> = ({ setFilterButtonEl }) => (
   <GridToolbarContainer>
     <GridToolbarFilterButton ref={setFilterButtonEl} />
-    <Link href="/panel/buildings/add" passHref>
+    <Link href="/panel/user/manage-product/add" passHref>
       <Fab
         color="primary"
         aria-label="add"
@@ -75,76 +84,71 @@ const CustomToolbar: React.FunctionComponent<{
 
 type Props = {
   gid?: string,
-  accessToken?: string
+  accessToken?: string,
+  productArray?:ProductPayload
 }
 
 
-function UserPanelManageProduct({ gid, accessToken }: Props) {
+function UserPanelManageProduct({ gid, accessToken, productArray }: Props) {
+  const theme = useTheme();
+
   const dispatch = useAppDispatch();
-  const productArray = useSelector(productSelector);
-  const [openDialog, setOpenDialog] = React.useState<boolean>(false);
+  // const productArray = useSelector(productSelector);
+  const [openAddDialog, setOpenAddDialog] = React.useState<boolean>(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = React.useState<boolean>(false);
+  const [openEditDialog, setOpenEditDialog] = React.useState<boolean>(false);
+
   const [selectedProduct, setSelectedProduct] = React.useState<ProductPayload | null>(null);
 
   React.useEffect(() => {
     dispatch(getAllProductByGroupAction(gid!));
   }, [dispatch]);
 
+  const [filterButtonEl, setFilterButtonEl] =
+  React.useState<HTMLButtonElement | null>(null);
+
+
+  const handleDeleteConfirm = () =>{
+    if(selectedProduct) {
+        //     const sid = selectedProduct.id
+  //     // dispatch(deleteProductAction({id:sid, gid}!))
+      console.log(selectedProduct)
+    }
+  }
+
+  const handleDeleteCancel = () => {
+    setOpenDeleteDialog(false);
+  };
+
+  const handleEditConfirm = () =>{
+    if(selectedProduct) {
+      console.log(selectedProduct)
+    }
+  }
+
+  const handleEditCancel = () => {
+    setOpenEditDialog(false);
+  };
   
-  const showDialog = () => {
-    if (selectedProduct === null) {
-      return;
-    }
+  
+  const handleAddConfirm = (product: ProductPayload) =>{
+    console.log(product)
+  }
 
-    return (
-      <Dialog
-        open={openDialog}
-        keepMounted
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">
-          <br />
-          คุณต้องการลบข้อมูลใช่หรือไม่? : {selectedProduct.name}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            คุณจะไม่สามารถกู้คืนข้อมูลได้หากลบข้อมูลแล้ว
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)} color="info">
-            ยกเลิก
-          </Button>
-          <Button onClick={handleDeleteConfirm} color="primary">
-            ลบ
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
+  const handleAddCancel = () => {
+    setOpenAddDialog(false);
   };
 
-  const handleDeleteConfirm = () => {
-    if (selectedProduct) {
-      const sid = selectedProduct.id
-      dispatch(deleteProductAction({id:sid, gid}!))
-      setOpenDialog(false);
-    }
-  };
+
 
   const columns: GridColDef[] = [
     // { field: "id", headerName: "ID", width: 280 },
 
     {
-      field: "bid",
-      // editable: true,
-      headerName: "รหัสโหนด",
-      width: 120,
-    },
-    {
       field: "name",
-       editable: true,
+      editable: true,
       headerName: "ชื่อโหนด",
-      width: 120,
+      width: 180,
     },
     {
       field: "desc",
@@ -152,25 +156,11 @@ function UserPanelManageProduct({ gid, accessToken }: Props) {
       headerName: "รายละเอียด",
       width: 180,
     },
+   
     {
-      field: "is_node",
-      headerName: "สถานะโหนด",
-      width: 100,
-    },
-    {
-      field: "lat",
-      headerName: "ละติจูด",
-      width: 100,
-    },
-    {
-      field: "lng",
-      headerName: "ลองจิจูด",
-      width: 100,
-    },
-    {
-      field: "image",
-      headerName: "รูปภาพ",
-      width: 100,
+      field: "price",
+      headerName: "ราคา",
+      width: 180,
     },
     {
       headerName: "การดำเนินการ",
@@ -183,7 +173,7 @@ function UserPanelManageProduct({ gid, accessToken }: Props) {
             size="large"
             onClick={() => {
               setSelectedProduct(row);
-              setOpenDialog(true);
+              setOpenDeleteDialog(true);
             }}
           >
             <DeleteIcon fontSize="inherit" />
@@ -191,7 +181,13 @@ function UserPanelManageProduct({ gid, accessToken }: Props) {
           <IconButton
             aria-label="edit"
             size="large"
-            onClick={() => router.push("/panel/buildings/edit?dataId=" + row.id)}
+            // onClick={() => 
+              // router.push("/panel/user/manage-product/edit?id=" + row.id)
+            // }
+            onClick={() => {
+              setSelectedProduct(row);
+              setOpenEditDialog(true);
+            }}
           >
             <EditIcon fontSize="inherit" />
           </IconButton>
@@ -200,9 +196,39 @@ function UserPanelManageProduct({ gid, accessToken }: Props) {
       ),
     },
   ];
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
-    <Layout>UserPanelManageProduct</Layout>
+    <Layout>
+    <Container sx={{
+        marginLeft: isSmallDevice ? 0 : 2, 
+        marginTop: isSmallDevice ? 0 : 4, 
+      }}>
+
+         {/* Summary Icons */}
+         <DataGrid
+    
+        sx={{ backgroundColor: "white", height: "100vh", width: "80vw" }}
+        rows={productArray ?? []}
+        columns={columns}
+        pageSize={25}
+        rowsPerPageOptions={[25]}
+        components={{
+          Toolbar: CustomToolbar,
+        }}
+        componentsProps={{
+          panel: {
+            anchorEl: filterButtonEl,
+          },
+          toolbar: {
+            setFilterButtonEl,
+          },
+        }}
+      />
+      <EditDialog open={openEditDialog} product={selectedProduct} onConfirm={handleEditConfirm} onCancel={handleEditCancel} />
+      <DeleteDialog open={openDeleteDialog} product={selectedProduct} onConfirm={handleDeleteConfirm} onCancel={handleDeleteCancel} />
+      </Container>
+    </Layout>
   )
 }
 
@@ -215,11 +241,12 @@ export const getServerSideProps: GetServerSideProps = async (
   try {
     const accessToken = context.req.cookies['access_token']
     const { gid } = await authService.getSessionServerSide(accessToken!)
-
+    const productArray = await productService.getAllProductByGroup(gid)
     return {
       props: {
         gid,
-        accessToken
+        accessToken,
+        productArray
       },
     };
   } catch (error) {
