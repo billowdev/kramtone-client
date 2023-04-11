@@ -186,12 +186,12 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     parseFloat(groupData?.lng ?? "104.1476"),
   ]; // Centered on Sakon Nakhon Province
   const zoom: number = 12;
-  const [imageData, setImageData] = React.useState<Partial<GroupDataPayload>>({
-    logoFile: "",
-    logoObj: "",
-    bannerFile: "",
-    bannerObj: "",
-  })
+
+  const [logoFile, setLogoFile] = React.useState<any | Blob>("")
+  const [logoObj, setLogoObj] = React.useState<URL | string>("")
+  const [bannerFile, setBannerFile] = React.useState<any | Blob>("")
+  const [bannerObj, setBannerObj] = React.useState<URL | string>("")
+
   const [updateGroupData, setUpdateGroupData] = React.useState<GroupDataPayload>({
     id: groupData?.id!,
     groupName: groupData?.groupName ?? '',
@@ -232,11 +232,6 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   const [subdistrictState, setSubdistrictState] = React.useState<string>(
     groupData?.subdistrict ?? ""
   );
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>, name: string) => {
-    const files = event?.target?.files?.[0]
-    setImageData(prevState => ({ ...prevState, [name]: files }));
-  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, name: string) => {
     const { value } = event.target;
@@ -317,7 +312,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   };
 
   const showPreviewLogo = (values: any) => {
-    if (values.logoObj) {
+      if (values.logoObj) {
       return (
         <Image
           alt="group logo image"
@@ -341,7 +336,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     }
   };
 
-  const showPreviewBanner = (values: any) => {
+  const showPreviewBanner = (values:any) => {
     if (values.bannerObj) {
       return (
         <Image
@@ -393,13 +388,13 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   };
   const handleEditConfirm = async () => {
     let formData: FormData = new FormData();
-    if (imageData.logoFile) {
-      formData.append("logoFile", imageData.logoFile);
+    
+    if (logoFile!="") {
+      formData.append("logoFile", logoFile);
     }
-    if (imageData.bannerFile) {
-      formData.append("bannerFile", imageData.bannerFile);
+    if (bannerFile!="") {
+      formData.append("bannerFile", bannerFile);
     }
-
     formData.append('groupData', JSON.stringify({
       'groupName': updateGroupData.groupName,
       'groupType': groupTypeState,
@@ -475,17 +470,17 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     </span>
                     <input
                       type="file"
-                      // onChange={(e: React.ChangeEvent<any>) => {
-                      //   e.preventDefault();
-                      //   setFieldValue("logoFile", e.target.files[0]); // for upload
-                      //   setFieldValue(
-                      //     "logoObj",
-                      //     URL.createObjectURL(e.target.files[0])
-                      //   ); // for preview image
-                      // }}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        handleImageChange(e, 'logoFile')
+                      onChange={(e: React.ChangeEvent<any>) => {
+                        e.preventDefault();
+                        setFieldValue("logoFile", e.target.files[0]); // for upload
+                        // setLogoFile(e.target.files[0])
+                        // setLogoObj(URL.createObjectURL(e.target.files[0]))
+                        setFieldValue(
+                          "logoObj",
+                          URL.createObjectURL(e.target.files[0])
+                        ); // for preview image
                       }}
+  
                       name="logo"
                       click-type="type1"
                       multiple
@@ -515,6 +510,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       type="file"
                       onChange={(e: React.ChangeEvent<any>) => {
                         e.preventDefault();
+                        // setBannerFile(e.target.files[0])
+                        // setBannerObj(URL.createObjectURL(e.target.files[0]))
                         setFieldValue("bannerFile", e.target.files[0]); // for upload
                         setFieldValue(
                           "bannerObj",
@@ -959,7 +956,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     initialValues={groupData!}
                     validationSchema={validationSchema}
                     onSubmit={async (values, { setSubmitting }) => {
-                      setImageData(values);
+                      setLogoFile(values.logoFile)
+                      setBannerFile(values.bannerFile)
                       setOpenDialog(true);
                       setSubmitting(false);
                     }}

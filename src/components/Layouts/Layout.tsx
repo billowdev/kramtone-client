@@ -20,6 +20,7 @@ import CustomMenuListItem from "@/components/Layouts/CustomMenuListItem";
 import Link from "next/link";
 import { signOut, authSelector } from "@/store/slices/auth.slice";
 import { groupDataSelector } from "@/store/slices/group-data.slice";
+import { makeStyles } from '@material-ui/core';
 
 import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
@@ -44,6 +45,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Typography,
   Fab,
   Grid,
   Slide,
@@ -51,6 +53,37 @@ import {
   TextField,
 } from "@mui/material";
 
+import CircularProgress, {
+  CircularProgressProps,
+} from '@mui/material/CircularProgress';
+
+function CircularProgressWithLabel(
+  props: CircularProgressProps & { value: number },
+) {
+  return (
+    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+      <CircularProgress variant="determinate" {...props} />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography
+          variant="caption"
+          component="div"
+          color="text.secondary"
+        >{`${Math.round(props.value)}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -84,12 +117,54 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
+const useStyles = makeStyles(() => ({
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
+}));
+
+
 function Layout({ children }: LayoutProps) {
+  const classes = useStyles();
+
+  const [progress, setProgress] = React.useState(10);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
+    }, 800);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  const [loading, setLoading] = React.useState(false)
+  const router = useRouter()
+
+  React.useEffect(() => {
+    const handleStart = () => setLoading(true)
+    const handleComplete = () => setLoading(false)
+
+    router.events.on('routeChangeStart', handleStart)
+    router.events.on('routeChangeComplete', handleComplete)
+    router.events.on('routeChangeError', handleComplete)
+
+    return () => {
+      router.events.off('routeChangeStart', handleStart)
+      router.events.off('routeChangeComplete', handleComplete)
+      router.events.off('routeChangeError', handleComplete)
+    }
+  }, [router])
+
+
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const router = useRouter();
+
   const userData = useSelector(authSelector);
   const groupData = useSelector(groupDataSelector);
   const isLoading = groupData?.groupData?.groupName === undefined;
@@ -268,6 +343,10 @@ function Layout({ children }: LayoutProps) {
           }}
         >
           <Toolbar />
+          {loading && 
+            <div className={classes.container}>
+            <CircularProgressWithLabel value={progress} />
+    </div>}
           {children}
           <Copyright sx={{ pt: 4 }} />
         </Box>
