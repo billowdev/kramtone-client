@@ -1,6 +1,6 @@
 import { Link, Typography } from "@mui/material";
 
-function Copyright(props: any) {
+function CopyrightComponent(props: any) {
 	return (
 		<Typography variant="body2" color="text.secondary" align="center" {...props}>
 			{'Copyright © '}
@@ -13,4 +13,4 @@ function Copyright(props: any) {
 	);
 }
 
-export default Copyright
+export default CopyrightComponent
