@@ -13,8 +13,13 @@ export const getAllCategoryByGroupId = async (id: string): Promise<CategoryArray
 	return response.payload;
 };
 
-export const getAllCategoryByGroup= async (): Promise<CategoryArrayResponse> => {
-	const { data: response } = await httpClient.get(`/categories/group`)
+export const getAllCategoryByGroup = async (accessToken:string): Promise<CategoryArrayResponse> => {
+	const {data:response} = await axios.get(`/categories/group`, {
+		headers: {
+			Authorization: `Bearer ${accessToken}`
+		},
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
+	});
 	return response.payload;
 };
 

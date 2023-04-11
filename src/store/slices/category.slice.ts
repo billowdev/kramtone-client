@@ -22,33 +22,33 @@ const initialState: CategoryState = {
 	categoryArray: [],
 };
 
-export const getAllCategoryByGroupIdAction = createAsyncThunk("CATEGORY_ACTION/GROUP_GET_ALL_BY_GROUP_ID", async (id: string): Promise<any> => {
+export const getAllCategoryByGroupIdAction = createAsyncThunk("CATEGORY/GROUP_GET_ALL_BY_GROUP_ID", async (id: string): Promise<any> => {
 	const response = await categoryService.getAllCategoryByGroupId(id)
 	return response;
 });
 
-export const getAllCategoryByGroupAction = createAsyncThunk("CATEGORY_ACTION/GROUP_GET_ALL_BY_GROUP", async (id: string): Promise<any> => {
-	const response = await categoryService.getAllCategoryByGroup()
+export const getAllCategoryByGroupAction = createAsyncThunk("CATEGORY/GROUP_GET_ALL_BY_GROUP", async (accessToken: string): Promise<any> => {
+	const response = await categoryService.getAllCategoryByGroup(accessToken)
+	console.log(response)
 	return response;
 });
 
-
-export const getOneCategoryAction = createAsyncThunk("CATEGORY_ACTION/GET_ONE", async (id: string): Promise<any> => {
+export const getOneCategoryAction = createAsyncThunk("CATEGORY/GET_ONE", async (id: string): Promise<any> => {
 	const response = await categoryService.getOneCategory(id)
 	return response;
 });
 
 
 export const deleteCategoryAction = createAsyncThunk(
-	"CATEGORY_ACTION/DELETE",
+	"CATEGORY/DELETE",
 	async (data:{id: string, gid:string}) => {
 	  await categoryService.deleteCategory(data.id!);
 	  store.dispatch(getOneCategoryAction(data.gid!));
 	}
   );
 
-export const productSlice = createSlice({
-	name: "product",
+export const categorySlice = createSlice({
+	name: "category",
 	initialState: initialState,
 	reducers: {
 
@@ -60,7 +60,6 @@ export const productSlice = createSlice({
 
 		builder.addCase(getAllCategoryByGroupAction.rejected, (state, action) => {
 			state.categoryArray = [];
-
 		})
 
 		builder.addCase(getAllCategoryByGroupIdAction.fulfilled, (state, action) => {
@@ -81,6 +80,6 @@ export const productSlice = createSlice({
 	}
 })
 
-export const productSelector = (store: RootState) => store.product;
+export const categorySelector = (store: RootState) => store.category;
 
-export default productSlice.reducer;
+export default categorySlice.reducer;

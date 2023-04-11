@@ -1,17 +1,17 @@
 import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
-import { ProductPayload } from '@/models/product.model';
+import { CategoryPayload } from '@/models/category.model';
 
 interface DeleteDialogProps {
   open: boolean;
-  product: ProductPayload | null;
-  onConfirm: (product: ProductPayload | null) => void;
+  category: CategoryPayload | null;
+  onConfirm: (category: CategoryPayload | null) => void;
   onCancel: () => void;
 }
 
-export const DeleteDialog: React.FC<DeleteDialogProps> = ({ open, product, onConfirm, onCancel }) => {
+export const DeleteDialog: React.FC<DeleteDialogProps> = ({ open, category, onConfirm, onCancel }) => {
   const handleDeleteConfirm = () => {
-    onConfirm(product);
+    onConfirm(category);
   };
 
   return (
@@ -23,7 +23,7 @@ export const DeleteDialog: React.FC<DeleteDialogProps> = ({ open, product, onCon
     >
       <DialogTitle id="alert-dialog-slide-title">
         <br />
-       ลบข้อมูล : {product?.name}
+       ลบข้อมูล : {category?.name}
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">

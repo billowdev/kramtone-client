@@ -1,17 +1,17 @@
 import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
-import { ProductPayload } from '@/models/product.model';
+import { CategoryPayload } from '@/models/category.model';
 
 interface EditDialogProps {
   open: boolean;
-  product: ProductPayload | null;
-  onConfirm: (product: ProductPayload | null) => void;
+  category: CategoryPayload | null;
+  onConfirm: (category: CategoryPayload | null) => void;
   onCancel: () => void;
 }
 
-export const EditDialog: React.FC<EditDialogProps> = ({ open, product, onConfirm, onCancel }) => {
+export const EditDialog: React.FC<EditDialogProps> = ({ open, category, onConfirm, onCancel }) => {
   const handleEditConfirm = () => {
-    onConfirm(product);
+    onConfirm(category);
   };
 
   return (
@@ -23,7 +23,7 @@ export const EditDialog: React.FC<EditDialogProps> = ({ open, product, onConfirm
     >
       <DialogTitle id="alert-dialog-slide-title">
         <br />
-        แก้ไขข้อมูล : {product?.name}
+        แก้ไขข้อมูล : {category?.name}
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
