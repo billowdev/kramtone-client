@@ -21,7 +21,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import Layout from '@/components/Layouts/Layout';
-import { InputBase } from '@mui/material';
+import { InputBase, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 
@@ -149,7 +149,7 @@ const DEFAULT_ORDER = 'asc';
 const DEFAULT_ORDER_BY = 'calories';
 const DEFAULT_ROWS_PER_PAGE = 5;
 
-interface CategoryTableProps {
+interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (event: React.MouseEvent<unknown>, newOrderBy: keyof Data) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -158,7 +158,7 @@ interface CategoryTableProps {
   rowCount: number;
 }
 
-function CategoryTableHead(props: CategoryTableProps) {
+function EnhancedTableHead(props: EnhancedTableProps) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
     props;
   const createSortHandler =
@@ -206,11 +206,13 @@ function CategoryTableHead(props: CategoryTableProps) {
   );
 }
 
-interface CategoryTableToolbarProps {
+interface EnhancedTableToolbarProps {
   numSelected: number;
+  // searchQuery : any;
+  // onSearchQueryChange : any;
 }
 
-function CategoryTableToolbar(props: CategoryTableToolbarProps) {
+function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { numSelected } = props;
 
   return (
@@ -260,7 +262,7 @@ function CategoryTableToolbar(props: CategoryTableToolbarProps) {
   );
 }
 
-export default function CategoryTable() {
+export default function EnhancedTable() {
   const [order, setOrder] = React.useState<Order>(DEFAULT_ORDER);
   const [orderBy, setOrderBy] = React.useState<keyof Data>(DEFAULT_ORDER_BY);
   const [selected, setSelected] = React.useState<readonly string[]>([]);
@@ -269,6 +271,9 @@ export default function CategoryTable() {
   const [visibleRows, setVisibleRows] = React.useState<Data[] | null>(null);
   const [rowsPerPage, setRowsPerPage] = React.useState(DEFAULT_ROWS_PER_PAGE);
   const [paddingHeight, setPaddingHeight] = React.useState(0);
+  const [searchQuery, setSearchQuery] = React.useState<any>('');
+
+ 
 
   React.useEffect(() => {
     let rowsOnMount = stableSort(
@@ -376,28 +381,103 @@ export default function CategoryTable() {
 
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
+
+  
+  function handleSearchQueryChange(event: React.ChangeEvent<HTMLInputElement>) {
+    // const { value } = event.target;
+    console.log(event.target.value);
+    // setSearchQuery(event);
+  }
+
+  function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+    const { numSelected,  } = props;
+  
+    // const handleSearchQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //   console.log(event.target.value)
+    // };
+  
+    return (
+      <Toolbar
+        sx={{
+          pl: { sm: 2 },
+          pr: { xs: 1, sm: 1 },
+          ...(numSelected > 0 && {
+            bgcolor: (theme) =>
+              alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+          }),
+        }}
+      >
+        {numSelected > 0 ? (
+          <Typography
+            sx={{ flex: '1 1 100%' }}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+          >
+            {numSelected} selected
+          </Typography>
+        ) : (
+          <>
+            <Typography
+              sx={{ flex: '1 1 100%' }}
+              variant="h6"
+              id="tableTitle"
+              component="div"
+            >
+              ประเภทสินค้า
+            </Typography>
+            <TextField
+              sx={{ ml: 2, flexShrink: 0 }}
+              label="ค้นหา"
+              // value={searchQuery}
+              onChange={handleSearchQueryChange}
+            />
+          </>
+        )}
+        {numSelected > 0 ? (
+          <Tooltip title="Delete">
+            <IconButton>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title="Filter list">
+            <IconButton>
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+      </Toolbar>
+    );
+  }
+
+  
   return (
     <Layout>
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        <CategoryTableToolbar numSelected={selected.length} />
-        <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
-          >
-            <CategoryTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {visibleRows
-                ? visibleRows.map((row, index) => {
+      <Box sx={{ width: '100%' }}>
+        <Paper sx={{ width: '100%', mb: 2 }}>
+          <EnhancedTableToolbar
+            // searchQuery={searchQuery}
+            // onSearchQueryChange={handleSearchQueryChange}
+            numSelected={selected.length}
+          />
+          <TableContainer>
+            <Table
+              sx={{ minWidth: 750 }}
+              aria-labelledby="tableTitle"
+              size={dense ? 'small' : 'medium'}
+            >
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={rows.length}
+              />
+              <TableBody>
+                {visibleRows
+                  ? visibleRows.map((row, index) => {
                     const isItemSelected = isSelected(row.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -436,34 +516,34 @@ export default function CategoryTable() {
                       </TableRow>
                     );
                   })
-                : null}
-              {paddingHeight > 0 && (
-                <TableRow
-                  style={{
-                    height: paddingHeight,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+                  : null}
+                {paddingHeight > 0 && (
+                  <TableRow
+                    style={{
+                      height: paddingHeight,
+                    }}
+                  >
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
+        <FormControlLabel
+          control={<Switch checked={dense} onChange={handleChangeDense} />}
+          label="Dense padding"
         />
-      </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
-    </Box>
+      </Box>
     </Layout>
   );
 }
