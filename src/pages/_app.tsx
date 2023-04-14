@@ -3,15 +3,22 @@ import type { AppProps } from "next/app";
 import { store } from "@/store/store";
 import { Provider } from "react-redux";
 import * as React from "react";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, StyledEngineProvider, ThemeProvider } from "@mui/material";
 import { Toaster } from "react-hot-toast";
 import { fetchSession } from "@/store/slices/auth.slice";
 import {
 	getOneGroupDataAction,
 } from "@/store/slices/group-data.slice";
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
 
-import { SessionResponseType } from "@/models/auth.model";
 import { ServerStyleSheets } from "@material-ui/core";
+export const muiCache = createCache({
+	key: 'mui',
+	prepend: true,
+});
+import { CookiesProvider } from 'react-cookie';
+
 
 const drawerWidth = 240;
 
@@ -98,6 +105,7 @@ export const CustomTheme = createTheme({
 
 function MyApp({ Component, pageProps }: AppProps) {
 
+
 	// React.useEffect(() => {
 	// 	async function fetchData() {
 	// 		const response = await store.dispatch(fetchSession());
@@ -111,7 +119,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 	React.useEffect(() => {
 		store.dispatch(fetchSession());
-	  }, []);
+	}, []);
 
 	// React.useEffect(() => {
 	// 	async function fetchData() {
@@ -127,10 +135,14 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 	return (
 		<Provider store={store}>
-			<ThemeProvider theme={CustomTheme}>
-				<Component {...pageProps} />
-				<Toaster />
-			</ThemeProvider>
+			<CookiesProvider>
+				<ThemeProvider theme={CustomTheme}>
+					<Component {...pageProps} />
+					<Toaster />
+				</ThemeProvider>
+			</CookiesProvider>
+
+
 		</Provider>
 	);
 }
