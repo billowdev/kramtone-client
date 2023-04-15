@@ -43,6 +43,8 @@ export const updateCategory = async (id: string, data: FormData, accessToken: st
 	// for (const [key, value] of data.entries()) {
 	// 	console.log(key, value);
 	// }
+	// console.log("===============")
+	// console.log(id, accessToken)
 	const {data:response} = await axios.patch(`/categories/${id}`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`

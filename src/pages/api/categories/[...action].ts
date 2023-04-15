@@ -11,11 +11,11 @@ import {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.query.action) {
 		const requestAction = req.query['action'][0]
+		
 		// getAllByGroup
 		if (req.method === HTTP_METHOD_GET && requestAction == "getAllByGroup") {
 			return getAllCategoryByGroup(req, res);
-		
-		}
+		}	
 		else if (req.method === HTTP_METHOD_DELETE) {
 			return deleteCategory(req, res);
 		} else if (req.method === HTTP_METHOD_PATCH) {
@@ -28,6 +28,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		}
 	}
 }
+
+
 
 async function getAllCategoryByGroup(req: NextApiRequest, res: NextApiResponse<any>) {
 	const accessToken = req.cookies[ACCESS_TOKEN_KEY];

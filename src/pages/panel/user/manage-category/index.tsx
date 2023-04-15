@@ -66,6 +66,8 @@ import {
   MenuItem
 } from '@material-ui/core';
 
+import {  Modal } from '@mui/material';
+
 const useStyles = makeStyles({
   customToolbar: {
     position: 'relative',
@@ -194,12 +196,11 @@ function UserPanelManageCategory({ accessToken}: Props) {
     setOpenAddDialog(false);
   };
 
-  const handleEditClick = (e: React.ChangeEvent<HTMLInputElement>, row: CategoryPayload | null) => {
-    setOpenEditDialog(true)
-  }
+
   const handleDeleteClick = (e: React.ChangeEvent<HTMLInputElement>, row: CategoryPayload | null) => {
     setOpenDeleteDialog(true)
   }
+
 
   const showEditDialog = () => {
     if (selectedCategory === null) {
@@ -215,13 +216,10 @@ function UserPanelManageCategory({ accessToken}: Props) {
       >
         <DialogTitle id="alert-dialog-slide-title">
 
-  
           Confirm to delete the product? : {selectedCategory.name}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            You cannot restore deleted product.
-          </DialogContentText>
+        
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenEditDialog(false)} color="info">
@@ -268,13 +266,13 @@ function UserPanelManageCategory({ accessToken}: Props) {
           <IconButton
             aria-label="edit"
             size="large"
-            // onClick={() => 
-            // router.push("/panel/user/manage-product/edit?id=" + row.id)
-            // }
-            onClick={() => {
-              setSelectedCategory(row);
-              setOpenEditDialog(true);
-            }}
+            onClick={() => 
+            router.push("/panel/user/manage-category/edit?id=" + row.id)
+            }
+            // onClick={() => {
+            //   setSelectedCategory(row);
+            //   // setOpenEditDialog(true);
+            // }}
           >
             <EditIcon fontSize="inherit" />
           </IconButton>
@@ -313,6 +311,8 @@ function UserPanelManageCategory({ accessToken}: Props) {
           }}
         />
       </Container>
+
+  
 {showEditDialog()}
     </Layout>
   )

@@ -49,6 +49,15 @@ export const deleteCategoryAction = createAsyncThunk(
 	}
 );
 
+export const updateCategoryAction = createAsyncThunk(
+	"CATEGORY/UPDATE",
+	async (data:any) => {
+		console.log(data)
+		await categoryService.updateCategory(data.id!, data.body, data.accessToken!);
+		// store.dispatch(getOneCategoryAction(data.gid!));
+	}
+);
+
 export const categorySlice = createSlice({
 	name: "category",
 	initialState: initialState,

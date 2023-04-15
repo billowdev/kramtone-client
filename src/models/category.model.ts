@@ -23,4 +23,6 @@ export interface CategoryPayload {
 	isDefault?: boolean
 	createdAt?: string
 	updatedAt?: string
+	image_obj? : any | Blob
+	image? : URL | string;
 }
