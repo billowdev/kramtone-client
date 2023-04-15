@@ -106,6 +106,7 @@ interface Data {
   name: string;
   desc: string;
   image: string;
+  // action?: string | undefined;
 }
 
 interface HeadCell {
@@ -114,7 +115,7 @@ interface HeadCell {
   desc: boolean;
   name: boolean;
   image: boolean;
-  action: boolean;
+  // action: boolean;
 }
 
 const headCells: readonly HeadCell[] = [
@@ -124,12 +125,14 @@ const headCells: readonly HeadCell[] = [
     desc: true,
     image: false,
     label: 'ชื่อประเภทสินค้า',
+
   },
   {
     id: 'desc',
     name: true,
     desc: false,
     image: false,
+
     label: 'รายละเอียดประเภทสินค้า',
   },
   {
@@ -139,14 +142,7 @@ const headCells: readonly HeadCell[] = [
     desc: false,
     label: 'รูปภาพ',
   },
-  {
-    id: 'action',
-    name: false,
-    image: false,
-    desc: false,
-    action: true,
-    label: 'การดำเนินการ',
-  },
+
 ];
 
 interface EnhancedTableProps {
@@ -157,15 +153,21 @@ interface EnhancedTableProps {
   orderBy: string;
   rowCount: number;
 }
+interface EnhancedTableProps {
+  numSelected: number;
+  onRequestSort: (event: React.MouseEvent<unknown>, newOrderBy: keyof Data) => void;
+  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  order: Order;
+  orderBy: string;
+  rowCount: number;
+}
 
 function EnhancedTableHead(props: EnhancedTableProps) {
+  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
 
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
-  const createSortHandler =
-    (newOrderBy: keyof Data) => (event: React.MouseEvent<unknown>) => {
-      onRequestSort(event, newOrderBy);
-    };
+  const createSortHandler = (newOrderBy: keyof Data) => (event: React.MouseEvent<unknown>) => {
+    onRequestSort(event, newOrderBy);
+  };
 
   return (
     <TableHead>
@@ -184,7 +186,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.name ? 'right' : 'left'}
+            align="center"  // centered alignment
             padding={headCell.desc ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -207,19 +209,21 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   );
 }
 
+
+
 const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps) => {
 
   function createData(
-    id: string | undefined = '',
-    name: string | undefined = '',
-    desc: string | undefined = '',
-    image: string | undefined = ''
+    id: string ,
+    name: string ,
+    desc: string ,
+    image: string ,
   ): CategoryPayload {
     return {
       id,
       name,
       desc,
-      image
+      image,
     };
   }
 
