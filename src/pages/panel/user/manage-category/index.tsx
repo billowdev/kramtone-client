@@ -18,6 +18,7 @@ import withAuth from "@/components/withAuth";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Paper from '@mui/material/Paper';
+import TablePagination from '@mui/material/TablePagination';
 
 
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -57,13 +58,34 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   return 0;
 }
 
+type Order = 'asc' | 'desc';
 
+function getComparator<Key extends keyof any>(
+  order: Order,
+  orderBy: Key,
+): (
+  a: { [key in Key]: number | string },
+  b: { [key in Key]: number | string },
+) => number {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
 
-interface TableData {
-  id: number;
-  name: string;
-  age: number;
-  gender: string;
+// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
+// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
+// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
+// with exampleArray.slice().sort(exampleComparator)
+function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
+  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) {
+      return order;
+    }
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
 }
 
 interface PageProps {
@@ -72,17 +94,48 @@ interface PageProps {
   accessToken?: string
 }
 
+const DEFAULT_ORDER = 'asc';
+const DEFAULT_ORDER_BY = 'name';
+const DEFAULT_ROWS_PER_PAGE = 5;
+
+
+
 
 
 const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps) => {
 
-
+  function createData(
+    id: string | undefined = '',
+    name: string | undefined = '',
+    desc: string | undefined = '',
+    image: string | undefined = ''
+  ): Data {
+    return {
+      id,
+      name,
+      desc,
+      image
+    };
+  }
+  
+  const rows = categoryArray?.map((category) =>
+  createData(category.id, category.name, category.desc, category.image)
+  ) ?? [];
+  
+  
   const dispatch = useAppDispatch();
   const [sortConfig, setSortConfig] = useState<{ key: keyof CategoryPayload, direction: string }>({ key: 'name', direction: 'ascending' });
-  const [orderBy, setOrderBy] = useState("name");
   const [filterText, setFilterText] = useState("");
-  const [order, setOrder] = useState("asc");
 
+
+  const [order, setOrder] = React.useState<Order>(DEFAULT_ORDER);
+  const [orderBy, setOrderBy] = React.useState<keyof Data>(DEFAULT_ORDER_BY);
+  const [selected, setSelected] = React.useState<readonly string[]>([]);
+  const [page, setPage] = React.useState(0);
+  const [dense, setDense] = React.useState(false);
+  const [visibleRows, setVisibleRows] = React.useState<Data[] | null>(null);
+  const [rowsPerPage, setRowsPerPage] = React.useState(DEFAULT_ROWS_PER_PAGE);
+  const [paddingHeight, setPaddingHeight] = React.useState(0);
 
   const handleSort = (key: keyof CategoryPayload) => {
     let direction = 'ascending';
@@ -113,6 +166,49 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
   const handleCreate = () => {
     router.push("/user/manage-category/create");
   };
+
+  const handleChangePage = React.useCallback(
+    (event: unknown, newPage: number) => {
+      setPage(newPage);
+
+      const sortedRows = stableSort(rows, getComparator(order, orderBy));
+      const updatedRows = sortedRows.slice(
+        newPage * rowsPerPage,
+        newPage * rowsPerPage + rowsPerPage,
+      );
+      setVisibleRows(updatedRows);
+
+      // Avoid a layout jump when reaching the last page with empty rows.
+      const numEmptyRows =
+        newPage > 0 ? Math.max(0, (1 + newPage) * rowsPerPage - rows.length) : 0;
+
+      const newPaddingHeight = (dense ? 33 : 53) * numEmptyRows;
+      setPaddingHeight(newPaddingHeight);
+    },
+    [order, orderBy, dense, rowsPerPage],
+  );
+
+  const handleChangeRowsPerPage = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const updatedRowsPerPage = parseInt(event.target.value, 10);
+      setRowsPerPage(updatedRowsPerPage);
+
+      setPage(0);
+
+      const sortedRows = stableSort(rows, getComparator(order, orderBy));
+      const updatedRows = sortedRows.slice(
+        0 * updatedRowsPerPage,
+        0 * updatedRowsPerPage + updatedRowsPerPage,
+      );
+      setVisibleRows(updatedRows);
+
+      // There is no layout jump to handle on the first page.
+      setPaddingHeight(0);
+    },
+    [order, orderBy],
+  );
+
+
 
   return (
     <Layout>
@@ -169,6 +265,15 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={categoryArray.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
       </Box>
     </Layout>
   );
