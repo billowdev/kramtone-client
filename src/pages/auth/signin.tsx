@@ -33,7 +33,7 @@ import withAuth from "@/components/withAuth";
 import Image from "next/image";
 import { toast } from "react-hot-toast";
 import { useTheme } from "@material-ui/core/styles";
-import { CustomTheme } from "@/pages/_app";
+
 import { getOneGroupDataAction } from "@/store/slices/group-data.slice";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Card, CardContent, CardActions } from "@mui/material";
@@ -59,7 +59,7 @@ function SignInPage({}: Props) {
   const avatarStyle = { backgroundColor: "#103D81", alginContent: "center" };
   const btnStyle = {
     margin: "8px 0",
-    backgroundColor: CustomTheme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main,
     color: "#fff",
     fontWeight: "bold",
     // boxShadow: `0px 1px 5px ${Theme.palette.primary.dark}`,
@@ -68,8 +68,8 @@ function SignInPage({}: Props) {
 
   const secondBtnstyle = {
     margin: "8px 0",
-    backgroundColor: CustomTheme.palette.common.white,
-    color: CustomTheme.palette.secondary.dark,
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.secondary.dark,
     fontWeight: "bold",
     marginRight: "8px",
     // boxShadow: `0px 1px 5px ${Theme.palette.primary.dark}`,

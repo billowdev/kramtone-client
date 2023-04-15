@@ -3,6 +3,7 @@ import { CategoryPayload, CategoryArrayPayload, CategoryArrayResponse } from "@/
 import axios from 'axios'
 import * as  categoryService from '@/services/category.service';
 import { RootState, store } from "@/store/store";
+import httpClient from "@/common/utils/httpClient.util";
 
 interface CategoryState {
 	category: Partial<CategoryPayload>,
@@ -27,10 +28,11 @@ export const getAllCategoryByGroupIdAction = createAsyncThunk("CATEGORY/GROUP_GE
 	return response;
 });
 
-export const getAllCategoryByGroupAction = createAsyncThunk("CATEGORY/GROUP_GET_ALL_BY_GROUP", async (accessToken: string): Promise<any> => {
-	const response = await categoryService.getAllCategoryByGroup(accessToken)
-	console.log(response)
-	return response;
+export const getAllCategoryByGroupAction = createAsyncThunk("CATEGORY/GROUP_GET_ALL_BY_GROUP", async (): Promise<any> => {
+	const {data:response} = await httpClient.get(`/categories/getAllByGroup`, {
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+	});
+	return response.payload;
 });
 
 export const getOneCategoryAction = createAsyncThunk("CATEGORY/GET_ONE", async (id: string): Promise<any> => {
@@ -41,11 +43,11 @@ export const getOneCategoryAction = createAsyncThunk("CATEGORY/GET_ONE", async (
 
 export const deleteCategoryAction = createAsyncThunk(
 	"CATEGORY/DELETE",
-	async (data:{id: string, gid:string}) => {
-	  await categoryService.deleteCategory(data.id!);
-	  store.dispatch(getOneCategoryAction(data.gid!));
+	async (data: { id: string, gid: string, accessToken: string }) => {
+		await categoryService.deleteCategory(data.id!, data.accessToken!);
+		store.dispatch(getOneCategoryAction(data.gid!));
 	}
-  );
+);
 
 export const categorySlice = createSlice({
 	name: "category",

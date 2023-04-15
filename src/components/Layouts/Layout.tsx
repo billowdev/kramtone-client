@@ -15,7 +15,6 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { mainListItems, secondaryListItems } from "./listItems";
 import Copyright from "@/components/Copyright";
 import AppBarComponent from "./AppBar";
-import { CustomTheme } from "../../pages/_app";
 import CustomMenuListItem from "@/components/Layouts/CustomMenuListItem";
 import Link from "next/link";
 import { signOut, authSelector } from "@/store/slices/auth.slice";
@@ -36,6 +35,7 @@ import ColorLensIcon from "@mui/icons-material/ColorLens";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import HomeIcon from '@mui/icons-material/Home';
+import { useTheme } from "@material-ui/core/styles";
 
 import {
   Box,
@@ -129,7 +129,7 @@ const useStyles = makeStyles(() => ({
 
 function Layout({ children }: LayoutProps) {
   const classes = useStyles();
-
+  const theme = useTheme();
   const [progress, setProgress] = React.useState(10);
 
   React.useEffect(() => {
@@ -205,7 +205,7 @@ function Layout({ children }: LayoutProps) {
   };
 
   return (
-    <ThemeProvider theme={CustomTheme}>
+    // <ThemeProvider theme={theme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBarComponent open={open} onDrawerOpen={() => setOpen(!open)} />
@@ -319,12 +319,12 @@ function Layout({ children }: LayoutProps) {
               >
                 <ListItemIcon>
                   <LogoutIcon
-                    style={{ color: CustomTheme.palette.grey[900] }}
+                    style={{ color: theme.palette.grey[900] }}
                   />
                 </ListItemIcon>
                 <ListItemText
                   primary={"ออกจากระบบ"}
-                  style={{ color: CustomTheme.palette.grey[900] }}
+                  style={{ color: theme.palette.grey[900] }}
                 />
               </ListItem>
             </Box>
@@ -336,7 +336,7 @@ function Layout({ children }: LayoutProps) {
             backgroundColor: (theme) =>
               theme.palette.mode === "light"
                 ? theme.palette.grey[100]
-                : theme.palette.grey[900],
+                : theme.palette.grey[100],
             flexGrow: 1,
             height: "100vh",
             overflow: "auto",
@@ -352,7 +352,7 @@ function Layout({ children }: LayoutProps) {
         </Box>
         {showSignOutDialog()}
       </Box>
-    </ThemeProvider>
+    // </ThemeProvider>
   );
 }
 

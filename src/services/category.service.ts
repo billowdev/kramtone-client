@@ -53,9 +53,12 @@ export const updateCategory = async (id: string, data: FormData, accessToken: st
 
 };
 
-export const deleteCategory = async (id: string): Promise<void> => {
+export const deleteCategory = async (id: string, accessToken: string): Promise<void> => {
 	await httpClient.delete(`/categoriess/${id}`, {
-		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+		headers: {
+			Authorization: `Bearer ${accessToken}`
+		},
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
 	});
 };
 
