@@ -1,547 +1,324 @@
-import React, { useState } from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, tableCellClasses, Button, IconButton, TableSortLabel } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { Box } from "@mui/system";
+import React from 'react'
 import Layout from '@/components/Layouts/Layout';
 import { useAppDispatch } from "@/store/store";
 import { getAllCategoryByGroupAction, categorySelector, deleteCategoryAction } from "@/store/slices/category.slice";
 import router from "next/router";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { TransitionProps } from "@mui/material/transitions";
+import Link from "next/link";
+import AddIcon from "@mui/icons-material/Add";
+import withAuth from "@/components/withAuth";
+import { useTheme } from "@material-ui/core/styles";
 import * as categoryService from "@/services/category.service"
+import * as authService from "@/services/auth.service"
 import { CategoryPayload } from "@/models/category.model"
 import { useSelector } from "react-redux";
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
 } from "next";
-import * as authService from "@/services/auth.service"
-import withAuth from "@/components/withAuth";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Paper from '@mui/material/Paper';
-import TablePagination from '@mui/material/TablePagination';
-import Checkbox from '@mui/material/Checkbox';
-import { visuallyHidden } from '@mui/utils';
+import {
+  DataGrid,
+  GridColDef,
+  GridRenderCellParams,
+  GridToolbarContainer,
+  GridToolbarFilterButton,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Fab,
+  Grid,
+  Container,
+  IconButton,
+  Slide,
+  Stack,
+  TextField,
+  Typography,
+  Toolbar,
+  FormControl,
+  InputLabel,
+  Select
+} from "@mui/material";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { EditDialog, DeleteDialog } from "@/components/User/ManageCategory"
+// import EditDialog from "./components"
+import { makeStyles } from "@material-ui/core";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Paper,
+  Menu,
+  MenuItem
+} from '@material-ui/core';
 
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     backgroundColor: theme.palette.primary.main,
-//     color: theme.palette.common.white,
-//     cursor: 'pointer',
-//     '&:hover': {
-//       backgroundColor: theme.palette.primary.main,
-//     },
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: theme.palette.action.hover,
-//   },
-//   // Hide table row if not matched by filter
-//   "&[data-hide='true']": {
-//     display: "none",
-//   },
-// }));
-
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-type Order = 'asc' | 'desc';
-
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key,
-): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
-) => number {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
-interface PageProps {
-  categoryArray?: CategoryPayload[];
-  gid?: string,
-  accessToken?: string
-}
-
-const DEFAULT_ORDER = 'asc';
-const DEFAULT_ORDER_BY = 'name';
-const DEFAULT_ROWS_PER_PAGE = 5;
-
-
-
-interface Data {
-  id: string;
-  name: string;
-  desc: string;
-  image: string;
-  // action?: string | undefined;
-}
-
-interface HeadCell {
-  id: keyof Data;
-  label: string;
-  desc: boolean;
-  name: boolean;
-  image: boolean;
-  // action: boolean;
-}
-
-const headCells: readonly HeadCell[] = [
-  {
-    id: 'name',
-    name: false,
-    desc: true,
-    image: false,
-    label: 'ชื่อประเภทสินค้า',
-
+const useStyles = makeStyles({
+  customToolbar: {
+    position: 'relative',
   },
-  {
-    id: 'desc',
-    name: true,
-    desc: false,
-    image: false,
-
-    label: 'รายละเอียดประเภทสินค้า',
+  addButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
   },
-  {
-    id: 'image',
-    name: false,
-    image: true,
-    desc: false,
-    label: 'รูปภาพ',
+  toolbar: {
+    display: 'flex',
+    justifyContent: 'space-between',
   },
+  formControl: {
+    minWidth: 120,
+    marginRight: 2,
+  },
+  tableContainer: {
+    paddingTop: '20px',
+    paddingLeft: '20px',
+    marginTop: "20px",
+    marginLeft: "20px",
+    width: "80%",
+    height: "100%"
+  },
+});
 
-];
+const CustomToolbar: React.FunctionComponent<{
+  setFilterButtonEl: React.Dispatch<
+    React.SetStateAction<HTMLButtonElement | null>
+  >;
+}> = ({ setFilterButtonEl }) => (
+  <GridToolbarContainer>
+    <GridToolbarFilterButton ref={setFilterButtonEl} />
+    <Link href="/panel/user/manage-product/add" passHref>
+      <Fab
+        color="primary"
+        aria-label="add"
+        sx={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+        }}
+      >
+        <AddIcon />
+      </Fab>
+    </Link>
+  </GridToolbarContainer>
+);
 
-interface EnhancedTableProps {
-  numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, newOrderBy: keyof Data) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
-}
-interface EnhancedTableProps {
-  numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, newOrderBy: keyof Data) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
-}
 
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
 
-  const createSortHandler = (newOrderBy: keyof Data) => (event: React.MouseEvent<unknown>) => {
-    onRequestSort(event, newOrderBy);
-  };
-
-  return (
-    <TableHead>
-      <TableRow>
-        {/* <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell> */}
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align="center"  // centered alignment
-            padding={headCell.desc ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
+type Props = {
+  // gid?: string,
+  accessToken?: string,
+  // productArray?: CategoryPayload[]
 }
 
-
-
-const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps) => {
-
-  function createData(
-    id: string ,
-    name: string ,
-    desc: string ,
-    image: string ,
-  ): CategoryPayload {
-    return {
-      id,
-      name,
-      desc,
-      image,
-    };
-  }
-
-  const rows = categoryArray?.map((category) =>
-    createData(category.id, category.name, category.desc, category.image)
-  ) ?? [];
-
-
+function UserPanelManageCategory({ accessToken}: Props) {
+  const theme = useTheme();
+  const classes = useStyles();
+ 
   const dispatch = useAppDispatch();
-  const [sortConfig, setSortConfig] = useState<{ key: keyof CategoryPayload, direction: string }>({ key: 'name', direction: 'ascending' });
-  const [filterText, setFilterText] = useState("");
-  const [visibleRows, setVisibleRows] = React.useState<Data[] | null>(null);
+  const categoryData = useSelector(categorySelector);
+  const [openAddDialog, setOpenAddDialog] = React.useState<boolean>(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = React.useState<boolean>(false);
+  const [openEditDialog, setOpenEditDialog] = React.useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selectedCategory, setSelectedCategory] = React.useState<CategoryPayload | null>(null);
 
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [filter, setFilter] = React.useState('');
 
-  const [order, setOrder] = React.useState<Order>(DEFAULT_ORDER);
-  const [orderBy, setOrderBy] = React.useState<keyof Data>(DEFAULT_ORDER_BY);
-  const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(DEFAULT_ROWS_PER_PAGE);
-  const [paddingHeight, setPaddingHeight] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-
-
-  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterText(event.target.value);
+  const handleChangePage = (event: React.ChangeEvent<HTMLInputElement>, newPage: any) => {
+    setPage(newPage);
   };
 
-  const handleDelete = (id: string) => {
-    const groupId = gid!;
-    const toekn = accessToken!;
-    const data = {
-      gid: groupId, accessToken: toekn, id
-    }
-    dispatch(deleteCategoryAction(data));
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
-
-  const handleEdit = (id: string) => {
-    router.push(`/user/manage-category/edit/${id}`);
-  };
-
-  const handleCreate = () => {
-    router.push("/user/manage-category/create");
-  };
-
-  const handleChangePage = React.useCallback(
-    (event: unknown, newPage: number) => {
-      setPage(newPage);
-
-      const sortedRows = stableSort(rows, getComparator(order, orderBy));
-      const updatedRows = sortedRows.slice(
-        newPage * rowsPerPage,
-        newPage * rowsPerPage + rowsPerPage,
-      );
-      setVisibleRows(updatedRows);
-
-      // Avoid a layout jump when reaching the last page with empty rows.
-      const numEmptyRows =
-        newPage > 0 ? Math.max(0, (1 + newPage) * rowsPerPage - rows.length) : 0;
-
-      const newPaddingHeight = (dense ? 33 : 53) * numEmptyRows;
-      setPaddingHeight(newPaddingHeight);
-    },
-    [order, orderBy, dense, rowsPerPage],
-  );
-
-  const handleChangeRowsPerPage = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const updatedRowsPerPage = parseInt(event.target.value, 10);
-      setRowsPerPage(updatedRowsPerPage);
-
-      setPage(0);
-
-      const sortedRows = stableSort(rows, getComparator(order, orderBy));
-      const updatedRows = sortedRows.slice(
-        0 * updatedRowsPerPage,
-        0 * updatedRowsPerPage + updatedRowsPerPage,
-      );
-      setVisibleRows(updatedRows);
-
-      // There is no layout jump to handle on the first page.
-      setPaddingHeight(0);
-    },
-    [order, orderBy],
-  );
-
-
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
-  };
-
-  const isSelected = (name: string) => selected.indexOf(name) !== -1;
-
-
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: readonly string[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
+ 
 
   React.useEffect(() => {
-    let rowsOnMount = stableSort(
-      rows,
-      getComparator(DEFAULT_ORDER, DEFAULT_ORDER_BY),
-    );
-    rowsOnMount = rowsOnMount.slice(
-      0 * DEFAULT_ROWS_PER_PAGE,
-      0 * DEFAULT_ROWS_PER_PAGE + DEFAULT_ROWS_PER_PAGE,
-    );
+    dispatch(getAllCategoryByGroupAction());
+  }, [dispatch]);
 
-    setVisibleRows(rowsOnMount);
-  }, []);
+  const [filterButtonEl, setFilterButtonEl] =
+    React.useState<HTMLButtonElement | null>(null);
 
-  React.useEffect(() => {
-    if (!categoryArray) return;
-  
-    const filteredRows = categoryArray.filter((row) =>
-      row.name.toLowerCase().includes(filterText.toLowerCase())
-    );
-  
-    setVisibleRows(filteredRows);
-  }, [categoryArray, filterText]);
 
-  const handleRequestSort = React.useCallback(
-    (event: React.MouseEvent<unknown>, newOrderBy: keyof Data) => {
-      const isAsc = orderBy === newOrderBy && order === 'asc';
-      const toggledOrder = isAsc ? 'desc' : 'asc';
-      setOrder(toggledOrder);
-      setOrderBy(newOrderBy);
+  const handleDeleteConfirm = () => {
+    if (selectedCategory) {
+      //     const sid = selectedCategory.id
+      //     // dispatch(deleteCategoryAction({id:sid, gid}!))
+      console.log(selectedCategory)
+    }
+    setOpenDeleteDialog(false);
+  }
 
-      const sortedRows = stableSort(rows, getComparator(toggledOrder, newOrderBy));
-      const updatedRows = sortedRows.slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      );
-      setVisibleRows(updatedRows);
-    },
-    [order, orderBy, page, rowsPerPage],
-  );
+  const handleDeleteCancel = () => {
+    setOpenDeleteDialog(false);
+  };
 
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
-      setSelected(newSelected);
+  const handleEditConfirm = () => {
+    if (selectedCategory) {
+      console.log(selectedCategory)
+    }
+    setOpenEditDialog(false);
+  }
+
+  const handleEditCancel = () => {
+    setOpenEditDialog(false);
+  };
+  const handleAddClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOpenAddDialog(true);
+  }
+  const handleAddConfirm = (product: CategoryPayload) => {
+    console.log(product)
+  }
+
+  const handleAddCancel = () => {
+    setOpenAddDialog(false);
+  };
+
+  const handleEditClick = (e: React.ChangeEvent<HTMLInputElement>, row: CategoryPayload | null) => {
+    setOpenEditDialog(true)
+  }
+  const handleDeleteClick = (e: React.ChangeEvent<HTMLInputElement>, row: CategoryPayload | null) => {
+    setOpenDeleteDialog(true)
+  }
+
+  const showEditDialog = () => {
+    if (selectedCategory === null) {
       return;
     }
-    setSelected([]);
+
+    return (
+      <Dialog
+        open={openEditDialog}
+        keepMounted
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">
+
+  
+          Confirm to delete the product? : {selectedCategory.name}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            You cannot restore deleted product.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenEditDialog(false)} color="info">
+            Cancel
+          </Button>
+          <Button onClick={handleEditConfirm} color="primary">
+            Edit
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
   };
+
+
+  const columns: GridColDef[] = [
+    {
+      field: "name",
+      editable: true,
+      headerName: "ชื่อโหนด",
+      width: 180,
+    },
+    {
+      field: "desc",
+      editable: true,
+      headerName: "รายละเอียด",
+      width: 180,
+    },
+    {
+      headerName: "การดำเนินการ",
+      field: ".",
+      width: 180,
+      renderCell: ({ row }: GridRenderCellParams<any>) => (
+        <Stack direction="row">
+          <IconButton
+            aria-label="delete"
+            size="large"
+            onClick={() => {
+              setSelectedCategory(row);
+              setOpenDeleteDialog(true);
+            }}
+          >
+            <DeleteIcon fontSize="inherit" />
+          </IconButton>
+          <IconButton
+            aria-label="edit"
+            size="large"
+            // onClick={() => 
+            // router.push("/panel/user/manage-product/edit?id=" + row.id)
+            // }
+            onClick={() => {
+              setSelectedCategory(row);
+              setOpenEditDialog(true);
+            }}
+          >
+            <EditIcon fontSize="inherit" />
+          </IconButton>
+
+        </Stack>
+      ),
+    },
+  ];
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
+
 
   return (
     <Layout>
-    <Paper sx={{ width: '100%', mb: 2 }}>
-    <Box sx={{
-        marginTop: "16px",
-        ml: "16px",
-      padding: "16px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
+      <Container sx={{
+        marginLeft: isSmallDevice ? 0 : 2,
+        marginTop: isSmallDevice ? 0 : 4,
       }}>
-        <Box sx={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          width:"100%",
-          marginBottom: "1rem"
-        }}>
-          <TextField
-            label="Search"
-            variant="outlined"
-            value={filterText}
-            onChange={handleFilterChange}
-            sx={{ width: "100%", marginRight: "1rem" }}
-          />
-          <Button variant="contained" onClick={handleCreate}>Add</Button>
-        </Box>
-        <TableContainer 
-        // sx={{ width: "100%" }} 
-        // size={dense ? 'small' : 'medium'}
-         aria-labelledby="tableTitle">
-         
-          <Table aria-label="simple table">
-          <EnhancedTableHead
-            numSelected={selected.length}
-            order={order}
-            orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={rows.length}
-          />
-            <TableBody>
-              {visibleRows
-                ? visibleRows.map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.name)}
-                      role="checkbox"
-                      // aria-checked={isItemSelected}
-                      // tabIndex={-1}
-                      key={row.id}
-                      // selected={isItemSelected}
-                      sx={{ cursor: 'pointer' }}
-                    >
-                      {/* <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell> */}
-                      <TableCell
-                        sx={{ml:8}}
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.name}
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        align="center"
-                        padding="none"
-                      >
-                        {row.desc}
-                      </TableCell>
-      
-                      <TableCell align="center">{row.image}</TableCell>
-
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                      <IconButton onClick={() => handleEdit(row.id)}>
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton onClick={() => handleDelete(row.id)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
-
-                      {/* <TableCell align="right">
-                        <IconButton onClick={() => handleEdit(row.id)}>
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton onClick={() => handleDelete(row.id)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell> */}
-
-                      {/* <StyledTableCell>
-                    <IconButton onClick={() => handleEdit(row.id)}>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton onClick={() => handleDelete(row.id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </StyledTableCell> */}
-                    </TableRow>
-                  );
-                })
-                : null}
-              {paddingHeight > 0 && (
-                <TableRow
-                  style={{
-                    height: paddingHeight,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+        {/* Summary Icons */}
+        <DataGrid
+          sx={{ backgroundColor: "white", height: "100vh", width: "80vw" }}
+          rows={categoryData?.categoryArray ?? []}
+          columns={columns}
+          // pageSize={25}
+          // rowsPerPageOptions={[25]}
+          components={{
+            Toolbar: CustomToolbar,
+          }}
+          componentsProps={{
+            panel: {
+              anchorEl: filterButtonEl,
+            },
+            toolbar: {
+              setFilterButtonEl,
+            },
+          }}
         />
-      </Box>
-
-    </Paper>
+      </Container>
+{showEditDialog()}
     </Layout>
-  );
+  )
+}
 
-
-
-};
-
+export default withAuth(UserPanelManageCategory)
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
@@ -550,15 +327,15 @@ export const getServerSideProps: GetServerSideProps = async (
     const accessToken = context.req.cookies['access_token']
     const { gid } = await authService.getSessionServerSide(accessToken!)
 
-    const categoryArray = await categoryService.getAllCategoryByGroup(accessToken!)
+    // const productArray = await categoryService.getAllProductByGroup(gid)
     return {
       props: {
         gid,
         accessToken,
-        categoryArray
+        // productArray
       },
     };
-  } catch (e: any) {
+  } catch (error) {
     return {
       props: {
 
@@ -568,6 +345,4 @@ export const getServerSideProps: GetServerSideProps = async (
 
 };
 
-
-export default withAuth(UserPanelManageCategory)
 
