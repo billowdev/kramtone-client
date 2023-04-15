@@ -33,8 +33,10 @@ type Props = {
 const UserPanelEditCategory = ({ category, accessToken}: Props) => {
   const router = useRouter();
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
-  const [updateValue, setUpdateValue] = React.useState<CategoryPayload>(category);
+  const [updateValue, setUpdateValue] = React.useState<CategoryPayload>(category!);
   const dispatch = useAppDispatch();
+  const [imageFile, setImageFile] = React.useState<any | Blob>("")
+  const [imageObj, setImageObj] = React.useState<URL | string>("")
 
   const showForm = ({
     values,
@@ -85,7 +87,7 @@ const UserPanelEditCategory = ({ category, accessToken}: Props) => {
                 type="file"
                 onChange={(e: React.ChangeEvent<any>) => {
                   e.preventDefault();
-                  setFieldValue("file", e.target.files[0]); // for upload
+                  setFieldValue("image_file", e.target.files[0]); // for upload
                   setFieldValue(
                     "image_obj",
                     URL.createObjectURL(e.target.files[0])
@@ -124,20 +126,22 @@ const UserPanelEditCategory = ({ category, accessToken}: Props) => {
 
   const handleEditConfirm = async () => {
     if (category) {
-           
+
       let data = new FormData();
+
+      if (imageFile!="") {
+        data.append("image", imageFile);
+      }
       // data.append("id", String(updateValue.id));
       data.append("name", String(updateValue.name));
       data.append("desc", String(updateValue.desc));
-      if (updateValue.image) {
-        data.append("image", updateValue.image);
-      }
+   
 
       const updateStatus = await dispatch(updateCategoryAction({id:updateValue.id, body:data, accessToken}))
 
       if (updateStatus.meta.requestStatus === "fulfilled") {
         toast.success("แก้ไขข้อมูลประเภทสินค้าสำเร็จ")
-        router.push("/panel/manage-category");
+        router.push("/panel/user/manage-category");
       }else{
         toast.error("แก้ไขข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง")
       }
@@ -159,7 +163,7 @@ const UserPanelEditCategory = ({ category, accessToken}: Props) => {
       >
         <DialogTitle id="alert-dialog-slide-title">
           <br />
-          คุณต้องการแก้ไขข้อมูลใช่หรือไม่? : {category.name}
+          คุณต้องการแก้ไขข้อมูลใช่หรือไม่? : {category?.name}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
@@ -213,6 +217,7 @@ const UserPanelEditCategory = ({ category, accessToken}: Props) => {
         initialValues={category!}
         onSubmit={async (values, { setSubmitting }) => {
           setUpdateValue(values)
+          setImageFile(values.image_file)
           setOpenDialog(true);
           setSubmitting(false);
         }}

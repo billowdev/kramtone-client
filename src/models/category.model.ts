@@ -19,10 +19,10 @@ export interface CategoryPayload {
 	id: string
 	name: string
 	desc: string
-	image: string
 	isDefault?: boolean
 	createdAt?: string
 	updatedAt?: string
-	image_obj? : any | Blob
+	image_file? : any | Blob
+	image_obj? : URL | string;
 	image? : URL | string;
 }
