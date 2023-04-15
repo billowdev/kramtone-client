@@ -235,6 +235,7 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
   const dispatch = useAppDispatch();
   const [sortConfig, setSortConfig] = useState<{ key: keyof CategoryPayload, direction: string }>({ key: 'name', direction: 'ascending' });
   const [filterText, setFilterText] = useState("");
+  const [visibleRows, setVisibleRows] = React.useState<Data[] | null>(null);
 
 
   const [order, setOrder] = React.useState<Order>(DEFAULT_ORDER);
@@ -242,7 +243,6 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [visibleRows, setVisibleRows] = React.useState<Data[] | null>(null);
   const [rowsPerPage, setRowsPerPage] = React.useState(DEFAULT_ROWS_PER_PAGE);
   const [paddingHeight, setPaddingHeight] = React.useState(0);
 
@@ -351,6 +351,16 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
 
     setVisibleRows(rowsOnMount);
   }, []);
+
+  React.useEffect(() => {
+    if (!categoryArray) return;
+  
+    const filteredRows = categoryArray.filter((row) =>
+      row.name.toLowerCase().includes(filterText.toLowerCase())
+    );
+  
+    setVisibleRows(filteredRows);
+  }, [categoryArray, filterText]);
 
   const handleRequestSort = React.useCallback(
     (event: React.MouseEvent<unknown>, newOrderBy: keyof Data) => {
