@@ -19,7 +19,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
-
+import Checkbox from '@mui/material/Checkbox';
+import { visuallyHidden } from '@mui/utils';
 
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -100,7 +101,111 @@ const DEFAULT_ROWS_PER_PAGE = 5;
 
 
 
+interface Data {
+  id: string;
+  name: string;
+  desc: string;
+  image: string;
+}
 
+interface HeadCell {
+  id: keyof Data;
+  label: string;
+  desc: boolean;
+  name: boolean;
+  image: boolean;
+  action: boolean;
+}
+
+const headCells: readonly HeadCell[] = [
+  {
+    id: 'name',
+    name: false,
+    desc: true,
+    image: false,
+    label: 'ชื่อประเภทสินค้า',
+  },
+  {
+    id: 'desc',
+    name: true,
+    desc: false,
+    image: false,
+    label: 'รายละเอียดประเภทสินค้า',
+  },
+  {
+    id: 'image',
+    name: false,
+    image: true,
+    desc: false,
+    label: 'รูปภาพ',
+  },
+  {
+    id: 'action',
+    name: false,
+    image: false,
+    desc: false,
+    action: true,
+    label: 'การดำเนินการ',
+  },
+];
+
+interface EnhancedTableProps {
+  numSelected: number;
+  onRequestSort: (event: React.MouseEvent<unknown>, newOrderBy: keyof Data) => void;
+  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  order: Order;
+  orderBy: string;
+  rowCount: number;
+}
+
+function EnhancedTableHead(props: EnhancedTableProps) {
+
+  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
+    props;
+  const createSortHandler =
+    (newOrderBy: keyof Data) => (event: React.MouseEvent<unknown>) => {
+      onRequestSort(event, newOrderBy);
+    };
+
+  return (
+    <TableHead>
+      <TableRow>
+        <TableCell padding="checkbox">
+          <Checkbox
+            color="primary"
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{
+              'aria-label': 'select all desserts',
+            }}
+          />
+        </TableCell>
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            align={headCell.name ? 'right' : 'left'}
+            padding={headCell.desc ? 'none' : 'normal'}
+            sortDirection={orderBy === headCell.id ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : 'asc'}
+              onClick={createSortHandler(headCell.id)}
+            >
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+}
 
 const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps) => {
 
@@ -109,7 +214,7 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
     name: string | undefined = '',
     desc: string | undefined = '',
     image: string | undefined = ''
-  ): Data {
+  ): CategoryPayload {
     return {
       id,
       name,
@@ -117,12 +222,12 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
       image
     };
   }
-  
+
   const rows = categoryArray?.map((category) =>
-  createData(category.id, category.name, category.desc, category.image)
+    createData(category.id, category.name, category.desc, category.image)
   ) ?? [];
-  
-  
+
+
   const dispatch = useAppDispatch();
   const [sortConfig, setSortConfig] = useState<{ key: keyof CategoryPayload, direction: string }>({ key: 'name', direction: 'ascending' });
   const [filterText, setFilterText] = useState("");
@@ -137,13 +242,6 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
   const [rowsPerPage, setRowsPerPage] = React.useState(DEFAULT_ROWS_PER_PAGE);
   const [paddingHeight, setPaddingHeight] = React.useState(0);
 
-  const handleSort = (key: keyof CategoryPayload) => {
-    let direction = 'ascending';
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
-    }
-    setSortConfig({ key, direction });
-  }
 
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -209,6 +307,72 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
   );
 
 
+  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDense(event.target.checked);
+  };
+
+  const isSelected = (name: string) => selected.indexOf(name) !== -1;
+
+
+  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
+    const selectedIndex = selected.indexOf(name);
+    let newSelected: readonly string[] = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, name);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1),
+      );
+    }
+
+    setSelected(newSelected);
+  };
+
+
+  React.useEffect(() => {
+    let rowsOnMount = stableSort(
+      rows,
+      getComparator(DEFAULT_ORDER, DEFAULT_ORDER_BY),
+    );
+    rowsOnMount = rowsOnMount.slice(
+      0 * DEFAULT_ROWS_PER_PAGE,
+      0 * DEFAULT_ROWS_PER_PAGE + DEFAULT_ROWS_PER_PAGE,
+    );
+
+    setVisibleRows(rowsOnMount);
+  }, []);
+
+  const handleRequestSort = React.useCallback(
+    (event: React.MouseEvent<unknown>, newOrderBy: keyof Data) => {
+      const isAsc = orderBy === newOrderBy && order === 'asc';
+      const toggledOrder = isAsc ? 'desc' : 'asc';
+      setOrder(toggledOrder);
+      setOrderBy(newOrderBy);
+
+      const sortedRows = stableSort(rows, getComparator(toggledOrder, newOrderBy));
+      const updatedRows = sortedRows.slice(
+        page * rowsPerPage,
+        page * rowsPerPage + rowsPerPage,
+      );
+      setVisibleRows(updatedRows);
+    },
+    [order, orderBy, page, rowsPerPage],
+  );
+
+  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      const newSelected = rows.map((n) => n.name);
+      setSelected(newSelected);
+      return;
+    }
+    setSelected([]);
+  };
 
   return (
     <Layout>
@@ -234,17 +398,31 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
           />
           <Button variant="contained" onClick={handleCreate}>Add</Button>
         </Box>
-        <TableContainer sx={{ width: "100%" }}>
+        <TableContainer 
+        // sx={{ width: "100%" }} 
+        // size={dense ? 'small' : 'medium'}
+         aria-labelledby="tableTitle">
+         
           <Table aria-label="simple table">
-            <TableHead>
+          <EnhancedTableHead
+            numSelected={selected.length}
+            order={order}
+            orderBy={orderBy}
+            onSelectAllClick={handleSelectAllClick}
+            onRequestSort={handleRequestSort}
+            rowCount={rows.length}
+          />
+
+            {/* <TableHead>
               <TableRow>
                 <StyledTableCell>ชื่อประเภทสินค้า</StyledTableCell>
                 <StyledTableCell>รายละเอียดประเภทสินค้า</StyledTableCell>
                 <StyledTableCell>รูปภาพ</StyledTableCell>
                 <StyledTableCell>Action</StyledTableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
+            </TableHead> */}
+
+            {/* <TableBody>
               {categoryArray && categoryArray.map((row) => (
                 <StyledTableRow key={row.id} data-hide={!row.name.toLowerCase().includes(filterText.toLowerCase())}>
                   <StyledTableCell component="th" scope="row">
@@ -262,18 +440,109 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
+            </TableBody> */}
+            <TableBody>
+              {visibleRows
+                ? visibleRows.map((row, index) => {
+                  const isItemSelected = isSelected(row.name);
+                  const labelId = `enhanced-table-checkbox-${index}`;
+
+                  return (
+                    <TableRow
+                      hover
+                      onClick={(event) => handleClick(event, row.name)}
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={row.id}
+                      selected={isItemSelected}
+                      sx={{ cursor: 'pointer' }}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          color="primary"
+                          checked={isItemSelected}
+                          inputProps={{
+                            'aria-labelledby': labelId,
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
+                      >
+                        {row.name}
+                      </TableCell>
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        align="center"
+                        padding="none"
+                      >
+                        {row.desc}
+                      </TableCell>
+      
+                      <TableCell align="center">{row.image}</TableCell>
+
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
+                      >
+                      <IconButton onClick={() => handleEdit(row.id)}>
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton onClick={() => handleDelete(row.id)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+
+                      {/* <TableCell align="right">
+                        <IconButton onClick={() => handleEdit(row.id)}>
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton onClick={() => handleDelete(row.id)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell> */}
+
+                      {/* <StyledTableCell>
+                    <IconButton onClick={() => handleEdit(row.id)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleDelete(row.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </StyledTableCell> */}
+                    </TableRow>
+                  );
+                })
+                : null}
+              {paddingHeight > 0 && (
+                <TableRow
+                  style={{
+                    height: paddingHeight,
+                  }}
+                >
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={categoryArray.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Box>
     </Layout>
   );
