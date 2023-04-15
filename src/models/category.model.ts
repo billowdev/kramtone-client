@@ -16,7 +16,7 @@ export type CategoryArrayPayload = CategoryPayload[]
 
 
 export interface CategoryPayload {
-	id?: string
+	id: string
 	name: string
 	desc: string
 	image: string

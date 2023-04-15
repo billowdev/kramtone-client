@@ -17,26 +17,8 @@ import * as authService from "@/services/auth.service"
 import withAuth from "@/components/withAuth";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Paper from '@mui/material/Paper';
 
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     backgroundColor: theme.palette.common.black,
-//     color: theme.palette.common.white,
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: theme.palette.action.hover,
-//   },
-//   // Hide table row if not matched by filter
-//   "&[data-hide='true']": {
-//     display: "none",
-//   },
-// }));
 
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -84,30 +66,30 @@ interface TableData {
   gender: string;
 }
 
-interface TableProps {
-  categoryArray: CategoryPayload[];
-  gid:string,
-  accessToken: string
+interface PageProps {
+  categoryArray?: CategoryPayload[];
+  gid?: string,
+  accessToken?: string
 }
 
 
 
-const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: TableProps) => {
+const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps) => {
 
 
   const dispatch = useAppDispatch();
-  const [sortConfig, setSortConfig] = useState<{key: keyof CategoryPayload, direction: string}>({key: 'name', direction: 'ascending'});
+  const [sortConfig, setSortConfig] = useState<{ key: keyof CategoryPayload, direction: string }>({ key: 'name', direction: 'ascending' });
   const [orderBy, setOrderBy] = useState("name");
   const [filterText, setFilterText] = useState("");
   const [order, setOrder] = useState("asc");
 
- 
+
   const handleSort = (key: keyof CategoryPayload) => {
     let direction = 'ascending';
     if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
       direction = 'descending';
     }
-    setSortConfig({key, direction});
+    setSortConfig({ key, direction });
   }
 
 
@@ -116,8 +98,10 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: TableProps
   };
 
   const handleDelete = (id: string) => {
+    const groupId = gid!;
+    const toekn = accessToken!;
     const data = {
-      gid, accessToken, id
+      gid: groupId, accessToken: toekn, id
     }
     dispatch(deleteCategoryAction(data));
   };
@@ -131,64 +115,65 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: TableProps
   };
 
   return (
-   <Layout>
-     <Box sx={{ 
-      mt: "16px",
-      ml: "16px",
-      display: "flex",
-       flexDirection: "column", 
-       alignItems: "center", 
+    <Layout>
+      <Box sx={{
+        mt: "16px",
+        ml: "16px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}>
+        <Box sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          marginBottom: "1rem"
         }}>
-      <Box sx={{ 
-        display: "flex", 
-        flexDirection: "row", 
-        alignItems: "center", 
-        marginBottom: "1rem" }}>
-        <TextField
-          label="Search"
-          variant="outlined"
-          value={filterText}
-          onChange={handleFilterChange}
-          sx={{ width: "100%", marginRight: "1rem" }}
-        />
-        <Button variant="contained" onClick={handleCreate}>Add</Button>
+          <TextField
+            label="Search"
+            variant="outlined"
+            value={filterText}
+            onChange={handleFilterChange}
+            sx={{ width: "100%", marginRight: "1rem" }}
+          />
+          <Button variant="contained" onClick={handleCreate}>Add</Button>
+        </Box>
+        <TableContainer sx={{ width: "100%" }}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>ชื่อประเภทสินค้า</StyledTableCell>
+                <StyledTableCell>รายละเอียดประเภทสินค้า</StyledTableCell>
+                <StyledTableCell>รูปภาพ</StyledTableCell>
+                <StyledTableCell>Action</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {categoryArray && categoryArray.map((row) => (
+                <StyledTableRow key={row.id} data-hide={!row.name.toLowerCase().includes(filterText.toLowerCase())}>
+                  <StyledTableCell component="th" scope="row">
+                    {row.name}
+                  </StyledTableCell>
+                  <StyledTableCell>{row.desc}</StyledTableCell>
+                  <StyledTableCell>{row.image}</StyledTableCell>
+                  <StyledTableCell>
+                    <IconButton onClick={() => handleEdit(row.id)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleDelete(row.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
-      <TableContainer sx={{ width: "100%" }}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>ชื่อประเภทสินค้า</StyledTableCell>
-              <StyledTableCell>รายละเอียดประเภทสินค้า</StyledTableCell>
-              <StyledTableCell>รูปภาพ</StyledTableCell>
-              <StyledTableCell>Action</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {categoryArray.map((row) => (
-              <StyledTableRow key={row.id} data-hide={!row.name.toLowerCase().includes(filterText.toLowerCase())}>
-                <StyledTableCell component="th" scope="row">
-                  {row.name}
-                </StyledTableCell>
-                <StyledTableCell>{row.desc}</StyledTableCell>
-                <StyledTableCell>{row.image}</StyledTableCell>
-                <StyledTableCell>
-                  <IconButton onClick={() => handleEdit(row.id)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleDelete(row.id)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
     </Layout>
   );
-  
-  
+
+
 
 };
 
@@ -196,7 +181,7 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: TableProps
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  
+  try {
     const accessToken = context.req.cookies['access_token']
     const { gid } = await authService.getSessionServerSide(accessToken!)
 
@@ -208,7 +193,13 @@ export const getServerSideProps: GetServerSideProps = async (
         categoryArray
       },
     };
-  
+  } catch (e: any) {
+    return {
+      props: {
+
+      },
+    };
+  }
 
 };
 
