@@ -11,11 +11,15 @@ import {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.query.action) {
 		const requestAction = req.query['action'][0]
-		
+		// console.log("===========requestAction===========")
+		// console.log(requestAction)
 		// getAllByGroup
 		if (req.method === HTTP_METHOD_GET && requestAction == "getAllByGroup") {
 			return getAllCategoryByGroup(req, res);
 		}	
+		else if (req.method === HTTP_METHOD_POST && requestAction == "create") {
+			return createCategory(req, res);
+		}
 		else if (req.method === HTTP_METHOD_DELETE) {
 			return deleteCategory(req, res);
 		} else if (req.method === HTTP_METHOD_PATCH) {
@@ -36,7 +40,7 @@ async function getAllCategoryByGroup(req: NextApiRequest, res: NextApiResponse<a
 	if (!accessToken) {
 		return res.status(401).json({ message: 'Unauthorized' });
 	}
-	console.log(req)
+	// console.log(req)
 	if (req.query) {
 		const { data } = await httpClient.get(`/categories/group`, {
 			headers: {
@@ -61,7 +65,7 @@ async function deleteCategory(req: NextApiRequest, res: NextApiResponse<any>) {
 			return res.status(401).json({ message: 'Unauthorized' });
 		}
 		if (req.query) {
-			const { data } = await httpClient.delete(`/buildings/delete/${req.query['id']}`, {
+			const { data } = await httpClient.delete(`/categorys/delete/${req.query['id']}`, {
 				headers: {
 					'Authorization': `Bearer ${accessToken}`,
 				},
@@ -89,13 +93,9 @@ async function updateCategory(req: NextApiRequest, res: NextApiResponse<any>) {
 		}
 
 		const updateBody = req.body
-		// console.log(updateBody.file);
-		console.log("============ service==============")
-		console.log(updateBody)
-		console.log("============ service==============")
 
 		if (req.query) {
-			const { data } = await httpClient.patch(`/buildings/update/${req.query['id']}`, updateBody, {
+			const { data } = await httpClient.patch(`/categorys/update/${req.query['id']}`, updateBody, {
 				headers: {
 					'Authorization': `Bearer ${accessToken}`,
 				},
@@ -111,7 +111,7 @@ async function updateCategory(req: NextApiRequest, res: NextApiResponse<any>) {
 		}
 
 	} catch (error) {
-		console.error(error);
+		// console.error(error);
 		return res.status(500).json({ message: 'Internal Server Error' });
 	}
 }
@@ -122,13 +122,14 @@ async function updateCategory(req: NextApiRequest, res: NextApiResponse<any>) {
 //     if (!accessToken) {
 //       return res.status(401).json({ message: 'Unauthorized' });
 //     }
-
 //     const createBody = req.body;
+// 	console.log(createBody)
 //     if (createBody) {
-//       const { data } = await httpClient.post(`/buildings/create`, createBody, {
+//       const { data } = await httpClient.post(`/categories`, createBody, {
 //         headers: {
 //           'Authorization': `Bearer ${accessToken}`,
 //         },
+// 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
 //       });
 
 //       if(data){
@@ -137,11 +138,11 @@ async function updateCategory(req: NextApiRequest, res: NextApiResponse<any>) {
 //         return res.status(400).json(data);
 //       }
 //     } else {
-//       return res.status(400).json({ message: 'create building is failed' });
+//       return res.status(400).json({ message: 'create category is failed' });
 //     }
 
 //   } catch (error) {
-//     console.error(error);
+//     // console.error(error);
 //     return res.status(500).json({ message: 'Internal Server Error' });
 //   }
 // }

@@ -29,20 +29,28 @@ export const getAllCategory = async (): Promise<CategoryArrayResponse> => {
 };
 
 
-export const createCategory = async (data: FormData, accessToken: string): Promise<any> => {
-	await axios.post(`/groups`, data, {
+export const createCategory = async ( data: FormData, accessToken: string): Promise<void> => {
+	const response = await axios.post(`/categories`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
 		},
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
 	});
+	// const {data:response} = await axios.post(`/categories/${id}`, data, {
+	// 	headers: {
+	// 		Authorization: `Bearer ${accessToken}`
+	// 	},
+	// 	baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
+	// });
+	console.log(response)
 };
 
+
 export const updateCategory = async (id: string, data: FormData, accessToken: string): Promise<void> => {
-	console.log('Form Data:');
-	for (const [key, value] of data.entries()) {
-		console.log(key, value);
-	}
+	// console.log('Form Data:');
+	// for (const [key, value] of data.entries()) {
+	// 	console.log(key, value);
+	// }
 	// console.log("===============")
 	// console.log(id, accessToken)
 	const {data:response} = await axios.patch(`/categories/${id}`, data, {
@@ -51,8 +59,8 @@ export const updateCategory = async (id: string, data: FormData, accessToken: st
 		},
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
 	});
-	console.log(response)
 
+	
 };
 
 export const deleteCategory = async (id: string, accessToken: string): Promise<void> => {

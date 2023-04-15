@@ -102,7 +102,7 @@ const CustomToolbar: React.FunctionComponent<{
 }> = ({ setFilterButtonEl }) => (
   <GridToolbarContainer>
     <GridToolbarFilterButton ref={setFilterButtonEl} />
-    <Link href="/panel/user/manage-product/add" passHref>
+    <Link href="/panel/user/manage-category/add" passHref>
       <Fab
         color="primary"
         aria-label="add"

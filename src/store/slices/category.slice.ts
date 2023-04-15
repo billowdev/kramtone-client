@@ -21,6 +21,7 @@ const initialState: CategoryState = {
 		updatedAt: "",
 	},
 	categoryArray: [],
+	error: ""
 };
 
 export const getAllCategoryByGroupIdAction = createAsyncThunk("CATEGORY/GROUP_GET_ALL_BY_GROUP_ID", async (id: string): Promise<any> => {
@@ -52,9 +53,17 @@ export const deleteCategoryAction = createAsyncThunk(
 export const updateCategoryAction = createAsyncThunk(
 	"CATEGORY/UPDATE",
 	async (data:any) => {
-		console.log(data)
+		// console.log(data)
 		await categoryService.updateCategory(data.id!, data.body, data.accessToken!);
-		// store.dispatch(getOneCategoryAction(data.gid!));
+		store.dispatch(getAllCategoryByGroupAction());
+	}
+);
+
+export const createCategoryAction = createAsyncThunk(
+	"CATEGORY/CREATE",
+	async (data:any) => {
+		await categoryService.createCategory(data.body, data.accessToken);
+		// store.dispatch(getAllCategoryByGroupAction());
 	}
 );
 
@@ -87,6 +96,13 @@ export const categorySlice = createSlice({
 		});
 
 
+		builder.addCase(createCategoryAction.rejected, (state, action) => {
+			state.error = action.payload
+		})
+
+		// builder.addCase(createCategoryAction.fulfilled, (state, action) => {
+		// 	state.category = action.payload
+		// });
 
 	}
 })

@@ -189,8 +189,8 @@ const UserPanelEditCategory = ({ category, accessToken}: Props) => {
           // objectFit="contain"
           alt="รูปภาพประเภทสินค้า"
           src={values.image_obj}
-          width={100}
-          height={100}
+          width={250}
+          height={250}
         />
       );
     } else if (values.image) {
@@ -199,8 +199,8 @@ const UserPanelEditCategory = ({ category, accessToken}: Props) => {
           // objectFit="contain"
           alt="รูปภาพประเภทสินค้า"
           src={categoryImageURL(values.image)}
-          width={100}
-          height={100}
+          width={250}
+          height={250}
         />
       );
     }
