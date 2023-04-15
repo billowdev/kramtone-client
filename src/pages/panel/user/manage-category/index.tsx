@@ -172,7 +172,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {/* <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -182,7 +182,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               'aria-label': 'select all desserts',
             }}
           />
-        </TableCell>
+        </TableCell> */}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -390,9 +390,11 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
 
   return (
     <Layout>
-      <Box sx={{
-        mt: "16px",
+    <Paper sx={{ width: '100%', mb: 2 }}>
+    <Box sx={{
+        marginTop: "16px",
         ml: "16px",
+      padding: "16px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -401,6 +403,7 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
+          width:"100%",
           marginBottom: "1rem"
         }}>
           <TextField
@@ -426,35 +429,6 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
             onRequestSort={handleRequestSort}
             rowCount={rows.length}
           />
-
-            {/* <TableHead>
-              <TableRow>
-                <StyledTableCell>ชื่อประเภทสินค้า</StyledTableCell>
-                <StyledTableCell>รายละเอียดประเภทสินค้า</StyledTableCell>
-                <StyledTableCell>รูปภาพ</StyledTableCell>
-                <StyledTableCell>Action</StyledTableCell>
-              </TableRow>
-            </TableHead> */}
-
-            {/* <TableBody>
-              {categoryArray && categoryArray.map((row) => (
-                <StyledTableRow key={row.id} data-hide={!row.name.toLowerCase().includes(filterText.toLowerCase())}>
-                  <StyledTableCell component="th" scope="row">
-                    {row.name}
-                  </StyledTableCell>
-                  <StyledTableCell>{row.desc}</StyledTableCell>
-                  <StyledTableCell>{row.image}</StyledTableCell>
-                  <StyledTableCell>
-                    <IconButton onClick={() => handleEdit(row.id)}>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton onClick={() => handleDelete(row.id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody> */}
             <TableBody>
               {visibleRows
                 ? visibleRows.map((row, index) => {
@@ -472,7 +446,7 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
                       selected={isItemSelected}
                       sx={{ cursor: 'pointer' }}
                     >
-                      <TableCell padding="checkbox">
+                      {/* <TableCell padding="checkbox">
                         <Checkbox
                           color="primary"
                           checked={isItemSelected}
@@ -480,8 +454,9 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
                             'aria-labelledby': labelId,
                           }}
                         />
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell
+                        sx={{ml:8}}
                         component="th"
                         id={labelId}
                         scope="row"
@@ -558,6 +533,8 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Box>
+
+    </Paper>
     </Layout>
   );
 
