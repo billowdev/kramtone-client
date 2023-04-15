@@ -25,29 +25,29 @@ import { visuallyHidden } from '@mui/utils';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
-    cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: theme.palette.primary.main,
-    },
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
+// const StyledTableCell = styled(TableCell)(({ theme }) => ({
+//   [`&.${tableCellClasses.head}`]: {
+//     backgroundColor: theme.palette.primary.main,
+//     color: theme.palette.common.white,
+//     cursor: 'pointer',
+//     '&:hover': {
+//       backgroundColor: theme.palette.primary.main,
+//     },
+//   },
+//   [`&.${tableCellClasses.body}`]: {
+//     fontSize: 14,
+//   },
+// }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // Hide table row if not matched by filter
-  "&[data-hide='true']": {
-    display: "none",
-  },
-}));
+// const StyledTableRow = styled(TableRow)(({ theme }) => ({
+//   "&:nth-of-type(odd)": {
+//     backgroundColor: theme.palette.action.hover,
+//   },
+//   // Hide table row if not matched by filter
+//   "&[data-hide='true']": {
+//     display: "none",
+//   },
+// }));
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -440,10 +440,10 @@ const UserPanelManageCategory = ({ categoryArray, gid, accessToken }: PageProps)
                       hover
                       onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
+                      // aria-checked={isItemSelected}
+                      // tabIndex={-1}
                       key={row.id}
-                      selected={isItemSelected}
+                      // selected={isItemSelected}
                       sx={{ cursor: 'pointer' }}
                     >
                       {/* <TableCell padding="checkbox">
