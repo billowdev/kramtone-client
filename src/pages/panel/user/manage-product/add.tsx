@@ -14,6 +14,8 @@ import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
 import * as categoryService from "@/services/category.service"
 import * as authService from "@/services/auth.service"
+import { CloudUpload } from '@material-ui/icons';
+import { Delete } from '@material-ui/icons';
 
 import {
 	Dialog,
@@ -313,28 +315,42 @@ const AddProductForm = ({ accessToken, categories, gid }: AddProductFormProps) =
 										style={{ display: 'none' }}
 									/>
 
-									<label htmlFor="files">
-										<Image
-											alt="category image"
-											src="/static/img/default.png"
-											width={25}
-											height={20}
-										/>
-										<span style={{ color: '#00B0CD', marginLeft: 10 }}>
-											เพิ่มรูปภาพ
-										</span>
+									<label htmlFor="files" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+										<CloudUpload style={{ marginRight: 10 }} />
+										<span style={{ color: '#00B0CD' }}>เพิ่มรูปภาพ</span>
 									</label>
 
-									{previewImages.map((url) => (
-										<img
-											key={url}
-											src={url}
-											alt="preview"
-											style={{ maxWidth: 150, maxHeight: 150, margin: 10 }}
-										/>
+									{previewImages.map((url, index) => (
+										<div key={index} style={{ position: 'relative', display: 'inline-block' }}>
+											<img
+												src={url}
+												alt="preview"
+												style={{ maxWidth: 150, maxHeight: 150, margin: 10 }}
+											/>
+											<button
+												onClick={() => {
+													const newImages = [...images];
+													newImages.splice(index, 1);
+													setImages(newImages);
+
+													const newPreviews = [...previewImages];
+													newPreviews.splice(index, 1);
+													setPreviewImages(newPreviews);
+												}}
+												style={{
+													position: 'absolute',
+													top: 0,
+													right: 0,
+													backgroundColor: 'transparent',
+													border: 'none',
+													color: 'red',
+													cursor: 'pointer',
+												}}
+											>
+												<Delete style={{ color: 'red' }} />
+											</button>
+										</div>
 									))}
-
-
 								</div>
 							</CardContent>
 							<CardActions>
