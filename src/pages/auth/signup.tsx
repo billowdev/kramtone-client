@@ -34,7 +34,7 @@ import withAuth from "@/components/withAuth";
 import Image from "next/image";
 import { toast } from "react-hot-toast";
 import { useTheme } from "@material-ui/core/styles";
-import { CustomTheme } from "@/pages/_app";
+
 import { getOneGroupDataAction } from "@/store/slices/group-data.slice";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Card, CardContent, CardActions } from "@mui/material";
@@ -48,7 +48,7 @@ interface FormValues {
   remember: boolean;
 }
 
-function SignUpPage({}: Props) {
+function SignUpPage({ }: Props) {
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
@@ -61,18 +61,18 @@ function SignUpPage({}: Props) {
   const avatarStyle = { backgroundColor: "#103D81", alginContent: "center" };
 
   const btnStyle = {
-    backgroundColor: CustomTheme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main,
     color: "#fff",
     fontWeight: "bold",
     boxShadow: `0px 5px 10px rgba(0, 0, 0, 0.3)`,
   };
 
   const secondBtnstyle = {
-	marginRight: "8px",
-    backgroundColor: CustomTheme.palette.common.white,
-    color: CustomTheme.palette.secondary.dark,
+    marginRight: "8px",
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.secondary.dark,
     fontWeight: "bold",
-	width: "100%",
+    width: "100%",
     boxShadow: `0px 5px 10px rgba(0, 0, 0, 0.3)`,
   };
 
@@ -100,40 +100,40 @@ function SignUpPage({}: Props) {
   };
   const validationSchema = Yup.object().shape({
     username: Yup.string()
-    .min(
-      4,
-      ReactDOMServer.renderToString(<span style={errorStyle}>ชื่อผู้ใช้ต้องมีอย่างน้อย 4 ตัวอักษร</span>)
-    )
-    .max(
-      64,
-      ReactDOMServer.renderToString(<span style={errorStyle}>ชื่อผู้ใช้ต้องมีไม่เกิน 64 ตัวอักษร</span>)
-    )
-    .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกชื่อผู้ใช้</span>)),
-      name: Yup.string()
+      .min(
+        4,
+        ReactDOMServer.renderToString(<span style={errorStyle}>ชื่อผู้ใช้ต้องมีอย่างน้อย 4 ตัวอักษร</span>)
+      )
+      .max(
+        64,
+        ReactDOMServer.renderToString(<span style={errorStyle}>ชื่อผู้ใช้ต้องมีไม่เกิน 64 ตัวอักษร</span>)
+      )
+      .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกชื่อผู้ใช้</span>)),
+    name: Yup.string()
       .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกชื่อ</span>))
       .max(
         100,
         ReactDOMServer.renderToString(<span style={errorStyle}>ชื่อต้องมีความยาวไม่เกิน 100 ตัวอักษร</span>)
       ).trim(),
-      surname: Yup.string()
+    surname: Yup.string()
       .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกนามสกุล</span>))
       .max(
         100,
         ReactDOMServer.renderToString(<span style={errorStyle}>นามสกุลต้องมีความยาวไม่เกิน 100 ตัวอักษร</span>)
       ),
-      email: Yup.string()
+    email: Yup.string()
       .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกอีเมล</span>))
       .max(
         120,
         ReactDOMServer.renderToString(<span style={errorStyle}>อีเมลต้องมีความยาวไม่เกิน 120 ตัวอักษร</span>)
       ),
-      phone: Yup.string()
+    phone: Yup.string()
       .max(
         10,
         ReactDOMServer.renderToString(<span style={errorStyle}>เบอร์โทรต้องมีไม่เกิน 10 ตัวอักษร</span>)
       )
       .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกเบอร์โทร</span>)),
-      password: Yup.string()
+    password: Yup.string()
       .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกรหัสผ่าน</span>))
       .min(
         6,
@@ -144,10 +144,10 @@ function SignUpPage({}: Props) {
         )
       ),
     passwordConfirmation: Yup.string()
-      .required( ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกรหัสผ่าน</span>))
+      .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกรหัสผ่าน</span>))
       .test(
         "passwords-match",
-        ReactDOMServer.renderToString( <span style={errorStyle}>รหัสผ่านไม่ตรงกัน</span>),
+        ReactDOMServer.renderToString(<span style={errorStyle}>รหัสผ่านไม่ตรงกัน</span>),
         function (value) {
           return this.parent.password === value;
         }
@@ -335,18 +335,18 @@ function SignUpPage({}: Props) {
                       </CardContent>
 
                       <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
-						
-				<Link href="/auth/signin" style={{display:'contents'}} >
-							<Button
-							type="button"
-							color="secondary"
-							variant="contained"
-							style={secondBtnstyle}
-							fullWidth
-							>
-							{"เข้าสู่ระบบ"}
-							</Button>
-					</Link>
+
+                        <Link href="/auth/signin" style={{ display: 'contents' }} >
+                          <Button
+                            type="button"
+                            color="secondary"
+                            variant="contained"
+                            style={secondBtnstyle}
+                            fullWidth
+                          >
+                            {"เข้าสู่ระบบ"}
+                          </Button>
+                        </Link>
 
                         <Button
                           type="submit"
@@ -360,8 +360,8 @@ function SignUpPage({}: Props) {
                             ? "กำลังสมัครสมาชิก..."
                             : "สมัครสมาชิก"}
                         </Button>
-                      </CardActions> 
-					   
+                      </CardActions>
+
                     </Card>
                   </Form>
                 )}

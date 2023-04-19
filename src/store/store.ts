@@ -5,11 +5,15 @@ import { useDispatch } from "react-redux";
 import authReducer from "./slices/auth.slice";
 import placeReducer from "./slices/place.slice";
 import groupDataReducer from "./slices/group-data.slice";
+import productReducer from "./slices/product.slice";
+import categoryReducer from "./slices/category.slice";
 
 const reducer = {
 	auth: authReducer,
 	place: placeReducer,
-	groupData: groupDataReducer
+	groupData: groupDataReducer,
+	product: productReducer,
+	category: categoryReducer,
 };
 
 export const store = configureStore({

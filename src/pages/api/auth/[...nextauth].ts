@@ -12,6 +12,7 @@ import { decryptAES } from '@/common/utils/aes-encrypt.util';
 import { API_REQUEST_SUCCESS } from 'common/constants/api.constant';
 import { ISignIn } from 'models/auth.model';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.query.nextauth) {
@@ -38,13 +39,15 @@ async function signin(req: NextApiRequest, res: NextApiResponse<any>) {
 		const { username, password } = req.body
 		// const { data: response } = await httpClient.post(`/users/signin`, { username, password }, {});
 		const response = await httpClient.post(`/users/signin`, { username, password })
-			// const response = await axios.post(`/users/signin`, {username, password}, {
-			// 	baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
-			// });
-			
+		// const response = await axios.post(`/users/signin`, {username, password}, {
+		// 	baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
+		// });
+
 		// const decryptData = decryptAES<ISignIn>(response.payload)
 		// const { token } = decryptData;
 		const { token } = response.data.payload
+
+		// set the accessToken cookie
 
 		setCookie(res, ACCESS_TOKEN_KEY, token, {
 			httpOnly: true,
@@ -55,10 +58,6 @@ async function signin(req: NextApiRequest, res: NextApiResponse<any>) {
 		// res.status(200).json(decryptData);
 		res.json(response.data)
 	} catch (error: any) {
-		console.log("===========");
-		console.log(error);
-		console.log("===========");
-		
 		res.status(400).end();
 	}
 }
@@ -72,6 +71,7 @@ const getSessionLocalApi = async (req: NextApiRequest, res: NextApiResponse) => 
 	try {
 		const cookies = cookie.parse(req.headers.cookie || "");
 		const token = cookies[ACCESS_TOKEN_KEY];
+
 		if (token) {
 			const { data: response } = await httpClient.get(`/users/session`, {
 				headers: { Authorization: `Bearer ${token}` },

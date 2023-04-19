@@ -12,7 +12,6 @@ export const getAllGroupData = async (): Promise<GroupDataArrayResponse> => {
 	return response.payload;
 };
 
-
 export const createGroupData = async (data: FormData, accessToken: string): Promise<any> => {
 	await axios.post(`/groups`, data, {
 		headers: {
