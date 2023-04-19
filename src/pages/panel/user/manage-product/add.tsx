@@ -13,8 +13,7 @@ import {createProductAction} from '@/store/slices/product.slice';
 import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
 import * as categoryService from "@/services/category.service"
-
-
+import * as authService from "@/services/auth.service"
 
 import {
   Dialog,
@@ -27,17 +26,6 @@ import {
   ListItemText,
 } from '@mui/material';
 
-function CategoryModal(props:any) {
-  const { categories, open, onClose, onSelect } = props;
-
-  const handleSelect = (category:any) => {
-    onClose();
-    onSelect(category);
-  };
-
-  
-}
-
 
 
 interface Product {
@@ -48,12 +36,14 @@ interface Product {
 }
 interface AddProductFormProps {
 	accessToken?: string;
-	categories? : any
+	categories? : any,
+	gid?:string
   }
   
-  const AddProductForm = ({ accessToken, categories }: AddProductFormProps) => {
+  const AddProductForm = ({ accessToken, categories, gid }: AddProductFormProps) => {
 
-
+	const [selectedCategory, setSelectedCategory] = useState(null);
+	const [modalOpen, setModalOpen] = useState(false);
 
 	const dispatch = useAppDispatch();
 	const initialValues: Product = {
@@ -65,55 +55,48 @@ interface AddProductFormProps {
 
 	const router = useRouter();
 
-	const handleSubmit = async (values: Product) => {
-		const formData = new FormData();
-		
+
 	
-		if (values.images) {
+	const handleSubmit = async (values: Product) => {
+		try {
+		  const formData = new FormData();
+	  
+		  if (values.images) {
 			for (let i = 0; i < values.images.length; i++) {
-				formData.append('images', values.images[i]);
+			  formData.append("images", values.images[i]);
 			}
+		  }
+	  
+		  formData.append(
+			"product",
+			JSON.stringify({
+			  name: values.name,
+			  desc: values.desc,
+			  price: values.price,
+			  categoryId: selectedCategory.id,
+			  groupId: gid,
+			})
+		  );
+	  
+		  const createStatus = await dispatch(
+			createProductAction({ body: formData, accessToken })
+		  );
+	  
+		  if (createStatus.meta.requestStatus === "fulfilled") {
+			toast.success("เพิ่มข้อมูลประเภทสินค้าสำเร็จ");
+			router.push("/panel/user/manage-product");
+		  } else {
+			toast.error(
+			  "เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง"
+			);
+		  }
+		} catch (error) {
+			toast.error("เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ");
+		  console.error("An error occurred:", error);
+		  // Handle the error here
 		}
-
-		formData.append('product', JSON.stringify({
-			'name': values.name,
-			'desc' : values.desc,
-			'price': values.price
-		}));
-		const createStatus = await dispatch(createProductAction({body:formData, accessToken}))
-
-		if (createStatus.meta.requestStatus === "fulfilled") {
-		  toast.success("เพิ่มข้อมูลประเภทสินค้าสำเร็จ")
-		//   router.push("/panel/user/manage-product");
-		}else{
-		  toast.error("เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง")
-		}
-		// console.log('Form Data:');
-		// for (const [key, value] of formData.entries()) {
-		// 	console.log(key, value);
-		// }
-		// console.log("===============")
-
-		// try {
-		// 	const res = await httpClient.post(`/products`, formData,{
-		// 		headers: {
-		// 			Authorization: `Bearer ${accessToken}`
-		// 		},
-		// 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
-		// 	});
-		// 	console.log("=========res============")
-		// 	console.log(res)
-
-		// 	// if (res.ok) {
-		// 	// 	router.push('/panel/user/manage-product');
-		// 	// } else {
-		// 	// 	const error = await res.json();
-		// 	// 	console.error(error);
-		// 	// }
-		// } catch (error) {
-		// 	console.error(error);
-		// }
-	};
+	  };
+	  
 
 	const [previewImages, setPreviewImages] = useState<string[]>([]);
 
@@ -131,9 +114,6 @@ interface AddProductFormProps {
 	};
 
 
-	const [selectedCategory, setSelectedCategory] = useState(null);
-	const [modalOpen, setModalOpen] = useState(false);
-
 	const handleSelectCategory = (category) => {
 		setSelectedCategory(category);
 		setModalOpen(false);
@@ -148,13 +128,12 @@ interface AddProductFormProps {
 	  };
 	  
 	  const categoryModal = () => {
-	
 
 			return (
 				<Dialog open={modalOpen} 
 				keepMounted
 				>
-				  <DialogTitle>Select a category</DialogTitle>
+				  <DialogTitle>กรุณาเลือกประเภทสินค้า</DialogTitle>
 				  <DialogContent>
 					<List>
 					  {categories.map((category:any) => (
@@ -172,10 +151,53 @@ interface AddProductFormProps {
 		
 	  };
 
+	  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
+	  const handleConfirm = () => {
+		setIsConfirmDialogOpen(false);
+		handleSubmit();
+	  };
+	
+	  const handleCancel = () => {
+		setIsConfirmDialogOpen(false);
+	  };
+
+	  const handleOpenQuestionConfirm = () => {
+		setIsConfirmDialogOpen(true);
+	  };
+	  
+
+  
+	  const showConfirmDialog=()=>{
+			return (
+				<Dialog open={isConfirmDialogOpen} keepMounted>
+				<DialogTitle>ยืนยัน</DialogTitle>
+				<DialogContent>
+				  <p>คุณต้องการเพิ่มสินค้าตัวใหม่ ?</p>
+				</DialogContent>
+				<DialogActions>
+				  <Button onClick={handleCancel} color="primary">
+					ยกเลิก
+				  </Button>
+				  <Button onClick={handleConfirm} color="primary">
+					ยืนยัน
+				  </Button>
+				</DialogActions>
+			  </Dialog>
+				
+			)
+	  }
 	return (
 		<Layout>
-			<Formik initialValues={initialValues} onSubmit={handleSubmit}>
+			<Formik initialValues={initialValues}
+			 validate={(values) => {
+				let errors: any = {};
+				if (!values.name) errors.name = "กรุณากรอกชื่อสินค้า";
+				if (!values.desc) errors.desc = "กรุณากรอกรายละเอียดสินค้า";
+				if (!values.price) errors.price = "กรุณากรอกราคาสินค้า";
+				return errors;
+			  }}
+			>
 				{({
 					values,
 					handleChange,
@@ -274,7 +296,8 @@ interface AddProductFormProps {
 									fullWidth
 									variant="contained"
 									color="primary"
-									type="submit"
+									onClick={handleOpenQuestionConfirm}
+									type="button"
 									sx={{ marginRight: 1 }}
 								>
 									เพิ่ม
@@ -290,6 +313,7 @@ interface AddProductFormProps {
 				)}
 			</Formik>
 			{categoryModal()}
+			{showConfirmDialog()}
 		</Layout>
 	);
 };
@@ -300,12 +324,15 @@ export const getServerSideProps: GetServerSideProps = async (
 	context: GetServerSidePropsContext
 ) => {
 	const accessToken = context.req.cookies['access_token']
+	const {gid} = await authService.getSessionServerSide(accessToken!)
+
 	const categories = await categoryService.getAllCategory()
 	if (accessToken) {
 		return {
 			props: {
 				categories,
-				accessToken
+				accessToken,
+				gid
 			},
 		};
 	} else {
