@@ -19,7 +19,12 @@ export const getAllProduct = async (): Promise<ProductArrayResponse> => {
 
 
 export const createProduct = async (data: FormData, accessToken: string): Promise<any> => {
-	await axios.post(`/groups`, data, {
+			console.log('Form Data:');
+		for (const [key, value] of data.entries()) {
+			console.log(key, value);
+		}
+		console.log("===============")
+	await axios.post(`/products`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
 		},

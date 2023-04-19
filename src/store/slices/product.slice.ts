@@ -31,25 +31,34 @@ const initialState: ProductState = {
 // 	return response;
 // });
 
-export const getAllProductByGroupAction = createAsyncThunk("PRODUCT_ACTION/GROUP_GET_ALL", async (id: string): Promise<any> => {
+export const getAllProductByGroupAction = createAsyncThunk("PRODUCT/GROUP_GET_ALL", async (id: string): Promise<any> => {
 	const response = await productService.getAllProductByGroup(id)
 	return response;
 });
 
 
-export const getOneProductAction = createAsyncThunk("PRODUCT_ACTION/GET_ONE", async (id: string): Promise<any> => {
+export const getOneProductAction = createAsyncThunk("PRODUCT/GET_ONE", async (id: string): Promise<any> => {
 	const response = await productService.getOneProduct(id)
 	return response;
 });
 
 
 export const deleteProductAction = createAsyncThunk(
-	"PRODUCT_ACTION/DELETE",
+	"PRODUCT/DELETE",
 	async (data:{id: string, gid:string}) => {
 	  await productService.deleteProduct(data.id!);
 	  store.dispatch(getOneProductAction(data.gid!));
 	}
   );
+
+  export const createProductAction = createAsyncThunk(
+	"PRODUCT/CREATE",
+	async (data:any) => {
+		await productService.createProduct(data.body, data.accessToken);
+
+	}
+);
+
 
 export const productSlice = createSlice({
 	name: "product",
