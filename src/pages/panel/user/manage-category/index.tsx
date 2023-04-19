@@ -25,6 +25,9 @@ import {
   GridToolbarContainer,
   GridToolbarFilterButton,
   GridValueGetterParams,
+  GridToolbarColumnsButton,
+  GridToolbarDensitySelector,
+
 } from "@mui/x-data-grid";
 import {
   Box,
@@ -48,23 +51,17 @@ import {
   Select
 } from "@mui/material";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { EditDialog, DeleteDialog } from "@/components/User/ManageCategory"
 // import EditDialog from "./components"
 import { makeStyles } from "@material-ui/core";
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  Paper,
-  Menu,
-  MenuItem
-} from '@material-ui/core';
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>;
+  },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 import {  Modal } from '@mui/material';
 
@@ -101,6 +98,8 @@ const CustomToolbar: React.FunctionComponent<{
   >;
 }> = ({ setFilterButtonEl }) => (
   <GridToolbarContainer>
+      <GridToolbarColumnsButton />
+    <GridToolbarDensitySelector />
     <GridToolbarFilterButton ref={setFilterButtonEl} />
     <Link href="/panel/user/manage-category/add" passHref>
       <Fab

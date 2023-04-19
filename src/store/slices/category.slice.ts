@@ -7,7 +7,8 @@ import httpClient from "@/common/utils/httpClient.util";
 
 interface CategoryState {
 	category: Partial<CategoryPayload>,
-	categoryArray: CategoryArrayPayload
+	categoryArray: CategoryArrayPayload,
+	
 }
 const initialState: CategoryState = {
 	// message: "",
@@ -21,7 +22,7 @@ const initialState: CategoryState = {
 		updatedAt: "",
 	},
 	categoryArray: [],
-	error: ""
+
 };
 
 export const getAllCategoryByGroupIdAction = createAsyncThunk("CATEGORY/GROUP_GET_ALL_BY_GROUP_ID", async (id: string): Promise<any> => {
@@ -96,9 +97,9 @@ export const categorySlice = createSlice({
 		});
 
 
-		builder.addCase(createCategoryAction.rejected, (state, action) => {
-			state.error = action.payload
-		})
+		// builder.addCase(createCategoryAction.rejected, (state, action) => {
+		// 	state.error = action.payload
+		// })
 
 		// builder.addCase(createCategoryAction.fulfilled, (state, action) => {
 		// 	state.category = action.payload

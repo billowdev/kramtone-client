@@ -11,15 +11,10 @@ import {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.query.action) {
 		const requestAction = req.query['action'][0]
-		// console.log("===========requestAction===========")
-		// console.log(requestAction)
-		// getAllByGroup
+
 		if (req.method === HTTP_METHOD_GET && requestAction == "getAllByGroup") {
 			return getAllCategoryByGroup(req, res);
 		}	
-		else if (req.method === HTTP_METHOD_POST && requestAction == "create") {
-			return createCategory(req, res);
-		}
 		else if (req.method === HTTP_METHOD_DELETE) {
 			return deleteCategory(req, res);
 		} else if (req.method === HTTP_METHOD_PATCH) {

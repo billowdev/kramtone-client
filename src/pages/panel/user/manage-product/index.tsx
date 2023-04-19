@@ -1,7 +1,9 @@
 import React from 'react'
 import Layout from '@/components/Layouts/Layout';
 import { useAppDispatch } from "@/store/store";
-import { getAllProductByGroupAction, productSelector, deleteProductAction} from "@/store/slices/product.slice";
+import { getAllProductByGroupAction, productSelector, deleteProductAction } from "@/store/slices/product.slice";
+import * as productService from "@/services/product.service"
+
 import router from "next/router";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -10,10 +12,9 @@ import Link from "next/link";
 import AddIcon from "@mui/icons-material/Add";
 import withAuth from "@/components/withAuth";
 import { useTheme } from "@material-ui/core/styles";
-
-import * as productService from "@/services/product.service"
+import * as categoryService from "@/services/category.service"
 import * as authService from "@/services/auth.service"
-import {ProductPayload} from "@/models/product.model"
+import { CategoryPayload } from "@/models/category.model"
 import { useSelector } from "react-redux";
 import {
   GetServerSideProps,
@@ -24,6 +25,8 @@ import {
   GridColDef,
   GridRenderCellParams,
   GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarDensitySelector,
   GridToolbarFilterButton,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
@@ -43,10 +46,14 @@ import {
   Stack,
   TextField,
   Typography,
+  Toolbar,
+  FormControl,
+  InputLabel,
+  Select
 } from "@mui/material";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import {EditDialog, DeleteDialog} from "@/components/User/ManageProduct"
 // import EditDialog from "./components"
+import { makeStyles } from "@material-ui/core";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -57,12 +64,44 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+import { Modal } from '@mui/material';
+
+const useStyles = makeStyles({
+  customToolbar: {
+    position: 'relative',
+  },
+  addButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
+  toolbar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  formControl: {
+    minWidth: 120,
+    marginRight: 2,
+  },
+  tableContainer: {
+    paddingTop: '20px',
+    paddingLeft: '20px',
+    marginTop: "20px",
+    marginLeft: "20px",
+    width: "80%",
+    height: "100%"
+  },
+});
+
 const CustomToolbar: React.FunctionComponent<{
   setFilterButtonEl: React.Dispatch<
     React.SetStateAction<HTMLButtonElement | null>
   >;
 }> = ({ setFilterButtonEl }) => (
   <GridToolbarContainer>
+    <GridToolbarColumnsButton />
+    <GridToolbarDensitySelector />
+
     <GridToolbarFilterButton ref={setFilterButtonEl} />
     <Link href="/panel/user/manage-product/add" passHref>
       <Fab
@@ -81,70 +120,84 @@ const CustomToolbar: React.FunctionComponent<{
 );
 
 
+
 type Props = {
   gid?: string,
   accessToken?: string,
-  // productArray?: ProductPayload[]
+  productArray?: CategoryPayload[]
 }
 
-
-function UserPanelManageProduct({ gid, accessToken }: Props) {
+function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
   const theme = useTheme();
+  // const classes = useStyles();
 
   const dispatch = useAppDispatch();
-  const productData = useSelector(productSelector);
-  const [openAddDialog, setOpenAddDialog] = React.useState<boolean>(false);
+  const prodductData = useSelector(productSelector);
+
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState<boolean>(false);
   const [openEditDialog, setOpenEditDialog] = React.useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selectedCategory, setSelectedCategory] = React.useState<CategoryPayload | null>(null);
 
-  const [selectedProduct, setSelectedProduct] = React.useState<ProductPayload | null>(null);
 
   React.useEffect(() => {
     dispatch(getAllProductByGroupAction(gid!));
-  }, [dispatch, gid]);
+  }, [dispatch]);
 
   const [filterButtonEl, setFilterButtonEl] =
-  React.useState<HTMLButtonElement | null>(null);
+    React.useState<HTMLButtonElement | null>(null);
 
-
-  const handleDeleteConfirm = () =>{
-    if(selectedProduct) {
-        //     const sid = selectedProduct.id
-  //     // dispatch(deleteProductAction({id:sid, gid}!))
-      console.log(selectedProduct)
+  const handleDeleteConfirm = () => {
+    if (selectedCategory) {
+      //     const sid = selectedCategory.id
+      //     // dispatch(deleteCategoryAction({id:sid, gid}!))
+      console.log(selectedCategory)
     }
     setOpenDeleteDialog(false);
   }
 
-  const handleDeleteCancel = () => {
-    setOpenDeleteDialog(false);
-  };
-
-  const handleEditConfirm = () =>{
-    if(selectedProduct) {
-      console.log(selectedProduct)
+  const handleEditConfirm = () => {
+    if (selectedCategory) {
+      console.log(selectedCategory)
     }
     setOpenEditDialog(false);
   }
 
-  const handleEditCancel = () => {
-    setOpenEditDialog(false);
-  };
-  
-  
-  const handleAddConfirm = (product: ProductPayload) =>{
-    console.log(product)
-  }
 
-  const handleAddCancel = () => {
-    setOpenAddDialog(false);
-  };
 
+  const showEditDialog = () => {
+    if (selectedCategory === null) {
+      return;
+    }
+
+    return (
+      <Dialog
+        open={openEditDialog}
+        keepMounted
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">
+
+          Confirm to delete the product? : {selectedCategory.name}
+        </DialogTitle>
+        <DialogContent>
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenEditDialog(false)} color="info">
+            Cancel
+          </Button>
+          <Button onClick={handleEditConfirm} color="primary">
+            Edit
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
 
 
   const columns: GridColDef[] = [
-    // { field: "id", headerName: "ID", width: 280 },
-
     {
       field: "name",
       editable: true,
@@ -153,11 +206,10 @@ function UserPanelManageProduct({ gid, accessToken }: Props) {
     },
     {
       field: "desc",
-       editable: true,
+      editable: true,
       headerName: "รายละเอียด",
       width: 180,
     },
-   
     {
       field: "price",
       headerName: "ราคา",
@@ -173,7 +225,7 @@ function UserPanelManageProduct({ gid, accessToken }: Props) {
             aria-label="delete"
             size="large"
             onClick={() => {
-              setSelectedProduct(row);
+              setSelectedCategory(row);
               setOpenDeleteDialog(true);
             }}
           >
@@ -182,59 +234,61 @@ function UserPanelManageProduct({ gid, accessToken }: Props) {
           <IconButton
             aria-label="edit"
             size="large"
-            // onClick={() => 
-              // router.push("/panel/user/manage-product/edit?id=" + row.id)
-            // }
-            onClick={() => {
-              setSelectedProduct(row);
-              setOpenEditDialog(true);
-            }}
+            onClick={() =>
+              router.push("/panel/user/manage-product/edit?id=" + row.id)
+            }
+          // onClick={() => {
+          //   setSelectedCategory(row);
+          //   // setOpenEditDialog(true);
+          // }}
           >
             <EditIcon fontSize="inherit" />
           </IconButton>
-        
+
         </Stack>
       ),
     },
   ];
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 
+
+
+
   return (
     <Layout>
-    <Container sx={{
-        marginLeft: isSmallDevice ? 0 : 2, 
-        marginTop: isSmallDevice ? 0 : 4, 
+      <Container sx={{
+        marginLeft: isSmallDevice ? 0 : 2,
+        marginTop: isSmallDevice ? 0 : 4,
       }}>
 
-         {/* Summary Icons */}
-         <DataGrid
-    
-        sx={{ backgroundColor: "white", height: "100vh", width: "80vw" }}
-        rows={productData?.productArray ?? []}
-        columns={columns}
-        // pageSize={25}
-        // rowsPerPageOptions={[25]}
-        components={{
-          Toolbar: CustomToolbar,
-        }}
-        componentsProps={{
-          panel: {
-            anchorEl: filterButtonEl,
-          },
-          toolbar: {
-            setFilterButtonEl,
-          },
-        }}
-      />
-      <EditDialog open={openEditDialog} product={selectedProduct} onConfirm={handleEditConfirm} onCancel={handleEditCancel} />
-      <DeleteDialog open={openDeleteDialog} product={selectedProduct} onConfirm={handleDeleteConfirm} onCancel={handleDeleteCancel} />
+        {/* Summary Icons */}
+        <DataGrid
+          sx={{ backgroundColor: "white", height: "100vh", width: "80vw" }}
+          rows={productArray ?? []}
+          columns={columns}
+          // pageSize={25}
+          // rowsPerPageOptions={[25]}
+          components={{
+            Toolbar: CustomToolbar,
+          }}
+          
+          componentsProps={{
+            panel: {
+              anchorEl: filterButtonEl,
+            },
+            toolbar: {
+              setFilterButtonEl,
+            },
+          }}
+        />
       </Container>
+
+      {showEditDialog()}
     </Layout>
   )
 }
 
-export default withAuth(UserPanelManageProduct)
-
+export default withAuth(UserPanelManageCategory)
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
@@ -243,7 +297,7 @@ export const getServerSideProps: GetServerSideProps = async (
     const accessToken = context.req.cookies['access_token']
     const { gid } = await authService.getSessionServerSide(accessToken!)
 
-    // const productArray = await productService.getAllProductByGroup(gid)
+    // const productArray = await categoryService.getAllProductByGroup(gid)
     return {
       props: {
         gid,

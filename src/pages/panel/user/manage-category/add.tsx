@@ -34,10 +34,13 @@ const UserPanelAddCategory = ({accessToken }: Props) => {
   const [imageFile, setImageFile] = React.useState<any | Blob>("")
   const [imageObj, setImageObj] = React.useState<URL | string>("")
   const dispatch = useAppDispatch();
-  const initialValues = {
+  const initialValues : CategoryPayload = {
+    id:"",
     name: "",
     desc:"",
-    image: "default_image.png"
+    image: "default_image.png",
+    image_file: "",
+    image_obj : "",
   }
   const [addValue, setAddValue] = React.useState<CategoryPayload>(initialValues);
   const showForm = ({
