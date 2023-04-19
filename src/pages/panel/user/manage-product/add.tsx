@@ -9,22 +9,24 @@ import { useRouter } from 'next/router';
 import Image from "next/image";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import httpClient from '@/common/utils/httpClient.util';
-import {createProductAction} from '@/store/slices/product.slice';
+import { createProductAction } from '@/store/slices/product.slice';
 import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
 import * as categoryService from "@/services/category.service"
 import * as authService from "@/services/auth.service"
 
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogActions,
 
-  List,
-  ListItem,
-  ListItemText,
+	List,
+	ListItem,
+	ListItemText,
 } from '@mui/material';
+import { CategoryPayload } from '@/models/category.model';
+import Swal from 'sweetalert2';
 
 
 
@@ -36,13 +38,19 @@ interface Product {
 }
 interface AddProductFormProps {
 	accessToken?: string;
-	categories? : any,
-	gid?:string
-  }
-  
-  const AddProductForm = ({ accessToken, categories, gid }: AddProductFormProps) => {
+	categories?: CategoryPayload[],
+	gid?: string
+}
 
-	const [selectedCategory, setSelectedCategory] = useState(null);
+const AddProductForm = ({ accessToken, categories, gid }: AddProductFormProps) => {
+
+	const [selectedCategory, setSelectedCategory] = useState<CategoryPayload>({
+		id: "",
+		name: "",
+		desc: "",
+		image: "default_image.png",
+
+	});
 	const [modalOpen, setModalOpen] = useState(false);
 
 	const dispatch = useAppDispatch();
@@ -55,48 +63,79 @@ interface AddProductFormProps {
 
 	const router = useRouter();
 
+	const [addValue, setAddValue] = useState<Product>(initialValues);
+	const [images, setImages] = useState<File[]>([]);
 
-	
+
 	const handleSubmit = async (values: Product) => {
 		try {
-		  const formData = new FormData();
-	  
-		  if (values.images) {
-			for (let i = 0; i < values.images.length; i++) {
-			  formData.append("images", values.images[i]);
+			console.log(images)
+			console.log(values)
+
+			const formData = new FormData();
+			if (images) {
+				for (let i = 0; i < images.length; i++) {
+					formData.append("images", images[i]);
+				}
 			}
-		  }
-	  
-		  formData.append(
-			"product",
-			JSON.stringify({
-			  name: values.name,
-			  desc: values.desc,
-			  price: values.price,
-			  categoryId: selectedCategory.id,
-			  groupId: gid,
-			})
-		  );
-	  
-		  const createStatus = await dispatch(
-			createProductAction({ body: formData, accessToken })
-		  );
-	  
-		  if (createStatus.meta.requestStatus === "fulfilled") {
-			toast.success("เพิ่มข้อมูลประเภทสินค้าสำเร็จ");
-			router.push("/panel/user/manage-product");
-		  } else {
-			toast.error(
-			  "เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง"
+
+			formData.append(
+				"product",
+				JSON.stringify({
+					name: values.name,
+					desc: values.desc,
+					price: values.price,
+					categoryId: selectedCategory && selectedCategory?.id,
+					groupId: gid,
+				})
 			);
-		  }
+
+			// const createStatus = await dispatch(
+			// 	createProductAction({ body: formData, accessToken })
+			// );
+
+			// if (createStatus.meta.requestStatus === "fulfilled") {
+			// 	toast.success("เพิ่มข้อมูลประเภทสินค้าสำเร็จ");
+			// 	router.push("/panel/user/manage-product");
+			// } else {
+			// 	toast.error(
+			// 		"เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง"
+			// 	);
+			// }
+
+			const result = await Swal.fire({
+				title: 'เพิ่มข้อมูล?',
+				text: `คุณต้องการเพิ่มข้อมูลสินค้า ${values.name}`,
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonText: 'ใช่, ยืนยัน!',
+				cancelButtonText: 'ไม่, ยกเลิก'
+			})
+
+			if (result.isConfirmed) {
+				const createStatus = await dispatch(
+					createProductAction({ body: formData, accessToken })
+				);
+
+				if (createStatus.meta.requestStatus === "fulfilled") {
+					toast.success("เพิ่มข้อมูลประเภทสินค้าสำเร็จ");
+					router.push("/panel/user/manage-product");
+				} else {
+					toast.error(
+						"เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง"
+					);
+				}
+			}
+
+
 		} catch (error) {
 			toast.error("เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ");
-		  console.error("An error occurred:", error);
-		  // Handle the error here
+			console.error("An error occurred:", error);
+			// Handle the error here
 		}
-	  };
-	  
+	};
+
+
 
 	const [previewImages, setPreviewImages] = useState<string[]>([]);
 
@@ -109,100 +148,107 @@ interface AddProductFormProps {
 			}
 			setPreviewImages((prevPreviewImages) => [...prevPreviewImages, ...urls]);
 			const existingFiles = values.images || [];
-			setFieldValue('images', [...existingFiles, ...files]);
+			// setFieldValue('images', [...existingFiles, ...files]);
+			setImages((prevImages) => [...prevImages, ...files]); // add new image files to state
 		}
 	};
 
 
-	const handleSelectCategory = (category) => {
+	const handleSelectCategory = (category: CategoryPayload) => {
 		setSelectedCategory(category);
 		setModalOpen(false);
-	  };
-	  
-	  const handleOpenModal = () => {
+	};
+
+	const handleOpenModal = () => {
 		setModalOpen(true);
-	  };
-	  
-	  const handleCloseModal = () => {
+	};
+
+	const handleCloseModal = () => {
 		setModalOpen(false);
-	  };
-	  
-	  const categoryModal = () => {
+	};
 
-			return (
-				<Dialog open={modalOpen} 
+	const categoryModal = () => {
+
+		return (
+			<Dialog open={modalOpen}
 				keepMounted
-				>
-				  <DialogTitle>กรุณาเลือกประเภทสินค้า</DialogTitle>
-				  <DialogContent>
-					<List>
-					  {categories.map((category:any) => (
-						<ListItem button key={category.id} onClick={() => handleSelectCategory(category)}>
-						  <ListItemText primary={category.name} />
-						</ListItem>
-					  ))}
-					</List>
-				  </DialogContent>
-				  <DialogActions>
-					<Button onClick={handleCloseModal}>Cancel</Button>
-				  </DialogActions>
-				</Dialog>
-			  );
-		
-	  };
-
-	  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
-
-	  const handleConfirm = () => {
-		setIsConfirmDialogOpen(false);
-		handleSubmit();
-	  };
-	
-	  const handleCancel = () => {
-		setIsConfirmDialogOpen(false);
-	  };
-
-	  const handleOpenQuestionConfirm = () => {
-		setIsConfirmDialogOpen(true);
-	  };
-	  
-
-  
-	  const showConfirmDialog=()=>{
-			return (
-				<Dialog open={isConfirmDialogOpen} keepMounted>
-				<DialogTitle>ยืนยัน</DialogTitle>
+			>
+				<DialogTitle>กรุณาเลือกประเภทสินค้า</DialogTitle>
 				<DialogContent>
-				  <p>คุณต้องการเพิ่มสินค้าตัวใหม่ ?</p>
+					<List>
+						{categories && categories.map((category: any) => (
+							<ListItem button key={category.id} onClick={() => handleSelectCategory(category)}>
+								<ListItemText primary={category.name} />
+							</ListItem>
+						))}
+					</List>
 				</DialogContent>
 				<DialogActions>
-				  <Button onClick={handleCancel} color="primary">
-					ยกเลิก
-				  </Button>
-				  <Button onClick={handleConfirm} color="primary">
-					ยืนยัน
-				  </Button>
+					<Button onClick={handleCloseModal}>Cancel</Button>
 				</DialogActions>
-			  </Dialog>
-				
-			)
-	  }
+			</Dialog>
+		);
+
+	};
+
+	const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+
+	// const handleConfirm = () => {
+	// 	setIsConfirmDialogOpen(false);
+	// 	handleSubmit();
+	// };
+
+	// const handleCancel = () => {
+	// 	setIsConfirmDialogOpen(false);
+	// };
+
+	// const handleOpenQuestionConfirm = () => {
+	// 	setIsConfirmDialogOpen(true);
+	// };
+
+
+
+	// const showConfirmDialog = () => {
+	// 	return (
+	// 		<Dialog open={isConfirmDialogOpen} keepMounted>
+	// 			<DialogTitle>ยืนยัน</DialogTitle>
+	// 			<DialogContent>
+	// 				<p>คุณต้องการเพิ่มสินค้าตัวใหม่ ?</p>
+	// 			</DialogContent>
+	// 			<DialogActions>
+	// 				<Button onClick={handleCancel} color="primary">
+	// 					ยกเลิก
+	// 				</Button>
+	// 				<Button onClick={handleConfirm} color="primary">
+	// 					ยืนยัน
+	// 				</Button>
+	// 			</DialogActions>
+	// 		</Dialog>
+
+	// 	)
+	// }
+
 	return (
 		<Layout>
 			<Formik initialValues={initialValues}
-			 validate={(values) => {
-				let errors: any = {};
-				if (!values.name) errors.name = "กรุณากรอกชื่อสินค้า";
-				if (!values.desc) errors.desc = "กรุณากรอกรายละเอียดสินค้า";
-				if (!values.price) errors.price = "กรุณากรอกราคาสินค้า";
-				return errors;
-			  }}
+				validate={(values) => {
+					let errors: any = {};
+					if (!values.name) errors.name = "กรุณากรอกชื่อสินค้า";
+					if (!values.desc) errors.desc = "กรุณากรอกรายละเอียดสินค้า";
+					if (!values.price) errors.price = "กรุณากรอกราคาสินค้า";
+					return errors;
+				}}
+				onSubmit={(values, { setSubmitting }) => {
+					// setAddValue(values)
+					handleSubmit(values); // call handleSubmit function here
+					setSubmitting(false);
+				}}
 			>
 				{({
 					values,
 					handleChange,
 					handleBlur,
-					handleSubmit,
+
 					isSubmitting,
 					setFieldValue,
 				}) => (
@@ -251,10 +297,11 @@ interface AddProductFormProps {
 								<br />
 
 								<div style={{ marginTop: 16 }}>
-                <Button variant="outlined" onClick={handleOpenModal}>
-                  {selectedCategory ? selectedCategory.name : 'Select a category'}
-                </Button>
-              </div>
+									<Button variant="outlined" onClick={handleOpenModal}>
+										{selectedCategory && selectedCategory.name !== "" ? selectedCategory.name : 'เลือกประเภทสินค้า'}
+									</Button>
+
+								</div>
 								<div style={{ marginTop: 16 }}>
 									<input
 										type="file"
@@ -296,8 +343,8 @@ interface AddProductFormProps {
 									fullWidth
 									variant="contained"
 									color="primary"
-									onClick={handleOpenQuestionConfirm}
-									type="button"
+									// onClick={handleOpenQuestionConfirm}
+									type="submit"
 									sx={{ marginRight: 1 }}
 								>
 									เพิ่ม
@@ -313,7 +360,7 @@ interface AddProductFormProps {
 				)}
 			</Formik>
 			{categoryModal()}
-			{showConfirmDialog()}
+			{/* {showConfirmDialog()} */}
 		</Layout>
 	);
 };
@@ -324,7 +371,7 @@ export const getServerSideProps: GetServerSideProps = async (
 	context: GetServerSidePropsContext
 ) => {
 	const accessToken = context.req.cookies['access_token']
-	const {gid} = await authService.getSessionServerSide(accessToken!)
+	const { gid } = await authService.getSessionServerSide(accessToken!)
 
 	const categories = await categoryService.getAllCategory()
 	if (accessToken) {
