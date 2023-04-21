@@ -21,11 +21,11 @@ export const getAllProduct = async (): Promise<ProductArrayResponse> => {
 
 
 export const createProduct = async (data: FormData, accessToken: string): Promise<any> => {
-			console.log('Form Data:');
-		for (const [key, value] of data.entries()) {
-			console.log(key, value);
-		}
-		console.log("===============")
+		// 	console.log('Form Data:');
+		// for (const [key, value] of data.entries()) {
+		// 	console.log(key, value);
+		// }
+		// console.log("===============")
 	await axios.post(`/products`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
@@ -54,4 +54,16 @@ export const deleteProduct = async (id: string): Promise<void> => {
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
 	});
 };
+
+export const deleteProductImage = async ( productId:string, imageId: string, accessToken:string): Promise<void> => {
+	await httpClient.delete(`/products/${productId}/images/${imageId}`, {
+		headers: {
+			Authorization: `Bearer ${accessToken}`
+		},
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API,
+	});
+};
+
+
+
 

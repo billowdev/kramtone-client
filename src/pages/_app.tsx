@@ -6,7 +6,7 @@ import * as React from "react";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { Toaster } from "react-hot-toast";
 import { fetchSession } from "@/store/slices/auth.slice";
-
+import { SweetAlert, SweetAlertData } from '@/components/SweetAlert';
 
 
 
@@ -199,12 +199,18 @@ function MyApp({ Component, pageProps }: AppProps) {
 	// 	}
 	// 	fetchData();
 	// }, []);
+	const [sweetAlertData, setSweetAlertData] = React.useState<SweetAlertData | null>(null);
 
+	const showSweetAlert = (data: SweetAlertData) => {
+	  setSweetAlertData(data);
+	};
+  
 	return (
 		<Provider store={store}>
 			<ThemeProvider theme={theme}>
 				<Component {...pageProps} />
 				<Toaster />
+				<SweetAlert sweetAlertData={sweetAlertData} />
 			</ThemeProvider>
 
 		</Provider>

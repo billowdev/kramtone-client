@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import httpClient from "@/common/utils/httpClient.util";
-import { updateProductAction } from "@/store/slices/product.slice";
+import { updateProductAction, deleteProductAction, deleteProductImageAction  } from "@/store/slices/product.slice";
 import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
 import * as categoryService from "@/services/category.service";
@@ -32,12 +32,7 @@ import * as productService from "@/services/product.service";
 import { productImageURL } from "@/common/utils/utils";
 import { IconButton } from "@material-ui/core";
 
-interface Product {
-  name: string;
-  desc: string;
-  price: string;
-  images?: FileList;
-}
+
 interface AddProductFormProps {
   accessToken?: string;
   product?: ProductPayload;
@@ -48,6 +43,7 @@ interface AddProductFormProps {
 const AddProductForm = ({
   accessToken,
   categories,
+  showSweetAlert,
   gid,
   product,
 }: AddProductFormProps) => {
@@ -146,19 +142,34 @@ const AddProductForm = ({
   // 		setImages((prevImages) => [...prevImages, ...files]); // add new image files to state
   // 	}
   // };
-  const [previewImages, setPreviewImages] = useState([]);
-  const [images, setImages] = useState<File[]>([]);
-  const [existingImages, setExistingImages] = useState<string[]>(product?.productImages);
+  const [previewImages, setPreviewImages] = useState<any>([]);
+  const [images, setImages] = useState<any>([]);
+  const [existingImages, setExistingImages] = useState<any>(product?.productImages);
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>, setFieldValue: any) => {
-    const files = event.target.files;
-    const urls: string[] = [];
-    for (let i = 0; i < files.length; i++) {
-      urls.push(URL.createObjectURL(files[i]));
-    }
+//   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>, setFieldValue: any) => {
+//     const files = event.target.files;
+//     const urls: string[] = [];
+//     for (let i = 0; i < files?.length; i++) {
+//       urls.push(URL.createObjectURL(files[i]));
+//     }
 
-    setPreviewImages((prevPreviewImages) => [...prevPreviewImages, ...urls]);
-    setImages([...images, ...files]);
+//     setPreviewImages((prevPreviewImages) => [...prevPreviewImages, ...urls]);
+//     setImages([...images, ...files]);
+//   };
+const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const files = event.target.files;
+  
+	if (files) {
+	  const urls: string[] = [];
+  
+	  const length = files.length;
+	  for (let i = 0; i < length; i++) {
+		urls.push(URL.createObjectURL(files[i]));
+	  }
+  
+	  setPreviewImages((prevPreviewImages: string[]) => [...prevPreviewImages, ...urls]);
+	  setImages([...images, ...Array.from(files)]);
+	}
   };
 
   const handleDeleteImage = (index: number) => {
@@ -171,19 +182,34 @@ const AddProductForm = ({
     setImages(newImages);
   };
 
-  const handleDeleteExistingImage = async (index: number) => {
-    const existingImageName = existingImages[index];
-
-    try {
-      await deleteImage(existingImageName);
-      const newExistingImages = [...existingImages];
-      newExistingImages.splice(index, 1);
-      setExistingImages(newExistingImages);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleDeleteExistImage = async (image: any) => {
+    const {id} = image
+    const result = await Swal.fire({
+      title: 'ลบรูปภาพ',
+      text: 'เมื่อลบแล้วไม่สามารถกู้คืนได้!',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'ยกเลิก',
+      confirmButtonText: 'ยืนยันการลบ',
+      reverseButtons: true
+    });
+  
+    if (result.isConfirmed) {
+      // Call the API or function to delete the image
+      // await deleteImage(id);
+      await dispatch(deleteProductImageAction({productId:product.id, id, accessToken }));
+      Swal.fire(
+        'ลบข้อมูลเรียบร้อย!',
+        'รูปภาพของคุณถูกลบเรียบร้อยแล้ว',
+        'success'
+      );
+      const updatedImages = existingImages.filter((image: any) => image.id !== id);
+  setExistingImages(updatedImages);
+    } 
+   
   };
 
+ 
   const handleSelectCategory = (category: CategoryPayload) => {
     setSelectedCategory(category);
     setModalOpen(false);
@@ -201,7 +227,6 @@ const AddProductForm = ({
     if (values.file_obj) {
       return (
         <Image
-          objectFit="contain"
           alt="product image"
           src={values.file_obj}
           width={100}
@@ -211,7 +236,6 @@ const AddProductForm = ({
     } else if (values.image) {
       return (
         <Image
-          objectFit="contain"
           alt="product image"
           src={productImageURL(values.image)}
           width={100}
@@ -321,7 +345,7 @@ const AddProductForm = ({
                   </Button>
                 </div>
 
-				<div style={{ marginTop: 16 }}>
+				{/* <div style={{ marginTop: 16 }}>
 				<label
                   htmlFor="files"
                   style={{
@@ -330,7 +354,7 @@ const AddProductForm = ({
                     cursor: "pointer",
                   }}
                 >
-                  {product.productImages.map((image) => (
+                  {product&&product?.productImages.map((image) => (
                     <div key={image.id}>
                       {showPreviewImage({ image: image.image })}
                       {!image.isApiImage && (
@@ -341,7 +365,26 @@ const AddProductForm = ({
                     </div>
                   ))}
                 </label>
-                </div>
+                </div> */}
+<div style={{ marginTop: 16 }}>
+  <label
+    htmlFor="files"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      cursor: "pointer",
+    }}
+  >
+    {product?.productImages?.map((image) => (
+      <div key={image.id}>
+        {showPreviewImage({ image: image.image })}
+        <IconButton onClick={() => handleDeleteExistImage(image)}>
+            <Delete />
+          </IconButton>
+      </div>
+    ))}
+  </label>
+</div>
 
                
               
@@ -417,11 +460,13 @@ const AddProductForm = ({
               </button>
             </div>
           ))} */}
-          {previewImages.map((image, index) => (
+          {previewImages.map((image:any, index:any) => (
             <div key={index}>
               <img src={image} alt="preview" width={250} height={250} />
-              <button type="button" onClick={() => handleDeleteImage(index)}>
-                Remove
+              <button type="button" 
+			  onClick={() => handleDeleteImage(image)}
+			  >
+                ลบ 
               </button>
             </div>
           ))}
@@ -436,9 +481,11 @@ const AddProductForm = ({
               type="file"
               accept="image/*"
               multiple
-              onChange={(event) => {
-                handleImageChange(event, arrayHelpers.setFieldValue);
-                arrayHelpers.push(event.currentTarget.files[0]);
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                if (event.currentTarget.files) {
+                  handleImageChange(event);
+                  arrayHelpers.push(event.currentTarget.files[0]);
+                }
               }}
               style={{ display: "none" }}
             />
