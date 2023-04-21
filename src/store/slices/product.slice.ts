@@ -45,24 +45,24 @@ export const getOneProductAction = createAsyncThunk("PRODUCT/GET_ONE", async (id
 
 export const deleteProductAction = createAsyncThunk(
 	"PRODUCT/DELETE",
-	async (data:{id?: string, gid?:string, accessToken?:string}) => {
-	  await productService.deleteProduct(data.id!, data.accessToken);
-	  store.dispatch(getOneProductAction(data.gid!));
+	async (data: { id?: string, gid?: string, accessToken?: string }) => {
+		await productService.deleteProduct(data.id!, data.accessToken!);
+		store.dispatch(getOneProductAction(data.gid!));
 	}
-  );
+);
 
-  export const deleteProductImageAction = createAsyncThunk(
+export const deleteProductImageAction = createAsyncThunk(
 	"PRODUCT/DELETE_IMAGE",
-	async (data:{productId?:string, id?: string, accessToken?: string, gid?:string}) => {
-	  await productService.deleteProductImage(data.productId!, data.id!, data.accessToken!);
-	  const newPatchData = store.dispatch(getOneProductAction(data.gid!));
+	async (data: { productId?: string, id?: string, accessToken?: string, gid?: string }) => {
+		await productService.deleteProductImage(data.productId!, data.id!, data.accessToken!);
+		const newPatchData = store.dispatch(getOneProductAction(data.gid!));
 		return newPatchData
 	}
-  );
+);
 
-  export const createProductAction = createAsyncThunk(
+export const createProductAction = createAsyncThunk(
 	"PRODUCT/CREATE",
-	async (data:any) => {
+	async (data: any) => {
 		await productService.createProduct(data.body, data.accessToken);
 
 	}
@@ -70,7 +70,7 @@ export const deleteProductAction = createAsyncThunk(
 
 export const updateProductAction = createAsyncThunk(
 	"PRODUCT/UPDATE",
-	async (data:any) => {
+	async (data: any) => {
 		await productService.updateProduct(data.id, data.body, data.accessToken);
 
 	}
@@ -99,15 +99,11 @@ export const productSlice = createSlice({
 
 		builder.addCase(getOneProductAction.rejected, (state, action) => {
 			state.product = {
-		
+
 			}
 
 		})
 
-		builder.addCase(deleteProductImageAction.fulfilled, (state, action) => {
-			state.product = action.payload
-		});
-		
 	}
 })
 

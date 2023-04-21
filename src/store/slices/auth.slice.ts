@@ -53,6 +53,12 @@ export const signOut = createAsyncThunk("user/signout", async () => {
 	await authService.signOut();
 	Router.push("/auth/signin");
 });
+export const updateUserProfileAction = createAsyncThunk("USER/UPDATE", async () => {
+	await authService.signOut();
+	Router.push("/auth/signin");
+});
+
+
 
 export const fetchSession = createAsyncThunk("user/fetchSession", async () => {
 	const response = await authService.getSession();

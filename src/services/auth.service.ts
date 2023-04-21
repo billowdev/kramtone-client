@@ -45,13 +45,36 @@ export const getSession = async (): Promise<SessionResponseType> => {
 	return { ...session, accessToken }
 };
 
-export const getSessionServerSide = async (token:string): Promise<any> => {
-	const {data:response} = await axios.get(`/users/session`, {
+
+export const getProfile = async (token: string): Promise<any> => {
+	const { data: response } = await axios.get(`/users/me`, {
 		headers: {
 			Authorization: `Bearer ${token}`
 		},
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API,
 	})
 
-	return  response.payload
+	return response.payload
+};
+
+export const updateUserById = async (id: string, accessToken: string, body: any): Promise<any> => {
+	const { data: response } = await axios.patch(`/users/${id}`, body, {
+		headers: {
+			Authorization: `Bearer ${accessToken}`
+		},
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API,
+	})
+
+	return response.payload
+};
+
+export const getSessionServerSide = async (token: string): Promise<any> => {
+	const { data: response } = await axios.get(`/users/session`, {
+		headers: {
+			Authorization: `Bearer ${token}`
+		},
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API,
+	})
+
+	return response.payload
 };

@@ -67,3 +67,26 @@ export interface AuthModel {
 	phone: string
 	accessToken: string
 }
+
+
+export interface UserResponse {
+	status: string
+	payload: UserPayload
+	error: any
+  }
+  
+  export interface UserPayload {
+	id?: string
+	username?: string
+	email?: string
+	role?: string
+	name?: string
+	surname?: string
+	phone?: string
+	activated?: boolean
+	removed?: boolean
+	groupId?: string
+	createdAt?: string
+	updatedAt?: string
+  }
+  
