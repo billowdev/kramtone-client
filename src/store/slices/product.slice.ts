@@ -55,7 +55,8 @@ export const deleteProductAction = createAsyncThunk(
 	"PRODUCT/DELETE_IMAGE",
 	async (data:{productId?:string, id?: string, accessToken?: string, gid?:string}) => {
 	  await productService.deleteProductImage(data.productId!, data.id!, data.accessToken!);
-	  store.dispatch(getOneProductAction(data.gid!));
+	  const newPatchData = store.dispatch(getOneProductAction(data.gid!));
+		return newPatchData
 	}
   );
 
@@ -103,7 +104,10 @@ export const productSlice = createSlice({
 
 		})
 
-
+		builder.addCase(deleteProductImageAction.fulfilled, (state, action) => {
+			state.product = action.payload
+		});
+		
 	}
 })
 

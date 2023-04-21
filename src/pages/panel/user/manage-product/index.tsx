@@ -133,7 +133,7 @@ type Props = {
 function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
   const theme = useTheme();
   // const classes = useStyles();
-
+  const [productData, setProductData] = React.useState<ProductPayload[]>(productArray!);
   const dispatch = useAppDispatch();
   const prodductData = useSelector(productSelector);
 
@@ -281,12 +281,17 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
     }).then((result) => {
       if (result.isConfirmed) {
         // Dispatch the deleteProductAction here
-        dispatch(deleteProductAction({id:row.id, accessToken}));
+        dispatch(deleteProductAction({id:row.id, accessToken}))
         Swal.fire(
           'ลบข้อมูลเรียบร้อย!',
           'สินค้าของคุณถูกลบเรียบร้อยแล้ว',
           'success'
-        );
+        ).then(() => {
+          setTimeout(() => {
+            window.location.reload(); // Reload the page after 2 seconds
+          }, 200);
+        });
+        
       }
     });
   }}
@@ -326,7 +331,7 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
         {/* Summary Icons */}
         <DataGrid
           sx={{ backgroundColor: "white", height: "100vh", width: "80vw" }}
-          rows={productArray ?? []}
+          rows={productData ?? []}
           columns={columns}
           // pageSize={25}
           // rowsPerPageOptions={[25]}
