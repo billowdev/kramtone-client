@@ -7,6 +7,7 @@ import placeReducer from "./slices/place.slice";
 import groupDataReducer from "./slices/group-data.slice";
 import productReducer from "./slices/product.slice";
 import categoryReducer from "./slices/category.slice";
+import colorSchemeReducer from "./slices/color-scheme.slice";
 
 const reducer = {
 	auth: authReducer,
@@ -14,6 +15,7 @@ const reducer = {
 	groupData: groupDataReducer,
 	product: productReducer,
 	category: categoryReducer,
+	colorScheme: colorSchemeReducer
 };
 
 export const store = configureStore({
