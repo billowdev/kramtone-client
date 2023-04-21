@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import httpClient from "@/common/utils/httpClient.util";
-import { updateProductAction, deleteProductAction, deleteProductImageAction  } from "@/store/slices/product.slice";
+import { updateProductAction, deleteProductAction, deleteProductImageAction } from "@/store/slices/product.slice";
 import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
 import * as categoryService from "@/services/category.service";
@@ -43,7 +43,6 @@ interface AddProductFormProps {
 const AddProductForm = ({
   accessToken,
   categories,
-  showSweetAlert,
   gid,
   product,
 }: AddProductFormProps) => {
@@ -57,6 +56,10 @@ const AddProductForm = ({
 
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  const [previewImages, setPreviewImages] = useState<any>([]);
+  const [images, setImages] = useState<any>([]);
+  const [existingImages, setExistingImages] = useState<any>(product?.productImages);
 
   // Pass the product object as a prop to this component
 
@@ -108,6 +111,7 @@ const AddProductForm = ({
 
         if (updateStatus.meta.requestStatus === "fulfilled") {
           toast.success("แก้ไขข้อมูลสินค้าสำเร็จ");
+          console.log(updateStatus)
           router.push("/panel/user/manage-product");
         } else {
           toast.error("แก้ไขข้อมูลสินค้าไม่สำเร็จ โปรดลองอีกครั้ง");
@@ -120,56 +124,20 @@ const AddProductForm = ({
     }
   };
 
-  // const [images, setImages] = useState<File[]>(product?.images); // Set the existing images as the initial state
-  // const [previewImages, setPreviewImages] = useState<any>(
-  // 	product?.productImages
-  // ); // Set the existing images as the preview images
 
-  // const handleImageChange = (
-  // 	event: React.ChangeEvent<HTMLInputElement>,
-  // 	setFieldValue: any,
-  // 	values: any
-  // ) => {
-  // 	if (event.target.files && event.target.files.length > 0) {
-  // 		const files = event.target.files;
-  // 		const urls: string[] = [];
-  // 		for (let i = 0; i < files.length; i++) {
-  // 			urls.push(URL.createObjectURL(files[i]));
-  // 		}
-  // 		setPreviewImages((prevPreviewImages) => [...prevPreviewImages, ...urls]);
-  // 		const existingFiles = updateValue.images || [];
-  // 		setFieldValue("images", [...existingFiles, ...files]);
-  // 		setImages((prevImages) => [...prevImages, ...files]); // add new image files to state
-  // 	}
-  // };
-  const [previewImages, setPreviewImages] = useState<any>([]);
-  const [images, setImages] = useState<any>([]);
-  const [existingImages, setExistingImages] = useState<any>(product?.productImages);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
 
-//   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>, setFieldValue: any) => {
-//     const files = event.target.files;
-//     const urls: string[] = [];
-//     for (let i = 0; i < files?.length; i++) {
-//       urls.push(URL.createObjectURL(files[i]));
-//     }
+    if (files) {
+      setImages([...images, ...Array.from(files)]);
+      const urls: string[] = [];
+      const length = files.length;
+      for (let i = 0; i < length; i++) {
+        urls.push(URL.createObjectURL(files[i]));
+      }
 
-//     setPreviewImages((prevPreviewImages) => [...prevPreviewImages, ...urls]);
-//     setImages([...images, ...files]);
-//   };
-const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-	const files = event.target.files;
-  
-	if (files) {
-	  const urls: string[] = [];
-  
-	  const length = files.length;
-	  for (let i = 0; i < length; i++) {
-		urls.push(URL.createObjectURL(files[i]));
-	  }
-  
-	  setPreviewImages((prevPreviewImages: string[]) => [...prevPreviewImages, ...urls]);
-	  setImages([...images, ...Array.from(files)]);
-	}
+      setPreviewImages((prevPreviewImages: string[]) => [...prevPreviewImages, ...urls]);
+    }
   };
 
   const handleDeleteImage = (index: number) => {
@@ -183,7 +151,7 @@ const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   };
 
   const handleDeleteExistImage = async (image: any) => {
-    const {id} = image
+    const { id } = image
     const result = await Swal.fire({
       title: 'ลบรูปภาพ',
       text: 'เมื่อลบแล้วไม่สามารถกู้คืนได้!',
@@ -193,23 +161,23 @@ const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       confirmButtonText: 'ยืนยันการลบ',
       reverseButtons: true
     });
-  
+
     if (result.isConfirmed) {
       // Call the API or function to delete the image
       // await deleteImage(id);
-      await dispatch(deleteProductImageAction({productId:product.id, id, accessToken }));
+      await dispatch(deleteProductImageAction({ productId: product?.id, id, accessToken, gid }));
       Swal.fire(
         'ลบข้อมูลเรียบร้อย!',
         'รูปภาพของคุณถูกลบเรียบร้อยแล้ว',
         'success'
       );
       const updatedImages = existingImages.filter((image: any) => image.id !== id);
-  setExistingImages(updatedImages);
-    } 
-   
+      setExistingImages(updatedImages);
+    }
+
   };
 
- 
+
   const handleSelectCategory = (category: CategoryPayload) => {
     setSelectedCategory(category);
     setModalOpen(false);
@@ -238,8 +206,8 @@ const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         <Image
           alt="product image"
           src={productImageURL(values.image)}
-          width={100}
-          height={100}
+          width={250}
+          height={250}
         />
       );
     }
@@ -345,28 +313,7 @@ const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
                   </Button>
                 </div>
 
-				{/* <div style={{ marginTop: 16 }}>
-				<label
-                  htmlFor="files"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    cursor: "pointer",
-                  }}
-                >
-                  {product&&product?.productImages.map((image) => (
-                    <div key={image.id}>
-                      {showPreviewImage({ image: image.image })}
-                      {!image.isApiImage && (
-                        <IconButton onClick={() => handleDeleteImage(image)}>
-                          <Delete />
-                        </IconButton>
-                      )}
-                    </div>
-                  ))}
-                </label>
-                </div> */}
-<div style={{ marginTop: 16 }}>
+                <div style={{ marginTop: 16 }}>
   <label
     htmlFor="files"
     style={{
@@ -375,84 +322,24 @@ const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       cursor: "pointer",
     }}
   >
-    {product?.productImages?.map((image) => (
+    {existingImages?.map((image: any) => (
       <div key={image.id}>
         {showPreviewImage({ image: image.image })}
         <IconButton onClick={() => handleDeleteExistImage(image)}>
-            <Delete />
-          </IconButton>
+          <Delete />
+        </IconButton>
       </div>
     ))}
   </label>
 </div>
 
-               
-              
 
-                {/* <FieldArray
+
+                <FieldArray
                   name="images"
                   render={(arrayHelpers) => (
                     <div>
-                      {previewImages && previewImages.length > 0 ? (
-                        previewImages.map((image, index) => (
-                          <div key={index}>
-                            <img
-                              src={image}
-                              alt="preview"
-                              width={250}
-                              height={250}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                arrayHelpers.remove(index); // remove the image from the list
-                                setImages((prevImages) => {
-                                  const images = [...prevImages];
-                                  images.splice(index, 1); // remove the image from state
-                                  return images;
-                                });
-                                setPreviewImages((prevPreviewImages) => {
-                                  const previewImages = [...prevPreviewImages];
-                                  previewImages.splice(index, 1); // remove the preview image from state
-                                  return previewImages;
-                                });
-                              }}
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        ))
-                      ) : (
-                        <div>
-                          <label htmlFor="images" style={{ cursor: "pointer" }}>
-                            <CloudUpload style={{ marginRight: 10 }} />
-                            <span style={{ color: "#00B0CD" }}>
-                              Add Picture
-                            </span>
-                          </label>
-                          <input
-                            id="images"
-                            name="images"
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            onChange={(event) => {
-                              handleImageChange(event, setFieldValue, values);
-                              arrayHelpers.push(event.currentTarget.files[0]);
-                            }}
-                            style={{ display: "none" }}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  )}
-                /> */}
-
-<FieldArray
-      name="images"
-      render={(arrayHelpers) => (
-        <div>
-          {/* {existingImages.map((image, index) => (
+                      {/* {existingImages.map((image, index) => (
             <div key={index}>
               <img src={image} alt="preview" width={250} height={250} />
               <button type="button" onClick={() => handleDeleteExistingImage(index)}>
@@ -460,39 +347,39 @@ const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
               </button>
             </div>
           ))} */}
-          {previewImages.map((image:any, index:any) => (
-            <div key={index}>
-              <img src={image} alt="preview" width={250} height={250} />
-              <button type="button" 
-			  onClick={() => handleDeleteImage(image)}
-			  >
-                ลบ 
-              </button>
-            </div>
-          ))}
-          <div>
-            <label htmlFor="images" style={{ cursor: "pointer" }}>
-              <CloudUpload style={{ marginRight: 10 }} />
-              <span style={{ color: "#00B0CD" }}>Add Picture</span>
-            </label>
-            <input
-              id="images"
-              name="images"
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                if (event.currentTarget.files) {
-                  handleImageChange(event);
-                  arrayHelpers.push(event.currentTarget.files[0]);
-                }
-              }}
-              style={{ display: "none" }}
-            />
-          </div>
-        </div>
-      )}
-    />
+                      {previewImages.map((image: any, index: any) => (
+                        <div key={index}>
+                          <img src={image} alt="preview" width={250} height={250} />
+                          <button type="button"
+                            onClick={() => handleDeleteImage(image)}
+                          >
+                            ลบ
+                          </button>
+                        </div>
+                      ))}
+                      <div>
+                        <label htmlFor="images" style={{ cursor: "pointer" }}>
+                          <CloudUpload style={{ marginRight: 10 }} />
+                          <span style={{ color: "#00B0CD" }}>Add Picture</span>
+                        </label>
+                        <input
+                          id="images"
+                          name="images"
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            if (event.currentTarget.files) {
+                              handleImageChange(event);
+                              arrayHelpers.push(event.currentTarget.files[0]);
+                            }
+                          }}
+                          style={{ display: "none" }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                />
 
               </CardContent>
               <CardActions>
@@ -504,7 +391,7 @@ const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
                   type="submit"
                   sx={{ marginRight: 1 }}
                 >
-                  อัพเดท
+                  แก้ไข
                 </Button>
                 <Link href="/panel/user/manage-product" passHref>
                   <Button variant="outlined" fullWidth>

@@ -53,7 +53,7 @@ export const deleteProductAction = createAsyncThunk(
 
   export const deleteProductImageAction = createAsyncThunk(
 	"PRODUCT/DELETE_IMAGE",
-	async (data:{productId:string, id: string, accessToken: string}) => {
+	async (data:{productId?:string, id?: string, accessToken?: string, gid?:string}) => {
 	  await productService.deleteProductImage(data.productId!, data.id!, data.accessToken!);
 	  store.dispatch(getOneProductAction(data.gid!));
 	}

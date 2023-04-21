@@ -35,18 +35,16 @@ export const createProduct = async (data: FormData, accessToken: string): Promis
 };
 
 export const updateProduct = async (id: string, data: FormData, accessToken: string): Promise<void> => {
-	// console.log('Form Data:');
-	// for (const [key, value] of data.entries()) {
-	// 	console.log(key, value);
-	// }
-	const {data:response} = await axios.patch(`/products/${id}`, data, {
+	console.log('Form Data:');
+	for (const [key, value] of data.entries()) {
+		console.log(key, value);
+	}
+	const {data:response} = await axios.patch(`/products/${id}/data`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
 		},
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
 	});
-	console.log(response)
-
 };
 
 export const deleteProduct = async (id: string): Promise<void> => {
