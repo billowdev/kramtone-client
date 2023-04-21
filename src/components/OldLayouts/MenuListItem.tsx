@@ -19,7 +19,6 @@ const drawerWidth = 240;
 import { authSelector } from "@/store/slices/auth.slice";
 import { useSelector } from "react-redux";
 import LoginIcon from '@mui/icons-material/Login';
-import {CustomTheme} from "@/pages/_app"
 
 
 type Props = {
@@ -31,6 +30,7 @@ type Props = {
 
 const MenuListItem: React.FC<Props> = ({ href, icon, text, open }) => {
 	const router = useRouter();
+	const theme = useTheme()
 	const isActive = router.pathname === href;
 	
 	return (
@@ -44,7 +44,7 @@ const MenuListItem: React.FC<Props> = ({ href, icon, text, open }) => {
 			selected={isActive}
 			classes={{ selected: "Mui-selected" }}
 			style={{
-			  backgroundColor: isActive ?  CustomTheme.palette.primary.main : "#FFF",
+			  backgroundColor: isActive ?  theme.palette.primary.main : "#FFF",
 			  borderRadius: "50px",
 			  paddingTop: "16px",
 			  paddingBottom: "16px"

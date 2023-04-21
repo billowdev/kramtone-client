@@ -18,7 +18,6 @@ const drawerWidth = 240;
 import { authSelector } from "@/store/slices/auth.slice";
 import { useSelector } from "react-redux";
 import LoginIcon from '@mui/icons-material/Login';
-import {CustomTheme} from "@/pages/_app"
 
 
 type Props = {
@@ -29,6 +28,7 @@ type Props = {
 }
 
 const CustomMenuListItem: React.FC<Props> = ({ href, icon, text, open }) => {
+	const theme = useTheme();
 	const router = useRouter();
 	const isActive = router.pathname === href;
 	
@@ -43,7 +43,7 @@ const CustomMenuListItem: React.FC<Props> = ({ href, icon, text, open }) => {
 			selected={isActive}
 			classes={{ selected: "Mui-selected" }}
 			style={{
-			  backgroundColor: isActive ?  CustomTheme.palette.primary.main : "#FFF",
+			  backgroundColor: isActive ?  theme.palette.primary.main : "#FFF",
 			  borderRadius: "50px",
 			//   paddingTop: "16px",
 			//   paddingBottom: "16px"
@@ -53,13 +53,13 @@ const CustomMenuListItem: React.FC<Props> = ({ href, icon, text, open }) => {
 			 <ListItemIcon>
 			  {React.createElement(icon, {
 				  style: {
-					  color: isActive ? "#ffffff" :  CustomTheme.palette.grey[900],
+					  color: isActive ? "#ffffff" :  theme.palette.grey[900],
 					//   margin: `${open ? '0 0 0 0px' : '0 0 0 -8px'}`
 					}
 				})}
 			</ListItemIcon>
 			<ListItemText primary={text}
-			  style={{ color: isActive ? "#ffffff" : CustomTheme.palette.grey[900], 
+			  style={{ color: isActive ? "#ffffff" : theme.palette.grey[900], 
 			//    margin: '0 0 0 -16px'
 			 }}
 			  /> 

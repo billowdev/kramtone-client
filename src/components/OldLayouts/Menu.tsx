@@ -19,7 +19,7 @@ const drawerWidth = 240;
 import { useAppDispatch } from "@/store/store";
 import { useSelector } from "react-redux";
 import LoginIcon from '@mui/icons-material/Login';
-import {CustomTheme} from "@/pages/_app"
+
 import MenuListItem from "./MenuListItem";
 import LogoutIcon from '@mui/icons-material/Logout';
 import CheckroomIcon from '@mui/icons-material/Checkroom';

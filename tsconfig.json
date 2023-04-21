@@ -47,6 +47,9 @@
       "@/config/*": [
         "common/config/*"
       ],
+      "@/constants/*": [
+        "common/constants/*"
+      ],
       "@/common/types/*": [
         "common/types/*"
       ],
