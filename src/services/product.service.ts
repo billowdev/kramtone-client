@@ -47,9 +47,12 @@ export const updateProduct = async (id: string, data: FormData, accessToken: str
 	});
 };
 
-export const deleteProduct = async (id: string): Promise<void> => {
-	await httpClient.delete(`/product/${id}`, {
-		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+export const deleteProduct = async (id: string, accessToken:string): Promise<void> => {
+	await httpClient.delete(`/products/${id}`, {
+		headers: {
+			Authorization: `Bearer ${accessToken}`
+		},
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API,
 	});
 };
 

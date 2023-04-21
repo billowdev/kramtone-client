@@ -65,6 +65,7 @@ const Transition = React.forwardRef(function Transition(
 import { productImageURL } from "@/common/utils/utils";
 import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
+import Swal from "sweetalert2";
 
 import { Modal } from '@mui/material';
 
@@ -255,16 +256,43 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
       width: 180,
       renderCell: ({ row }: GridRenderCellParams<any>) => (
         <Stack direction="row">
-          <IconButton
+          {/* <IconButton
             aria-label="delete"
             size="large"
             onClick={() => {
-              setSelectedCategory(row);
-              setOpenDeleteDialog(true);
+              // setSelectedCategory(row);
+              // setOpenDeleteDialog(true);
             }}
           >
             <DeleteIcon fontSize="inherit" />
-          </IconButton>
+          </IconButton> */}
+          <IconButton
+  aria-label="delete"
+  size="large"
+  onClick={() => {
+    Swal.fire({
+      title: 'ลบสินค้า',
+      text: 'เมื่อลบแล้วไม่สามารถกู้คืนได้!',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'ยกเลิก',
+      confirmButtonText: 'ยืนยันการลบ',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Dispatch the deleteProductAction here
+        dispatch(deleteProductAction({id:row.id, accessToken}));
+        Swal.fire(
+          'ลบข้อมูลเรียบร้อย!',
+          'สินค้าของคุณถูกลบเรียบร้อยแล้ว',
+          'success'
+        );
+      }
+    });
+  }}
+>
+  <DeleteIcon fontSize="inherit" />
+</IconButton>
           <IconButton
             aria-label="edit"
             size="large"
