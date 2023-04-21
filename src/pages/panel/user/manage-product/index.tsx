@@ -13,7 +13,7 @@ import withAuth from "@/components/withAuth";
 import { useTheme } from "@material-ui/core/styles";
 import * as productService from "@/services/product.service"
 import * as authService from "@/services/auth.service"
-import { CategoryPayload } from "@/models/category.model"
+import { ProductPayload } from "@/models/product.model"
 import { useSelector } from "react-redux";
 import {
   GetServerSideProps,
@@ -62,6 +62,9 @@ const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+import { productImageURL } from "@/common/utils/utils";
+import Image from "next/image";
+import Zoom from "react-medium-image-zoom";
 
 import { Modal } from '@mui/material';
 
@@ -123,7 +126,7 @@ const CustomToolbar: React.FunctionComponent<{
 type Props = {
   gid?: string,
   accessToken?: string,
-  productArray?: CategoryPayload[]
+  productArray?: ProductPayload[]
 }
 
 function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
@@ -136,7 +139,7 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState<boolean>(false);
   const [openEditDialog, setOpenEditDialog] = React.useState<boolean>(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedCategory, setSelectedCategory] = React.useState<CategoryPayload | null>(null);
+  const [selectedCategory, setSelectedCategory] = React.useState<ProductPayload | null>(null);
 
 
   React.useEffect(() => {
@@ -214,6 +217,38 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
       headerName: "ราคา",
       width: 180,
     },
+    // {
+    //   disableColumnMenu: true,
+    //   headerName: "รูปภาพ",
+    //   field: "productImages",
+    //   width: 80,
+    //   renderCell: ({ value }: GridRenderCellParams<any>) => (
+    //     <Zoom>
+    //       <Image
+    //         height={500}
+    //         width={500}
+    //         objectFit="cover"
+    //         alt="product image"
+    //         src={productImageURL(value[0]?.image)}
+    //         style={{ width: 70, height: 70, borderRadius: "5%" }}
+    //       />
+    //     </Zoom>
+    //   ),
+    // },
+    {
+      field: 'productImages',
+      headerName: 'รูปภาพ',
+      width: 100,
+      renderCell: ({ value }: GridRenderCellParams<ProductPayload>) => (
+
+        <Image
+          height={500}
+          width={500}
+          src={productImageURL(value[0]?.image)}
+          style={{ width: 100, height: 70, borderRadius: '5%' }} alt={'product image'} />
+
+      ),
+    },
     {
       headerName: "การดำเนินการ",
       field: ".",
@@ -270,7 +305,7 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
           components={{
             Toolbar: CustomToolbar,
           }}
-          
+
           componentsProps={{
             panel: {
               anchorEl: filterButtonEl,

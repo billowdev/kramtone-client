@@ -3,7 +3,9 @@ import httpClient from "@/common/utils/httpClient.util";
 import axios from 'axios'
 
 export const getOneProduct = async (id: string): Promise<ProductResponse> => {
-	const { data: response } = await httpClient.get(`/products/get/${id}`);
+	const { data: response } = await httpClient.get(`/products/${id}`, {
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
+	});
 	return response.payload
 };
 
