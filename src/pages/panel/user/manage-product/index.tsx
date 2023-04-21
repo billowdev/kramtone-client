@@ -2,7 +2,6 @@ import React from 'react'
 import Layout from '@/components/Layouts/Layout';
 import { useAppDispatch } from "@/store/store";
 import { getAllProductByGroupAction, productSelector, deleteProductAction } from "@/store/slices/product.slice";
-import * as productService from "@/services/product.service"
 
 import router from "next/router";
 import EditIcon from "@mui/icons-material/Edit";
@@ -12,7 +11,7 @@ import Link from "next/link";
 import AddIcon from "@mui/icons-material/Add";
 import withAuth from "@/components/withAuth";
 import { useTheme } from "@material-ui/core/styles";
-import * as categoryService from "@/services/category.service"
+import * as productService from "@/services/product.service"
 import * as authService from "@/services/auth.service"
 import { CategoryPayload } from "@/models/category.model"
 import { useSelector } from "react-redux";
@@ -296,13 +295,12 @@ export const getServerSideProps: GetServerSideProps = async (
   try {
     const accessToken = context.req.cookies['access_token']
     const { gid } = await authService.getSessionServerSide(accessToken!)
-
-    // const productArray = await categoryService.getAllProductByGroup(gid)
+    const productArray = await productService.getAllProductByGroup(gid)
     return {
       props: {
         gid,
         accessToken,
-        // productArray
+        productArray
       },
     };
   } catch (error) {

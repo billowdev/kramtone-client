@@ -92,19 +92,6 @@ const AddProductForm = ({ accessToken, categories, gid }: AddProductFormProps) =
 				})
 			);
 
-			// const createStatus = await dispatch(
-			// 	createProductAction({ body: formData, accessToken })
-			// );
-
-			// if (createStatus.meta.requestStatus === "fulfilled") {
-			// 	toast.success("เพิ่มข้อมูลประเภทสินค้าสำเร็จ");
-			// 	router.push("/panel/user/manage-product");
-			// } else {
-			// 	toast.error(
-			// 		"เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง"
-			// 	);
-			// }
-
 			const result = await Swal.fire({
 				title: 'เพิ่มข้อมูล?',
 				text: `คุณต้องการเพิ่มข้อมูลสินค้า ${values.name}`,
@@ -192,43 +179,6 @@ const AddProductForm = ({ accessToken, categories, gid }: AddProductFormProps) =
 		);
 
 	};
-
-	const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
-
-	// const handleConfirm = () => {
-	// 	setIsConfirmDialogOpen(false);
-	// 	handleSubmit();
-	// };
-
-	// const handleCancel = () => {
-	// 	setIsConfirmDialogOpen(false);
-	// };
-
-	// const handleOpenQuestionConfirm = () => {
-	// 	setIsConfirmDialogOpen(true);
-	// };
-
-
-
-	// const showConfirmDialog = () => {
-	// 	return (
-	// 		<Dialog open={isConfirmDialogOpen} keepMounted>
-	// 			<DialogTitle>ยืนยัน</DialogTitle>
-	// 			<DialogContent>
-	// 				<p>คุณต้องการเพิ่มสินค้าตัวใหม่ ?</p>
-	// 			</DialogContent>
-	// 			<DialogActions>
-	// 				<Button onClick={handleCancel} color="primary">
-	// 					ยกเลิก
-	// 				</Button>
-	// 				<Button onClick={handleConfirm} color="primary">
-	// 					ยืนยัน
-	// 				</Button>
-	// 			</DialogActions>
-	// 		</Dialog>
-
-	// 	)
-	// }
 
 	return (
 		<Layout>
@@ -376,7 +326,6 @@ const AddProductForm = ({ accessToken, categories, gid }: AddProductFormProps) =
 				)}
 			</Formik>
 			{categoryModal()}
-			{/* {showConfirmDialog()} */}
 		</Layout>
 	);
 };

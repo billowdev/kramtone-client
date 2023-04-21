@@ -64,7 +64,7 @@ export const updateCategory = async (id: string, data: FormData, accessToken: st
 };
 
 export const deleteCategory = async (id: string, accessToken: string): Promise<void> => {
-	await httpClient.delete(`/categoriess/${id}`, {
+	await httpClient.delete(`/categories/${id}`, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
 		},

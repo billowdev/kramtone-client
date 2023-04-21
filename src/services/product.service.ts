@@ -37,7 +37,7 @@ export const updateProduct = async (id: string, data: FormData, accessToken: str
 	// for (const [key, value] of data.entries()) {
 	// 	console.log(key, value);
 	// }
-	const {data:response} = await axios.patch(`/product/${id}`, data, {
+	const {data:response} = await axios.patch(`/products/${id}`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
 		},
