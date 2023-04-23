@@ -290,7 +290,7 @@ function UserPanelProfile({
               // console.log(response);
             }
           } catch (error) {
-            // console.error(error);
+            console.error(error);
             Swal.fire(
               'ผิดพลาด',
               'อัปเดตข้อมูลผู้ใช้ไม่สำเร็จ',

@@ -1,5 +1,5 @@
 import { Formik, Form, Field, FieldArray } from "formik";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, Box } from "@mui/material";
 import { Card, CardContent, CardActions, Typography } from "@mui/material";
 import Link from "next/link";
 import Layout from "@/components/Layouts/Layout";
@@ -17,6 +17,9 @@ import * as authService from "@/services/auth.service";
 import { CloudUpload } from "@material-ui/icons";
 import { Delete } from "@material-ui/icons";
 import { ProductPayload } from "@/models/product.model";
+import * as colorSchemeService from "@/services/color-scheme.service"
+
+import { ColorSchemePayload } from "@/models/color-scheme.model"
 import {
   Dialog,
   DialogTitle,
@@ -37,6 +40,7 @@ interface AddProductFormProps {
   accessToken?: string;
   product?: ProductPayload;
   categories?: CategoryPayload[];
+  colorschemes?: ColorSchemePayload[];
   gid?: string;
 }
 
@@ -45,6 +49,7 @@ const AddProductForm = ({
   categories,
   gid,
   product,
+  colorschemes
 }: AddProductFormProps) => {
   const [selectedCategory, setSelectedCategory] = useState<any>({
     id: product?.category?.id,
@@ -53,6 +58,14 @@ const AddProductForm = ({
     image: "default_image.png",
   });
   const [modalOpen, setModalOpen] = useState(false);
+
+  const [selectedColorScheme, setSelectedColorScheme] = useState<any>({
+    id: product?.colorScheme?.id,
+    nameEN: product?.colorScheme?.nameEN,
+    nameTH: product?.colorScheme?.nameTH,
+    hex: product?.colorScheme?.hex,
+  });
+  const [colorsShemeModalOpen, setColorSchemeModalOpen] = useState(false);
 
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -191,6 +204,20 @@ const AddProductForm = ({
     setModalOpen(false);
   };
 
+  
+  const handleSelectColorScheme = (category: CategoryPayload) => {
+    setSelectedColorScheme(category);
+    setColorSchemeModalOpen(false);
+  };
+  const handleOpenColorSchemeModal = () => {
+    setColorSchemeModalOpen(true);
+  };
+
+  const handleCloseColorSchemeModal = () => {
+    setColorSchemeModalOpen(false);
+  };
+
+
   const showPreviewImage = (values: any) => {
     if (values.file_obj) {
       return (
@@ -233,6 +260,45 @@ const AddProductForm = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseModal}>Cancel</Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+
+  const colorSchemeModal = () => {
+    return (
+      <Dialog open={colorSchemeModalOpen} keepMounted>
+        <DialogTitle>กรุณาเลือกโทนสี</DialogTitle>
+        <DialogContent>
+          <List>
+            {colorschemes &&
+              colorschemes.map((colorscheme: any) => (
+                <ListItem
+                button
+                key={colorscheme.id}
+                onClick={() => handleSelectColorScheme(colorscheme)}
+              >
+                <ListItemText
+                  primary={colorscheme.nameTH}
+                  secondary={colorscheme.nameEN}
+                />
+                <Box
+                  sx={{
+                    width: 50,
+                    height: 50,
+                    backgroundColor: colorscheme.hex,
+                    borderRadius: "50%",
+                    border: "1px solid black",
+                    marginLeft: 2,
+                  }}
+                />
+              </ListItem>
+              
+              ))}
+          </List>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseColorSchemeModal}>Cancel</Button>
         </DialogActions>
       </Dialog>
     );
@@ -312,6 +378,27 @@ const AddProductForm = ({
                       : "เลือกประเภทสินค้า"}
                   </Button>
                 </div>
+                <br />
+                <div style={{ marginTop: 16 }}>
+  <Button variant="outlined" onClick={handleOpenColorSchemeModal}>
+    {selectedColorScheme ? (
+      <Box
+        sx={{
+          width: 50,
+          height: 50,
+          backgroundColor: selectedColorScheme.hex,
+          borderRadius: "50%",
+          border: "1px solid black",
+          marginRight: 2,
+        }}
+      />
+    ) : null}
+    {selectedColorScheme
+      ? `${selectedColorScheme.nameTH} / ${selectedColorScheme.nameEN}`
+      : "เลือกโทนสี"}
+  </Button>
+</div>
+
 
                 <div style={{ marginTop: 16 }}>
   <label
@@ -423,12 +510,14 @@ export const getServerSideProps: GetServerSideProps = async (
 
     const categories = await categoryService.getAllCategory();
     const product = await productService.getOneProduct(id);
+    const colorschemes = await colorSchemeService.getAllColorScheme()
     return {
       props: {
         product,
         accessToken,
         categories,
         gid,
+        colorschemes
       },
     };
   } else {

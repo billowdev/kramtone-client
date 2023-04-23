@@ -13,7 +13,10 @@ import withAuth from "@/components/withAuth";
 import { useTheme } from "@material-ui/core/styles";
 import * as productService from "@/services/product.service"
 import * as authService from "@/services/auth.service"
+import * as colorSchemeService from "@/services/color-scheme.service"
+
 import { ProductPayload } from "@/models/product.model"
+import { ColorSchemePayload } from "@/models/color-scheme.model"
 import { useSelector } from "react-redux";
 import {
   GetServerSideProps,
@@ -128,6 +131,7 @@ type Props = {
   gid?: string,
   accessToken?: string,
   productArray?: ProductPayload[]
+  colorschemes? : ColorSchemePayload[]
 }
 
 function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
@@ -364,11 +368,13 @@ export const getServerSideProps: GetServerSideProps = async (
     const accessToken = context.req.cookies['access_token']
     const { gid } = await authService.getSessionServerSide(accessToken!)
     const productArray = await productService.getAllProductByGroup(gid)
+    const colorschemes = await colorSchemeService.getAllColorScheme()
     return {
       props: {
         gid,
         accessToken,
-        productArray
+        productArray,
+        colorschemes
       },
     };
   } catch (error) {
