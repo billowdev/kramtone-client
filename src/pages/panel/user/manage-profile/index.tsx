@@ -54,7 +54,7 @@ function UserPanelProfile({
   // const dispatch = useAppDispatch();
   const router = useRouter();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down('xs'));
-  const [updateValue, setUpdateValue] = React.useState<any>();
+  // const [updateValue, setUpdateValue] = React.useState<UserPayload>();
   const [userPayload, setUserPayload] = useState<UserPayload>({
     id: "",
     username: "",
@@ -84,37 +84,46 @@ function UserPanelProfile({
     fetchData();
   }, []);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    // try {
-    //   const { isConfirmed } = await Swal.fire({
-    //     title: 'ยืนยันการแก้ไขข้อมูล',
-    //     text: 'คุณแน่ใจที่จะแก้ไขข้อมูลบัญชี?',
-    //     icon: 'question',
-    //     showCancelButton: true,
-    //     cancelButtonText: 'ยกเลิก',
-    //     confirmButtonText: 'ยืนยัน',
-    //   });
-    //   if (isConfirmed) {
-    //     const response = await authService.updateUserById(id, accessToken, { name, surname, phone });
-    //     Swal.fire(
-    //       'สำเร็จ',
-    //       'แก้ไขข้อมูลบัญชีสำเร็จ',
-    //       'success'
-    //     );
-    //     console.log(response);
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    //   setError('Failed to update user data');
-
-    //   Swal.fire(
-    //     'ผิดพลาด',
-    //     'อัปเดตข้อมูลผู้ใช้ไม่สำเร็จ',
-    //     'error'
-    //   );
-    // }
-  }
+  // async function handleSubmit(
+  //   // event: React.FormEvent<HTMLFormElement>
+  //   updateValue : UserPayload
+  //   ) {
+  //   // event.preventDefault();
+  //   // values: UserPayload
+  //   console.log(updateValue)
+  //   try {
+  //     const { isConfirmed } = await Swal.fire({
+  //       title: 'ยืนยันการแก้ไขข้อมูล',
+  //       text: 'คุณแน่ใจที่จะแก้ไขข้อมูลบัญชี?',
+  //       icon: 'question',
+  //       showCancelButton: true,
+  //       cancelButtonText: 'ยกเลิก',
+  //       confirmButtonText: 'ยืนยัน',
+  //     });
+  //     if (isConfirmed) {
+  //       console.log(updateValue)
+  //       const {id, name, surname, phone, email} = updateValue
+  //       // const response = await authService.updateUserById(id, { name, surname, phone, email });
+        
+  //       const { data: response } = await httpClient.patch(`/users/update/${id}`, {name, surname, phone, email}, {
+  //         baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+  //       });
+  //       Swal.fire(
+  //         'สำเร็จ',
+  //         'แก้ไขข้อมูลบัญชีสำเร็จ',
+  //         'success'
+  //       );
+  //       console.log(response);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     Swal.fire(
+  //       'ผิดพลาด',
+  //       'อัปเดตข้อมูลผู้ใช้ไม่สำเร็จ',
+  //       'error'
+  //     );
+  //   }
+  // }
 
  
 
@@ -131,7 +140,9 @@ function UserPanelProfile({
     isValid,
   }: any) => {
     return (
-      <Form>
+      <Form 
+      // onSubmit={handleSubmit}
+      >
         <Card>
           <CardContent sx={{ padding: 4 }}>
             <Typography gutterBottom variant="h3">
@@ -143,6 +154,13 @@ function UserPanelProfile({
               fullWidth
               component={TextField}
               defaultValue={userPayload.name}
+              // onChange={(event) => {
+              //   setUserPayload((prevState) => ({
+              //     ...prevState,
+              //     name: event.target.value,
+              //   }));
+              // }}
+              onChange={(event) => setFieldValue('name', event.target.value)}
               name="name"
               type="text"
               label="ชื่อ"
@@ -154,6 +172,8 @@ function UserPanelProfile({
               component={TextField}
               defaultValue={userPayload.surname}
               name="surname"
+              onChange={(event) => setFieldValue('surname', event.target.value)}
+
               type="text"
               label="นามสกุล"
             />
@@ -165,6 +185,8 @@ function UserPanelProfile({
               component={TextField}
               defaultValue={userPayload.phone}
               name="phone"
+              maxLength={10}
+              onChange={(event) => setFieldValue('phone', event.target.value)}
               type="text"
               label="เบอร์โทร"
             />
@@ -177,6 +199,8 @@ function UserPanelProfile({
               defaultValue={userPayload.email}
               name="email"
               type="email"
+              onChange={(event) => setFieldValue('email', event.target.value)}
+              maxLength={120}
               label="อีเมล"
             />
           </CardContent>
@@ -238,9 +262,42 @@ function UserPanelProfile({
           id: userPayload.id
         }}
         onSubmit={async (values, { setSubmitting }) => {
-          setUpdateValue(values);
+          // setUpdateValue(values);
+          // handleSubmit(values)
           // setImageFile(values.image_file);
           // setOpenDialog(true);
+          try {
+            const { isConfirmed } = await Swal.fire({
+              title: 'ยืนยันการแก้ไขข้อมูล',
+              text: 'คุณแน่ใจที่จะแก้ไขข้อมูลบัญชี?',
+              icon: 'question',
+              showCancelButton: true,
+              cancelButtonText: 'ยกเลิก',
+              confirmButtonText: 'ยืนยัน',
+            });
+            if (isConfirmed) {
+              const {id, name, surname, phone, email} = values
+              // const response = await authService.updateUserById(id, { name, surname, phone, email });
+              
+              const { data: response } = await httpClient.patch(`/users/update/${id}`, {name, surname, phone, email}, {
+                baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+              });
+              Swal.fire(
+                'สำเร็จ',
+                'แก้ไขข้อมูลบัญชีสำเร็จ',
+                'success'
+              );
+              // console.log(response);
+            }
+          } catch (error) {
+            // console.error(error);
+            Swal.fire(
+              'ผิดพลาด',
+              'อัปเดตข้อมูลผู้ใช้ไม่สำเร็จ',
+              'error'
+            );
+          }
+
           setSubmitting(false);
         }}
       >
