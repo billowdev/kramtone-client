@@ -1,5 +1,6 @@
 import { CategoryPayload } from "./category.model"
 import { GroupDataPayload } from "./group-data.model"
+import { ColorSchemePayload } from "./color-scheme.model"
 
 export interface ProductResponse {
 	status: string
@@ -25,6 +26,7 @@ export interface ProductPayload {
 	updatedAt?: string
 	category?: CategoryPayload
 	productImages?: ProductImage[]
+	colorScheme? : ColorSchemePayload
 	groupData?: GroupDataPayload
 	images?: any
 }

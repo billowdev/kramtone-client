@@ -101,6 +101,7 @@ const AddProductForm = ({
           desc: values.desc,
           price: values.price,
           categoryId: selectedCategory && selectedCategory?.id,
+          colorSchemeId: selectedColorScheme && selectedColorScheme?.id,
         })
       );
 
@@ -124,7 +125,7 @@ const AddProductForm = ({
 
         if (updateStatus.meta.requestStatus === "fulfilled") {
           toast.success("แก้ไขข้อมูลสินค้าสำเร็จ");
-          console.log(updateStatus)
+          // console.log(updateStatus)
           router.push("/panel/user/manage-product");
         } else {
           toast.error("แก้ไขข้อมูลสินค้าไม่สำเร็จ โปรดลองอีกครั้ง");

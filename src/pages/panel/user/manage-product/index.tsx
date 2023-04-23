@@ -240,6 +240,25 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
     //     </Zoom>
     //   ),
     // },
+  
+    {
+      field: 'colorScheme',
+      headerName: 'โทนสี',
+      width: 100,
+      renderCell: ({ value }: GridRenderCellParams<ProductPayload>) => (
+        <Box
+          sx={{
+            width: 50,
+            height: 50,
+            backgroundColor: value.hex,
+            borderRadius: "50%",
+            border: "1px solid black",
+            marginLeft: 2,
+          }}
+        />
+      ),
+    },
+    
     {
       field: 'productImages',
       headerName: 'รูปภาพ',
