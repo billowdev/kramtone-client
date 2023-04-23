@@ -65,7 +65,7 @@ const AddProductForm = ({
     nameTH: product?.colorScheme?.nameTH,
     hex: product?.colorScheme?.hex,
   });
-  const [colorsShemeModalOpen, setColorSchemeModalOpen] = useState(false);
+  const [colorShemeModalOpen, setColorSchemeModalOpen] = useState(false);
 
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -267,7 +267,7 @@ const AddProductForm = ({
 
   const colorSchemeModal = () => {
     return (
-      <Dialog open={colorSchemeModalOpen} keepMounted>
+      <Dialog open={colorShemeModalOpen} keepMounted>
         <DialogTitle>กรุณาเลือกโทนสี</DialogTitle>
         <DialogContent>
           <List>
@@ -280,7 +280,7 @@ const AddProductForm = ({
               >
                 <ListItemText
                   primary={colorscheme.nameTH}
-                  secondary={colorscheme.nameEN}
+                  secondary={colorscheme.hex}
                 />
                 <Box
                   sx={{
@@ -394,7 +394,7 @@ const AddProductForm = ({
       />
     ) : null}
     {selectedColorScheme
-      ? `${selectedColorScheme.nameTH} / ${selectedColorScheme.nameEN}`
+      ? `${selectedColorScheme.nameTH} / ${selectedColorScheme.nameEN} / ${selectedColorScheme.hex}  `
       : "เลือกโทนสี"}
   </Button>
 </div>
@@ -493,6 +493,7 @@ const AddProductForm = ({
         )}
       </Formik>
       {categoryModal()}
+      {colorSchemeModal()}
     </Layout>
   );
 };
