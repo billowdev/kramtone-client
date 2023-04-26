@@ -28,6 +28,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  useMediaQuery
 } from "@mui/material";
 import { CategoryPayload } from "@/models/category.model";
 import Swal from "sweetalert2";
@@ -36,7 +37,7 @@ import { productImageURL } from "@/common/utils/utils";
 import { IconButton } from "@material-ui/core";
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-
+import { useTheme } from "@material-ui/core/styles";
 
 interface AddProductFormProps {
   accessToken?: string;
@@ -60,7 +61,7 @@ const AddProductForm = ({
     image: "default_image.png",
   });
   const [modalOpen, setModalOpen] = useState(false);
-
+  const theme = useTheme();
   const [selectedColorScheme, setSelectedColorScheme] = useState<any>({
     id: product?.colorScheme?.id,
     nameEN: product?.colorScheme?.nameEN,
@@ -75,7 +76,7 @@ const AddProductForm = ({
   const [previewImages, setPreviewImages] = useState<any>([]);
   const [images, setImages] = useState<any>([]);
   const [existingImages, setExistingImages] = useState<any>(product?.productImages);
-
+  const [selectedImage, setSelectedImage] = useState(null);
   // Pass the product object as a prop to this component
 
   const initialValues: ProductPayload = {
@@ -168,33 +169,33 @@ const AddProductForm = ({
 
   const handleDeleteExistImage = async (image: any) => {
     const { id } = image
-    await dispatch(deleteProductImageAction({ productId: product?.id, id, accessToken, gid }));
-    const updatedImages = existingImages.filter((image: any) => image.id !== id);
-    setExistingImages(updatedImages);
+    // await dispatch(deleteProductImageAction({ productId: product?.id, id, accessToken, gid }));
+    // const updatedImages = existingImages.filter((image: any) => image.id !== id);
+    // setExistingImages(updatedImages);
 
 
-    // const result = await Swal.fire({
-    //   title: 'ลบรูปภาพ',
-    //   text: 'เมื่อลบแล้วไม่สามารถกู้คืนได้!',
-    //   icon: 'warning',
-    //   showCancelButton: true,
-    //   cancelButtonText: 'ยกเลิก',
-    //   confirmButtonText: 'ยืนยันการลบ',
-    //   reverseButtons: true
-    // });
+    const result = await Swal.fire({
+      title: 'ลบรูปภาพ',
+      text: 'เมื่อลบแล้วไม่สามารถกู้คืนได้!',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'ยกเลิก',
+      confirmButtonText: 'ยืนยันการลบ',
+      reverseButtons: true
+    });
 
-    // if (result.isConfirmed) {
-    //   // Call the API or function to delete the image
-    //   // await deleteImage(id);
-    //   await dispatch(deleteProductImageAction({ productId: product?.id, id, accessToken, gid }));
-    //   Swal.fire(
-    //     'ลบข้อมูลเรียบร้อย!',
-    //     'รูปภาพของคุณถูกลบเรียบร้อยแล้ว',
-    //     'success'
-    //   );
-    //   const updatedImages = existingImages.filter((image: any) => image.id !== id);
-    //   setExistingImages(updatedImages);
-    // }
+    if (result.isConfirmed) {
+      // Call the API or function to delete the image
+      // await deleteImage(id);
+      await dispatch(deleteProductImageAction({ productId: product?.id, id, accessToken, gid }));
+      Swal.fire(
+        'ลบข้อมูลเรียบร้อย!',
+        'รูปภาพของคุณถูกลบเรียบร้อยแล้ว',
+        'success'
+      );
+      const updatedImages = existingImages.filter((image: any) => image.id !== id);
+      setExistingImages(updatedImages);
+    }
 
   };
 
@@ -225,6 +226,9 @@ const AddProductForm = ({
     setColorSchemeModalOpen(false);
   };
 
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const isLargeDevice = useMediaQuery(theme.breakpoints.up('lg'));
 
   const showPreviewImage = (values: any) => {
     if (values.file_obj) {
@@ -408,7 +412,7 @@ const AddProductForm = ({
 </div>
 
 
-                {/* <div style={{ marginTop: 16 }}>
+                <div style={{ marginTop: 16 }}>
   <label
     htmlFor="files"
     style={{
@@ -426,9 +430,58 @@ const AddProductForm = ({
       </div>
     ))}
   </label>
+</div>
+
+{/* <div style={{ marginTop: 16 }}>
+  <label
+    htmlFor="files"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      cursor: "pointer",
+    }}
+  >
+    <Grid container spacing={2}>
+      {existingImages?.map((image) => (
+        <Grid item key={image.id} xs={12} sm={6} md={4} lg={3}>
+          <Paper elevation={3}>
+            <Box position="relative">
+              <img
+                src={productImageURL(image.image)}
+                alt="product image"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "5%",
+                }}
+              />
+              <Box
+                position="absolute"
+                top={0}
+                right={0}
+                zIndex="tooltip"
+                bgcolor="rgba(0, 0, 0, 0.5)"
+                borderRadius="0 0 0 5px"
+              >
+                <IconButton
+                  onClick={() => handleDeleteExistImage(image)}
+                  color="secondary"
+                >
+                  <Delete />
+                </IconButton>
+              </Box>
+            </Box>
+          </Paper>
+        </Grid>
+      ))}
+    </Grid>
+  </label>
 </div> */}
 
-<div style={{ marginTop: 16 }}>
+
+
+{/* <div style={{ marginTop: 16 }}>
       <label
         htmlFor="files"
         style={{
@@ -442,14 +495,24 @@ const AddProductForm = ({
             <Grid item key={image.id} xs={12} sm={6} md={4} lg={3}>
               <Paper elevation={3}>
                 <Box position="relative">
-                  {showPreviewImage({ image: image.image })}
+                  <img
+                    src={productImageURL(image.image)}
+                    alt="product image"
+                    style={{
+                      width:  '100%',
+                      height:  '100%',
+                      objectFit: "cover",
+                      borderRadius: "5%",
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => handleClickOpen(image.image)}
+                  />
                   <Box
                     position="absolute"
                     top={0}
                     right={0}
-                    // zIndex="tooltip"
-                    bgcolor="rgba(0, 0, 0, 0.5)"
-                    borderRadius="0 0 0 5px"
+                    // bgcolor="rgba(0, 0, 0, 0.5)"
+                    // borderRadius="0 0 0 5px"
                   >
                     <IconButton
                       onClick={() => handleDeleteExistImage(image)}
@@ -464,7 +527,22 @@ const AddProductForm = ({
           ))}
         </Grid>
       </label>
-    </div>
+
+      <Dialog
+        open={openDialog}
+        onClose={handleClose}
+        maxWidth="md"
+        fullWidth
+      >
+        <img
+          src={productImageURL(selectedImage)}
+          alt="product image"
+          style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+        />
+      </Dialog>
+    </div> */}
+
+
 
 
     <FieldArray
@@ -472,7 +550,7 @@ const AddProductForm = ({
   render={(arrayHelpers) => (
     <div style={{ marginTop: 16 }}>
       <Grid container spacing={2}>
-        {previewImages.map((image, index) => (
+        {previewImages.map((image:any, index:number) => (
           <Grid item key={index} xs={12} sm={6} md={4}>
             <Paper elevation={3}>
               <Box position="relative">

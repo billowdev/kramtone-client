@@ -224,25 +224,6 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
       headerName: "ราคา",
       width: 180,
     },
-    // {
-    //   disableColumnMenu: true,
-    //   headerName: "รูปภาพ",
-    //   field: "productImages",
-    //   width: 80,
-    //   renderCell: ({ value }: GridRenderCellParams<any>) => (
-    //     <Zoom>
-    //       <Image
-    //         height={500}
-    //         width={500}
-    //         objectFit="cover"
-    //         alt="product image"
-    //         src={productImageURL(value[0]?.image)}
-    //         style={{ width: 70, height: 70, borderRadius: "5%" }}
-    //       />
-    //     </Zoom>
-    //   ),
-    // },
-
     {
       field: 'colorScheme',
       headerName: 'โทนสี',
@@ -260,20 +241,6 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
         />
       ),
     },
-
-    // {
-    //   field: 'productImages',
-    //   headerName: 'รูปภาพ',
-    //   width: 100,
-    //   renderCell: ({ value }: GridRenderCellParams<ProductPayload>) => (
-    //     <Image
-    //       height={500}
-    //       width={500}
-    //       src={productImageURL(value[0]?.image)}
-    //       style={{ width: 100, height: 70, borderRadius: '5%' }} alt={'product image'} />
-
-    //   ),
-    // },
     {
       field: 'productImages',
       headerName: 'รูปภาพ',
