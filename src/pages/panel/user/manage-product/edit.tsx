@@ -1,6 +1,6 @@
 import { Formik, Form, Field, FieldArray } from "formik";
-import { TextField, Button, Box } from "@mui/material";
-import { Card, CardContent, CardActions, Typography } from "@mui/material";
+import { TextField, Button, Box, Paper } from "@mui/material";
+import { Card, CardContent, CardActions, Typography, Grid } from "@mui/material";
 import Link from "next/link";
 import Layout from "@/components/Layouts/Layout";
 import withAuth from "@/components/withAuth";
@@ -34,6 +34,8 @@ import Swal from "sweetalert2";
 import * as productService from "@/services/product.service";
 import { productImageURL } from "@/common/utils/utils";
 import { IconButton } from "@material-ui/core";
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 
 interface AddProductFormProps {
@@ -166,28 +168,33 @@ const AddProductForm = ({
 
   const handleDeleteExistImage = async (image: any) => {
     const { id } = image
-    const result = await Swal.fire({
-      title: 'ลบรูปภาพ',
-      text: 'เมื่อลบแล้วไม่สามารถกู้คืนได้!',
-      icon: 'warning',
-      showCancelButton: true,
-      cancelButtonText: 'ยกเลิก',
-      confirmButtonText: 'ยืนยันการลบ',
-      reverseButtons: true
-    });
+    await dispatch(deleteProductImageAction({ productId: product?.id, id, accessToken, gid }));
+    const updatedImages = existingImages.filter((image: any) => image.id !== id);
+    setExistingImages(updatedImages);
 
-    if (result.isConfirmed) {
-      // Call the API or function to delete the image
-      // await deleteImage(id);
-      await dispatch(deleteProductImageAction({ productId: product?.id, id, accessToken, gid }));
-      Swal.fire(
-        'ลบข้อมูลเรียบร้อย!',
-        'รูปภาพของคุณถูกลบเรียบร้อยแล้ว',
-        'success'
-      );
-      const updatedImages = existingImages.filter((image: any) => image.id !== id);
-      setExistingImages(updatedImages);
-    }
+
+    // const result = await Swal.fire({
+    //   title: 'ลบรูปภาพ',
+    //   text: 'เมื่อลบแล้วไม่สามารถกู้คืนได้!',
+    //   icon: 'warning',
+    //   showCancelButton: true,
+    //   cancelButtonText: 'ยกเลิก',
+    //   confirmButtonText: 'ยืนยันการลบ',
+    //   reverseButtons: true
+    // });
+
+    // if (result.isConfirmed) {
+    //   // Call the API or function to delete the image
+    //   // await deleteImage(id);
+    //   await dispatch(deleteProductImageAction({ productId: product?.id, id, accessToken, gid }));
+    //   Swal.fire(
+    //     'ลบข้อมูลเรียบร้อย!',
+    //     'รูปภาพของคุณถูกลบเรียบร้อยแล้ว',
+    //     'success'
+    //   );
+    //   const updatedImages = existingImages.filter((image: any) => image.id !== id);
+    //   setExistingImages(updatedImages);
+    // }
 
   };
 
@@ -225,8 +232,8 @@ const AddProductForm = ({
         <Image
           alt="product image"
           src={values.file_obj}
-          width={100}
-          height={100}
+          width={150}
+          height={150}
         />
       );
     } else if (values.image) {
@@ -234,8 +241,8 @@ const AddProductForm = ({
         <Image
           alt="product image"
           src={productImageURL(values.image)}
-          width={250}
-          height={250}
+          width={150}
+          height={150}
         />
       );
     }
@@ -401,7 +408,7 @@ const AddProductForm = ({
 </div>
 
 
-                <div style={{ marginTop: 16 }}>
+                {/* <div style={{ marginTop: 16 }}>
   <label
     htmlFor="files"
     style={{
@@ -419,55 +426,110 @@ const AddProductForm = ({
       </div>
     ))}
   </label>
-</div>
+</div> */}
+
+<div style={{ marginTop: 16 }}>
+      <label
+        htmlFor="files"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          cursor: "pointer",
+        }}
+      >
+        <Grid container spacing={2}>
+          {existingImages?.map((image) => (
+            <Grid item key={image.id} xs={12} sm={6} md={4} lg={3}>
+              <Paper elevation={3}>
+                <Box position="relative">
+                  {showPreviewImage({ image: image.image })}
+                  <Box
+                    position="absolute"
+                    top={0}
+                    right={0}
+                    // zIndex="tooltip"
+                    bgcolor="rgba(0, 0, 0, 0.5)"
+                    borderRadius="0 0 0 5px"
+                  >
+                    <IconButton
+                      onClick={() => handleDeleteExistImage(image)}
+                      color="secondary"
+                    >
+                      <Delete />
+                    </IconButton>
+                  </Box>
+                </Box>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      </label>
+    </div>
 
 
+    <FieldArray
+  name="images"
+  render={(arrayHelpers) => (
+    <div style={{ marginTop: 16 }}>
+      <Grid container spacing={2}>
+        {previewImages.map((image, index) => (
+          <Grid item key={index} xs={12} sm={6} md={4}>
+            <Paper elevation={3}>
+              <Box position="relative">
+                <img src={image} alt="preview" width="100%" />
+                <Box
+                  position="absolute"
+                  top={0}
+                  right={0}
+                  zIndex="tooltip"
+                  bgcolor="rgba(0, 0, 0, 0.5)"
+                  borderRadius="0 0 0 5px"
+                >
+                  <IconButton
+                    onClick={() => handleDeleteImage(image)}
+                    color="secondary"
+                  >
+                    <Delete />
+                  </IconButton>
+                </Box>
+              </Box>
+            </Paper>
+          </Grid>
+        ))}
+        <Grid item xs={12} sm={6} md={4}>
+          <label htmlFor="images" style={{ cursor: "pointer" }}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+              border="1px dashed #00B0CD"
+              borderRadius="5px"
+              minHeight="250px"
+            >
+              <CloudUpload style={{ marginRight: 10 }} />
+              <span style={{ color: "#00B0CD" }}>เพิ่มรูปภาพ</span>
+            </Box>
+            <input
+              id="images"
+              name="images"
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={(event) => {
+                if (event.currentTarget.files) {
+                  handleImageChange(event);
+                }
+              }}
+              style={{ display: "none" }}
+            />
+          </label>
+        </Grid>
+      </Grid>
+    </div>
+  )}
+/>
 
-                <FieldArray
-                  name="images"
-                  render={(arrayHelpers) => (
-                    <div>
-                      {/* {existingImages.map((image, index) => (
-            <div key={index}>
-              <img src={image} alt="preview" width={250} height={250} />
-              <button type="button" onClick={() => handleDeleteExistingImage(index)}>
-                Remove
-              </button>
-            </div>
-          ))} */}
-                      {previewImages.map((image: any, index: any) => (
-                        <div key={index}>
-                          <img src={image} alt="preview" width={250} height={250} />
-                          <button type="button"
-                            onClick={() => handleDeleteImage(image)}
-                          >
-                            ลบ
-                          </button>
-                        </div>
-                      ))}
-                      <div>
-                        <label htmlFor="images" style={{ cursor: "pointer" }}>
-                          <CloudUpload style={{ marginRight: 10 }} />
-                          <span style={{ color: "#00B0CD" }}>เพิ่มรูปภาพ</span>
-                        </label>
-                        <input
-                          id="images"
-                          name="images"
-                          type="file"
-                          accept="image/*"
-                          multiple
-                          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                            if (event.currentTarget.files) {
-                              handleImageChange(event);
-                              arrayHelpers.push(event.currentTarget.files[0]);
-                            }
-                          }}
-                          style={{ display: "none" }}
-                        />
-                      </div>
-                    </div>
-                  )}
-                />
 
               </CardContent>
               <CardActions>
