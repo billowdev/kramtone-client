@@ -23,6 +23,9 @@
     "incremental": true,
     "baseUrl": "./src",
     "paths": {
+      "@/styles/*": [
+        "styles/*"
+      ],
       "@/store/*": [
         "store/*"
       ],
@@ -61,8 +64,9 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "src/pages/panel/index.tsx"  ],
+    "**/*.tsx",
+    "src/pages/panel/index.tsx"
+  ],
   "exclude": [
     "node_modules"
   ]

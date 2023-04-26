@@ -160,7 +160,7 @@ function UserPanelProfile({
               //     name: event.target.value,
               //   }));
               // }}
-              onChange={(event) => setFieldValue('name', event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('name', event.target.value)}
               name="name"
               type="text"
               label="ชื่อ"
@@ -172,7 +172,7 @@ function UserPanelProfile({
               component={TextField}
               defaultValue={userPayload.surname}
               name="surname"
-              onChange={(event) => setFieldValue('surname', event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('surname', event.target.value)}
 
               type="text"
               label="นามสกุล"
@@ -186,7 +186,7 @@ function UserPanelProfile({
               defaultValue={userPayload.phone}
               name="phone"
               maxLength={10}
-              onChange={(event) => setFieldValue('phone', event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('phone', event.target.value)}
               type="text"
               label="เบอร์โทร"
             />
@@ -199,7 +199,7 @@ function UserPanelProfile({
               defaultValue={userPayload.email}
               name="email"
               type="email"
-              onChange={(event) => setFieldValue('email', event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('email', event.target.value)}
               maxLength={120}
               label="อีเมล"
             />

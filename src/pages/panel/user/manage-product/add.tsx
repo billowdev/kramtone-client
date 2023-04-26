@@ -1,5 +1,5 @@
 import { Formik, Form, Field } from 'formik';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Box } from '@mui/material';
 import { Card, CardContent, CardActions, Typography } from '@mui/material';
 import Link from 'next/link';
 import Layout from '@/components/Layouts/Layout';
@@ -16,6 +16,7 @@ import * as categoryService from "@/services/category.service"
 import * as authService from "@/services/auth.service"
 import { CloudUpload } from '@material-ui/icons';
 import { Delete } from '@material-ui/icons';
+import * as colorSchemeService from "@/services/color-scheme.service"
 
 import {
 	Dialog,
@@ -29,6 +30,7 @@ import {
 } from '@mui/material';
 import { CategoryPayload } from '@/models/category.model';
 import Swal from 'sweetalert2';
+import { ColorSchemePayload } from '@/models/color-scheme.model';
 
 
 
@@ -41,10 +43,11 @@ interface Product {
 interface AddProductFormProps {
 	accessToken?: string;
 	categories?: CategoryPayload[],
-	gid?: string
+	gid?: string,
+	colorSchemes?: ColorSchemePayload[]
 }
 
-const AddProductForm = ({ accessToken, categories, gid }: AddProductFormProps) => {
+const AddProductForm = ({ accessToken, categories, gid, colorSchemes }: AddProductFormProps) => {
 
 	const [selectedCategory, setSelectedCategory] = useState<CategoryPayload>({
 		id: "",
@@ -69,18 +72,108 @@ const AddProductForm = ({ accessToken, categories, gid }: AddProductFormProps) =
 	const [images, setImages] = useState<File[]>([]);
 
 
-	const handleSubmit = async (values: Product) => {
-		try {
-			console.log(images)
-			console.log(values)
+	
 
+	const [previewImages, setPreviewImages] = useState<string[]>([]);
+
+	const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>, setFieldValue: any, values: Product) => {
+		if (event.target.files && event.target.files.length > 0) {
+			const files = event.target.files;
+			const urls: string[] = [];
+			for (let i = 0; i < files.length; i++) {
+				urls.push(URL.createObjectURL(files[i]));
+			}
+			setPreviewImages((prevPreviewImages) => [...prevPreviewImages, ...urls]);
+			const existingFiles = values.images || [];
+			// setFieldValue('images', [...existingFiles, ...files]);
+			setImages((prevImages) => [...prevImages, ...files]); // add new image files to state
+		}
+	};
+
+
+	const colorSchemeModal = () => {
+		return (
+		  <Dialog open={colorShemeModalOpen} keepMounted>
+			<DialogTitle>กรุณาเลือกโทนสี</DialogTitle>
+			<DialogContent>
+			  <List>
+				{colorSchemes &&
+				  colorSchemes.map((colorScheme: ColorSchemePayload) => (
+					<ListItem
+					button
+					key={colorScheme.id}
+					onClick={() => handleSelectColorScheme(colorScheme)}
+				  >
+					<ListItemText
+					  primary={colorScheme.nameTH}
+					  secondary={colorScheme.hex}
+					/>
+					<Box
+					  sx={{
+						width: 50,
+						height: 50,
+						backgroundColor: colorScheme.hex,
+						borderRadius: "50%",
+						border: "1px solid black",
+						marginLeft: 2,
+					  }}
+					/>
+				  </ListItem>
+				  
+				  ))}
+			  </List>
+			</DialogContent>
+			<DialogActions>
+			  <Button onClick={handleCloseColorSchemeModal}>Cancel</Button>
+			</DialogActions>
+		  </Dialog>
+		);
+	  };
+
+	const handleSelectCategory = (category: CategoryPayload) => {
+		setSelectedCategory(category);
+		setModalOpen(false);
+	};
+
+	const handleOpenModal = () => {
+		setModalOpen(true);
+	};
+
+	const handleCloseModal = () => {
+		setModalOpen(false);
+	};
+
+	const [selectedColorScheme, setSelectedColorScheme] = useState<any>({
+		id: "",
+		nameEN: "",
+		nameTH: "กรุณาเลือกโทนสีสำหรับสินค้า",
+		hex: "",
+	});
+	  const [colorShemeModalOpen, setColorSchemeModalOpen] = useState(false);
+
+	  
+	const handleSelectColorScheme = (colorScheme: ColorSchemePayload) => {
+		setSelectedColorScheme(colorScheme);
+		setColorSchemeModalOpen(false);
+	  };
+	  const handleOpenColorSchemeModal = () => {
+		setColorSchemeModalOpen(true);
+	  };
+	
+	  const handleCloseColorSchemeModal = () => {
+		setColorSchemeModalOpen(false);
+	  };
+
+
+	  const handleSubmit = async (values: Product) => {
+		try {
 			const formData = new FormData();
 			if (images) {
 				for (let i = 0; i < images.length; i++) {
 					formData.append("images", images[i]);
 				}
 			}
-
+		
 			formData.append(
 				"product",
 				JSON.stringify({
@@ -89,6 +182,7 @@ const AddProductForm = ({ accessToken, categories, gid }: AddProductFormProps) =
 					price: values.price,
 					categoryId: selectedCategory && selectedCategory?.id,
 					groupId: gid,
+					colorSchemeId: selectedColorScheme && selectedColorScheme?.id
 				})
 			);
 
@@ -115,8 +209,6 @@ const AddProductForm = ({ accessToken, categories, gid }: AddProductFormProps) =
 					);
 				}
 			}
-
-
 		} catch (error) {
 			toast.error("เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ");
 			console.error("An error occurred:", error);
@@ -125,37 +217,7 @@ const AddProductForm = ({ accessToken, categories, gid }: AddProductFormProps) =
 	};
 
 
-
-	const [previewImages, setPreviewImages] = useState<string[]>([]);
-
-	const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>, setFieldValue: any, values: Product) => {
-		if (event.target.files && event.target.files.length > 0) {
-			const files = event.target.files;
-			const urls: string[] = [];
-			for (let i = 0; i < files.length; i++) {
-				urls.push(URL.createObjectURL(files[i]));
-			}
-			setPreviewImages((prevPreviewImages) => [...prevPreviewImages, ...urls]);
-			const existingFiles = values.images || [];
-			// setFieldValue('images', [...existingFiles, ...files]);
-			setImages((prevImages) => [...prevImages, ...files]); // add new image files to state
-		}
-	};
-
-
-	const handleSelectCategory = (category: CategoryPayload) => {
-		setSelectedCategory(category);
-		setModalOpen(false);
-	};
-
-	const handleOpenModal = () => {
-		setModalOpen(true);
-	};
-
-	const handleCloseModal = () => {
-		setModalOpen(false);
-	};
-
+	  
 	const categoryModal = () => {
 
 		return (
@@ -254,6 +316,27 @@ const AddProductForm = ({ accessToken, categories, gid }: AddProductFormProps) =
 									</Button>
 
 								</div>
+								<br />
+                <div style={{ marginTop: 16 }}>
+  <Button variant="outlined" onClick={handleOpenColorSchemeModal}>
+    {selectedColorScheme ? (
+      <Box
+        sx={{
+          width: 50,
+          height: 50,
+          backgroundColor: selectedColorScheme.hex,
+          borderRadius: "50%",
+          border: "1px solid black",
+          marginRight: 2,
+        }}
+      />
+    ) : null}
+    {selectedColorScheme
+      ? `${selectedColorScheme.nameTH} / ${selectedColorScheme.nameEN} / ${selectedColorScheme.hex}  `
+      : "เลือกโทนสี"}
+  </Button>
+</div>
+
 								<div style={{ marginTop: 16 }}>
 									<input
 										type="file"
@@ -326,6 +409,7 @@ const AddProductForm = ({ accessToken, categories, gid }: AddProductFormProps) =
 				)}
 			</Formik>
 			{categoryModal()}
+			{colorSchemeModal()}
 		</Layout>
 	);
 };
@@ -335,16 +419,18 @@ export default withAuth(AddProductForm);
 export const getServerSideProps: GetServerSideProps = async (
 	context: GetServerSidePropsContext
 ) => {
-	const accessToken = context.req.cookies['access_token']
-	const { gid } = await authService.getSessionServerSide(accessToken!)
-
+	const accessToken = context.req.cookies['access_token'] || ''
+	const { gid } = await authService.getSessionServerSide(accessToken)
 	const categories = await categoryService.getAllCategory()
+	const colorSchemes = await colorSchemeService.getAllColorScheme()
+
 	if (accessToken) {
 		return {
 			props: {
 				categories,
 				accessToken,
-				gid
+				gid,
+				colorSchemes
 			},
 		};
 	} else {

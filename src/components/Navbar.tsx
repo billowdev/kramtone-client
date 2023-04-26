@@ -29,7 +29,6 @@ import Image from "next/image"
 import { Drawer, Grid, List, ListItem, ListItemText } from "@mui/material";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-
 type Props = {};
 
 
@@ -227,6 +226,7 @@ export default function Navbar({ }: Props) {
     // </AppBar>
 
     <AppBar
+      className="customAppBar"
       style={{
         top: 'auto',
         color: '#FFF',
@@ -245,7 +245,7 @@ export default function Navbar({ }: Props) {
               mr: 2,
               display: { md: 'flex' },
               fontFamily: 'Kanit',
-              fontWeight: 700,
+              fontWeight: 600,
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
@@ -363,6 +363,15 @@ export default function Navbar({ }: Props) {
             </Grid>
           )}
         </Toolbar>
+        <style jsx global>
+          {`
+          .customAppBar {
+  background-color: #103D81 !important;
+  background-image: none !important;
+}
+
+          `}
+        </style>
       </Container>
     </AppBar>
   );

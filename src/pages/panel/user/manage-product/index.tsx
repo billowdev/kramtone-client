@@ -2,7 +2,6 @@ import React from 'react'
 import Layout from '@/components/Layouts/Layout';
 import { useAppDispatch } from "@/store/store";
 import { getAllProductByGroupAction, productSelector, deleteProductAction } from "@/store/slices/product.slice";
-
 import router from "next/router";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -65,12 +64,15 @@ const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-import { productImageURL } from "@/common/utils/utils";
 import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
 import Swal from "sweetalert2";
+import { productImageURL } from "@/common/utils/utils";
 
-import { Modal } from '@mui/material';
+
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+
 
 const useStyles = makeStyles({
   customToolbar: {
@@ -131,7 +133,7 @@ type Props = {
   gid?: string,
   accessToken?: string,
   productArray?: ProductPayload[]
-  colorschemes? : ColorSchemePayload[]
+  colorschemes?: ColorSchemePayload[]
 }
 
 function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
@@ -240,7 +242,7 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
     //     </Zoom>
     //   ),
     // },
-  
+
     {
       field: 'colorScheme',
       headerName: 'โทนสี',
@@ -250,7 +252,7 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
           sx={{
             width: 50,
             height: 50,
-            backgroundColor: value.hex,
+            backgroundColor: value?.hex,
             borderRadius: "50%",
             border: "1px solid black",
             marginLeft: 2,
@@ -258,20 +260,55 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
         />
       ),
     },
-    
+
+    // {
+    //   field: 'productImages',
+    //   headerName: 'รูปภาพ',
+    //   width: 100,
+    //   renderCell: ({ value }: GridRenderCellParams<ProductPayload>) => (
+    //     <Image
+    //       height={500}
+    //       width={500}
+    //       src={productImageURL(value[0]?.image)}
+    //       style={{ width: 100, height: 70, borderRadius: '5%' }} alt={'product image'} />
+
+    //   ),
+    // },
     {
       field: 'productImages',
       headerName: 'รูปภาพ',
-      width: 100,
-      renderCell: ({ value }: GridRenderCellParams<ProductPayload>) => (
+      width: 200,
+      renderCell: (params: any) => {
+        const images = params.value.map((image: any) => productImageURL(image.image));
 
-        <Image
-          height={500}
-          width={500}
-          src={productImageURL(value[0]?.image)}
-          style={{ width: 100, height: 70, borderRadius: '5%' }} alt={'product image'} />
-
-      ),
+        return (
+          <Carousel
+            showArrows
+            showStatus={false}
+            showIndicators={false}
+            showThumbs={false}
+            emulateTouch
+            autoPlay
+            infiniteLoop
+            interval={3000}
+            transitionTime={350}
+            swipeable
+            dynamicHeight
+            width="100%"
+          >
+            {images.map((image: any, index: number) => (
+              <Image
+                key={index}
+                src={image}
+                height={70}
+                width={100}
+                alt={`Product image ${index}`}
+                style={{ borderRadius: '5%' }}
+              />
+            ))}
+          </Carousel>
+        );
+      },
     },
     {
       headerName: "การดำเนินการ",
@@ -290,37 +327,37 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
             <DeleteIcon fontSize="inherit" />
           </IconButton> */}
           <IconButton
-  aria-label="delete"
-  size="large"
-  onClick={() => {
-    Swal.fire({
-      title: 'ลบสินค้า',
-      text: 'เมื่อลบแล้วไม่สามารถกู้คืนได้!',
-      icon: 'warning',
-      showCancelButton: true,
-      cancelButtonText: 'ยกเลิก',
-      confirmButtonText: 'ยืนยันการลบ',
-      reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Dispatch the deleteProductAction here
-        dispatch(deleteProductAction({id:row.id, accessToken}))
-        Swal.fire(
-          'ลบข้อมูลเรียบร้อย!',
-          'สินค้าของคุณถูกลบเรียบร้อยแล้ว',
-          'success'
-        ).then(() => {
-          setTimeout(() => {
-            window.location.reload(); // Reload the page after 2 seconds
-          }, 200);
-        });
-        
-      }
-    });
-  }}
->
-  <DeleteIcon fontSize="inherit" />
-</IconButton>
+            aria-label="delete"
+            size="large"
+            onClick={() => {
+              Swal.fire({
+                title: 'ลบสินค้า',
+                text: 'เมื่อลบแล้วไม่สามารถกู้คืนได้!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonText: 'ยืนยันการลบ',
+                reverseButtons: true
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // Dispatch the deleteProductAction here
+                  dispatch(deleteProductAction({ id: row.id, accessToken }))
+                  Swal.fire(
+                    'ลบข้อมูลเรียบร้อย!',
+                    'สินค้าของคุณถูกลบเรียบร้อยแล้ว',
+                    'success'
+                  ).then(() => {
+                    setTimeout(() => {
+                      window.location.reload(); // Reload the page after 2 seconds
+                    }, 200);
+                  });
+
+                }
+              });
+            }}
+          >
+            <DeleteIcon fontSize="inherit" />
+          </IconButton>
           <IconButton
             aria-label="edit"
             size="large"

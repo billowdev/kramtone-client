@@ -206,8 +206,8 @@ const AddProductForm = ({
   };
 
   
-  const handleSelectColorScheme = (category: CategoryPayload) => {
-    setSelectedColorScheme(category);
+  const handleSelectColorScheme = (colorScheme: ColorSchemePayload) => {
+    setSelectedColorScheme(colorScheme);
     setColorSchemeModalOpen(false);
   };
   const handleOpenColorSchemeModal = () => {
@@ -448,7 +448,7 @@ const AddProductForm = ({
                       <div>
                         <label htmlFor="images" style={{ cursor: "pointer" }}>
                           <CloudUpload style={{ marginRight: 10 }} />
-                          <span style={{ color: "#00B0CD" }}>Add Picture</span>
+                          <span style={{ color: "#00B0CD" }}>เพิ่มรูปภาพ</span>
                         </label>
                         <input
                           id="images"
