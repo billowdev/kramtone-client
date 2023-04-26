@@ -46,8 +46,6 @@ type HeaderProp = {
 export default function AppBarComponent({ open, onDrawerOpen }: HeaderProp) {
 	// const [setShowProfileMenu] = React.useState(false);
 	// const dispatch = useAppDispatch();
-
-
 	return (
 		<AppBar position="absolute" open={open}>
 			<Toolbar
@@ -77,15 +75,15 @@ export default function AppBarComponent({ open, onDrawerOpen }: HeaderProp) {
 					ระบบบริหารจัดการการเชื่อมโยงแผนภาพโทนสีครามธรรมชาติกับแหล่งผลิตผ้าย้อมคราม
 				</Typography>
 				<IconButton color="inherit">
-				<Typography
-					component="h1"
-					variant="h6"
-					color="inherit"
-					noWrap
-					sx={{ flexGrow: 1 }}
-				>
-					version {process.env.NEXT_PUBLIC_VERSION}
-				</Typography>
+					<Typography
+						component="h1"
+						variant="h6"
+						color="inherit"
+						noWrap
+						sx={{ flexGrow: 1 }}
+					>
+						version {process.env.NEXT_PUBLIC_VERSION}
+					</Typography>
 				</IconButton>
 			</Toolbar>
 		</AppBar>

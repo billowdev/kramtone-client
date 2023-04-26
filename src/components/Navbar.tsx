@@ -26,12 +26,17 @@ const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 import { makeStyles } from "@material-ui/core/styles";
 import Image from "next/image"
+import { Drawer, Grid, List, ListItem, ListItemText } from "@mui/material";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 type Props = {};
 
 
 
 export default function Navbar({ }: Props) {
+  const theme = useTheme();
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"));
 
   const dispatch = useAppDispatch();
   const authData = useSelector(authSelector);
@@ -59,32 +64,176 @@ export default function Navbar({ }: Props) {
     }
   };
 
+  //   // Define state for the drawer
+  // const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  // // Handle toggle of the drawer
+  // const toggleDrawer = () => {
+  //   setIsDrawerOpen(!isDrawerOpen);
+  // };
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
+  //   const navLinkStyle = {
+  //     color: "#FFF",
+  //     // marginTop: isSmallDevice ? "16px" : "0px",
+  //   };
+
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const toggleDrawer = () => {
+    setIsDrawerOpen(!isDrawerOpen);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+
+  const navLinkStyle = {
+    textDecoration: 'none',
+    color: 'inherit',
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
 
   return (
-    <AppBar style={{
-      top: "auto",
-      color: "#FFF",
-      background: '#103D81',
-      textAlign: "center"
-    }}>
+    //     <AppBar style={{
+    //       top: "auto",
+    //       color: "#FFF",
+    //       background: '#103D81',
+    //       textAlign: "center'
+    //     }}>
+    //       <Container maxWidth="xl">
+    //         <Toolbar disableGutters>
+    //           <Typography
+    //             variant="h6"
+    //             noWrap
+    //             component="a"
+    //             href="/"
+    //             sx={{
+    //               mr: 2,
+    //               display: { md: 'flex' },
+    //               fontFamily: 'Kanit',
+    //               fontWeight: 700,
+    //               letterSpacing: '.3rem',
+    //               color: 'inherit',
+    //               textDecoration: 'none',
+    //             }}
+    //           >
+    //             <Image
+    //               src={`/static/img/logo.png`}
+    //               alt={`logo image`}
+    //               width={50}
+    //               height={50}
+    //               loading="lazy"
+    //             />
+    //           </Typography>
+
+    //           {/* Add a menu button for small devices */}
+    //           <IconButton
+    //             edge="start"
+    //             color="inherit"
+    //             aria-label="menu"
+    //             sx={{ display: { md: 'none' } }}
+    //             onClick={toggleDrawer}
+    //           >
+    //             <MenuIcon />
+    //           </IconButton>
+
+    //           {/* Add a drawer for small devices */}
+    //           <Drawer
+    //             anchor="left"
+    //             open={isDrawerOpen}
+    //             onClose={toggleDrawer}
+    //             sx={{ display: { md: 'none' } }}
+    //           >
+    //             <Box
+    //               sx={{
+    //                 width: 200,
+    //                 height: "100%",
+    //                 background: "#103D81",
+    //                 color: "#FFF",
+    //                 padding: 2,
+    //               }}
+    //             >
+    //               <Typography variant="h6" align="center" sx={{ mb: 2 }}>
+    //                 Navigation
+    //               </Typography>
+    //               <List>
+    //                 <Link href="/" style={navLinkStyle}>
+    //                   <ListItem button>
+    //                     <ListItemText primary="หน้าหลัก" />
+    //                   </ListItem>
+    //                 </Link>
+    //                 <Link href="/product" style={navLinkStyle}>
+    //                   <ListItem button>
+    //                     <ListItemText primary="หน้าสินค้า" />
+    //                   </ListItem>
+    //                 </Link>
+    //                 <Link href="/group-data" style={navLinkStyle}>
+    //                   <ListItem button>
+    //                     <ListItemText
+    //                       primary="หน้าข้อมูลกลุ่มผู้ผลิตหรือร้านค้า"
+    //                     />
+    //                   </ListItem>
+    //                 </Link>
+    //                 <Link href="/color-scheme" style={navLinkStyle}>
+    //                   <ListItem button>
+    //                     <ListItemText primary="ข้อมูลโทนสีครามธรรมชาติ" />
+    //                   </ListItem>
+    //                 </Link>
+    //               </List>
+    //             </Box>
+    //           </Drawer>
+
+    //           {/* Add the grid for large devices */}
+    //           <Grid
+    //             item
+    //             xs={12}
+    //             sm={8}
+    //             md={6}
+    //             style={{
+    //               marginLeft: 16,
+    //               display: "flex",
+    //               flexDirection: isSmallDevice ? "column" : "row",
+    //             }}
+    //           >
+    //             <Grid
+    //               container
+    //               spacing={2}
+    //               direction={isSmallDevice ? "column" : "row"}
+    //               alignItems="center"
+    //             >            <Grid item>
+    //             <Link href="/" style={navLinkStyle}>
+    //               <Typography align="center">หน้าหลัก</Typography>
+    //             </Link>
+    //           </Grid>
+    //           <Grid item>
+    //             <Link href="/product" style={navLinkStyle}>
+    //               <Typography align="center">หน้าสินค้า</Typography>
+    //             </Link>
+    //           </Grid>
+    //           <Grid item>
+    //             <Link href="/group-data" style={navLinkStyle}>
+    //               <Typography align="center">
+    //                 หน้าข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
+    //               </Typography>
+    //             </Link>
+    //           </Grid>
+    //           <Grid item>
+    //             <Link href="/color-scheme" style={navLinkStyle}>
+    //               <Typography align="center">
+    //                 ข้อมูลโทนสีครามธรรมชาติ
+    //               </Typography>
+    //             </Link>
+    //           </Grid>
+    //         </Grid>
+    //       </Grid>
+    //     </Toolbar>
+    //   </Container>
+    // </AppBar>
+
+    <AppBar
+      style={{
+        top: 'auto',
+        color: '#FFF',
+        background: '#103D81',
+        textAlign: 'center',
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -94,24 +243,125 @@ export default function Navbar({ }: Props) {
             href="/"
             sx={{
               mr: 2,
-              display: {  md: 'flex' },
+              display: { md: 'flex' },
               fontFamily: 'Kanit',
               fontWeight: 700,
-
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
             }}
           >
-              <Image
-                  src={`/static/img/logo.png`}
-                  alt={`logo image`}
-                  width={50}
-                  height={50}
-                  loading="lazy"
-                />
+            {/* Logo */}
+            {!isSmallDevice && (<Image
+              src={`/static/img/logo.png`}
+              alt={`logo image`}
+              width={50}
+              height={50}
+              loading="lazy"
+            />)}
           </Typography>
 
+          {/* Add a menu button for small devices */}
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ display: { md: 'none' } }}
+            onClick={toggleDrawer}
+          >
+            <MenuIcon />
+          </IconButton>
+
+          {/* Add a drawer for small devices */}
+          <Drawer
+            anchor="left"
+            open={isDrawerOpen}
+            onClose={toggleDrawer}
+            sx={{ display: { md: 'none' } }}
+          >
+            {/* Drawer content */}
+
+            <List>
+              <Link href="/" style={navLinkStyle}>
+                <ListItem button>
+                  <ListItemText primary="หน้าหลัก" />
+                </ListItem>
+              </Link>
+              <Link href="/product" style={navLinkStyle}>
+                <ListItem button>
+                  <ListItemText primary="หน้าสินค้า" />
+                </ListItem>
+              </Link>
+              <Link href="/group-data" style={navLinkStyle}>
+                <ListItem button>
+                  <ListItemText
+                    primary="หน้าข้อมูลกลุ่มผู้ผลิตหรือร้านค้า"
+                  />
+                </ListItem>
+              </Link>
+              <Link href="/color-scheme" style={navLinkStyle}>
+                <ListItem button>
+                  <ListItemText primary="ข้อมูลโทนสีครามธรรมชาติ" />
+                </ListItem>
+              </Link>
+            </List>
+          </Drawer>
+
+          {/* Add the grid for large devices */}
+          {!isSmallDevice && (
+            <Grid
+              item
+              xs={12}
+              sm={8}
+              md={6}
+              style={{
+                marginLeft: 16,
+                display: 'flex',
+                flexDirection: isSmallDevice ? 'column' : 'row',
+              }}
+            >
+              <Grid
+                container
+                spacing={2}
+                direction={isSmallDevice ? 'column' : 'row'}
+                alignItems="center"
+              >
+                {/* Grid items */}
+
+                <Grid
+                  container
+                  spacing={2}
+                  direction={isSmallDevice ? "column" : "row"}
+                  alignItems="center"
+                >            <Grid item>
+                    <Link href="/" style={navLinkStyle}>
+                      <Typography align="center">หน้าหลัก</Typography>
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link href="/product" style={navLinkStyle}>
+                      <Typography align="center">หน้าสินค้า</Typography>
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link href="/group-data" style={navLinkStyle}>
+                      <Typography align="center">
+                        หน้าข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
+                      </Typography>
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link href="/color-scheme" style={navLinkStyle}>
+                      <Typography align="center">
+                        ข้อมูลโทนสีครามธรรมชาติ
+                      </Typography>
+                    </Link>
+                  </Grid>
+                </Grid>
+
+              </Grid>
+            </Grid>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
