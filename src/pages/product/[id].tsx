@@ -630,8 +630,7 @@ function UserPanelProduct({ product }: Props) {
 
   return (
     <MainLayout>
-      <Box>
-        
+      <Box>  
         <Paper>
           <Tabs
             value={tabIndex}
