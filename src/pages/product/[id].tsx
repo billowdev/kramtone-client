@@ -94,7 +94,7 @@ function UserPanelProduct({ product }: Props) {
   });
 
   const images = product && product.productImages && product.productImages.map((image) => image.image);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
   const classes = useStyles();
 
   const [tabIndex, setTabIndex] = useState(0);
@@ -103,39 +103,69 @@ function UserPanelProduct({ product }: Props) {
     setTabIndex(newValue);
   };
 
+  let imageCarousel = null;
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  if (images && images.length > 4) {
+    const imageGroups = [];
+    for (let i = 0; i < images.length; i += 4) {
+      imageGroups.push(images.slice(i, i + 4));
+    }
+  
+    imageCarousel = (
+      <Carousel
+        showArrows
+        showStatus={false}
+        showIndicators={false}
+        showThumbs={false}
+        emulateTouch
+        autoPlay={false}
+        infiniteLoop={false}
+        interval={3000}
+        transitionTime={350}
+        swipeable
+        dynamicHeight
+        width="100%"
+        selectedItem={Math.floor(currentImageIndex / 4)}
+      >
+        {imageGroups.map((group, groupIndex) => (
+          <div key={groupIndex}>
+            <Grid container spacing={2}>
+              {group.map((image, index) => (
+                <Grid item key={index} xs={3}>
+                  <Image
+                    src={productImageURL(image)}
+                    alt={`Product image ${index}`}
+                    width="100"
+                    height="100"
+                    style={{
+                      borderRadius: '5%',
+                      objectFit: 'contain',
+                      cursor: 'pointer',
+                      border:
+                        currentImageIndex === groupIndex * 4 + index
+                          ? '1px solid #000'
+                          : 'none',
+                    }}
+                    onClick={() => {
+                      console.log("click")
+                      setCurrentImageIndex(groupIndex * 4 + index)
+                    }}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </div>
+        ))}
+      </Carousel>
+    );
+  }
+
   const renderProductTab = () => (
     <>
       <CardContent>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
-          {/* <Carousel
-  showArrows
-  showStatus={false}
-  showIndicators={false}
-  showThumbs={false}
-  emulateTouch
-  autoPlay
-  infiniteLoop
-  interval={3000}
-  transitionTime={350}
-  swipeable
-  dynamicHeight
-
-  width="100%"
->
-  {images && images.map((image: string, index: number) => (
-    <div key={index}>
-      <Image
-        src={productImageURL(image)}
-        alt={`Product image ${index}`}
-        width="250"
-        height="250"
-        style={{ borderRadius: '5%', objectFit: 'contain' }}
-      />
-
-    </div>
-  ))}
-</Carousel> */}
 
 <Grid container spacing={2}>
  
@@ -167,19 +197,8 @@ function UserPanelProduct({ product }: Props) {
           ))}
         </Carousel>
   <Grid container spacing={2}>
-    {/* {images &&
-      images.map((image: string, index: number) => (
-        <Grid item key={index}>
-          <Image
-            src={productImageURL(image)}
-            alt={`Product image ${index}`}
-            width="100"
-            height="100"
-            style={{ borderRadius: '5%', objectFit: 'contain' }}
-          />
-        </Grid>
-      ))} */}
-       {images && images.map((image: string, index: number) => (
+  {imageCarousel}
+       {/* {images && images.map((image: string, index: number) => (
             <Grid item key={index} xs={3}>
               <Image
                 src={productImageURL(image)}
@@ -190,7 +209,7 @@ function UserPanelProduct({ product }: Props) {
                 onClick={() => setCurrentImageIndex(index)}
               />
             </Grid>
-          ))}
+          ))} */}
   </Grid>
 </Grid>
 
