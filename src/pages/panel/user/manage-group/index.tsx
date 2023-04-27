@@ -33,7 +33,11 @@ import FormLabel from "@mui/material/FormLabel";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { groupDataImageURL } from "@/common/utils/utils";
-import { GetStaticProps, InferGetStaticPropsType, GetStaticPropsContext } from 'next';
+import {
+  GetStaticProps,
+  InferGetStaticPropsType,
+  GetStaticPropsContext,
+} from "next";
 import {
   Dialog,
   DialogActions,
@@ -44,43 +48,46 @@ import {
   IconButton,
   Slide,
   Stack,
-  Divider
+  Divider,
 } from "@mui/material";
-import * as groupDataService from "@/services/group-data.service"
-import * as authService from "@/services/auth.service"
-import { GroupDataPayload} from "@/models/group-data.model"
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  NextPage,
-} from "next";
+import * as groupDataService from "@/services/group-data.service";
+import * as authService from "@/services/auth.service";
+import { GroupDataPayload } from "@/models/group-data.model";
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 
-import { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
+import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 
 type Props = {
-  groupDataProp? : GroupDataPayload,
+  groupDataProp?: GroupDataPayload;
 };
-const MapContainer = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), {
+const MapContainer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.MapContainer),
+  {
+    ssr: false, // disable server-side rendering
+  }
+);
+
+const TileLayer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.TileLayer),
+  {
+    ssr: false, // disable server-side rendering
+  }
+);
+
+const Marker = dynamic(
+  () => import("react-leaflet").then((mod) => mod.Marker),
+  {
+    ssr: false, // disable server-side rendering
+  }
+);
+const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
   ssr: false, // disable server-side rendering
 });
 
-const TileLayer = dynamic(() => import('react-leaflet').then((mod) => mod.TileLayer), {
-  ssr: false, // disable server-side rendering
-});
-
-const Marker = dynamic(() => import('react-leaflet').then((mod) => mod.Marker), {
-  ssr: false, // disable server-side rendering
-});
-const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), {
-  ssr: false, // disable server-side rendering
-});
-
-function UserPanelManageGroup({
-  groupDataProp
-}: Props) {
+function UserPanelManageGroup({ groupDataProp }: Props) {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
-  const dispatch:any = useAppDispatch();
+  const dispatch: any = useAppDispatch();
   const { groupData } = useSelector(groupDataSelector);
   const userData = useSelector(authSelector);
   const isLoading = userData === undefined;
@@ -103,12 +110,12 @@ function UserPanelManageGroup({
     }
   }, [dispatch, userData]);
 
- 
-
   const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
-  const position: LatLngExpression = [parseFloat(groupDataProp?.lat!), parseFloat(groupDataProp?.lng!)] // Centered on Sakon Nakhon Province
-	const zoom: number = 12;
- 
+  const position: LatLngExpression = [
+    parseFloat(groupDataProp?.lat!),
+    parseFloat(groupDataProp?.lng!),
+  ]; // Centered on Sakon Nakhon Province
+  const zoom: number = 12;
 
   const initialValues: GroupDataPayload = {
     groupName: groupData?.groupName,
@@ -133,7 +140,7 @@ function UserPanelManageGroup({
   const typeographyHeaderStyle = {
     fontSize: isSmallDevice ? "16px" : "1.2rem",
     alignSelf: "flex-start",
-    fontWeight: 'bold',
+    fontWeight: "bold",
     width: "100%",
     color: theme.palette.grey[800],
   };
@@ -148,12 +155,14 @@ function UserPanelManageGroup({
     marginTop: "16px",
   };
 
-
   const showForm = ({ isValid }: FormikProps<any>) => {
-    return <Form>
-       <Card>
+    return (
+      <Form>
+        <Card>
           <CardContent sx={{ padding: 4 }}>
-          <FormLabel htmlFor="groupName" sx={{marginTop:"16px"}}>ชื่อกลุ่มผู้ผลิตหรือร้านค้า</FormLabel>
+            <FormLabel htmlFor="groupName" sx={{ marginTop: "16px" }}>
+              ชื่อกลุ่มผู้ผลิตหรือร้านค้า
+            </FormLabel>
             <Field
               style={{ marginTop: 16 }}
               fullWidth
@@ -163,20 +172,21 @@ function UserPanelManageGroup({
               type="text"
               label="ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
             />
-            <Box sx={{marginTop:"16px"}}> 
-            <FormLabel htmlFor="groupName">ชื่อกลุ่มผู้ผลิตหรือร้านค้า</FormLabel>
-               <Field
-              style={{ marginTop: 16 }}
-              fullWidth
-              value={groupData.groupName}
-              component={TextField}
-              name="groupName"
-              type="text"
-              label="ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
-            />
+            <Box sx={{ marginTop: "16px" }}>
+              <FormLabel htmlFor="groupName">
+                ชื่อกลุ่มผู้ผลิตหรือร้านค้า
+              </FormLabel>
+              <Field
+                style={{ marginTop: 16 }}
+                fullWidth
+                value={groupData.groupName}
+                component={TextField}
+                name="groupName"
+                type="text"
+                label="ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
+              />
             </Box>
-             
-   </CardContent>
+          </CardContent>
           <CardActions>
             <Button
               disabled={!isValid}
@@ -188,17 +198,21 @@ function UserPanelManageGroup({
             >
               แก้ไข
             </Button>
-              <Button variant="outlined" fullWidth onClick={() => setOpenDialog(false)}>
-                ยกเลิก
-              </Button>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={() => setOpenDialog(false)}
+            >
+              ยกเลิก
+            </Button>
           </CardActions>
         </Card>
-
-    </Form>;
+      </Form>
+    );
   };
 
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
-  
+
   const showDialog = () => {
     if (groupData === null) {
       return;
@@ -212,26 +226,24 @@ function UserPanelManageGroup({
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">
-        <Typography gutterBottom >
-              แก้ไขข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
-            </Typography>
-            <Divider />
+          <Typography gutterBottom>
+            แก้ไขข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
+          </Typography>
+          <Divider />
         </DialogTitle>
         <DialogContent>
           <Formik
-        validate={(values) => {
-          let errors: any = {};
-          return errors;
-        }}
-        initialValues={initialValues}
-        onSubmit={async (values, { setSubmitting }) => {
-
-          setSubmitting(false);
-        }}
-      >
-        {(props) => showForm(props)}
-      </Formik>
-
+            validate={(values) => {
+              let errors: any = {};
+              return errors;
+            }}
+            initialValues={initialValues}
+            onSubmit={async (values, { setSubmitting }) => {
+              setSubmitting(false);
+            }}
+          >
+            {(props) => showForm(props)}
+          </Formik>
         </DialogContent>
         {/* <DialogActions>
           <Button onClick={() => setOpenDialog(false)} color="info">
@@ -247,7 +259,7 @@ function UserPanelManageGroup({
     );
   };
 
-  const handleOnEditClick = () =>{
+  const handleOnEditClick = () => {
     // router.push('/panel/user/manage-group/edit?gid=' + userData.gid)
     // const editUrl = '/panel/user/manage-group/edit?gid=' + userData.gid;
     // return (
@@ -255,7 +267,7 @@ function UserPanelManageGroup({
     //     <a>Edit Group</a>
     //   </Link>
     // );
-  }
+  };
   return (
     <Layout>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -298,33 +310,29 @@ function UserPanelManageGroup({
         </Grid>
 
         <Grid container spacing={2} style={{ marginTop: "16px" }}>
-
-        <Grid item xs={12} md={12} lg={12}>
-              <Paper
-                    sx={{
-                      p: 2,
-                      display: "flex",
-                      gap: "4rem",
-                      flexDirection: {
-                        xs: "column",
-                        md: "row",
-                      },
-                      overflow: 'hidden'
-                    }}
-                  >
-                      <Image
-                        
-                        alt="product image"
-                        src={groupDataImageURL(groupData.banner)}
-                        width={1120}
-                        height={160}
-                      />
-                    </Paper>
-              </Grid>
+          <Grid item xs={12} md={12} lg={12}>
+            <Paper
+              sx={{
+                p: 2,
+                display: "flex",
+                gap: "4rem",
+                flexDirection: {
+                  xs: "column",
+                  md: "row",
+                },
+                overflow: "hidden",
+              }}
+            >
+              <Image
+                alt="product image"
+                src={groupDataImageURL(groupData.banner)}
+                width={1120}
+                height={160}
+              />
+            </Paper>
+          </Grid>
 
           <Grid item xs={12}>
-      
-
             <Paper
               sx={{
                 p: 2,
@@ -338,7 +346,7 @@ function UserPanelManageGroup({
             >
               <Grid item xs={12} md={4} lg={3}>
                 <Image
-                  style={{objectFit:"cover"}}
+                  style={{ objectFit: "cover" }}
                   alt="product image"
                   src={groupDataImageURL(groupData.logo)}
                   width={250}
@@ -350,7 +358,7 @@ function UserPanelManageGroup({
                 <React.Fragment>
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
-                      ชื่อกลุ่ม / ร้านค้า 
+                      ชื่อกลุ่ม / ร้านค้า
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData.groupName}
@@ -358,13 +366,15 @@ function UserPanelManageGroup({
                   </Box>
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
-                    ประเภทกลุ่ม
+                      ประเภทกลุ่ม
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData.groupType === "shop"? "ร้านค้า" : "กลุ่มผู้ผลิต"}
+                      {groupData.groupType === "shop"
+                        ? "ร้านค้า"
+                        : "กลุ่มผู้ผลิต"}
                     </Typography>
                   </Box>
-                
+
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>
                       ชื่อประธาน / เจ้าของร้าน
@@ -454,9 +464,7 @@ function UserPanelManageGroup({
 
                 <Grid item xs={12} md={6}>
                   <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
-                      ตำบล
-                    </Typography>
+                    <Typography sx={typeographyHeaderStyle}>ตำบล</Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData.subdistrict}
                     </Typography>
@@ -464,9 +472,7 @@ function UserPanelManageGroup({
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
-                      อำเภอ
-                    </Typography>
+                    <Typography sx={typeographyHeaderStyle}>อำเภอ</Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData.district}
                     </Typography>
@@ -474,16 +480,12 @@ function UserPanelManageGroup({
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
-                      จังหวัด
-                    </Typography>
+                    <Typography sx={typeographyHeaderStyle}>จังหวัด</Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData.province}
                     </Typography>
                   </Box>
                 </Grid>
-
-      
 
                 <Grid item xs={12} md={6}>
                   <Box sx={boxStyle}>
@@ -500,90 +502,79 @@ function UserPanelManageGroup({
           </Grid>
 
           <Container
-          maxWidth="lg"
-          sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}
-        >
-          
-          <Link href={'/panel/user/manage-group/edit?gid=' + userData.gid}>
-            <Button
-                  color="primary"
-                  variant="contained"
-                  style={{
-                    margin: "8px 0",
-                    backgroundColor: theme.palette.primary.main,
-                    color: "#fff",
-                    fontWeight: "bold",
-                    boxShadow: `0px 5px 10px rgba(0, 0, 0, 0.3)`,
-                  }}
-                  onClick={
-                  ()=>{
-                    handleOnEditClick()
-                    // setOpenDialog(true);
-                  }
-                  }
-                >
-                  แก้ไขข้อมูล
-                </Button>
-          
-          </Link>
-        
-        </Container>
-        
-          <Grid item xs={12} md={12} lg={12}>
-          <Paper
-            sx={{
-            p: 2,
-            display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            }}
+            maxWidth="lg"
+            sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}
           >
-            <MapContainer center={center} zoom={zoom} style={{ height: "500px", width: "100%" }}>
-                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  <Marker position={position}>     
-                      <Popup autoClose={false} >
+            <Link href={"/panel/user/manage-group/edit?gid=" + userData.gid}>
+              <Button
+                color="primary"
+                variant="contained"
+                style={{
+                  margin: "8px 0",
+                  backgroundColor: theme.palette.primary.main,
+                  color: "#fff",
+                  fontWeight: "bold",
+                  boxShadow: `0px 5px 10px rgba(0, 0, 0, 0.3)`,
+                }}
+                onClick={() => {
+                  handleOnEditClick();
+                  // setOpenDialog(true);
+                }}
+              >
+                แก้ไขข้อมูล
+              </Button>
+            </Link>
+          </Container>
+
+          <Grid item xs={12} md={12} lg={12}>
+            <Paper
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+              }}
+            >
+              <MapContainer
+                center={center}
+                zoom={zoom}
+                style={{ height: "500px", width: "100%" }}
+              >
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                <Marker position={position}>
+                  <Popup autoClose={false}>
                     <span>หมุดของคุณ</span>
                   </Popup>
-                  </Marker> 
-                  </MapContainer>
-          </Paper>
+                </Marker>
+              </MapContainer>
+            </Paper>
           </Grid>
-
-
         </Grid>
-
       </Container>
 
-
       {showDialog()}
-
     </Layout>
   );
 }
 
 export default withAuth(UserPanelManageGroup);
 
-
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   try {
-    const accessToken = context.req.cookies['access_token']
-    const {gid} = await authService.getSessionServerSide(accessToken!)
+    const accessToken = context.req.cookies["access_token"];
+    const { gid } = await authService.getSessionServerSide(accessToken!);
     const groupDataProp = await groupDataService.getOneGroupData(gid);
-  
+
     return {
       props: {
-        groupDataProp
+        groupDataProp,
       },
     };
   } catch (error) {
     return {
-      props: {
-        
-      },
+      props: {},
     };
   }
- 
 };
-
