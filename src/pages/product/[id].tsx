@@ -94,7 +94,7 @@ function UserPanelProduct({ product }: Props) {
   });
 
   const images = product && product.productImages && product.productImages.map((image) => image.image);
-
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const classes = useStyles();
 
   const [tabIndex, setTabIndex] = useState(0);
@@ -108,7 +108,7 @@ function UserPanelProduct({ product }: Props) {
       <CardContent>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
-          <Carousel
+          {/* <Carousel
   showArrows
   showStatus={false}
   showIndicators={false}
@@ -135,7 +135,66 @@ function UserPanelProduct({ product }: Props) {
 
     </div>
   ))}
-</Carousel>
+</Carousel> */}
+
+<Grid container spacing={2}>
+ 
+<Carousel
+          showArrows
+          showStatus={false}
+          showIndicators={false}
+          showThumbs={false}
+          emulateTouch
+          autoPlay
+          infiniteLoop
+          interval={3000}
+          transitionTime={350}
+          swipeable
+          dynamicHeight
+          selectedItem={currentImageIndex}
+          width="100%"
+        >
+          {images && images.map((image: string, index: number) => (
+            <div key={index}>
+              <Image
+                src={productImageURL(image)}
+                alt={`Product image ${index}`}
+                width="250"
+                height="250"
+                style={{ borderRadius: '5%', objectFit: 'contain' }}
+              />
+            </div>
+          ))}
+        </Carousel>
+  <Grid container spacing={2}>
+    {/* {images &&
+      images.map((image: string, index: number) => (
+        <Grid item key={index}>
+          <Image
+            src={productImageURL(image)}
+            alt={`Product image ${index}`}
+            width="100"
+            height="100"
+            style={{ borderRadius: '5%', objectFit: 'contain' }}
+          />
+        </Grid>
+      ))} */}
+       {images && images.map((image: string, index: number) => (
+            <Grid item key={index} xs={3}>
+              <Image
+                src={productImageURL(image)}
+                alt={`Product image ${index}`}
+                width="100"
+                height="100"
+                style={{ borderRadius: '5%', objectFit: 'contain', cursor: 'pointer', border: currentImageIndex === index ? '1px solid #000' : 'none' }}
+                onClick={() => setCurrentImageIndex(index)}
+              />
+            </Grid>
+          ))}
+  </Grid>
+</Grid>
+
+
 
           </Grid>
           <Grid item xs={12} sm={8}>
