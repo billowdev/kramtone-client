@@ -649,7 +649,6 @@ export const getServerSideProps: GetServerSideProps = async (
   if (id) {
     const accessToken = context.req.cookies["access_token"];
     const { gid } = await authService.getSessionServerSide(accessToken!);
-
     const categories = await categoryService.getAllCategory();
     const product = await productService.getOneProduct(id);
     const colorschemes = await colorSchemeService.getAllColorScheme()

@@ -13,6 +13,7 @@ import { useTheme } from "@material-ui/core/styles";
 import * as productService from "@/services/product.service"
 import * as authService from "@/services/auth.service"
 import * as colorSchemeService from "@/services/color-scheme.service"
+import InfoIcon from '@mui/icons-material/Info';
 
 import { ProductPayload } from "@/models/product.model"
 import { ColorSchemePayload } from "@/models/color-scheme.model"
@@ -294,7 +295,7 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
             <DeleteIcon fontSize="inherit" />
           </IconButton> */}
           <IconButton
-            aria-label="delete"
+            aria-label="ลบข้อมูล"
             size="large"
             onClick={() => {
               Swal.fire({
@@ -326,7 +327,7 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
             <DeleteIcon fontSize="inherit" />
           </IconButton>
           <IconButton
-            aria-label="edit"
+            aria-label="แก้ไขข้อมูล"
             size="large"
             onClick={() =>
               router.push("/panel/user/manage-product/edit?id=" + row.id)
@@ -337,6 +338,15 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
           // }}
           >
             <EditIcon fontSize="inherit" />
+          </IconButton>
+          <IconButton
+            aria-label="ดูข้อมูล"
+            size="large"
+            onClick={() =>
+              router.push("/panel/user/manage-product/" + row.id)
+            }
+          >
+            <InfoIcon fontSize="inherit" />
           </IconButton>
 
         </Stack>
