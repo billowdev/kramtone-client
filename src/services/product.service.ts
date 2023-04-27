@@ -2,7 +2,7 @@ import { ProductPayload, ProductArrayPayload, ProductArrayResponse, ProductRespo
 import httpClient from "@/common/utils/httpClient.util";
 import axios from 'axios'
 
-export const getOneProduct = async (id: string): Promise<ProductResponse> => {
+export const getOneProduct = async (id: any): Promise<ProductResponse> => {
 	const { data: response } = await httpClient.get(`/products/${id}`, {
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
 	});

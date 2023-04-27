@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import PanelPage from "./panel/index";
 import MainLayout from '@/components/MainLayout';
 import { Paper, Button, Typography, Grid,
 	 Modal, Backdrop, Fade, CardMedia,
@@ -14,12 +13,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import router from "next/router";
 import Image from 'next/image'
 type Props = {};
-type Product = {
-  id: string,
-  name: string,
-  image: string,
-  description: string,
-}
+
 const ProductTest = ({ }: Props) => {
 
 //   const products = [
@@ -37,10 +31,10 @@ const ProductTest = ({ }: Props) => {
 	id: '', name: '', image: '/static/img/default.png', description: '' 
 }
   const [selectedProduct, setSelectedProduct] = React.useState<ProductPayload>(defaultValue);
-  const [products, setProducts] = React.useState<ProductPayload[]>([]);
+  const [products, setProducts] = React.useState<any>([]);
   const [open, setOpen] = React.useState(false);
 
-  const handleOpen = (product: Product) => {
+  const handleOpen = (product: ProductPayload) => {
     setSelectedProduct(product);
     setOpen(true);
   };
@@ -80,7 +74,7 @@ const ProductTest = ({ }: Props) => {
               <Paper elevation={3} style={{ padding: '20px', margin: '20px' }}>
                 <Typography variant="h4">{selectedProduct.name}</Typography>
 			
-                <Typography variant="subtitle1">{selectedProduct.description}</Typography>
+                <Typography variant="subtitle1">{selectedProduct.desc}</Typography>
                 <Button variant="contained" color="primary" onClick={()=>{handleClose()}}>
                   close
                 </Button>
@@ -93,7 +87,7 @@ const ProductTest = ({ }: Props) => {
         </Modal>
 
         <Grid container spacing={2}>
-          {products.map((product: Product, index: number) => (
+          {products.map((product: ProductPayload, index: number) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
          
 			  <Card key={product.id} style={{ padding: '20px', margin: '20px', maxWidth: '345' }}>
@@ -112,16 +106,15 @@ const ProductTest = ({ }: Props) => {
         dynamicHeight
         width="100%"
       >
-        {product.productImages.map((image: string, index: number) => (
+        {product?.productImages?.map((image: any, index: number) => (
           <div key={index}>
            <Image
-  src={productImageURL(image.image)}
+  src={productImageURL(image?.image)}
   alt={`Product image ${index}`}
   width="250"
   height="250"
   style={{ borderRadius: '5%', objectFit: 'cover' }}
 />
-
           </div>
         ))}
       </Carousel>
@@ -129,14 +122,14 @@ const ProductTest = ({ }: Props) => {
  <Typography gutterBottom variant="h5" component="div">
           {product.name}
         </Typography>
-		{product.colorScheme ? (
+		{product?.colorScheme ? (
   <Grid container alignItems="center">
     <Grid item>
       <Box
         sx={{
           width: 50, // Adjust width for the rectangle
           height: 50,
-          backgroundColor: product.colorScheme.hex,
+          backgroundColor: product?.colorScheme.hex,
           borderRadius: '5%', // Adjust borderRadius for the rectangle
           border: '1px solid black',
           marginRight: 2,
@@ -145,26 +138,26 @@ const ProductTest = ({ }: Props) => {
     </Grid>
     <Grid item sx={{marginRight: "16px"}}>
       <Typography gutterBottom  component="div">
-        {product.colorScheme.hex}
+        {product?.colorScheme?.hex}
       </Typography>
     </Grid>
 
     <Grid item>
       <Typography gutterBottom component="div">
-        {product.colorScheme.nameTH}
+        {product?.colorScheme?.nameTH}
       </Typography>
     </Grid>
   </Grid>
 ) : null}
      
         <Typography variant="body1" color="text.secondary">
-          ประเภทสินค้า: {product.category.name}
+          ประเภทสินค้า: {product?.category?.name}
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          โทนสี: {product.colorScheme.nameTH} ({product.colorScheme.nameEN})
+          โทนสี: {product?.colorScheme?.nameTH} ({product?.colorScheme?.nameEN})
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          ราคา: {product.price} THB
+          ราคา: {product?.price} THB
         </Typography>
 		</CardContent>
 
@@ -172,7 +165,7 @@ const ProductTest = ({ }: Props) => {
                   handleOpen(product)
                 }}>
                 </CardActionArea>
-                <Typography variant="subtitle1">{product.description}</Typography>
+                <Typography variant="subtitle1">{product?.desc}</Typography>
               
 			   <Button variant="contained" color="primary"  onClick={() =>
               router.push("/product/" + product.id)

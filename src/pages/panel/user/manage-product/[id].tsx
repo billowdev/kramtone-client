@@ -21,6 +21,7 @@ import {
   Tabs,
   Typography,
 } from '@mui/material';
+import { styled } from "@mui/material/styles";
 
 const CustomTab = styled(Tab)(({ theme }) => ({
 	border: `1px solid ${theme.palette.divider}`,
@@ -39,7 +40,7 @@ type Props = {
 
 function UserPanelProduct({product}: Props) {
   // console.log(product)
-  const images = product.productImages.map((image) => image.image);
+  const images = product?.productImages?.map((image) => image.image);
 
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -64,7 +65,7 @@ function UserPanelProduct({product}: Props) {
         dynamicHeight
         width="25%"
       >
-        {images.map((image: string, index: number) => (
+        {images?.map((image: string, index: number) => (
           <div key={index}>
            <Image
   src={productImageURL(image)}
@@ -130,24 +131,23 @@ function UserPanelProduct({product}: Props) {
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  try {
+  
     const accessToken = context.req.cookies['access_token']
     const params = context.params;
-    const product = await productService.getOneProduct(params?.id);
-
-  return {
-      props: {
-        product 
-      },
-    };
-  } catch (error) {
-    return {
-      props: {
-
-      },
-    };
-  }
-
+    if(params) {
+      const product = await productService.getOneProduct(params.id?.toString());
+      return {
+        props: {
+          product 
+        },
+      };
+    }else{
+      return {
+        props: {
+  
+        },
+      };
+    }
 };
 
 
