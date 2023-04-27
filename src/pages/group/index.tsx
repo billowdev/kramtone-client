@@ -63,7 +63,7 @@ const GroupItem = () => {
 
   return (
     <MainLayout>
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4}}>
         <Paper>
           <Grid
             container

@@ -168,7 +168,7 @@ const ProductTest = ({}: Props) => {
 
       <CategoryFilterModal />
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} minHeight={"100vh"}>
         {filteredProducts.map((product: ProductPayload, index: number) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
             <Card
