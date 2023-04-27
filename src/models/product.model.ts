@@ -22,6 +22,7 @@ export interface ProductPayload {
 	name?: string
 	desc?: string
 	price?: string
+	reloadCount?: string
 	createdAt?: string
 	updatedAt?: string
 	category?: CategoryPayload

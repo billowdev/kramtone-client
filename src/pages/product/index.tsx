@@ -54,7 +54,7 @@ const ProductTest = ({ }: Props) => {
       try {
        const payload = await productService.getAllProduct();
 	   setProducts(payload);
-        setLoading(false);
+        // setLoading(false);
       } catch (error) {
         console.error(error);
       }

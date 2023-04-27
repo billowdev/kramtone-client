@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Link from "next/link";
 import { ProductPayload } from "@/models/product.model";
@@ -9,6 +9,9 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Image from "next/image";
 import { productImageURL } from "@/common/utils/utils";
+import { styled } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+
 import {
   Box,
   Button,
@@ -21,6 +24,36 @@ import {
   Tabs,
   Typography,
 } from '@mui/material';
+import { makeStyles } from "@material-ui/core";
+
+const CustomTab = styled(Tab)(({ theme }) => ({
+	border: `1px solid ${theme.palette.divider}`,
+	borderBottom: 'none',
+	borderRadius: '4px 4px 0 0',
+	'&.Mui-selected': {
+	  backgroundColor: theme.palette.primary.main,
+	  color: theme.palette.primary.contrastText,
+	  borderBottom: '1px solid transparent',
+	},
+  }));
+
+  const useStyles = makeStyles((theme) => ({
+	container: {
+	  display: "grid",
+	  gridTemplateColumns: "1fr auto",
+	  gridGap: theme.spacing(2),
+	  alignItems: "center",
+	},
+	price: {
+	  fontSize: theme.typography.h4.fontSize,
+	},
+	reloadCount: {
+	  display: "flex",
+	  alignItems: "center",
+	  justifyContent: "flex-end",
+	},
+
+  }));
 
 type Props = {
   product?: ProductPayload;
@@ -28,7 +61,26 @@ type Props = {
 
 function UserPanelProduct({product}: Props) {
   // console.log(product)
-  const images = product.productImages.map((image) => image.image);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+	const incrementReloadCount = async () => {
+	  if (isMounted && product) {
+		const productId = product.id!;
+		// Here, you can replace this with your own logic to increment the reload count in your database
+		const updatedProduct = await productService.increaseReloadCount(productId);
+		console.log(`Increment reload count for product with ID: ${productId}`);
+	  } else {
+		setIsMounted(true);
+	  }
+	};
+  
+	incrementReloadCount();
+  }, [isMounted, product]);
+  
+
+  const images = product?.productImages.map((image) => image.image);
+  const classes = useStyles();
 
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -39,7 +91,10 @@ function UserPanelProduct({product}: Props) {
   const renderProductTab = () => (
     <>
       <CardContent>
-      <Carousel
+     
+	  <Grid container spacing={2}>
+      <Grid item xs={12} sm={4}>
+	  <Carousel
         showArrows
         showStatus={false}
         showIndicators={false}
@@ -51,7 +106,7 @@ function UserPanelProduct({product}: Props) {
         transitionTime={350}
         swipeable
         dynamicHeight
-        width="25%"
+        width="100%"
       >
         {images.map((image: string, index: number) => (
           <div key={index}>
@@ -66,19 +121,34 @@ function UserPanelProduct({product}: Props) {
           </div>
         ))}
       </Carousel>
-        <Typography gutterBottom variant="h5" component="div">
+      </Grid>
+      <Grid item xs={12} sm={8}>
+		{/* =================== */}
+		<Grid container className={classes.container}>
+      <Grid item>
+        <Typography variant="h4" className={classes.price}>
+          ${product?.price}
+        </Typography>
+      </Grid>
+      <Grid item>
+        <div className={classes.reloadCount}>
+		<VisibilityIcon className={classes.eyeIcon} />
+          <Typography variant="body2">
+            {product.reloadCount.toLocaleString()}
+          </Typography>
+        </div>
+      </Grid>
+    </Grid>
+	{/* =================== */}
+
+	  <Typography gutterBottom variant="h5" component="div">
           {product?.name}
         </Typography>
         {/* ...Other content from the original card... */}
+      </Grid>
+    </Grid>
       </CardContent>
-      {/* <CardActions>
-        <Button size="small" color="primary">
-          ดูรายละเอียดเพิ่มเติม
-        </Button>
-        <Button size="small" color="primary">
-          ดูข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
-        </Button>
-      </CardActions> */}
+	
     </>
   );
 
@@ -104,8 +174,8 @@ function UserPanelProduct({product}: Props) {
           textColor="primary"
           centered
         >
-          <Tab label="ข้อมูลสินค้า" />
-          <Tab label="ข้อมูลกลุ่มผู้ผลิตหรือร้านค้า" />
+         <CustomTab label="ข้อมูลสินค้า" />
+          <CustomTab label="ข้อมูลกลุ่มผู้ผลิตหรือร้านค้า" />
         </Tabs>
         {tabIndex === 0 && renderProductTab()}
         {tabIndex === 1 && renderProducerTab()}

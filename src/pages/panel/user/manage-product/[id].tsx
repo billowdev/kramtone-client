@@ -22,6 +22,17 @@ import {
   Typography,
 } from '@mui/material';
 
+const CustomTab = styled(Tab)(({ theme }) => ({
+	border: `1px solid ${theme.palette.divider}`,
+	borderBottom: 'none',
+	borderRadius: '4px 4px 0 0',
+	'&.Mui-selected': {
+	  backgroundColor: theme.palette.primary.main,
+	  color: theme.palette.primary.contrastText,
+	  borderBottom: '1px solid transparent',
+	},
+  }));
+
 type Props = {
   product?: ProductPayload;
 }
@@ -104,8 +115,8 @@ function UserPanelProduct({product}: Props) {
           textColor="primary"
           centered
         >
-          <Tab label="ข้อมูลสินค้า" />
-          <Tab label="ข้อมูลกลุ่มผู้ผลิตหรือร้านค้า" />
+            <CustomTab label="ข้อมูลสินค้า" />
+          <CustomTab label="ข้อมูลกลุ่มผู้ผลิตหรือร้านค้า" />
         </Tabs>
         {tabIndex === 0 && renderProductTab()}
         {tabIndex === 1 && renderProducerTab()}
