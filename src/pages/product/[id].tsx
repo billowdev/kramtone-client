@@ -15,6 +15,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import GroupsIcon from "@mui/icons-material/Groups";
+import { useRouter } from 'next/router';
 
 import {
   Container,
@@ -108,6 +109,11 @@ function UserPanelProduct({ product }: Props) {
   const [isMounted, setIsMounted] = useState(false);
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const classes = useStyles();
+  const router = useRouter();
+
+  const handleBackButtonClick = () => {
+    router.back();
+  };
 
   useEffect(() => {
     const incrementReloadCount = async () => {
@@ -165,7 +171,7 @@ function UserPanelProduct({ product }: Props) {
     setTabIndex(newValue);
   };
 
-  let imageCarousel = null;
+  let imageCarousel: null | any = null;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (images && images.length > 4) {
@@ -376,7 +382,7 @@ function UserPanelProduct({ product }: Props) {
             >
               <Image
                 alt="product image"
-                src={groupDataImageURL(product.groupData.banner)}
+                src={groupDataImageURL(product?.groupData?.banner)}
                 width={1120}
                 height={160}
               />
@@ -399,7 +405,7 @@ function UserPanelProduct({ product }: Props) {
                 <Image
                   style={{ objectFit: "cover" }}
                   alt="product image"
-                  src={groupDataImageURL(product.groupData.logo)}
+                  src={groupDataImageURL(product?.groupData?.logo)}
                   width={250}
                   height={250}
                 />
@@ -412,7 +418,7 @@ function UserPanelProduct({ product }: Props) {
                       ชื่อกลุ่ม / ร้านค้า
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {product.groupData.groupName}
+                      {product?.groupData?.groupName}
                     </Typography>
                   </Box>
                   <Box sx={boxStyle}>
@@ -420,7 +426,7 @@ function UserPanelProduct({ product }: Props) {
                       ประเภทกลุ่ม
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {product.groupData.groupType === "shop"
+                      {product?.groupData?.groupType === "shop"
                         ? "ร้านค้า"
                         : "กลุ่มผู้ผลิต"}
                     </Typography>
@@ -431,7 +437,7 @@ function UserPanelProduct({ product }: Props) {
                       ชื่อประธาน / เจ้าของร้าน
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {product.groupData.agency}
+                      {product?.groupData?.agency}
                     </Typography>
                   </Box>
 
@@ -440,14 +446,14 @@ function UserPanelProduct({ product }: Props) {
                       เบอร์โทร
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {product.groupData.phone}
+                      {product?.groupData?.phone}
                     </Typography>
                   </Box>
 
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>อีเมล :</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {product.groupData.email}
+                      {product?.groupData?.email}
                     </Typography>
                   </Box>
                 </React.Fragment>
@@ -479,7 +485,7 @@ function UserPanelProduct({ product }: Props) {
                       บ้านเลขที่/หมู่
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {product.groupData.hno}
+                      {product?.groupData?.hno}
                     </Typography>
                   </Box>
                 </Grid>
@@ -488,7 +494,7 @@ function UserPanelProduct({ product }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>ถนน :</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {product.groupData.road}
+                      {product?.groupData?.road}
                     </Typography>
                   </Box>
                 </Grid>
@@ -497,7 +503,7 @@ function UserPanelProduct({ product }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>ซอย :</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {product.groupData.lane}
+                      {product?.groupData?.lane}
                     </Typography>
                   </Box>
                 </Grid>
@@ -508,7 +514,7 @@ function UserPanelProduct({ product }: Props) {
                       หมู่บ้าน
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {product.groupData.village}
+                      {product?.groupData?.village}
                     </Typography>
                   </Box>
                 </Grid>
@@ -517,7 +523,7 @@ function UserPanelProduct({ product }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>ตำบล</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {product.groupData.subdistrict}
+                      {product?.groupData?.subdistrict}
                     </Typography>
                   </Box>
                 </Grid>
@@ -525,7 +531,7 @@ function UserPanelProduct({ product }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>อำเภอ</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {product.groupData.district}
+                      {product?.groupData?.district}
                     </Typography>
                   </Box>
                 </Grid>
@@ -533,7 +539,7 @@ function UserPanelProduct({ product }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>จังหวัด</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {product.groupData.province}
+                      {product?.groupData?.province}
                     </Typography>
                   </Box>
                 </Grid>
@@ -544,7 +550,7 @@ function UserPanelProduct({ product }: Props) {
                       รหัสไปรษณีย์
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {product.groupData.zipCode}
+                      {product?.groupData?.zipCode}
                     </Typography>
                   </Box>
                 </Grid>
@@ -596,6 +602,9 @@ function UserPanelProduct({ product }: Props) {
           </Tabs>
           {tabIndex === 0 && renderProductTab()}
           {tabIndex === 1 && renderProducerTab()}
+          <Box display="flex" justifyContent="flex-end" padding={2}>
+            <Button variant="contained" color="primary" onClick={handleBackButtonClick}>กลับสู่ก่อนหน้า</Button>
+          </Box>
         </Paper>
       </Box>
     </MainLayout>

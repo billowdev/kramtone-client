@@ -121,7 +121,7 @@ export default function Navbar({ }: Props) {
     //             />
     //           </Typography>
 
-    //           {/* Add a menu button for small devices */}
+    //           {/* Add a menu  for small devices */}
     //           <IconButton
     //             edge="start"
     //             color="inherit"
@@ -283,24 +283,24 @@ export default function Navbar({ }: Props) {
 
             <List>
               <Link href="/" style={navLinkStyle}>
-                <ListItem button>
+                <ListItem >
                   <ListItemText primary="หน้าหลัก" />
                 </ListItem>
               </Link>
               <Link href="/product" style={navLinkStyle}>
-                <ListItem button>
+                <ListItem >
                   <ListItemText primary="หน้าสินค้า" />
                 </ListItem>
               </Link>
               <Link href="/group" style={navLinkStyle}>
-                <ListItem button>
+                <ListItem >
                   <ListItemText
                     primary="หน้าข้อมูลกลุ่มผู้ผลิตหรือร้านค้า"
                   />
                 </ListItem>
               </Link>
               <Link href="/color-scheme" style={navLinkStyle}>
-                <ListItem button>
+                <ListItem >
                   <ListItemText primary="ข้อมูลโทนสีครามธรรมชาติ" />
                 </ListItem>
               </Link>
@@ -344,7 +344,7 @@ export default function Navbar({ }: Props) {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link href="/group-data" style={navLinkStyle}>
+                    <Link href="/group" style={navLinkStyle}>
                       <Typography align="center">
                         หน้าข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
                       </Typography>

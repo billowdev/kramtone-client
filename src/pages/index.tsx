@@ -1,8 +1,12 @@
 import React from "react";
 import PanelPage from "./panel/index";
 import MainLayout from '@/components/MainLayout';
-import { Paper, Button, Typography, Grid, Modal, Backdrop, Fade, CardMedia, Card, CardActionArea } from "@mui/material";
+import { Box, Paper, Button, Typography, Grid, Modal, Backdrop, Fade, CardMedia, Card, CardActionArea } from "@mui/material";
 import { NextSeo } from 'next-seo';
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { makeStyles } from '@material-ui/core/styles';
+
 import Image from 'next/image'
 type Props = {};
 type Product = {
@@ -11,7 +15,33 @@ type Product = {
   image: string,
   description: string,
 }
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: theme.spacing(4),
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+  },
+  title: {
+    marginBottom: theme.spacing(2),
+    fontWeight: 500,
+  },
+  subtitle: {
+    marginBottom: theme.spacing(4),
+  },
+  logo: {
+    width: '100%',
+    height: '100%',
+  },
+}));
+
+
 const ProductTest = ({ }: Props) => {
+  const classes = useStyles();
 
   const products = [
     { id: '1', name: 'Product 1', image: 'M014-01.jpg', description: 'Product 1 description' },
@@ -28,6 +58,12 @@ const ProductTest = ({ }: Props) => {
   const [selectedProduct, setSelectedProduct] = React.useState<Product>(defaultValue);
   const [open, setOpen] = React.useState(false);
 
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const logoSize = isSmallScreen ? '250px' : '500px';
+
+  
   const handleOpen = (product: Product) => {
     setSelectedProduct(product);
     setOpen(true);
@@ -44,6 +80,28 @@ const ProductTest = ({ }: Props) => {
           title="Product Grid"
           description="A grid of products with optimized images using Next.js"
         />
+
+<Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      padding={4}
+      bgcolor="primary.secondary"
+      color="primary.black"
+    >
+      <Typography variant="h5" component="h5" gutterBottom align="center" >
+      การพัฒนาระบบบริหารจัดการการเชื่อมโยงแผนภาพโทนสีครามธรรมชาติกับแหล่งผลิตผ้าย้อมคราม
+      </Typography>
+      <Typography variant="h5" component="h5" gutterBottom align="center" >
+      The development of management system for connecting color scheme of natural indigo dye with indigo textile production sites
+      </Typography>
+      <Box width={logoSize} height={logoSize}>
+        <img src="/static/img/logo-white.png" alt="logo" width="100%" height="100%" />
+      </Box>
+    </Box>
+
+
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
