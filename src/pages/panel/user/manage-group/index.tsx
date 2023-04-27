@@ -60,6 +60,7 @@ import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 type Props = {
   groupDataProp?: GroupDataPayload;
 };
+
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
   {

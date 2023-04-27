@@ -31,6 +31,32 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import StoreIcon from "@mui/icons-material/Store";
+import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
+import dynamic from "next/dynamic";
+
+const MapContainer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.MapContainer),
+  {
+    ssr: false, // disable server-side rendering
+  }
+);
+
+const TileLayer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.TileLayer),
+  {
+    ssr: false, // disable server-side rendering
+  }
+);
+
+const Marker = dynamic(
+  () => import("react-leaflet").then((mod) => mod.Marker),
+  {
+    ssr: false, // disable server-side rendering
+  }
+);
+const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
+  ssr: false, // disable server-side rendering
+});
 
 const CustomTab = styled(Tab)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
@@ -99,6 +125,13 @@ function UserPanelProduct({ product }: Props) {
     incrementReloadCount();
   }, [isMounted, product]);
 
+  const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
+  const position: LatLngExpression = [
+    parseFloat(product?.groupData?.lat!),
+    parseFloat(product?.groupData?.lng!),
+  ]; // Centered on Sakon Nakhon Province
+  const zoom: number = 12;
+
   const StyledTypography = styled(Typography)({
     marginRight: "16px",
   });
@@ -154,7 +187,7 @@ function UserPanelProduct({ product }: Props) {
         transitionTime={350}
         swipeable
         dynamicHeight
-        width="100%"
+        width="70%"
         selectedItem={Math.floor(currentImageIndex / 4)}
       >
         {imageGroups.map((group, groupIndex) => (
@@ -191,8 +224,8 @@ function UserPanelProduct({ product }: Props) {
   }
 
   const renderProductTab = () => (
-    <React.Fragment sx={{ height: "100vh" }}>
-      <CardContent>
+    <React.Fragment >
+      <CardContent sx={{ height: "100vh" }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
             <Grid container spacing={2}>
@@ -209,7 +242,7 @@ function UserPanelProduct({ product }: Props) {
                 swipeable
                 dynamicHeight
                 selectedItem={currentImageIndex}
-                width="100%"
+                width="70%"
               >
                 {images &&
                   images.map((image: string, index: number) => (
@@ -519,7 +552,7 @@ function UserPanelProduct({ product }: Props) {
             </Paper>
           </Grid>
 
-          {/* <Grid item xs={12} md={12} lg={12}>
+          <Grid item xs={12} md={12} lg={12}>
             <Paper
               sx={{
                 p: 2,
@@ -541,7 +574,7 @@ function UserPanelProduct({ product }: Props) {
                 </Marker>
               </MapContainer>
             </Paper>
-          </Grid> */}
+          </Grid>
         </Grid>
       </Container>
     </Box>
