@@ -37,8 +37,6 @@ const initialState: GroupDataState = {
 
 export const getAllGroupDataAction = createAsyncThunk("GROUP_DATA/GET_ALL", async (): Promise<any> => {
 	const response = await groupDataService.getAllGroupData()
-	// console.log("===========slice===========")
-	// console.log(response)
 	return response;
 });
 

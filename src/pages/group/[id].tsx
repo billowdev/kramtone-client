@@ -57,6 +57,16 @@ import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { useRouter } from 'next/router';
 import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 
+import {
+	FacebookShareButton,
+	TwitterShareButton,
+	LinkedinShareButton,
+	FacebookIcon,
+	TwitterIcon,
+	LinkedinIcon,
+  } from 'react-share';
+
+
 type Props = {
   groupDataProp?: GroupDataPayload;
 };
@@ -92,6 +102,8 @@ function GroupDataPage({ groupDataProp }: Props) {
   const { groupData } = useSelector(groupDataSelector);
   const userData = useSelector(authSelector);
   const isLoading = userData === undefined;
+  const shareUrl = `https://www.kramtone.com/group/${groupDataProp?.id}`;
+const shareTitle = 'Kramtone เชื่อมโยงสินค้าผ้าครามกับแผนภาพโทนสีครามธรรมชาติ';
 
   const router = useRouter();
 
@@ -527,6 +539,23 @@ const handleBackButtonClick = () => {
             </Paper>
           </Grid>
         </Grid>
+
+		<Box display="flex" justifyContent="space-between" padding={2}>
+          <Box display="flex" gap="8px">
+            <FacebookShareButton url={shareUrl} quote={shareTitle}>
+              <FacebookIcon size={32} round />
+            </FacebookShareButton>
+            <TwitterShareButton url={shareUrl} title={shareTitle}>
+              <TwitterIcon size={32} round />
+            </TwitterShareButton>
+            <LinkedinShareButton url={shareUrl} title={shareTitle}>
+              <LinkedinIcon size={32} round />
+            </LinkedinShareButton>
+          </Box>
+          <Button variant="contained" color="primary" onClick={handleBackButtonClick}>
+            กลับสู่ก่อนหน้า
+          </Button>
+        </Box>
       </Container>
 
       {showDialog()}

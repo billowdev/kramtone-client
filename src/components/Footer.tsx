@@ -34,10 +34,10 @@ export default function Footer({}: Props) {
     color: "#FFF",
     // marginTop: isSmallDevice ? "16px" : "0px",
   };
-
   const [value, setValue] = React.useState(0);
+  
   return (
-    <>
+    <React.Fragment>
       <Box>
         <Toolbar style={footerStyle}>
           <Box
@@ -250,6 +250,6 @@ export default function Footer({}: Props) {
           ;
         </Toolbar>
       </Box>
-    </>
+    </React.Fragment>
   );
 }

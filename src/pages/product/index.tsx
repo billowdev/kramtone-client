@@ -30,7 +30,7 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import router from "next/router";
 import Image from "next/image";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import { CategoryPayload } from "@/models/category.model";
@@ -48,7 +48,7 @@ const ProductTest = ({}: Props) => {
   const [products, setProducts] = React.useState<any>([]);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [categories, setCategories] = useState<CategoryPayload[]>([]);
+  const [categories, setCategories] = useState<any>([]);
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryPayload | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -93,7 +93,7 @@ const ProductTest = ({}: Props) => {
     setSearchTerm("");
   };
 
-  const filteredProducts = products.filter((product) => {
+  const filteredProducts = products.filter((product:any) => {
     const searchTermMatches = product.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
@@ -109,7 +109,7 @@ const ProductTest = ({}: Props) => {
         <DialogTitle>เลือกประเภทสินค้า</DialogTitle>
         <DialogContent>
           <Grid container spacing={1} direction="column">
-            {categories.map((category, index) => (
+            {categories.map((category:CategoryPayload, index:number) => (
               <Grid item key={index}>
                 <Button onClick={() => handleCategorySelect(category)}>
                   {category.name}

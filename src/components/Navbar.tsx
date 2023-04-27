@@ -35,7 +35,7 @@ type Props = {};
 
 export default function Navbar({ }: Props) {
   const theme = useTheme();
-  const isSmallDevice = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 
   const dispatch = useAppDispatch();
   const authData = useSelector(authSelector);
@@ -263,21 +263,22 @@ export default function Navbar({ }: Props) {
 
           {/* Add a menu button for small devices */}
           <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ display: { md: 'none' } }}
-            onClick={toggleDrawer}
-          >
-            <MenuIcon />
-          </IconButton>
+    edge="start"
+    color="inherit"
+    aria-label="menu"
+    sx={{ display: isSmallDevice ? 'block' : 'none' }}
+    onClick={toggleDrawer}
+  >
+    <MenuIcon />
+  </IconButton>
+
 
           {/* Add a drawer for small devices */}
           <Drawer
             anchor="left"
             open={isDrawerOpen}
             onClose={toggleDrawer}
-            sx={{ display: { md: 'none' } }}
+            sx={{ display: { md: 'none', } }}
           >
             {/* Drawer content */}
 
@@ -326,7 +327,6 @@ export default function Navbar({ }: Props) {
                 direction={isSmallDevice ? 'column' : 'row'}
                 alignItems="center"
               >
-                {/* Grid items */}
 
                 <Grid
                   container

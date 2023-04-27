@@ -2,7 +2,7 @@ import { GroupDataPayload, GroupDataArrayPayload, GroupDataArrayResponse, GroupD
 import httpClient from "@/common/utils/httpClient.util";
 import axios from 'axios'
 
-export const getOneGroupData = async (id: string): Promise<GroupDataResponse> => {
+export const getOneGroupData = async (id: string | undefined): Promise<GroupDataResponse> => {
 	const { data: response } = await httpClient.get(`/groups/get/${id}`);
 	return response.payload
 };
