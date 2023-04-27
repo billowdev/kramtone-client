@@ -1,3 +1,5 @@
+import { ProductPayload } from "./product.model"
+
 export interface GroupDataResponse {
 	status: string
 	payload: GroupDataPayload
@@ -33,6 +35,7 @@ export interface GroupDataResponse {
 	lng: string
 	createdAt?: string
 	updatedAt?: string
+	products?: ProductPayload[]
 	logoFile?: any | Blob;
 	logoObj?: URL | string;
 	bannerFile?: any | Blob;

@@ -292,7 +292,7 @@ export default function Navbar({ }: Props) {
                   <ListItemText primary="หน้าสินค้า" />
                 </ListItem>
               </Link>
-              <Link href="/group-data" style={navLinkStyle}>
+              <Link href="/group" style={navLinkStyle}>
                 <ListItem button>
                   <ListItemText
                     primary="หน้าข้อมูลกลุ่มผู้ผลิตหรือร้านค้า"
