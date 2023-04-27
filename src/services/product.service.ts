@@ -15,7 +15,7 @@ export const getAllProductByGroup = async (id: string): Promise<ProductArrayResp
 };
 
 export const getAllProduct = async (): Promise<ProductArrayResponse> => {
-	const { data: response } = await httpClient.get(`/products/get`)
+	const { data: response } = await httpClient.get(`/products`)
 	return response.payload;
 };
 
