@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ProductTest = ({ }: Props) => {
   const classes = useStyles();
-
+  const theme = useTheme();
   const products = [
     { id: '1', name: 'Product 1', image: 'M014-01.jpg', description: 'Product 1 description' },
     { id: '2', name: 'Product 2', image: 'M014-01.jpg', description: 'Product 2 description' },
@@ -58,7 +58,7 @@ const ProductTest = ({ }: Props) => {
   const [selectedProduct, setSelectedProduct] = React.useState<Product>(defaultValue);
   const [open, setOpen] = React.useState(false);
 
-  const theme = useTheme();
+
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const logoSize = isSmallScreen ? '250px' : '500px';
