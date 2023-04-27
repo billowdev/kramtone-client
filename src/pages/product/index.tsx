@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from "react";
 import PanelPage from "./panel/index";
 import MainLayout from '@/components/MainLayout';
-import { Paper, Button, Typography, Grid, Modal, Backdrop, Fade, CardMedia, Card, CardActionArea } from "@mui/material";
+import { Paper, Button, Typography, Grid,
+	 Modal, Backdrop, Fade, CardMedia,
+	  Card, CardActionArea, 
+	  CardContent, Box } from "@mui/material";
 import { NextSeo } from 'next-seo';
 import { ProductPayload } from "@/models/product.model";
 import * as productService from "@/services/product.service";
@@ -94,6 +97,7 @@ const ProductTest = ({ }: Props) => {
             <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
          
 			  <Card key={product.id} style={{ padding: '20px', margin: '20px', maxWidth: '345' }}>
+			 <CardContent>
 			  <Carousel
         showArrows
         showStatus={false}
@@ -121,16 +125,57 @@ const ProductTest = ({ }: Props) => {
           </div>
         ))}
       </Carousel>
+
+ <Typography gutterBottom variant="h5" component="div">
+          {product.name}
+        </Typography>
+		{product.colorScheme ? (
+  <Grid container alignItems="center">
+    <Grid item>
+      <Box
+        sx={{
+          width: 50, // Adjust width for the rectangle
+          height: 50,
+          backgroundColor: product.colorScheme.hex,
+          borderRadius: '5%', // Adjust borderRadius for the rectangle
+          border: '1px solid black',
+          marginRight: 2,
+        }}
+      />
+    </Grid>
+    <Grid item sx={{marginRight: "16px"}}>
+      <Typography gutterBottom  component="div">
+        {product.colorScheme.hex}
+      </Typography>
+    </Grid>
+
+    <Grid item>
+      <Typography gutterBottom component="div">
+        {product.colorScheme.nameTH}
+      </Typography>
+    </Grid>
+  </Grid>
+) : null}
+     
+        <Typography variant="body1" color="text.secondary">
+          ประเภทสินค้า: {product.category.name}
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          โทนสี: {product.colorScheme.nameTH} ({product.colorScheme.nameEN})
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          ราคา: {product.price} THB
+        </Typography>
+		</CardContent>
+
 			    <CardActionArea onClick={() => {
                   handleOpen(product)
                 }}>
-                  <Typography variant="h5">{product.name}</Typography>
-				  
                 </CardActionArea>
                 <Typography variant="subtitle1">{product.description}</Typography>
               
 			   <Button variant="contained" color="primary"  onClick={() =>
-              router.push("/product/" + row.id)
+              router.push("/product/" + product.id)
             }>
                   รายละเอียดเพิ่มเติม
                 </Button>

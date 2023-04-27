@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ProductPayload } from "@/models/product.model";
 import * as productService from "@/services/product.service";
 import IndigoDyeClothCard from '@/components/IndigoDyeClothCard';
-import Layout from "@/components/Layouts/Layout";
+import MainLayout from "@/components/MainLayout";
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Image from "next/image";
@@ -91,7 +91,7 @@ function UserPanelProduct({product}: Props) {
 
 
   return (
-	<Layout>
+	<MainLayout>
     {/* UserPanelProduct
     <IndigoDyeClothCard payload={product} /> */}
 
@@ -112,7 +112,7 @@ function UserPanelProduct({product}: Props) {
       </Paper>
     </Box>
 
-    </Layout>
+    </MainLayout>
   )
 }
 
