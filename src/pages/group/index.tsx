@@ -82,7 +82,7 @@ const GroupItem = () => {
               ) : (
                 <GroupsIcon sx={{ fontSize: "2.5rem", marginLeft: "16px" }} />
               )}
-              <Typography variant="h5" sx={{ marginLeft: "16px" }}>
+              <Typography variant="h5" style={{ marginLeft: "16px" }}>
                 ข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
               </Typography>
             </Grid>

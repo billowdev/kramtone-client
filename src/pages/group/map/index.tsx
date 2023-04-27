@@ -6,7 +6,7 @@ import MainLayout from "@/components/MainLayout"
 import { useAppDispatch } from "@/store/store";
 import { getAllGroupDataAction } from '@/store/slices/group-data.slice';
 import { useSelector } from 'react-redux';
-import { Box, Paper, Typography, Button, AppBar, Toolbar, IconButton } from '@material-ui/core';
+import { Box, Paper, Typography, Button, AppBar, Toolbar, IconButton, Grid} from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import {
@@ -58,31 +58,36 @@ function GroupMapPage({ }: Props) {
       textAlign: 'center'
     }}
   >
-    <IconButton edge="start" color="inherit" aria-label="ย้อนกลับ" onClick={handleBackButtonClick}>
+    {/* <IconButton edge="start" color="inherit" aria-label="ย้อนกลับ" onClick={handleBackButtonClick}>
       <ArrowBackIcon /> ย้อนกลับ
-    </IconButton>
-    <Typography variant="h6" sx={{ flexGrow: 1, marginBottom: 2 }}>
-      ข้อมูลกลุ่มผู้ผลิตหรือร้านค้า ในมุมมองแผนที่
-    </Typography>
-	<Paper style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px', padding: 16  }}>
-  <GroupMap groupData={groupData.groupDataArray} />
-  <Box display="flex" justifyContent="space-between" padding={2}>
-          <Box display="flex" gap="8px">
-            <FacebookShareButton url={shareUrl} quote={shareTitle}>
-              <FacebookIcon size={32} round />
-            </FacebookShareButton>
-            <TwitterShareButton url={shareUrl} title={shareTitle}>
-              <TwitterIcon size={32} round />
-            </TwitterShareButton>
-            <LinkedinShareButton url={shareUrl} title={shareTitle}>
-              <LinkedinIcon size={32} round />
-            </LinkedinShareButton>
-          </Box>
-          <Button variant="contained" color="primary" onClick={handleBackButtonClick}>
+    </IconButton> */}
+      <Button variant="contained" color="primary" onClick={handleBackButtonClick}>
             กลับสู่ก่อนหน้า
           </Button>
-        </Box>
+    <Typography variant="h5" style={{padding: 16}}>
+      ข้อมูลกลุ่มผู้ผลิตหรือร้านค้า ในมุมมองแผนที่
+    </Typography>
+
+	<Paper style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px', padding: 16  }}>
+  <GroupMap groupData={groupData.groupDataArray} />
+  
 </Paper>
+
+<Grid container spacing={3} alignItems="center" style={{marginTop: 16}}>
+    <Grid item xs={12} sm={6}>
+      <Box display="flex" justifyContent="flex-end">
+        <FacebookShareButton url={shareUrl} quote={shareTitle}>
+          <FacebookIcon size={32} round />
+        </FacebookShareButton>
+        <TwitterShareButton url={shareUrl} title={shareTitle}>
+          <TwitterIcon size={32} round />
+        </TwitterShareButton>
+        <LinkedinShareButton url={shareUrl} title={shareTitle}>
+          <LinkedinIcon size={32} round />
+        </LinkedinShareButton>
+      </Box>
+    </Grid>
+  </Grid>
 
   </Box>
 </MainLayout>
