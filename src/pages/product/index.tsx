@@ -25,6 +25,7 @@ import { NextSeo } from "next-seo";
 import { ProductPayload } from "@/models/product.model";
 import * as productService from "@/services/product.service";
 import * as categoryService from "@/services/category.service";
+import * as colorSchemeService from "@/services/color-scheme.service";
 
 import { productImageURL } from "@/common/utils/utils";
 import { Carousel } from "react-responsive-carousel";
@@ -35,6 +36,7 @@ import Image from "next/image";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import { CategoryPayload } from "@/models/category.model";
+import { ColorSchemePayload } from "@/models/color-scheme.model";
 
 type Props = {};
 
@@ -47,20 +49,29 @@ const ProductTest = ({}: Props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [products, setProducts] = React.useState<any>([]);
-
+  const [colorSchemes, setColorSchemes] = React.useState<any>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [categories, setCategories] = useState<any>([]);
+
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryPayload | null>(null);
+
+    const [selectedColorScheme, setSelectedColorScheme] =
+    useState<ColorSchemePayload | null>(null);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isColorSchemeModalOpen, setIsColorSchemeModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const payload = await productService.getAllProduct();
         const categoriesPayload = await categoryService.getAllCategory();
+        const colorSchemesPayload = await colorSchemeService.getAllColorScheme();
+     console.log(colorSchemesPayload)
         setProducts(payload);
         setCategories(categoriesPayload);
+        setColorSchemes(colorSchemesPayload);
 
         // setLoading(false);
       } catch (error) {
@@ -83,14 +94,31 @@ const ProductTest = ({}: Props) => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+  
 
   const handleCategorySelect = (category: CategoryPayload) => {
     setSelectedCategory(category);
     setIsModalOpen(false);
   };
 
+  const handleOpenColorSchemeModal = () => {
+    setIsColorSchemeModalOpen(true);
+  };
+
+  const handleCloseColorSchemeModal = () => {
+    setIsColorSchemeModalOpen(false);
+  };
+  
+
+  const handleColorSchemeSelect = (colorScheme: ColorSchemePayload) => {
+    setSelectedColorScheme(colorScheme);
+    setIsColorSchemeModalOpen(false);
+  };
+
+
   const handleClearFilters = () => {
     setSelectedCategory(null);
+    setSelectedColorScheme(null);
     setSearchTerm("");
   };
 
@@ -107,7 +135,11 @@ const ProductTest = ({}: Props) => {
 
     const categoryMatches =
       !selectedCategory || product.category.id === selectedCategory.id;
-    return searchTermMatches && categoryMatches;
+      
+      const colorSchemeMatches =
+      !selectedColorScheme || product.colorScheme.id === selectedColorScheme.id;
+
+    return searchTermMatches && categoryMatches && colorSchemeMatches;
   })
   ?? [];
 
@@ -145,6 +177,41 @@ const ProductTest = ({}: Props) => {
       </Dialog>
     );
   };
+
+  const ColorSchemeFilterModal = () => {
+    return (
+      <Dialog open={isColorSchemeModalOpen} onClose={handleCloseColorSchemeModal}>
+        <DialogTitle>เลือกโทนสี</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={1} direction="column">
+            {colorSchemes.map((colorScheme: ColorSchemePayload, index: number) => (
+              <Grid item key={index}>
+                <Button onClick={() => handleColorSchemeSelect(colorScheme)}>
+                  <Box
+                    sx={{
+                      display: "inline-block",
+                      width: 50,
+                      height: 50,
+                      backgroundColor: colorScheme.hex,
+                      border: "1px solid black",
+                      marginRight: 4,
+                    }}
+                  />
+                 {colorScheme.hex} - {colorScheme.nameTH} ({colorScheme.nameEN})
+                </Button>
+              </Grid>
+            ))}
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseColorSchemeModal} color="primary">
+            ยกเลิก
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+  
 
   return (
     <MainLayout>
@@ -185,6 +252,18 @@ const ProductTest = ({}: Props) => {
     <Grid item xs={12} md={2}>
       <Button
         variant="outlined"
+        onClick={handleOpenColorSchemeModal}
+        fullWidth
+        style={{ height: '100%' }}
+      >
+        {selectedColorScheme && selectedColorScheme.nameTH !== ""
+          ? selectedColorScheme.nameTH
+          : "กรองตามโทนสี"}
+      </Button>
+    </Grid>
+    <Grid item xs={12} md={2}>
+      <Button
+        variant="outlined"
         color="secondary"
         onClick={handleClearFilters}
         fullWidth
@@ -202,7 +281,7 @@ const ProductTest = ({}: Props) => {
 
       <CategoryFilterModal />
 
-
+    <ColorSchemeFilterModal />
 
       <Grid container spacing={2} minHeight={"100vh"}>
       {currentProducts.length === 0 ? (
