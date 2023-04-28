@@ -28,6 +28,7 @@ import { ProductPayload } from "@/models/product.model";
 import * as productService from "@/services/product.service";
 import * as categoryService from "@/services/category.service";
 import * as groupDataService from "@/services/group-data.service";
+import * as colorSchemeService from "@/services/color-scheme.service";
 
 import { productImageURL } from "@/common/utils/utils";
 import { Carousel } from "react-responsive-carousel";
@@ -39,6 +40,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import { CategoryPayload } from "@/models/category.model";
 import { GroupDataPayload } from "@/models/group-data.model";
+import { ColorSchemePayload } from "@/models/color-scheme.model";
 
 type Props = {
   groupId?: string;
@@ -51,6 +53,7 @@ const ProductByGroupId = ({ groupId, groupData }: Props) => {
   const [products, setProducts] = React.useState<any>([]);
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const [searchTerm, setSearchTerm] = useState("");
+
   const [categories, setCategories] = useState<any>([]);
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryPayload | null>(null);
@@ -58,13 +61,82 @@ const ProductByGroupId = ({ groupId, groupData }: Props) => {
   const handleBackButtonClick = () => {
     router.back();
   };
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCategorySelect = (category: CategoryPayload) => {
+    setSelectedCategory(category);
+    setIsModalOpen(false);
+  };
+
+
+  const [colorSchemes, setColorSchemes] = React.useState<any>([]);
+  const [selectedColorScheme, setSelectedColorScheme] =
+    useState<ColorSchemePayload | null>(null);
+  const [isColorSchemeModalOpen, setIsColorSchemeModalOpen] = useState(false);
+
+const handleOpenColorSchemeModal = () => {
+  setIsColorSchemeModalOpen(true);
+};
+
+const handleCloseColorSchemeModal = () => {
+  setIsColorSchemeModalOpen(false);
+};
+
+
+const handleColorSchemeSelect = (colorScheme: ColorSchemePayload) => {
+  setSelectedColorScheme(colorScheme);
+  setIsColorSchemeModalOpen(false);
+};
+
+const ColorSchemeFilterModal = () => {
+  return (
+    <Dialog open={isColorSchemeModalOpen} onClose={handleCloseColorSchemeModal}>
+      <DialogTitle>เลือกโทนสี</DialogTitle>
+      <DialogContent>
+        <Grid container spacing={1} direction="column">
+          {colorSchemes.map((colorScheme: ColorSchemePayload, index: number) => (
+            <Grid item key={index}>
+              <Button onClick={() => handleColorSchemeSelect(colorScheme)}>
+                <Box
+                  sx={{
+                    display: "inline-block",
+                    width: 50,
+                    height: 50,
+                    backgroundColor: colorScheme.hex,
+                    border: "1px solid black",
+                    marginRight: 4,
+                  }}
+                />
+                {colorScheme.id} - {colorScheme.hex} - {colorScheme.nameTH} ({colorScheme.nameEN})
+              </Button>
+            </Grid>
+          ))}
+        </Grid>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleCloseColorSchemeModal} color="primary">
+          ยกเลิก
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
   useEffect(() => {
     async function fetchData() {
       try {
         const payload = await productService.getAllProductByGroup(groupId!);
         const categoriesPayload = await categoryService.getAllCategory();
+        const colorSchemesPayload = await colorSchemeService.getAllColorScheme();
         setProducts(payload);
         setCategories(categoriesPayload);
+        setColorSchemes(colorSchemesPayload);
 
         // setLoading(false);
       } catch (error) {
@@ -80,21 +152,10 @@ const ProductByGroupId = ({ groupId, groupData }: Props) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCategorySelect = (category: CategoryPayload) => {
-    setSelectedCategory(category);
-    setIsModalOpen(false);
-  };
 
   const handleClearFilters = () => {
     setSelectedCategory(null);
+    setSelectedColorScheme(null);
     setSearchTerm("");
   };
 
@@ -117,9 +178,12 @@ const ProductByGroupId = ({ groupId, groupData }: Props) => {
           .toLowerCase()
           .includes(searchTerm.toLowerCase());
 
+          const colorSchemeMatches =
+          !selectedColorScheme || product.colorScheme.id === selectedColorScheme.id;
+          
       const categoryMatches =
         !selectedCategory || product.category.id === selectedCategory.id;
-      return searchTermMatches && categoryMatches;
+      return searchTermMatches && categoryMatches && colorSchemeMatches;
     }) ?? [];
 
 
@@ -206,6 +270,18 @@ const ProductByGroupId = ({ groupId, groupData }: Props) => {
     <Grid item xs={12} md={2}>
       <Button
         variant="outlined"
+        onClick={handleOpenColorSchemeModal}
+        fullWidth
+        style={{ height: '100%' }}
+      >
+        {selectedColorScheme && selectedColorScheme.nameTH !== ""
+          ? `${selectedColorScheme.id}-${selectedColorScheme.nameTH}`
+          : "กรองตามโทนสี"}
+      </Button>
+    </Grid>
+    <Grid item xs={12} md={2}>
+      <Button
+        variant="outlined"
         color="secondary"
         onClick={handleClearFilters}
         fullWidth
@@ -220,7 +296,7 @@ const ProductByGroupId = ({ groupId, groupData }: Props) => {
 
 
           <CategoryFilterModal />
-
+<ColorSchemeFilterModal />
 
           <Grid container spacing={2} minHeight={"100vh"}>
       {currentProducts.length === 0 ? (

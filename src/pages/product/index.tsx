@@ -49,18 +49,47 @@ const ProductTest = ({}: Props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [products, setProducts] = React.useState<any>([]);
-  const [colorSchemes, setColorSchemes] = React.useState<any>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [categories, setCategories] = useState<any>([]);
 
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [categories, setCategories] = useState<any>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryPayload | null>(null);
+    const handleOpenModal = () => {
+      setIsModalOpen(true);
+    };
+  
+    const handleCloseModal = () => {
+      setIsModalOpen(false);
+    };
+    
+  
+    const handleCategorySelect = (category: CategoryPayload) => {
+      setSelectedCategory(category);
+      setIsModalOpen(false);
+    };
 
+   
+
+    const [colorSchemes, setColorSchemes] = React.useState<any>([]);
     const [selectedColorScheme, setSelectedColorScheme] =
     useState<ColorSchemePayload | null>(null);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isColorSchemeModalOpen, setIsColorSchemeModalOpen] = useState(false);
+
+  const handleOpenColorSchemeModal = () => {
+    setIsColorSchemeModalOpen(true);
+  };
+
+  const handleCloseColorSchemeModal = () => {
+    setIsColorSchemeModalOpen(false);
+  };
+  
+
+  const handleColorSchemeSelect = (colorScheme: ColorSchemePayload) => {
+    setSelectedColorScheme(colorScheme);
+    setIsColorSchemeModalOpen(false);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -68,7 +97,7 @@ const ProductTest = ({}: Props) => {
         const payload = await productService.getAllProduct();
         const categoriesPayload = await categoryService.getAllCategory();
         const colorSchemesPayload = await colorSchemeService.getAllColorScheme();
-     console.log(colorSchemesPayload)
+   
         setProducts(payload);
         setCategories(categoriesPayload);
         setColorSchemes(colorSchemesPayload);
@@ -87,33 +116,8 @@ const ProductTest = ({}: Props) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-  
 
-  const handleCategorySelect = (category: CategoryPayload) => {
-    setSelectedCategory(category);
-    setIsModalOpen(false);
-  };
-
-  const handleOpenColorSchemeModal = () => {
-    setIsColorSchemeModalOpen(true);
-  };
-
-  const handleCloseColorSchemeModal = () => {
-    setIsColorSchemeModalOpen(false);
-  };
-  
-
-  const handleColorSchemeSelect = (colorScheme: ColorSchemePayload) => {
-    setSelectedColorScheme(colorScheme);
-    setIsColorSchemeModalOpen(false);
-  };
 
 
   const handleClearFilters = () => {
@@ -197,7 +201,7 @@ const ProductTest = ({}: Props) => {
                       marginRight: 4,
                     }}
                   />
-                 {colorScheme.hex} - {colorScheme.nameTH} ({colorScheme.nameEN})
+                  {colorScheme.id} - {colorScheme.hex} - {colorScheme.nameTH} ({colorScheme.nameEN})
                 </Button>
               </Grid>
             ))}
