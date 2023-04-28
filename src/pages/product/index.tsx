@@ -18,6 +18,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Pagination 
 } from "@mui/material";
 
 import { NextSeo } from "next-seo";
@@ -110,6 +111,15 @@ const ProductTest = ({}: Props) => {
   })
   ?? [];
 
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const productsPerPage: number = 12;
+  
+  const indexOfLastProduct: number = currentPage * productsPerPage;
+  const indexOfFirstProduct: number = indexOfLastProduct - productsPerPage;
+  const currentProducts: ProductPayload[] = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  
+  const totalPages: number = Math.ceil(filteredProducts.length / productsPerPage);
+  
 
   // CategoryFilterModal component
   const CategoryFilterModal = () => {
@@ -189,110 +199,121 @@ const ProductTest = ({}: Props) => {
 
       
 
+
       <CategoryFilterModal />
 
+
+
       <Grid container spacing={2} minHeight={"100vh"}>
-  {filteredProducts.length === 0 ? (
-    <Typography variant="h4" style={{ textAlign: "center", margin: "auto" }}>
-      ไม่พบข้อมูลสินค้า
-    </Typography>
-  ) : (
-    filteredProducts.map((product: ProductPayload, index: number) => (
-      <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-      <Card
-        key={product.id}
-        style={{ padding: "20px", margin: "20px", maxWidth: "345" }}
-      >
-        <CardContent>
-          <Carousel
-            showArrows
-            showStatus={false}
-            showIndicators={false}
-            showThumbs={false}
-            emulateTouch
-            autoPlay
-            infiniteLoop
-            interval={3000}
-            transitionTime={350}
-            swipeable
-            dynamicHeight
-            width="100%"
+      {currentProducts.length === 0 ? (
+        <Typography variant="h4" style={{ textAlign: "center", margin: "auto" }}>
+          ไม่พบข้อมูลสินค้า
+        </Typography>
+      ) : (
+        currentProducts.map((product: ProductPayload, index: number) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+          <Card
+            key={product.id}
+            style={{ padding: "20px", margin: "20px", maxWidth: "345" }}
           >
-            {product?.productImages?.map((image: any, index: number) => (
-              <div key={index}>
-                <Image
-                  src={productImageURL(image?.image)}
-                  alt={`Product image ${index}`}
-                  width="250"
-                  height="250"
-                  style={{ borderRadius: "5%", objectFit: "cover" }}
-                />
-              </div>
-            ))}
-          </Carousel>
-
-          <Typography gutterBottom variant="h5" component="div">
-            {product.name}
-          </Typography>
-          {product?.colorScheme ? (
-            <Grid container alignItems="center">
-              <Grid item>
-                <Box
-                  sx={{
-                    width: 50, // Adjust width for the rectangle
-                    height: 50,
-                    backgroundColor: product?.colorScheme.hex,
-                    borderRadius: "5%", // Adjust borderRadius for the rectangle
-                    border: "1px solid black",
-                    marginRight: 2,
-                  }}
-                />
-              </Grid>
-              <Grid item sx={{ marginRight: "16px" }}>
-                <Typography gutterBottom component="div">
-                  {product?.colorScheme?.hex}
-                </Typography>
-              </Grid>
-
-              <Grid item>
-                <Typography gutterBottom component="div">
-                  {product?.colorScheme?.nameTH}
-                </Typography>
-              </Grid>
-            </Grid>
-          ) : null}
-
-          <Typography variant="body1" color="text.secondary">
-            ประเภทสินค้า: {product?.category?.name}
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            โทนสี: {product?.colorScheme?.nameTH} (
-            {product?.colorScheme?.nameEN})
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            ราคา: {product?.price} THB
-          </Typography>
-        </CardContent>
-
-        {/* <CardActionArea onClick={() => {
-              handleOpen(product)
-            }}>
-            </CardActionArea> */}
-
-        <Typography variant="subtitle1">{product?.desc}</Typography>
-
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => router.push("/product/" + product.id)}
-        >
-          รายละเอียดเพิ่มเติม
-        </Button>
-      </Card>
+            <CardContent>
+              <Carousel
+                showArrows
+                showStatus={false}
+                showIndicators={false}
+                showThumbs={false}
+                emulateTouch
+                autoPlay
+                infiniteLoop
+                interval={3000}
+                transitionTime={350}
+                swipeable
+                dynamicHeight
+                width="100%"
+              >
+                {product?.productImages?.map((image: any, index: number) => (
+                  <div key={index}>
+                    <Image
+                      src={productImageURL(image?.image)}
+                      alt={`Product image ${index}`}
+                      width="250"
+                      height="250"
+                      style={{ borderRadius: "5%", objectFit: "cover" }}
+                    />
+                  </div>
+                ))}
+              </Carousel>
+    
+              <Typography gutterBottom variant="h5" component="div">
+                {product.name}
+              </Typography>
+              {product?.colorScheme ? (
+                <Grid container alignItems="center">
+                  <Grid item>
+                    <Box
+                      sx={{
+                        width: 50, // Adjust width for the rectangle
+                        height: 50,
+                        backgroundColor: product?.colorScheme.hex,
+                        borderRadius: "5%", // Adjust borderRadius for the rectangle
+                        border: "1px solid black",
+                        marginRight: 2,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item sx={{ marginRight: "16px" }}>
+                    <Typography gutterBottom component="div">
+                      {product?.colorScheme?.hex}
+                    </Typography>
+                  </Grid>
+    
+                  <Grid item>
+                    <Typography gutterBottom component="div">
+                      {product?.colorScheme?.nameTH}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              ) : null}
+    
+              <Typography variant="body1" color="text.secondary">
+                ประเภทสินค้า: {product?.category?.name}
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                โทนสี: {product?.colorScheme?.nameTH} (
+                {product?.colorScheme?.nameEN})
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                ราคา: {product?.price} THB
+              </Typography>
+            </CardContent>
+    
+            {/* <CardActionArea onClick={() => {
+                  handleOpen(product)
+                }}>
+                </CardActionArea> */}
+    
+            <Typography variant="subtitle1">{product?.desc}</Typography>
+    
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => router.push("/product/" + product.id)}
+            >
+              รายละเอียดเพิ่มเติม
+            </Button>
+          </Card>
+        </Grid>
+        ))
+      )}
     </Grid>
-    ))
-  )}
-</Grid>
+
+    {totalPages > 1 && (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <Pagination count={totalPages} page={currentPage} onChange={(event, value) => setCurrentPage(value)} />
+      </Box>
+    )}
+
+     
 
 
       </Box>
