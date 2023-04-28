@@ -164,46 +164,47 @@ const ProductByGroupId = ({ groupId, groupData }: Props) => {
             title="Product Page"
             description="A grid of products with optimized images using Next.js"
           />
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <Typography variant="h4" component="h4" gutterBottom>
-          หน้าสินค้าของกลุ่ม {groupData?.groupName}
-        </Typography>
-        </Box> 
-        <Grid container spacing={{ xs: 1, md: 3 }}>
-  <Grid item xs={12} md={6}>
-    <TextField
-      label="ค้นหาสินค้า"
-      variant="outlined"
-      value={searchTerm}
-      onChange={handleSearchInputChange}
-      fullWidth
-      style={{ height: '100%' }}
-    />
+    
+    <Box display="flex" flexDirection="column" alignItems="center">
+  <Typography variant="h4" component="h4" gutterBottom>
+    หน้าสินค้าของกลุ่ม {groupData?.groupName}
+  </Typography>
+  <Grid container spacing={{ xs: 1, md: 3 }} justifyContent="center">
+    <Grid item xs={12} md={6}>
+      <TextField
+        label="ค้นหาสินค้า"
+        variant="outlined"
+        value={searchTerm}
+        onChange={handleSearchInputChange}
+        fullWidth
+        style={{ height: '100%' }}
+      />
+    </Grid>
+    <Grid item xs={12} md={2}>
+      <Button
+        variant="outlined"
+        onClick={handleOpenModal}
+        fullWidth
+        style={{ height: '100%' }}
+      >
+        {selectedCategory && selectedCategory.name !== ""
+          ? selectedCategory.name
+          : "กรองตามประเภทสินค้า"}
+      </Button>
+    </Grid>
+    <Grid item xs={12} md={2}>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={handleClearFilters}
+        fullWidth
+        style={{ height: '100%' }}
+      >
+        ล้างตัวกรอง
+      </Button>
+    </Grid>
   </Grid>
-  <Grid item xs={12} md={2}>
-    <Button
-      variant="outlined"
-      onClick={handleOpenModal}
-      fullWidth
-      style={{ height: '100%' }}
-    >
-      {selectedCategory && selectedCategory.name !== ""
-        ? selectedCategory.name
-        : "กรองตามประเภทสินค้า"}
-    </Button>
-  </Grid>
-  <Grid item xs={12} md={2}>
-    <Button
-      variant="outlined"
-      color="secondary"
-      onClick={handleClearFilters}
-      fullWidth
-      style={{ height: '100%' }}
-    >
-      ล้างตัวกรอง
-    </Button>
-  </Grid>
-</Grid>
+</Box>
 
 
 

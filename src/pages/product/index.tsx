@@ -138,44 +138,56 @@ const ProductTest = ({}: Props) => {
 
   return (
     <MainLayout>
-       <Box sx={{ flexGrow: 1, p: 5 }}> 
+       <Box sx={{ flexGrow: 1, p: 4 }}> 
 
       <NextSeo
         title="Product Page"
         description="A grid of products with optimized images using Next.js"
       />
 
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <Typography variant="h4" component="h4" gutterBottom>
-          หน้าสินค้าทั้งหมด
-        </Typography>
-        <Box className={classes.searchContainer} display="flex">
-          <TextField
-            label="ค้นหาสินค้า"
-            variant="outlined"
-            value={searchTerm}
-            style={{ width: '300px' }}
-            onChange={handleSearchInputChange}
-          />
-          <Button
-            variant="outlined"
-            onClick={handleOpenModal}
-            style={{ marginLeft: "8px" }}
-          >
-            {selectedCategory && selectedCategory.name !== ""
-              ? selectedCategory.name
-              : "กรองตามประเภทสินค้า"}
-          </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={handleClearFilters}
-            style={{ marginLeft: "8px" }}
-          >
-            ล้างตัวกรอง
-          </Button>
-        </Box>
-      </Box>
+<Box display="flex" flexDirection="column" alignItems="center">
+  <Typography variant="h4" component="h4" gutterBottom>
+    หน้าสินค้าทั้งหมด
+  </Typography>
+  <Grid container spacing={{ xs: 1, md: 3 }} justifyContent="center">
+    <Grid item xs={12} md={3}>
+      <TextField
+        label="ค้นหาสินค้า"
+        variant="outlined"
+        value={searchTerm}
+        onChange={handleSearchInputChange}
+        fullWidth
+        style={{ height: '100%' }}
+      />
+    </Grid>
+    <Grid item xs={12} md={2}>
+      <Button
+        variant="outlined"
+        onClick={handleOpenModal}
+        fullWidth
+        style={{ height: '100%' }}
+      >
+        {selectedCategory && selectedCategory.name !== ""
+          ? selectedCategory.name
+          : "กรองตามประเภทสินค้า"}
+      </Button>
+    </Grid>
+    <Grid item xs={12} md={2}>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={handleClearFilters}
+        fullWidth
+        style={{ height: '100%' }}
+      >
+        ล้างตัวกรอง
+      </Button>
+    </Grid>
+  </Grid>
+</Box>
+
+
+      
 
       <CategoryFilterModal />
 
