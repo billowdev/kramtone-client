@@ -11,7 +11,7 @@ import {
 } from 'react-share';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
-
+import Image from "next/image"
 import {ColorSchemePayload} from "@/models/color-scheme.model"
 import * as colorSchemeService from "@/services/color-scheme.service"
 import MainLayout from '@/components/MainLayout';
@@ -99,27 +99,43 @@ const NaturalColorTonesPage = () => {
 
   const renderHistoryOfColorScheme = () => {
     return (
-      <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Paper sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}>
-          {isSmallDevice ? (
-            <ColorLensIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
-          ) : (
-            <ColorLensIcon sx={{ fontSize: "2.5rem", marginLeft: "16px" }} />
-          )}
-          <Typography
-            variant={isSmallDevice ? "subtitle1" : "h5"}
-            sx={{
-              fontWeight: "bold",
-              alignSelf: "center",
-            }}
-          >
-            ข้อมูลแผนภาพโทนสีครามธรรมชาติ
-          </Typography>
-        </Paper>
-      </Grid>
-      <Typography variant="h4">hello</Typography>
-    </Grid>
+      <React.Fragment>
+      <Typography variant={ isSmallDevice ? 'h6': 'h4'} style={{padding: 16}} gutterBottom>
+        แผนภาพโทนสีครามธรรมชาติ (Color Scheme of Natural Indigo Dye)
+      </Typography>
+      <Card style={{ background: 'none', boxShadow: 'none' }}>
+        <CardContent>
+          <Grid container spacing={isSmallDevice? 1:2}>
+            <Grid item xs={12} md={6}>
+              <div
+                style={{
+                  position: 'relative',
+                  width: isSmallDevice ? '100%': '80%',
+                  height: isSmallDevice ? '70vh':'100vh',
+                  boxShadow:
+                    '0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)',
+                }}
+              >
+                <Image
+                  src="/static/img/fig-25-88-color-scheme-of-natural-indigo-dye.png"
+                  alt="Color Scheme of Natural Indigo Dye"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography variant="h5" gutterBottom>
+                แผ่นเทียบสี (Color Matching Chart)
+              </Typography>
+              <Typography variant="body1" style={{ marginRight: '16px' }}>
+                แผ่นเทียบสี (Color Matching Chart)
+              </Typography>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </React.Fragment>
     )
   };
 
@@ -133,7 +149,7 @@ const NaturalColorTonesPage = () => {
 
   return (
     <MainLayout>
-      <Box sx={{ flexGrow: 1, p: 4 }}>
+      <Box sx={{ flexGrow: 1, p: isSmallDevice? 1:4 }}>
         <Paper>
        
          <React.Fragment>
