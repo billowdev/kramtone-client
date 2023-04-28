@@ -27,7 +27,9 @@ export default function MainLayout({ children }: LayoutProps) {
     <React.Fragment>
       <CssBaseline />
       <Navbar />
-      <Box component="main" sx={{ flexGrow: 1, p: 5 }}>
+      <Box component="main" 
+      // sx={{ flexGrow: 1, p: 5 }}
+      >
         <DrawerHeader />
         {children}
       </Box>

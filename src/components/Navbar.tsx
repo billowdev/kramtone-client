@@ -63,7 +63,7 @@ export default function Navbar() {
     { href: '/color-scheme', text: 'ข้อมูลโทนสีครามธรรมชาติ' },
   ];
 
-  const NavList = ({ style }) => (
+  const NavList = ({ style }: any) => (
     <List>
       {navItems.map((item, index) => (
         <Link key={index} href={item.href} passHref style={style || navLinkStyle}>
@@ -91,7 +91,6 @@ export default function Navbar() {
             href="/"
             style={{
               margin: 2,
-              display: { md: 'flex' },
               fontFamily: 'Kanit',
               fontWeight: 600,
               letterSpacing: '.3rem',
@@ -113,7 +112,6 @@ export default function Navbar() {
   edge="start"
   color="inherit"
   aria-label="menu"
-  style={{ display: { xs: 'block', md: 'none' } }}
   onClick={toggleDrawer}
 >
   <MenuIcon />
@@ -125,7 +123,7 @@ export default function Navbar() {
               anchor="left"
               open={isDrawerOpen}
               onClose={toggleDrawer}
-              style={{ display: { xs: 'block', md: 'none' } }}
+           
             >
               <NavList />
             </Drawer>

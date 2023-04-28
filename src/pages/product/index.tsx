@@ -129,6 +129,8 @@ const ProductTest = ({}: Props) => {
 
   return (
     <MainLayout>
+       <Box sx={{ flexGrow: 1, p: 5 }}> 
+
       <NextSeo
         title="Product Page"
         description="A grid of products with optimized images using Next.js"
@@ -264,10 +266,9 @@ const ProductTest = ({}: Props) => {
           </Grid>
         ))}
 
-        {/* {products.map((product: ProductPayload, index: number) => (
-         
-          ))} */}
+
       </Grid>
+      </Box>
     </MainLayout>
   );
 };

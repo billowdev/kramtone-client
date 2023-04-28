@@ -47,8 +47,10 @@ const GroupItem = () => {
 
   return (
     <MainLayout>
+        <Box sx={{ flexGrow: 1, p: 5 }}> 
+
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Paper elevation={3} sx={{ p: 2 }}>
+        <Paper elevation={3} style={{ padding: 2 }}>
           <Grid
             container
             spacing={3}
@@ -90,7 +92,7 @@ const GroupItem = () => {
             {groups &&
               groups.map((group: any, index: any) => (
                 <Box key={group?.id}>
-                  <Card sx={{ mb: 2 }}>
+                  <Card style={{ marginBottom: 2,  background: 'none', boxShadow: 'none' }} >
                     <CardContent>
                       <Grid container spacing={2}>
                         <Grid item xs={12} sm={3}>
@@ -156,6 +158,7 @@ const GroupItem = () => {
           </Box>
         </Paper>
       </Container>
+      </Box>
     </MainLayout>
   );
 };

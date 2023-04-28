@@ -48,6 +48,8 @@ function GroupMapPage({ }: Props) {
   ), [/* list variables which should trigger a re-render here */])
   return (
 <MainLayout>
+  <Box sx={{flexGrow: 1, p: 5 
+}}>
   <Box
     sx={{
       padding: 2,
@@ -55,8 +57,8 @@ function GroupMapPage({ }: Props) {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      textAlign: 'center'
-    }}
+      textAlign: 'center',
+        }}
   >
     {/* <IconButton edge="start" color="inherit" aria-label="ย้อนกลับ" onClick={handleBackButtonClick}>
       <ArrowBackIcon /> ย้อนกลับ
@@ -88,6 +90,8 @@ function GroupMapPage({ }: Props) {
       </Box>
     </Grid>
   </Grid>
+
+  </Box>
 
   </Box>
 </MainLayout>

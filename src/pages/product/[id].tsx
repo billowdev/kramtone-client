@@ -630,7 +630,9 @@ function UserPanelProduct({ product }: Props) {
 
   return (
     <MainLayout>
-      <Box>  
+        <Box sx={{ flexGrow: 1, p: 5 }}> 
+
+  
         <Paper>
           <Tabs
             value={tabIndex}
@@ -662,6 +664,7 @@ function UserPanelProduct({ product }: Props) {
           </Button>
         </Box>
         </Paper>
+    
       </Box>
     </MainLayout>
   );
