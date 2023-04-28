@@ -51,7 +51,6 @@ const NaturalColorTonesPage = () => {
   }, []);
  
   const renderColorSchemeTab = () => {
-	
     return (
       <Box p={2}>
       <Grid container spacing={3}>
