@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from "react";
 import PanelPage from "./panel/index";
-import MainLayout from '@/components/MainLayout';
-import { Box, Paper, Button, Typography, Grid, Modal, Backdrop, Fade, CardMedia, Card, CardActionArea, CardContent } from "@mui/material";
-import { NextSeo } from 'next-seo';
+import MainLayout from "@/components/MainLayout";
+import {
+  Box,
+  Paper,
+  Button,
+  Typography,
+  Grid,
+  Modal,
+  Backdrop,
+  Fade,
+  CardMedia,
+  Card,
+  CardActionArea,
+  CardContent,
+} from "@mui/material";
+import { NextSeo } from "next-seo";
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 import { ProductPayload } from "@/models/product.model";
 import * as productService from "@/services/product.service";
 import { Carousel } from "react-responsive-carousel";
@@ -14,22 +27,21 @@ import { productImageURL } from "@/common/utils/utils";
 import router from "next/router";
 import { shuffle } from "lodash";
 
-import Image from 'next/image'
+import Image from "next/image";
 type Props = {};
 type Product = {
-  id: string,
-  name: string,
-  image: string,
-  description: string,
-}
-
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+};
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
     padding: theme.spacing(4),
     backgroundImage: "url('/static/img/M014-01.jpg')",
     backgroundSize: "cover",
@@ -38,23 +50,24 @@ const useStyles = makeStyles((theme) => ({
     "& h5": {
       textShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
     },
-    
   },
   title: {
+    marginTop : theme.spacing(2),
     marginBottom: theme.spacing(2),
     fontWeight: 500,
   },
   subtitle: {
+    marginTop : theme.spacing(2),
     marginBottom: theme.spacing(4),
   },
   logo: {
-    width: '100%',
-    height: '100%',
+    marginTop:"16px",
+    marginBottom:"16px",
+
   },
 }));
 
-
-const ProductTest = ({ }: Props) => {
+const MainPage = ({}: Props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [products, setProducts] = React.useState<any>([]);
@@ -71,59 +84,62 @@ const ProductTest = ({ }: Props) => {
     fetchData();
   }, []);
 
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const logoSize = isSmallScreen ? '250' : '350';
+  const logoSize = isSmallScreen ? "250" : "350";
   const shuffledProducts = shuffle(products);
 
   return (
     <MainLayout>
-   
-      
       <NextSeo
-          title="Kramtone"
-          description="The development of management system for connecting color scheme of natural indigo dye with indigo textile production sites"
-        />
+        title="Kramtone"
+        description="The development of management system for connecting color scheme of natural indigo dye with indigo textile production sites"
+      />
 
-
-<Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      // padding={4}
-      bgcolor="primary.secondary"
-      color="primary.black"
-      className={classes.container}
-    >
-     
-      <Typography variant="h5" component="h5" gutterBottom align="center">
-      การพัฒนาระบบบริหารจัดการการเชื่อมโยงแผนภาพโทนสีครามธรรมชาติกับแหล่งผลิตผ้าย้อมคราม
-      </Typography>
-      <Typography variant="h5" component="h5" gutterBottom align="center" >
-      The development of management system for connecting color scheme of natural indigo dye with indigo textile production sites
-      </Typography>
-     
-
-    
       <Box
-      style={{marginTop: 16}}
-  width={logoSize}
-  height={logoSize}
-  display="flex"
-  justifyContent="center"
-  alignItems="center"
-  boxShadow="0px 0px 10px rgba(0, 0, 0, 0.5)"
->
-  <Image src="/static/img/logo-white.png" alt="logo" width={logoSize} height={logoSize} />
-</Box>
-    </Box>
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        // padding={4}
+        bgcolor="primary.secondary"
+        color="white"
+        style={{  backgroundImage: "url('/static/img/M014-01.jpg')" } }
+        className={classes.container}
+      >
+        <Typography variant="h5" component="h5" gutterBottom align="center">
+          การพัฒนาระบบบริหารจัดการการเชื่อมโยงแผนภาพโทนสีครามธรรมชาติกับแหล่งผลิตผ้าย้อมคราม
+        </Typography>
+        <Typography variant="h5" component="h5" gutterBottom align="center">
+          The development of management system for connecting color scheme of
+          natural indigo dye with indigo textile production sites
+        </Typography>
 
+        <Box
+          style={{ marginTop: 16, marginButtom: 16}}
+          width={logoSize}
+          height={logoSize}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          className={classes.logo}
+          boxShadow="0px 0px 10px rgba(0, 0, 0, 0.5)"
+        >
+          <Image
+            src="/static/img/logo-white.png"
+            alt="logo"
+            width={logoSize}
+            height={logoSize}
+          />
+        </Box>
+      </Box>
 
-    <Grid container spacing={2} minHeight={"100vh"}>
-    {/* {products.map((product: ProductPayload, index: number) => ( */}
-    {shuffledProducts.slice(0, 3).map((product: ProductPayload, index: number) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+      <Grid container spacing={2} minHeight={"100vh"}>
+        {/* {products.map((product: ProductPayload, index: number) => ( */}
+        {shuffledProducts
+          .slice(0, 4)
+          .map((product: ProductPayload, index: number) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
               <Card
                 key={product.id}
                 style={{ padding: "20px", margin: "20px", maxWidth: "345" }}
@@ -143,19 +159,21 @@ const ProductTest = ({ }: Props) => {
                     dynamicHeight
                     width="100%"
                   >
-                    {product?.productImages?.map((image: any, index: number) => (
-                      <div key={index}>
-                        <Image
-                          src={productImageURL(image?.image)}
-                          alt={`Product image ${index}`}
-                          width="250"
-                          height="250"
-                          style={{ borderRadius: "5%", objectFit: "cover" }}
-                        />
-                      </div>
-                    ))}
+                    {product?.productImages?.map(
+                      (image: any, index: number) => (
+                        <div key={index}>
+                          <Image
+                            src={productImageURL(image?.image)}
+                            alt={`Product image ${index}`}
+                            width="250"
+                            height="250"
+                            style={{ borderRadius: "5%", objectFit: "cover" }}
+                          />
+                        </div>
+                      )
+                    )}
                   </Carousel>
-  
+
                   <Typography gutterBottom variant="h5" component="div">
                     {product.name}
                   </Typography>
@@ -178,7 +196,7 @@ const ProductTest = ({ }: Props) => {
                           {product?.colorScheme?.hex}
                         </Typography>
                       </Grid>
-  
+
                       <Grid item>
                         <Typography gutterBottom component="div">
                           {product?.colorScheme?.nameTH}
@@ -186,7 +204,7 @@ const ProductTest = ({ }: Props) => {
                       </Grid>
                     </Grid>
                   ) : null}
-  
+
                   <Typography variant="body1" color="text.secondary">
                     ประเภทสินค้า: {product?.category?.name}
                   </Typography>
@@ -198,14 +216,14 @@ const ProductTest = ({ }: Props) => {
                     ราคา: {product?.price} THB
                   </Typography>
                 </CardContent>
-  
+
                 {/* <CardActionArea onClick={() => {
                       handleOpen(product)
                     }}>
                     </CardActionArea> */}
-  
+
                 <Typography variant="subtitle1">{product?.desc}</Typography>
-  
+
                 <Button
                   variant="contained"
                   color="primary"
@@ -216,12 +234,9 @@ const ProductTest = ({ }: Props) => {
               </Card>
             </Grid>
           ))}
-   
-   </Grid>
-   
+      </Grid>
     </MainLayout>
-  )
-
+  );
 };
 
-export default ProductTest;
+export default MainPage;

@@ -18,7 +18,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Container
+  Container,
+  Pagination 
 } from "@mui/material";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -328,9 +329,7 @@ const ProductByGroupId = ({ groupId, groupData }: Props) => {
       <Box display="flex" justifyContent="center" mt={4}>
         <Pagination count={totalPages} page={currentPage} onChange={(event, value) => setCurrentPage(value)} />
       </Box>
-    )}
-
-         
+    )} 
         </Container>
       </Box>
     </MainLayout>
