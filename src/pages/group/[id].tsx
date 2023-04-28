@@ -434,8 +434,6 @@ export const getServerSideProps: GetServerSideProps = async (
   try {
 	const params = context.params;
     const groupData = await groupDataService.getOneGroupData(params?.id?.toString());
-    console.log("SSR")
-    console.log(groupData)
     return {
       props: {
         groupData,

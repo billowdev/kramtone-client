@@ -18,9 +18,10 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Container
 } from "@mui/material";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { NextSeo } from "next-seo";
 import { ProductPayload } from "@/models/product.model";
 import * as productService from "@/services/product.service";
@@ -39,26 +40,23 @@ import { CategoryPayload } from "@/models/category.model";
 import { GroupDataPayload } from "@/models/group-data.model";
 
 type Props = {
-	groupId?: string
-	groupData?: GroupDataPayload
+  groupId?: string;
+  groupData?: GroupDataPayload;
 };
 
-const useStyles = makeStyles((theme) => ({
-  searchContainer: {
-    marginBottom: theme.spacing(2),
-  },
-}));
-const ProductByGroupId = ({groupId, groupData}: Props) => {
-  const classes = useStyles();
+
+const ProductByGroupId = ({ groupId, groupData }: Props) => {
   const theme = useTheme();
   const [products, setProducts] = React.useState<any>([]);
-
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const [searchTerm, setSearchTerm] = useState("");
   const [categories, setCategories] = useState<any>([]);
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryPayload | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const handleBackButtonClick = () => {
+    router.back();
+  };
   useEffect(() => {
     async function fetchData() {
       try {
@@ -99,25 +97,29 @@ const ProductByGroupId = ({groupId, groupData}: Props) => {
     setSearchTerm("");
   };
 
-  const filteredProducts = products
-  ?.filter((product: any) => {
-    const searchTermMatches =
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.price.toString().includes(searchTerm.toLowerCase()) || 
-      product.colorScheme.nameTH.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.colorScheme.hex.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.colorScheme.nameEN.toLowerCase().includes(searchTerm.toLowerCase()) ;
+  const filteredProducts =
+    products?.filter((product: any) => {
+      const searchTermMatches =
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.price.toString().includes(searchTerm.toLowerCase()) ||
+        product.colorScheme.nameTH
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        product.colorScheme.hex
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        product.category.name
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        product.colorScheme.nameEN
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
 
-    const categoryMatches =
-      !selectedCategory || product.category.id === selectedCategory.id;
-    return searchTermMatches && categoryMatches;
-  })
-  ?? [];
-
-
-
+      const categoryMatches =
+        !selectedCategory || product.category.id === selectedCategory.id;
+      return searchTermMatches && categoryMatches;
+    }) ?? [];
 
   // CategoryFilterModal component
   const CategoryFilterModal = () => {
@@ -126,7 +128,7 @@ const ProductByGroupId = ({groupId, groupData}: Props) => {
         <DialogTitle>เลือกประเภทสินค้า</DialogTitle>
         <DialogContent>
           <Grid container spacing={1} direction="column">
-            {categories.map((category:CategoryPayload, index:number) => (
+            {categories.map((category: CategoryPayload, index: number) => (
               <Grid item key={index}>
                 <Button onClick={() => handleCategorySelect(category)}>
                   {category.name}
@@ -146,177 +148,197 @@ const ProductByGroupId = ({groupId, groupData}: Props) => {
 
   return (
     <MainLayout>
-       <Box sx={{ flexGrow: 1, p: 5 }}> 
+      <Box sx={{ flexGrow: 1, p: isSmallDevice ? 1 : 5 }}>
+        <Container maxWidth="lg">
+          <Grid item xs={12}>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleBackButtonClick}
+            >
+              ย้อนกลับ
+            </Button>
+          </Grid>
 
-      <NextSeo
-        title="Product Page"
-        description="A grid of products with optimized images using Next.js"
-      />
-
+          <NextSeo
+            title="Product Page"
+            description="A grid of products with optimized images using Next.js"
+          />
       <Box display="flex" flexDirection="column" alignItems="center">
         <Typography variant="h4" component="h4" gutterBottom>
           หน้าสินค้าของกลุ่ม {groupData?.groupName}
         </Typography>
-        <Box className={classes.searchContainer} display="flex">
-          <TextField
-            label="ค้นหาสินค้า"
-            variant="outlined"
-            value={searchTerm}
-            style={{ width: '300px' }}
-            onChange={handleSearchInputChange}
-          />
-          <Button
-            variant="outlined"
-            onClick={handleOpenModal}
-            style={{ marginLeft: "8px" }}
-          >
-            {selectedCategory && selectedCategory.name !== ""
-              ? selectedCategory.name
-              : "กรองตามประเภทสินค้า"}
-          </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={handleClearFilters}
-            style={{ marginLeft: "8px" }}
-          >
-            ล้างตัวกรอง
-          </Button>
-        </Box>
-      </Box>
+        </Box> 
+        <Grid container spacing={{ xs: 1, md: 3 }}>
+  <Grid item xs={12} md={6}>
+    <TextField
+      label="ค้นหาสินค้า"
+      variant="outlined"
+      value={searchTerm}
+      onChange={handleSearchInputChange}
+      fullWidth
+      style={{ height: '100%' }}
+    />
+  </Grid>
+  <Grid item xs={12} md={2}>
+    <Button
+      variant="outlined"
+      onClick={handleOpenModal}
+      fullWidth
+      style={{ height: '100%' }}
+    >
+      {selectedCategory && selectedCategory.name !== ""
+        ? selectedCategory.name
+        : "กรองตามประเภทสินค้า"}
+    </Button>
+  </Grid>
+  <Grid item xs={12} md={2}>
+    <Button
+      variant="outlined"
+      color="secondary"
+      onClick={handleClearFilters}
+      fullWidth
+      style={{ height: '100%' }}
+    >
+      ล้างตัวกรอง
+    </Button>
+  </Grid>
+</Grid>
 
-      <CategoryFilterModal />
 
-      <Grid container spacing={2} minHeight={"100vh"}>
 
-	  {filteredProducts.length === 0 ? (
-    <Typography variant="h4" style={{ textAlign: "center", margin: "auto" }}>
-      ไม่พบข้อมูลสินค้า
-    </Typography>
-  ) : (
-    filteredProducts.map((product: ProductPayload, index: number) => (
-		<Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-		<Card
-		  key={product.id}
-		  style={{ padding: "20px", margin: "20px", maxWidth: "345" }}
-		>
-		  <CardContent>
-			<Carousel
-			  showArrows
-			  showStatus={false}
-			  showIndicators={false}
-			  showThumbs={false}
-			  emulateTouch
-			  autoPlay
-			  infiniteLoop
-			  interval={3000}
-			  transitionTime={350}
-			  swipeable
-			  dynamicHeight
-			  width="100%"
-			>
-			  {product?.productImages?.map((image: any, index: number) => (
-				<div key={index}>
-				  <Image
-					src={productImageURL(image?.image)}
-					alt={`Product image ${index}`}
-					width="250"
-					height="250"
-					style={{ borderRadius: "5%", objectFit: "cover" }}
-				  />
-				</div>
-			  ))}
-			</Carousel>
+          <CategoryFilterModal />
 
-			<Typography gutterBottom variant="h5" component="div">
-			  {product.name}
-			</Typography>
-			{product?.colorScheme ? (
-			  <Grid container alignItems="center">
-				<Grid item>
-				  <Box
-					sx={{
-					  width: 50, // Adjust width for the rectangle
-					  height: 50,
-					  backgroundColor: product?.colorScheme.hex,
-					  borderRadius: "5%", // Adjust borderRadius for the rectangle
-					  border: "1px solid black",
-					  marginRight: 2,
-					}}
-				  />
-				</Grid>
-				<Grid item sx={{ marginRight: "16px" }}>
-				  <Typography gutterBottom component="div">
-					{product?.colorScheme?.hex}
-				  </Typography>
-				</Grid>
+          <Grid container spacing={2} minHeight={"100vh"}>
+            {filteredProducts.length === 0 ? (
+              <Typography
+                variant="h4"
+                style={{ textAlign: "center", margin: "auto" }}
+              >
+                ไม่พบข้อมูลสินค้า
+              </Typography>
+            ) : (
+              filteredProducts.map((product: ProductPayload, index: number) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                  <Card
+                    key={product.id}
+                    style={{ padding: "20px", margin: "20px", maxWidth: "345" }}
+                  >
+                    <CardContent>
+                      <Carousel
+                        showArrows
+                        showStatus={false}
+                        showIndicators={false}
+                        showThumbs={false}
+                        emulateTouch
+                        autoPlay
+                        infiniteLoop
+                        interval={3000}
+                        transitionTime={350}
+                        swipeable
+                        dynamicHeight
+                        width="100%"
+                      >
+                        {product?.productImages?.map(
+                          (image: any, index: number) => (
+                            <div key={index}>
+                              <Image
+                                src={productImageURL(image?.image)}
+                                alt={`Product image ${index}`}
+                                width="250"
+                                height="250"
+                                style={{
+                                  borderRadius: "5%",
+                                  objectFit: "cover",
+                                }}
+                              />
+                            </div>
+                          )
+                        )}
+                      </Carousel>
 
-				<Grid item>
-				  <Typography gutterBottom component="div">
-					{product?.colorScheme?.nameTH}
-				  </Typography>
-				</Grid>
-			  </Grid>
-			) : null}
+                      <Typography gutterBottom variant="h5" component="div">
+                        {product.name}
+                      </Typography>
+                      {product?.colorScheme ? (
+                        <Grid container alignItems="center">
+                          <Grid item>
+                            <Box
+                              sx={{
+                                width: 50, // Adjust width for the rectangle
+                                height: 50,
+                                backgroundColor: product?.colorScheme.hex,
+                                borderRadius: "5%", // Adjust borderRadius for the rectangle
+                                border: "1px solid black",
+                                marginRight: 2,
+                              }}
+                            />
+                          </Grid>
+                          <Grid item sx={{ marginRight: "16px" }}>
+                            <Typography gutterBottom component="div">
+                              {product?.colorScheme?.hex}
+                            </Typography>
+                          </Grid>
 
-			<Typography variant="body1" color="text.secondary">
-			  ประเภทสินค้า: {product?.category?.name}
-			</Typography>
-			<Typography variant="body1" color="text.secondary">
-			  โทนสี: {product?.colorScheme?.nameTH} (
-			  {product?.colorScheme?.nameEN})
-			</Typography>
-			<Typography variant="body1" color="text.secondary">
-			  ราคา: {product?.price} THB
-			</Typography>
-		  </CardContent>
+                          <Grid item>
+                            <Typography gutterBottom component="div">
+                              {product?.colorScheme?.nameTH}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      ) : null}
 
-		  {/* <CardActionArea onClick={() => {
-				handleOpen(product)
-			  }}>
-			  </CardActionArea> */}
+                      <Typography variant="body1" color="text.secondary">
+                        ประเภทสินค้า: {product?.category?.name}
+                      </Typography>
+                      <Typography variant="body1" color="text.secondary">
+                        โทนสี: {product?.colorScheme?.nameTH} (
+                        {product?.colorScheme?.nameEN})
+                      </Typography>
+                      <Typography variant="body1" color="text.secondary">
+                        ราคา: {product?.price} THB
+                      </Typography>
+                    </CardContent>
 
-		  <Typography variant="subtitle1">{product?.desc}</Typography>
+                    <Typography variant="subtitle1">{product?.desc}</Typography>
 
-		  <Button
-			variant="contained"
-			color="primary"
-			onClick={() => router.push("/product/" + product.id)}
-		  >
-			รายละเอียดเพิ่มเติม
-		  </Button>
-		</Card>
-	  </Grid>
-    ))
-  )}
-  
-      
-
-      </Grid>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => router.push("/product/" + product.id)}
+                    >
+                      รายละเอียดเพิ่มเติม
+                    </Button>
+                  </Card>
+                </Grid>
+              ))
+            )}
+          </Grid>
+        </Container>
       </Box>
     </MainLayout>
   );
 };
 export const getServerSideProps: GetServerSideProps = async (
-	context: GetServerSidePropsContext
-  ) => {
-	try {
-	  const accessToken = context.req.cookies["access_token"];
-	  const params = context.params;
-	  //   const product = await productService.getOneProduct(params?.id?.toString());
-	  const groupId = params?.id?.toString()
-	  const groupData = await groupDataService.getOneGroupData(groupId);
-	  return {
-		props: {
-			groupId,
-			groupData
-		},
-	  };
-	} catch (error) {
-	  return {
-		props: {},
-	  };
-	}
-  };
-  
+  context: GetServerSidePropsContext
+) => {
+  try {
+    const accessToken = context.req.cookies["access_token"];
+    const params = context.params;
+    //   const product = await productService.getOneProduct(params?.id?.toString());
+    const groupId = params?.id?.toString();
+    const groupData = await groupDataService.getOneGroupData(groupId);
+    return {
+      props: {
+        groupId,
+        groupData,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {},
+    };
+  }
+};
+
 export default ProductByGroupId;
