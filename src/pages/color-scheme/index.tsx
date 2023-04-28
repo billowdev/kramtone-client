@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Paper, Tabs, Tab, Button, Grid, Card, CardContent, Typography  } from '@mui/material';
-
+import ColorLensIcon from '@mui/icons-material/ColorLens';
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -9,6 +9,8 @@ import {
   TwitterIcon,
   LinkedinIcon,
 } from 'react-share';
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 
 import {ColorSchemePayload} from "@/models/color-scheme.model"
 import * as colorSchemeService from "@/services/color-scheme.service"
@@ -27,8 +29,9 @@ const CustomTab = styled(Tab)(({ theme }) => ({
   }));
 
 const NaturalColorTonesPage = () => {
+  const theme = useTheme();
   const [tabIndex, setTabIndex] = useState(0);
-
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
   };
@@ -48,7 +51,29 @@ const NaturalColorTonesPage = () => {
   }, []);
  
   const renderColorSchemeTab = () => {
-	<Box p={2}>
+	
+    return (
+      <Box p={2}>
+      <Grid container spacing={3}>
+    <Grid item xs={12}>
+      <Paper sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}>
+        {isSmallDevice ? (
+          <ColorLensIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+        ) : (
+          <ColorLensIcon sx={{ fontSize: "2.5rem", marginLeft: "16px" }} />
+        )}
+        <Typography
+          variant={isSmallDevice ? "subtitle1" : "h5"}
+          sx={{
+            fontWeight: "bold",
+            alignSelf: "center",
+          }}
+        >
+          หน้าข้อมูลโทนสี
+        </Typography>
+      </Paper>
+    </Grid>
+  </Grid>
 	<Grid container spacing={2}>
 	{colorSchemes.map((scheme: any) => (
 	  <Grid key={scheme.id} item xs={12} sm={6}>
@@ -69,10 +94,33 @@ const NaturalColorTonesPage = () => {
 	))}
   </Grid>
   </Box>
+    )
   };
 
   const renderHistoryOfColorScheme = () => {
-	<Typography variant="h4">hello</Typography>
+    return (
+      <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <Paper sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}>
+          {isSmallDevice ? (
+            <ColorLensIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+          ) : (
+            <ColorLensIcon sx={{ fontSize: "2.5rem", marginLeft: "16px" }} />
+          )}
+          <Typography
+            variant={isSmallDevice ? "subtitle1" : "h5"}
+            sx={{
+              fontWeight: "bold",
+              alignSelf: "center",
+            }}
+          >
+            ข้อมูลแผนภาพโทนสีครามธรรมชาติ
+          </Typography>
+        </Paper>
+      </Grid>
+      <Typography variant="h4">hello</Typography>
+    </Grid>
+    )
   };
 
   const handleBackButtonClick = () => {
@@ -85,10 +133,12 @@ const NaturalColorTonesPage = () => {
 
   return (
     <MainLayout>
-      <Box sx={{ flexGrow: 1, p: 5 }}>
+      <Box sx={{ flexGrow: 1, p: 4 }}>
         <Paper>
-          <Box display="flex" justifyContent="space-between" alignItems="center" padding={2}>
-            <h1>ข้อมูลโทนสีธรรมชาติ</h1>
+       
+         <React.Fragment>
+         <Box display="flex" justifyContent="space-between" alignItems="center" padding={1}>
+            <h1>ข้อมูลโทนสีครามธรรมชาติ</h1>
           </Box>
           <Tabs
             value={tabIndex}
@@ -118,7 +168,11 @@ const NaturalColorTonesPage = () => {
               กลับสู่ก่อนหน้า
             </Button>
           </Box>
+         </React.Fragment>
+      
         </Paper>
+
+        
       </Box>
     </MainLayout>
   );
