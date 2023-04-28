@@ -1,7 +1,8 @@
 import { ProductPayload, ProductArrayPayload, ProductArrayResponse, ProductResponse } from "@/models/product.model";
 import httpClient from "@/common/utils/httpClient.util";
 import axios from 'axios'
-import { ColorSchemeArrayResponse, ColorSchemeResponse } from "@/models/color-scheme.model";
+import { ColorSchemeArrayResponse, ColorSchemeResponse, ColorSchemePayload} from "@/models/color-scheme.model";
+import * as colorSchemeService from "@/services/color-scheme.service"
 
 export const getOneColorScheme = async (id: string): Promise<ColorSchemeResponse> => {
 	const { data: response } = await httpClient.get(`/colorschemes/get/${id}`);
@@ -23,7 +24,7 @@ export const getAllColorSchemeByGroup = async (accessToken:string): Promise<Colo
 	return response.payload;
 };
 
-export const getAllColorScheme = async (): Promise<ColorSchemeArrayResponse> => {
+export const getAllColorScheme = async (): Promise<ColorSchemePayload[]> => {
 	const { data: response } = await httpClient.get(`/colorschemes`)
 	return response.payload;
 };
