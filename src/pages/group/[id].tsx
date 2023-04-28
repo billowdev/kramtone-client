@@ -68,7 +68,7 @@ import {
 
 
 type Props = {
-  groupDataProp?: GroupDataPayload;
+  groupData?: GroupDataPayload;
 };
 
 const MapContainer = dynamic(
@@ -95,15 +95,11 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
   ssr: false, // disable server-side rendering
 });
 
-function GroupDataPage({ groupDataProp }: Props) {
+function GroupDataPage({ groupData }: Props) {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
-  const dispatch: any = useAppDispatch();
-  const { groupData } = useSelector(groupDataSelector);
-  const userData = useSelector(authSelector);
-  const isLoading = userData === undefined;
-  const shareUrl = `https://www.kramtone.com/group/${groupDataProp?.id}`;
-const shareTitle = 'Kramtone เชื่อมโยงสินค้าผ้าครามกับแผนภาพโทนสีครามธรรมชาติ';
+  const shareUrl = `https://www.kramtone.com/group/${groupData?.id}`;
+  const shareTitle = 'Kramtone เชื่อมโยงสินค้าผ้าครามกับแผนภาพโทนสีครามธรรมชาติ';
 
   const router = useRouter();
 
@@ -111,50 +107,12 @@ const handleBackButtonClick = () => {
   router.back();
 };
 
-  React.useEffect(() => {
-    dispatch(fetchSession());
-  }, [dispatch]);
-
-  React.useEffect(() => {
-    //  async function fethData() {
-    //   const data = await  dispatch(getAllGroupDataAction());
-    //   console.log("====== async effect")
-    //   console.log(data.payload)
-    //  }
-    //  if(userData){
-    //    fethData()
-    //  }
-    if (userData) {
-      dispatch(getOneGroupDataAction(userData.gid));
-    }
-  }, [dispatch, userData]);
-
   const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
   const position: LatLngExpression = [
-    parseFloat(groupDataProp?.lat!),
-    parseFloat(groupDataProp?.lng!),
+    parseFloat(groupData?.lat!),
+    parseFloat(groupData?.lng!),
   ]; // Centered on Sakon Nakhon Province
   const zoom: number = 12;
-
-  const initialValues: GroupDataPayload = {
-    groupName: groupData?.groupName,
-    groupType: groupData?.groupType,
-    agency: groupData?.agency,
-    logo: groupData?.logo,
-    banner: groupData?.banner,
-    phone: groupData?.phone,
-    email: groupData?.email,
-    hno: groupData?.hno,
-    village: groupData?.village,
-    lane: groupData?.lane,
-    road: groupData?.road,
-    subdistrict: groupData?.subdistrict,
-    district: groupData?.district,
-    province: groupData?.province,
-    zipCode: groupData?.zipCode,
-    lat: groupData?.lat,
-    lng: groupData?.lng,
-  };
 
   const typeographyHeaderStyle = {
     fontSize: isSmallDevice ? "16px" : "1.2rem",
@@ -174,99 +132,6 @@ const handleBackButtonClick = () => {
     marginTop: "16px",
   };
 
-  const showForm = ({ isValid }: FormikProps<any>) => {
-    return (
-      <Form>
-        <Card>
-          <CardContent sx={{ padding: 4 }}>
-            <FormLabel htmlFor="groupName" sx={{ marginTop: "16px" }}>
-              ชื่อกลุ่มผู้ผลิตหรือร้านค้า
-            </FormLabel>
-            <Field
-              style={{ marginTop: 16 }}
-              fullWidth
-              value={groupData.groupName}
-              component={TextField}
-              name="groupName"
-              type="text"
-              label="ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
-            />
-            <Box sx={{ marginTop: "16px" }}>
-              <FormLabel htmlFor="groupName">
-                ชื่อกลุ่มผู้ผลิตหรือร้านค้า
-              </FormLabel>
-              <Field
-                style={{ marginTop: 16 }}
-                fullWidth
-                value={groupData.groupName}
-                component={TextField}
-                name="groupName"
-                type="text"
-                label="ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
-              />
-            </Box>
-          </CardContent>
-          <CardActions>
-            <Button
-              disabled={!isValid}
-              fullWidth
-              variant="contained"
-              color="primary"
-              type="submit"
-              sx={{ marginRight: 1 }}
-            >
-              แก้ไข
-            </Button>
-            <Button
-              variant="outlined"
-              fullWidth
-              onClick={() => setOpenDialog(false)}
-            >
-              ยกเลิก
-            </Button>
-          </CardActions>
-        </Card>
-      </Form>
-    );
-  };
-
-  const [openDialog, setOpenDialog] = React.useState<boolean>(false);
-
-  const showDialog = () => {
-    if (groupData === null) {
-      return;
-    }
-
-    return (
-      <Dialog
-        open={openDialog}
-        keepMounted
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">
-          <Typography gutterBottom>
-            แก้ไขข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
-          </Typography>
-          <Divider />
-        </DialogTitle>
-        <DialogContent>
-          <Formik
-            validate={(values) => {
-              let errors: any = {};
-              return errors;
-            }}
-            initialValues={initialValues}
-            onSubmit={async (values, { setSubmitting }) => {
-              setSubmitting(false);
-            }}
-          >
-            {(props) => showForm(props)}
-          </Formik>
-        </DialogContent>
-      </Dialog>
-    );
-  };
 
 
   return (
@@ -301,7 +166,7 @@ const handleBackButtonClick = () => {
                     }}
                   >
                     {" "}
-                    หน้าจัดการข้อมูลกลุ่ม <br /> / ร้านค้า{" "}
+                    หน้าข้อมูลกลุ่ม <br /> / ร้านค้า{" "}
                   </Typography>
 				  
                 ) : (
@@ -313,7 +178,7 @@ const handleBackButtonClick = () => {
                     }}
                   >
                     {" "}
-                    หน้าจัดการข้อมูลกลุ่ม / ร้านค้า
+                    หน้าข้อมูลกลุ่ม / ร้านค้า
                   </Typography>
                 )}
               </React.Fragment>
@@ -338,7 +203,7 @@ const handleBackButtonClick = () => {
             >
               <Image
                 alt="product image"
-                src={groupDataImageURL(groupData.banner)}
+                src={groupData?.banner ? groupDataImageURL(groupData?.banner) : "/static/img/banner.png"}
                 width={1120}
                 height={160}
               />
@@ -361,7 +226,7 @@ const handleBackButtonClick = () => {
                 <Image
                   style={{ objectFit: "cover" }}
                   alt="product image"
-                  src={groupDataImageURL(groupData.logo)}
+                  src={groupData?.logo ? groupDataImageURL(groupData?.logo) : "/static/img/logo.png"}
                   width={250}
                   height={250}
                 />
@@ -374,7 +239,7 @@ const handleBackButtonClick = () => {
                       ชื่อกลุ่ม / ร้านค้า
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData.groupName}
+                      {groupData?.groupName}
                     </Typography>
                   </Box>
                   <Box sx={boxStyle}>
@@ -382,7 +247,7 @@ const handleBackButtonClick = () => {
                       ประเภทกลุ่ม
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData.groupType === "shop"
+                      {groupData?.groupType === "shop"
                         ? "ร้านค้า"
                         : "กลุ่มผู้ผลิต"}
                     </Typography>
@@ -393,7 +258,7 @@ const handleBackButtonClick = () => {
                       ชื่อประธาน / เจ้าของร้าน
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData.agency}
+                      {groupData?.agency}
                     </Typography>
                   </Box>
 
@@ -402,14 +267,14 @@ const handleBackButtonClick = () => {
                       เบอร์โทร
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData.phone}
+                      {groupData?.phone}
                     </Typography>
                   </Box>
 
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>อีเมล :</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData.email}
+                      {groupData?.email}
                     </Typography>
                   </Box>
                 </React.Fragment>
@@ -441,7 +306,7 @@ const handleBackButtonClick = () => {
                       บ้านเลขที่/หมู่
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData.hno}
+                      {groupData?.hno}
                     </Typography>
                   </Box>
                 </Grid>
@@ -450,7 +315,7 @@ const handleBackButtonClick = () => {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>ถนน :</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData.road}
+                      {groupData?.road}
                     </Typography>
                   </Box>
                 </Grid>
@@ -459,7 +324,7 @@ const handleBackButtonClick = () => {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>ซอย :</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData.lane}
+                      {groupData?.lane}
                     </Typography>
                   </Box>
                 </Grid>
@@ -470,7 +335,7 @@ const handleBackButtonClick = () => {
                       หมู่บ้าน
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData.village}
+                      {groupData?.village}
                     </Typography>
                   </Box>
                 </Grid>
@@ -479,7 +344,7 @@ const handleBackButtonClick = () => {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>ตำบล</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData.subdistrict}
+                      {groupData?.subdistrict}
                     </Typography>
                   </Box>
                 </Grid>
@@ -487,7 +352,7 @@ const handleBackButtonClick = () => {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>อำเภอ</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData.district}
+                      {groupData?.district}
                     </Typography>
                   </Box>
                 </Grid>
@@ -495,7 +360,7 @@ const handleBackButtonClick = () => {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>จังหวัด</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData.province}
+                      {groupData?.province}
                     </Typography>
                   </Box>
                 </Grid>
@@ -506,7 +371,7 @@ const handleBackButtonClick = () => {
                       รหัสไปรษณีย์
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData.zipCode}
+                      {groupData?.zipCode}
                     </Typography>
                   </Box>
                 </Grid>
@@ -557,24 +422,23 @@ const handleBackButtonClick = () => {
           </Button>
         </Box>
       </Container>
-
-      {showDialog()}
     </MainLayout>
   );
 }
 
-export default withAuth(GroupDataPage);
+export default GroupDataPage;
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   try {
 	const params = context.params;
-    const groupDataProp = await groupDataService.getOneGroupData(params?.id?.toString());
-
+    const groupData = await groupDataService.getOneGroupData(params?.id?.toString());
+    console.log("SSR")
+    console.log(groupData)
     return {
       props: {
-        groupDataProp,
+        groupData,
       },
     };
   } catch (error) {

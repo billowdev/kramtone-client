@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import CardMedia from "@mui/material/CardMedia";
 import Link from "next/link"
-
+import MainLayout from "@/components/MainLayout"
 export default function Error() {
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -17,7 +17,8 @@ export default function Error() {
   }));
 
   return (
-    <Box
+   <MainLayout>
+     <Box
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -50,5 +51,6 @@ export default function Error() {
 
       </Container>
     </Box>
+    </MainLayout>
   );
 }

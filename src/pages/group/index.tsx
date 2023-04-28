@@ -75,10 +75,12 @@ const GroupItem = () => {
             <Grid
               item
               container
+              style= {{padding: "24px"}}
               xs={isSmallDevice ? 12 : 6}
               justifyContent="flex-end"
             >
               <Button
+              
                 variant="contained"
                 color="primary"
                 onClick={handleNavigation}
@@ -86,8 +88,9 @@ const GroupItem = () => {
                 ดูข้อมูลในมุมมองแผนที่
               </Button>
             </Grid>
+          
           </Grid>
-
+          <Divider />
           <Box p={4}>
             {groups &&
               groups.map((group: any, index: any) => (

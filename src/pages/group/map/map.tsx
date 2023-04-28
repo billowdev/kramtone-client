@@ -67,7 +67,7 @@ const GroupMap = ({ groupData }: MapProps) => {
 			scrollWheelZoom={true}
 			style={{
 				height: "100vh",
-				width: "80%"
+				width: "100%"
 			}}
 		>
 			<TileLayer
