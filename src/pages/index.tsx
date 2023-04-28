@@ -116,7 +116,7 @@ const MainPage = ({}: Props) => {
         </Typography>
 
         <Box
-          style={{ marginTop: 16, marginButtom: 16}}
+          style={{ marginTop: 16, marginBottom: 16}}
           width={logoSize}
           height={logoSize}
           display="flex"

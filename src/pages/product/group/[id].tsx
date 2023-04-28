@@ -383,10 +383,11 @@ const ColorSchemeFilterModal = () => {
               <Typography variant="body1" color="text.secondary">
                 ราคา: {product?.price} THB
               </Typography>
+              <Typography variant="body1" color="text.secondary">รายละเอียด : {product?.desc}</Typography>
+
             </CardContent>
 
-            <Typography variant="subtitle1">{product?.desc}</Typography>
-
+          
             <Button
               variant="contained"
               color="primary"
