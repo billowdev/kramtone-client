@@ -17,6 +17,7 @@ import * as colorSchemeService from "@/services/color-scheme.service"
 import MainLayout from '@/components/MainLayout';
 import { styled } from "@mui/material/styles";
 import router from "next/router";
+import Link from "next/link"
 const CustomTab = styled(Tab)(({ theme }) => ({
 	border: `1px solid ${theme.palette.divider}`,
 	borderBottom: "none",
@@ -27,7 +28,6 @@ const CustomTab = styled(Tab)(({ theme }) => ({
 	  borderBottom: "1px solid transparent",
 	},
   }));
-
 const NaturalColorTonesPage = () => {
   const theme = useTheme();
   const [tabIndex, setTabIndex] = useState(0);
@@ -110,10 +110,10 @@ const NaturalColorTonesPage = () => {
               <div
                 style={{
                   position: 'relative',
-                  width: isSmallDevice ? '100%': '80%',
+                  width: isSmallDevice ? '100%': '90%',
                   height: isSmallDevice ? '70vh':'100vh',
                   boxShadow:
-                    '0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)',
+                    '0 4px 6px rgba(0, 0, 0.1, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)',
                 }}
               >
                 <Image
@@ -128,9 +128,40 @@ const NaturalColorTonesPage = () => {
               <Typography variant="h5" gutterBottom>
                 แผ่นเทียบสี (Color Matching Chart)
               </Typography>
-              <Typography variant="body1" style={{ marginRight: '16px' }}>
+
+              <Box style={{ marginRight: '24px' }}> 
+              <Typography variant="body1" >
                 แผ่นเทียบสี (Color Matching Chart)
+                แผนภาพโทนสีครามธรรมชาติ กรรณิการ์ กมลรัตน์ & Indigo4.0 Plus (2564: ออนไลน์) เป็นแผนภาพสำหรับใช้ประโยชน์ในการกำหนดโทนสี โดยได้เก็บรวบรวมข้อมูลผ้าย้อมครามในจังหวัดสกลนคร 
+                ทั้งที่ทอด้วยฝ้ายเข็นมือ และฝ้ายเรยอน มาจัดทำมาตรฐานโทนสีผ้าย้อมครามธรรมชาติโดยใช้เทคนิคการประมวลผลภาพซึ่งเป็นการนำภาพถ่ายผ้าย้อมครามธรรมชาติเข้าสู่คอมพิวเตอร์ 
+                และผ่านโปรแกรมคอมพิวเตอร์ตามเทคนิคการประมวลผลภาพ เพื่อให้ได้มาซึ่งเฉดสีหรือโทนสีต่าง ๆ ของผ้าย้อมครามให้มีความถูกต้องมากที่สุดไม่ว่าจะเป็นค่า RGB CMYK ต่าง ๆ 
+                แล้วนำมาพิมพ์จัดทำเป็นแผ่นเทียบสี (Color Matching Chart) สุกัญญา พงษ์สุภาพ และ กรรณิการ์ กมลรัตน์ (2564) 
+                เพื่อให้กลุ่มผู้ผลิตผ้าย้อมครามธรรมชาติใช้ในการเทียบสีและกำหนดโทนสีของผ้าย้อมครามธรรมชาติแต่ละผืนที่ผลิตได้ 
+                และใช้ในการสื่อสารกับผู้จัดจำหน่ายและผู้บริโภค โดยใช้ร่วมกับสติกเกอร์สีผ้าย้อมคราม 
+                ซึ่งได้ออกแบบไว้ให้ผู้ผลิตใช้ติดที่ผืนผ้าหรือแถบป้ายกำกับสินค้า เพื่อระบุข้อมูลสีของผืนผ้าหรือสินค้า 
+                และใช้เป็นเครื่องมือหรือสื่อในการสื่อสารต่อไปยังผู้จัดจำหน่ายตลอดจนถึงผู้บริโภคขั้นสุดท้าย 
+                ซึ่งจะช่วยให้การสื่อสารสีครามธรรมชาติมีประสิทธิภาพ มีสื่อกลางที่เป็นมาตรฐานเดียวกันในการทำความเข้าใจได้อย่างชัดเจน ถูกต้องตรงกัน 
+                ตลอดสายอย่างครบวงจรตั้งแต่ผู้ผลิตจนถึงผู้บริโภค
+สำหรับการพัฒนาระบบบริหารจัดการการเชื่อมโยงแผนภาพโทนสีครามธรรมชาติกับแหล่งผลิตผ้าย้อมคราม ผู้จัดทำได้ใช้โทนสีตัวอย่างทั้ง 25 สีตามแผ่นเทียบสีชุด 04-1 สกลคราม 25/88 ซึ่งมีการแบ่งเป็น 6 โทนหลัก แต่ละโทนจะมีเฉดสีย่อยประกอบไปด้วยภาพสีและรหัสสี 
+ดังภาพ
+
+
               </Typography>
+         
+              <Typography style={{marginTop:"16px"}}>
+  ที่มา:
+</Typography>
+<Typography style={{marginTop:"16px"}}>
+  กรรณิการ์ กมลรัตน์ & Indigo4.0 Plus. (2564). EP.10 แนะนำเครื่องมือตรวจวัดเฉดสีผ้าย้อมครามธรรมชาติของจังหวัดสกลนคร โดย ผศ. กรรณิการ์ กมลรัตน์ [วิดีโอ]. ยูทูบ. 
+  <Link href="https://www.youtube.com/watch?v=yJcFUHt9vbc&t" passHref > https://www.youtube.com/watch?v=yJcFUHt9vbc&t</Link>
+</Typography>
+<Typography style={{marginTop:"16px"}}>
+  สุกัญญา พงษ์สุภาพ และ กรรณิการ์ กมลรัตน์. (2564). แผนภาพโทนสีครามธรรมชาติ (Color Scheme of Natural Indigo Dye). ลิขสิทธิ์ประเภทวรรณกรรม ทะเบียนเลขที่ ว.045785. 
+  แจ้งข้อมูลลิขสิทธิ์ไว้ต่อ กรมทรัพย์สินทางปัญญา เมื่อวันที่ 15 มิถุนายน 2564.
+</Typography>
+              </Box>
+           
+
             </Grid>
           </Grid>
         </CardContent>
