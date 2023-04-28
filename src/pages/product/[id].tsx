@@ -15,6 +15,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import { useRouter } from 'next/router';
+import { NextSeo } from "next-seo";
 
 import {
   Container,
@@ -630,6 +631,10 @@ function UserPanelProduct({ product }: Props) {
 
   return (
     <MainLayout>
+       <NextSeo
+            title={`รายละเอียดสินค้า ${product?.name}`}
+            description={`หน้าสินค้าทั้งหมดของกลุ่มผู้ผลิตหรือร้านค้าผ้าย้อมคราม ชื่อกลุ่ม ${product?.groupData?.groupName} ประเภทกลุ่ม ${product?.groupData?.groupType} ชื่อสินค้า ${product?.name} รายละเอียด ${product?.desc}`}
+          />
         <Box sx={{ flexGrow: 1, p: 5 }}> 
         <Paper>
           <Tabs

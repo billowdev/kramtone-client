@@ -222,8 +222,8 @@ const ProductTest = ({}: Props) => {
        <Box sx={{ flexGrow: 1, p: 4 }}> 
 
       <NextSeo
-        title="Product Page"
-        description="A grid of products with optimized images using Next.js"
+        title="หน้าสินค้าทั้งหมด"
+        description="ระบบบริหารจัดการการเชื่อมโยงแผนภาพโทนสีครามธรรมชาติกับแหล่งผลิตผ้าย้อมคราม"
       />
 
 <Box display="flex" flexDirection="column" alignItems="center">

@@ -74,7 +74,6 @@ const ProductByGroupId = ({ groupId, groupData }: Props) => {
     setIsModalOpen(false);
   };
 
-
   const [colorSchemes, setColorSchemes] = React.useState<any>([]);
   const [selectedColorScheme, setSelectedColorScheme] =
     useState<ColorSchemePayload | null>(null);
@@ -87,7 +86,6 @@ const handleOpenColorSchemeModal = () => {
 const handleCloseColorSchemeModal = () => {
   setIsColorSchemeModalOpen(false);
 };
-
 
 const handleColorSchemeSelect = (colorScheme: ColorSchemePayload) => {
   setSelectedColorScheme(colorScheme);
@@ -223,6 +221,10 @@ const ColorSchemeFilterModal = () => {
 
   return (
     <MainLayout>
+        <NextSeo
+            title="หน้าสินค้าของกลุ่มผู้ผลิต"
+            description="หน้าสินค้าทั้งหมดของกลุ่มผู้ผลิตหรือร้านค้าผ้าย้อมคราม"
+          />
       <Box sx={{ flexGrow: 1, p: isSmallDevice ? 1 : 5 }}>
         <Container maxWidth="lg">
           <Grid item xs={12}>
@@ -235,10 +237,7 @@ const ColorSchemeFilterModal = () => {
             </Button>
           </Grid>
 
-          <NextSeo
-            title="Product Page"
-            description="A grid of products with optimized images using Next.js"
-          />
+        
     
     <Box display="flex" flexDirection="column" alignItems="center">
   <Typography variant="h4" component="h4" gutterBottom>
