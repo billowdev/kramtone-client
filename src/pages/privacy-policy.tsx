@@ -6,6 +6,8 @@ import { NextPage } from "next";
 import { styled } from "@mui/system";
 import MainLayout from "@/components/MainLayout";
 import Link from "next/link";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 
 const Root = styled(Container)(({ theme }) => ({
   marginTop: theme.spacing(2),
@@ -21,6 +23,9 @@ const ContentPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const PrivacyPolicy: NextPage = () => {
+  const theme = useTheme();
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
+
   return (
     <MainLayout>
       <Head>
@@ -35,7 +40,7 @@ const PrivacyPolicy: NextPage = () => {
         >
           นโยบายความเป็นส่วนตัว (Privacy Policy)
         </PageTitle>
-        <ContentPaper style={{ padding: "64px" }}>
+        <ContentPaper style={{ padding: isSmallDevice ? "16px":"64px" }}>
           {/* 
             PARA00
             PARA01
@@ -61,12 +66,16 @@ const PrivacyPolicy: NextPage = () => {
             {/* <Typography variant="body1" paragraph>
 			นโยบายความเป็นส่วนตัวสำหรับการใช้งาน
             </Typography> */}
-            <Typography variant="body1" paragraph>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;นโยบายความเป็นส่วนตัวฉบับนี้
+            {/* <Typography variant="body1" paragraph>
+              นโยบายความเป็นส่วนตัวฉบับนี้
               ซึ่งต่อไปนี้จะเรียกว่า &quot;นโยบาย&quot;
               บังคับใช้ครั้งแรกเมื่อวันที่ 1 พฤษภาคม 2566 โดยมีรายละเอียด
               ดังต่อไปนี้
-            </Typography>
+            </Typography> */}
+            <Typography variant="body1" paragraph>
+   {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}นโยบายความเป็นส่วนตัวฉบับนี้ ซึ่งต่อไปนี้จะเรียกว่า "นโยบาย" บังคับใช้ครั้งแรกเมื่อวันที่ 1 พฤษภาคม 2566 โดยมีรายละเอียดดังต่อไปนี้
+</Typography>
+
           </Box>
 
           {/* PARA01  */}
@@ -81,7 +90,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (ก) &quot;เว็บไซต์&quot; หมายความว่า เว็บไซต์ ชื่อว่า kramtone
               และมีที่อยู่เว็บไซต์ที่
@@ -98,7 +107,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (ข) &quot;ผู้ควบคุมข้อมูล&quot; หมายความว่า
               ผู้ให้บริการหรือเจ้าของเว็บไซต์ ตามนโยบายฉบับนี้ อันได้แก่ <br />{" "}
@@ -107,7 +116,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (ค) &quot;ผู้ประมวลผลข้อมูล&quot; หมายความว่า
               บุคคลภายนอกซึ่งประมวลข้อมูลเพื่อประโยชน์หรือในนามของผู้ควบคุมข้อมูล
@@ -115,7 +124,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (ง) &quot;ข้อมูล&quot; หมายความว่า
               สิ่งที่สื่อความหมายให้รู้เรื่องราวข้อเท็จจริง ข้อมูล หรือสิ่งใดๆ
@@ -128,7 +137,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (จ) &quot;ข้อมูลส่วนบุคคล&quot; หมายความว่า
               ข้อมูลเกี่ยวกับบุคคลธรรมดาใดๆ
@@ -137,7 +146,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (ฉ) &quot;ข้อมูลส่วนบุคคลที่มีความอ่อนไหว&quot; หรือ
               &quot;Sensitive Data&quot; หมายความว่า
@@ -151,7 +160,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (ช) &quot;ผู้ใช้งาน&quot; หมายความว่า ท่าน ผู้เยี่ยมชม ผู้ใช้
               ผู้เป็นสมาชิกของเว็บไซต์
@@ -174,7 +183,7 @@ const PrivacyPolicy: NextPage = () => {
               <Typography
                 variant="body1"
                 paragraph
-                style={{ fontWeight: "bold", marginLeft: "16px" }}
+                style={{ fontWeight: "bold", marginLeft: isSmallDevice ? "0px":"16px" }}
               >
                 (ก) วัตถุประสงค์แห่งการเก็บรวบรวมและใช้ข้อมูลส่วนบุคคล
               </Typography>
@@ -182,9 +191,9 @@ const PrivacyPolicy: NextPage = () => {
               <Typography
                 variant="body1"
                 paragraph
-                style={{ marginLeft: "32px" }}
+                style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
               >
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้ใช้งานรับทราบ
+                {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ผู้ใช้งานรับทราบ
                 ตกลง และยินยอมให้ผู้ควบคุมข้อมูลเก็บรวบรวมและใช้ข้อมูลส่วนบุคคล
                 เพื่อวัตถุประสงค์ดังต่อไปนี้เท่านั้น การประชาสัมพันธ์ทางการตลาด
                 และการให้บริการสื่อสังคม
@@ -195,7 +204,7 @@ const PrivacyPolicy: NextPage = () => {
               <Typography
                 variant="body1"
                 paragraph
-                style={{ fontWeight: "bold", marginLeft: "16px" }}
+                style={{ fontWeight: "bold", marginLeft: isSmallDevice ? "0px":"16px" }}
               >
                 (ข) ข้อมูลส่วนบุคคลที่เก็บรวบรวมและใช้
               </Typography>
@@ -203,9 +212,9 @@ const PrivacyPolicy: NextPage = () => {
               <Typography
                 variant="body1"
                 paragraph
-                style={{ marginLeft: "32px" }}
+                style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
               >
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้ใช้งานรับทราบ
+                {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ผู้ใช้งานรับทราบ
                 ตกลง และยินยอมให้ผู้ควบคุมข้อมูลเก็บรวบรวมและใช้ข้อมูลส่วนบุคคล
                 ดังต่อไปนี้เท่านั้น ชื่อ นามสกุล ที่อยู่ เบอร์โทรศัพท์ อีเมล
               </Typography>
@@ -215,7 +224,7 @@ const PrivacyPolicy: NextPage = () => {
               <Typography
                 variant="body1"
                 paragraph
-                style={{ fontWeight: "bold", marginLeft: "16px" }}
+                style={{ fontWeight: "bold", marginLeft: isSmallDevice ? "0px":"16px" }}
               >
                 (ค) ระยะเวลาในการเก็บรวบรวมข้อมูล
               </Typography>
@@ -223,9 +232,9 @@ const PrivacyPolicy: NextPage = () => {
               <Typography
                 variant="body1"
                 paragraph
-                style={{ marginLeft: "32px" }}
+                style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
               >
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้ใช้งานรับทราบ
+                {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ผู้ใช้งานรับทราบ
                 ตกลง
                 และยินยอมให้ผู้ควบคุมข้อมูลเก็บรวบรวมและใช้ข้อมูลส่วนบุคคลเป็นระยะเวลาทั้งสิ้น
                 12 (สิบสอง)
@@ -243,9 +252,9 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ผู้ใช้งานรับทราบ
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>} ผู้ใช้งานรับทราบ
               ตกลง
               และยินยอมให้ผู้ควบคุมข้อมูลอาจการเชื่อมโยงข้อมูลของผู้ใช้งานเว็บไซต์กับผู้ให้บริการบุคคลที่สาม
               โดยในการเชื่อมโยงหรือแบ่งปันข้อมูลต่อผู้ให้บริการบุคคลที่สามในแต่ละคราว
@@ -266,16 +275,16 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้ใช้งานรับทราบว่าผู้ใช้งานมีสิทธิที่จะถอนความยินยอมใดๆ
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ผู้ใช้งานรับทราบว่าผู้ใช้งานมีสิทธิที่จะถอนความยินยอมใดๆ
               ที่ผู้ใช้งานได้ให้ไว้แก่ผู้ควบคุมข้อมูลตามนโยบายฉบับนี้ได้
               ไม่ว่าเวลาใดโดยการดำเนินการ ดังต่อไปนี้
             </Typography>
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               เลือก &quot;ไม่ยินยอม&quot;
               ในเมนูการตั้งค่าความเป็นส่วนตัวภายในเว็บไซต์/แอปพลิเคชันโดยตรง
@@ -284,7 +293,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               โดยผู้ใช้งานยังรับทราบอีกว่าเมื่อผู้ใช้งานได้ดำเนินการถอนความยินยอมแล้ว
               ผู้ใช้งานจะได้รับผลกระทบ ดังต่อไปนี้
@@ -293,16 +302,16 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้ใช้งานจะไม่สามารถใช้บริการพิเศษภายในเว็บไซต์/แอปพลิเคชันได้
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ผู้ใช้งานจะไม่สามารถใช้บริการพิเศษภายในเว็บไซต์/แอปพลิเคชันได้
               มีเพียงสิทธิเยี่ยมชมเท่านั้น
               ผู้ใช้งานอาจได้รับบริการที่ไม่ถูกต้องและไม่มีประสิทธิภาพ
             </Typography>
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               โดยที่
               ผู้ใช้งานยังได้ตกลงยอมรับซึ่งผลแห่งการถอนความยินยอมนั้นทั้งสิ้น
@@ -317,9 +326,9 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ในการใช้งานเว็บไซต์
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ในการใช้งานเว็บไซต์
               ผู้ควบคุมข้อมูลอาจจัดให้มีบัญชีผู้ใช้ของแต่ละผู้ใช้งานเพื่อการใช้งานเว็บไซต์
               โดยที่ผู้ควบคุมข้อมูลมีสิทธิแต่เพียงผู้เดียวในการอนุมัติเปิดบัญชีผู้ใช้
               กำหนดประเภทบัญชีผู้ใช้
@@ -330,9 +339,9 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทั้งนี้
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ทั้งนี้
               ผู้ใช้งานตกลงจะเก็บรักษาชื่อบัญชีผู้ใช้ รหัสผ่าน และข้อมูลใดๆ
               ของตนไว้เป็นความลับอย่างเคร่งครัด และตกลงจะไม่ยินยอมให้
               รวมถึงใช้ความพยายามอย่างที่สุดในการป้องกันไม่ให้บุคคลอื่นใช้งานบัญชีผู้ใช้ของผู้ใช้งาน{" "}
@@ -341,9 +350,9 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ในกรณีที่มีการใช้บัญชีผู้ใช้ของผู้ใช้งานโดยบุคคลอื่น
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ในกรณีที่มีการใช้บัญชีผู้ใช้ของผู้ใช้งานโดยบุคคลอื่น
               ผู้ใช้งานตกลงและรับรองว่าการใช้งานโดยบุคคลอื่นดังกล่าวได้กระทำในฐานะตัวแทนของผู้ใช้งานและมีผลผูกพันเสมือนหนึ่งผู้ใช้งานเป็นผู้กระทำการเองทั้งสิ้น
             </Typography>
           </Box>
@@ -354,7 +363,7 @@ const PrivacyPolicy: NextPage = () => {
               ข้อ 6 สิทธิของผู้ใช้งาน
             </Typography>
             <Typography variant="body1" paragraph>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ในการเข้าใช้งานเว็บไซต์ตามนโยบายฉบับนี้และการให้ความยินยอมใดๆ
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ในการเข้าใช้งานเว็บไซต์ตามนโยบายฉบับนี้และการให้ความยินยอมใดๆ
               ตามนโยบายฉบับนี้
               ผู้ใช้งานได้รับทราบถึงสิทธิของตนในฐานะเจ้าของข้อมูลส่วนบุคคลตามกฎหมายคุ้มครองข้อมูลส่วนบุคคลเป็นอย่างดีแล้ว
               อันรวมถึงแต่ไม่จำกัดเพียงสิทธิของผู้ใช้งาน ดังต่อไปนี้
@@ -363,7 +372,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (ก) ผู้ใช้งานอาจถอนความยินยอมที่ให้ไว้ตามนโยบายฉบับนี้เมื่อใดก็ได้
               โดยการแจ้งเป็นลายลักษณ์อักษรแก่ผู้ควบคุมข้อมูลตามวิธีและช่องทางที่กำหนดในนโยบายฉบับนี้
@@ -372,7 +381,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (ข)
               ผู้ใช้งานมีสิทธิการเข้าถึงและขอรับสำเนาข้อมูลส่วนบุคคลของตนหรือที่เกี่ยวข้องกับตนที่ผู้ควบคุมข้อมูลได้เก็บรวบรวมเอาไว้ตามนโยบายฉบับนี้
@@ -380,7 +389,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (ค)
               ผู้ใช้งานมีสิทธิได้รับการเปิดเผยจากผู้ควบคุมข้อมูลถึงการได้มาซึ่งข้อมูลส่วนบุคคลของตนหรือที่เกี่ยวข้องกับตนซึ่งตนไม่ได้ให้ความยินยอม
@@ -389,7 +398,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (ง)
               ผู้ใช้งานอาจให้ผู้ควบคุมข้อมูลส่งหรือโอนข้อมูลส่วนบุคคลของตนหรือที่เกี่ยวข้องกับตนไปยังผู้ควบคุมข้อมูลรายอื่น
@@ -398,7 +407,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (จ) ผู้ใช้งานอาจคัดค้านการเก็บรวบรวม ใช้
               หรือเปิดเผยข้อมูลส่วนบุคคลของตนหรือที่เกี่ยวข้องกับตนได้ในกรณีดังต่อไปนี้
@@ -407,7 +416,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px", marginTop: "16px" }}
+              style={{ marginLeft: isSmallDevice ? "16px": "48px", marginTop: "16px" }}
             >
               (1) ผู้ควบคุมข้อมูลเก็บรวบรวม ใช้
               หรือเปิดเผยข้อมูลส่วนบุคคลของผู้ใช้งานด้วยความจำเป็นเพื่อประโยชน์โดยชอบด้วยกฎหมายของผู้ควบคุมข้อมูลหรือของบุคคลอื่นซึ่งผู้ใช้งานอาจพิสูจน์ได้ว่าตนมีสิทธิดีกว่าผู้ควบคุมข้อมูล{" "}
@@ -415,7 +424,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (2) ผู้ควบคุมข้อมูลเก็บรวบรวม ใช้
               หรือเปิดเผยข้อมูลส่วนบุคคลของผู้ใช้งานเพื่อเป็นการปฏิบัติตามกฎหมายของผู้ควบคุมข้อมูลซึ่งผู้ใช้งานอาจพิสูจน์ได้ว่าตนมีสิทธิดีกว่าผู้ควบคุมข้อมูล
@@ -424,7 +433,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (3) ผู้ควบคุมข้อมูลเก็บรวบรวม ใช้
               หรือเปิดเผยข้อมูลส่วนบุคคลนั้นไปเพื่อวัตถุประสงค์เกี่ยวกับการตลาดแบบตรง{" "}
@@ -433,7 +442,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (4) ผู้ควบคุมข้อมูลเก็บรวบรวม ใช้
               หรือเปิดเผยข้อมูลส่วนบุคคลนั้นไปเพื่อวัตถุประสงค์เกี่ยวกับการศึกษาวิจัยทางวิทยาศาสตร์
@@ -444,7 +453,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (ฉ) ผู้ใช้งานอาจให้ผู้ควบคุมข้อมูลดำเนินการลบ ทำลาย
               หรือทำให้ข้อมูลไม่สามารถระบุตัวบุคคลผู้เป็นเจ้าของข้อมูลได้
@@ -454,7 +463,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (1)
               เมื่อข้อมูลส่วนบุคคลหมดความจำเป็นในการเก็บรักษาไว้ตามวัตถุประสงค์ในการเก็บรวบรวม
@@ -464,7 +473,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (2)
               เมื่อผู้ใช้งานซึ่งเป็นเจ้าของข้อมูลส่วนบุคคลได้ถอนความยินยอมในการเก็บรวบรวม
@@ -475,7 +484,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (3) เมื่อผู้ใช้งานได้คัดค้านการเก็บรวบรวม ใช้
               หรือเปิดเผยข้อมูลนั้นโดยชอบด้วยกฎหมาย
@@ -483,7 +492,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (4) เมื่อข้อมูลส่วนบุคคลได้ถูกเก็บรวบรวม ใช้
               หรือเปิดเผยโดยไม่ชอบด้วยกฎหมาย กฎ ระเบียบ
@@ -492,7 +501,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (ช)
               ผู้ใช้งานอาจให้ผู้ควบคุมข้อมูลระงับการใช้ข้อมูลส่วนบุคคลนั้นโดยยังคงเก็บรักษาเอาไว้ได้อยู่
@@ -501,7 +510,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (1)
               ผู้ควบคุมข้อมูลอยู่ในระหว่างการถูกตรวจสอบโดยคณะกรรมการผู้เชี่ยวชาญตามกฎหมายคุ้มครองข้อมูลส่วนบุคคลซึ่งผู้ใช้งานได้ร้องเรียนให้มีการตรวจสอบดังกล่าว
@@ -509,7 +518,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (2) ข้อมูลส่วนบุคคลได้ถูกเก็บรวบรวม ใช้
               หรือเปิดเผยโดยไม่ชอบด้วยกฎหมาย กฎ ระเบียบ
@@ -518,7 +527,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (3)
               ในกรณีที่ผู้ใช้งานมีความจำเป็นต้องการให้ผู้ควบคุมข้อมูลเก็บรักษาข้อมูลส่วนบุคคลของตนเอาไว้เพื่อประโยชน์ในสิทธิเรียกร้องของผู้ใช้งานเอง
@@ -531,7 +540,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (4)
               ผู้ควบคุมข้อมูลอยู่ในระหว่างการพิสูจน์หรือตรวจสอบเพื่อปฏิเสธการคัดค้านการเก็บรวบรวม
@@ -541,7 +550,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (ซ) เมื่อผู้ใช้งานพบเห็นว่าข้อมูลส่วนบุคคลของผู้ใช้งานผิด ล้าหลัง
               ไม่ชัดเชน
@@ -551,7 +560,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               (ฌ)
               ผู้ใช้งานอาจร้องเรียนต่อคณะกรรมการผู้เชี่ยวชาญตามกฎหมายคุ้มครองข้อมูลส่วนบุคคลในกรณีที่เกี่ยวกับการกระทำการฝ่าฝืนหรือการไม่ปฏิบัติตามกฎหมาย
@@ -568,9 +577,9 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ในการเก็บรวบรวมและใช้ข้อมูลส่วนบุคคลตามนโยบายฉบับนี้
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ในการเก็บรวบรวมและใช้ข้อมูลส่วนบุคคลตามนโยบายฉบับนี้
               ผู้ควบคุมข้อมูลจะจัดให้มีมาตรการรักษาความมั่นคงปลอดภัยที่เหมาะสมเพื่อป้องกันการสูญหาย
               การเข้าถึง ใช้ เปลี่ยนแปลง แก้ไข
               หรือการเปิดเผยข้อมูลที่ไม่เป็นไปตามกฎหมาย ด้วยมาตรการ มาตรฐาน
@@ -579,9 +588,9 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;กำหนดสิทธิการเข้าถึงข้อมูล
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}กำหนดสิทธิการเข้าถึงข้อมูล
               (Access Right) ให้กับผู้ที่เกี่ยวข้อง ใช้การเข้ารหัสข้อมูล
               (Encryption) ในการส่งผ่านข้อมูล
             </Typography>
@@ -594,14 +603,14 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               ผู้ควบคุมข้อมูลจะจัดให้มีระบบและมาตรการตรวจสอบ ดังต่อไปนี้
             </Typography>
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (ก) ดำเนินการปรับปรุงแก้ไขข้อมูลส่วนบุคคลให้ถูกต้อง เป็นปัจจุบัน
               สมบูรณ์ และไม่ก่อให้เกิดความเข้าใจผิด
@@ -609,7 +618,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (ข) ลบ
               ทำลายข้อมูลส่วนบุคคลที่เกินระยะเวลาเก็บรวบรวมที่ผู้ใช้งานได้ให้ความยินยอมเอาไว้
@@ -618,7 +627,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (ค) ลบ
               ทำลายข้อมูลส่วนบุคคลที่ไม่เกี่ยวข้องกับการใช้ข้อมูลส่วนบุคคลดังกล่าวตามที่ผู้ใช้งานได้ให้ความยินยอมเอาไว้
@@ -634,9 +643,9 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้ใช้งานรับทราบและตกลงว่าผู้ควบคุมข้อมูลอาจเก็บรวบรวม
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ผู้ใช้งานรับทราบและตกลงว่าผู้ควบคุมข้อมูลอาจเก็บรวบรวม
               ใช้
               และ/หรือเปิดเผยข้อมูลของผู้ใช้งานได้โดยไม่ต้องได้รับความยินยอมจากผู้ใช้งานก่อนล่วงหน้า
               ทั้งนี้เท่าที่จำเป็นและตราบเท่าที่เป็นไปตามวัตถุประสงค์และในกรณีดังต่อไปนี้เท่านั้น
@@ -644,7 +653,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (ก)
               เพื่อให้บรรลุวัตถุประสงค์ที่เกี่ยวกับการจัดทำเอกสารประวัติศาสตร์หรือจดหมายเหตุเพื่อประโยชน์สาธารณะ
@@ -653,7 +662,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (ข) เพื่อป้องกันหรือระงับอันตรายต่อชีวิต ร่างกาย
               หรือสุขภาพของบุคคลใดๆ
@@ -661,7 +670,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (ค)
               เป็นการจำเป็นเพื่อการปฏิบัติตามสัญญาซึ่งผู้ใช้งานเจ้าของข้อมูลส่วนบุคคลนั้นเป็นคู่สัญญาหรือเพื่อใช้ในการดำเนินการตามคำขอของผู้ใช้งานเจ้าของข้อมูลส่วนบุคคลก่อนเข้าทำสัญญาดังกล่าวนั้น
@@ -669,7 +678,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (ง)
               เป็นการจำเป็นเพื่อการปฏิบัติหน้าที่ในการดำเนินการเพื่อประโยชน์สาธารณะของผู้ควบคุมข้อมูลหรือปฏิบัติหน้าที่ในการใช้อำนาจรัฐที่ได้มอบให้แก่ผู้ควบคุมข้อมูลนั้น{" "}
@@ -677,7 +686,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (จ)
               เป็นการจำเป็นเพื่อประโยชน์โดยชอบด้วยกฎหมายของผู้ควบคุมข้อมูลหรือของบุคคลอื่นซึ่งประโยชน์ดังกล่าวมีความสำคัญมากกว่าสิทธิขั้นพื้นฐานในข้อมูลส่วนบุคคลของผู้ใช้งานนั้น{" "}
@@ -685,7 +694,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (ฉ) เป็นการปฏิบัติตามกฎหมายของผู้ควบคุมข้อมูล{" "}
             </Typography>
@@ -708,9 +717,9 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้ใช้งานรับทราบและตกลงว่านอกจากการเก็บรวบรวม
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ผู้ใช้งานรับทราบและตกลงว่านอกจากการเก็บรวบรวม
               ใช้และ/หรือเปิดเผยข้อมูลส่วนบุคคลซึ่งผู้ใช้งานได้ให้ความยินยอมไว้โดยชัดแจ้งให้เก็บรวบรวม
               ใช้และ/หรือเปิดเผยข้อมูลส่วนบุคคลตามนโยบายฉบับนี้แล้ว
               ผู้ควบคุมข้อมูลอาจเก็บรวบรวม
@@ -721,7 +730,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (ก) เพื่อป้องกันหรือระงับอันตรายต่อชีวิต ร่างกาย
               หรือสุขภาพของผู้ใช้งานเจ้าของข้อมูลส่วนบุคคลซึ่งไม่สามารถให้ความยินยอมได้
@@ -730,7 +739,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (ข)
               เป็นข้อมูลที่เปิดเผยต่อสาธารณะด้วยความยินยอมโดยชัดแจ้งของผู้ใช้งานเจ้าของข้อมูลส่วนบุคคลนั้น
@@ -738,7 +747,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (ค) เป็นการจำเป็นเพื่อการก่อตั้ง การปฏิบัติตาม
               การใช้หรือการยกขึ้นต่อสู้ซึ่งสิทธิเรียกร้องตามกฎหมาย
@@ -746,7 +755,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "48px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"48px" }}
             >
               (ง)
               เป็นการจำเป็นในการปฏิบัติตามกฎหมายเพื่อให้บรรลุวัตถุประสงค์อันเกี่ยวกับ{" "}
@@ -754,7 +763,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "80px" }}
+              style={{ marginLeft: isSmallDevice ? "32px":"80px" }}
             >
               (1) เวชศาสตร์ป้องกันหรืออาชีวเวชศาสตร์
               การประเมินความสามารถในการทำงานของลูกจ้าง การวินิจฉัยโรคทางการแพทย์
@@ -764,7 +773,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "80px" }}
+              style={{ marginLeft: isSmallDevice ? "32px":"80px" }}
             >
               (2) ประโยชน์สาธารณะด้านการสาธารณสุข เช่น
               การป้องกันด้านสุขภาพจากโรคติดต่ออันตรายหรือโรคระบาดที่อาจติดต่อหรือแพร่เข้ามาในราชอาณาจักร
@@ -774,7 +783,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "80px" }}
+              style={{ marginLeft: isSmallDevice ? "32px":"80px" }}
             >
               (3) การคุ้มครองแรงงาน การประกันสังคม หลักประกันสุขภาพแห่งชาติ
               สวัสดิการเกี่ยวกับการรักษาพยาบาลของผู้มีสิทธิตามกฎหมาย
@@ -785,7 +794,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "80px" }}
+              style={{ marginLeft: isSmallDevice ? "32px":"80px" }}
             >
               (4) การศึกษาวิจัยทางวิทยาศาสตร์ ประวัติศาสตร์ หรือสถิติ
               หรือประโยชน์สาธารณะอื่น ทั้งนี้ ด้วยการเก็บรวบรวม ใช้
@@ -794,7 +803,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "80px" }}
+              style={{ marginLeft: isSmallDevice ? "32px":"80px" }}
             >
               (5) ประโยชน์สาธารณะที่สำคัญ
               โดยได้จัดให้มีมาตรการที่เหมาะสมเพื่อคุ้มครองสิทธิขั้นพื้นฐานและประโยชน์ของผู้ใช้งานเจ้าของข้อมูลส่วนบุคคลนั้น
@@ -804,7 +813,7 @@ const PrivacyPolicy: NextPage = () => {
               paragraph
               style={{ marginLeft: "16px", marginTop: "16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทั้งนี้
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ทั้งนี้
               ผู้ควบคุมข้อมูลจะบันทึกการเก็บรวบรวม ใช้
               หรือเปิดเผยข้อมูลส่วนบุคคลของผู้ใช้งานตามวรรคก่อนหน้าไว้เป็นสำคัญ
             </Typography>
@@ -819,15 +828,15 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้ใช้งานขอรับรองว่าตัวเองไม่ใช่และจะไม่ยินยอมให้บุคคลที่มีลักษณะต่อไปนี้
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ผู้ใช้งานขอรับรองว่าตัวเองไม่ใช่และจะไม่ยินยอมให้บุคคลที่มีลักษณะต่อไปนี้
               เยี่ยมชม ใช้งาน หรือสมัครเป็นสมาชิกของเว็บไซต์นี้
             </Typography>
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px", marginTop: "16px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px", marginTop: "16px" }}
             >
               (ก) คนไร้ความสามารถซึ่งอยู่ในความอนุบาลของผู้ใช้งาน
             </Typography>
@@ -835,7 +844,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px", marginTop: "16px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px", marginTop: "16px" }}
             >
               (ข) คนเสมือนไร้ความสามารถซึ่งอยู่ในความพิทักษ์ของผู้ใช้งาน
             </Typography>
@@ -843,9 +852,9 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ในกรณีที่ผู้ใช้งานยินยอมให้บุคคลลักษณะดังกล่าวข้างต้นเยี่ยมชม
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ในกรณีที่ผู้ใช้งานยินยอมให้บุคคลลักษณะดังกล่าวข้างต้นเยี่ยมชม
               ใช้งาน หรือเป็นสมาชิกของเว็บไซต์
               ผู้ใช้งานตกลงให้ถือว่าผู้ใช้งานได้ใช้อำนาจปกครอง อนุบาล
               หรือพิทักษ์ของบุคคลดังกล่าว แล้วแต่กรณี
@@ -861,14 +870,14 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               ผู้ควบคุมข้อมูลอาจส่งหรือโอนข้อมูลส่วนบุคคลของผู้ใช้งานไปยังต่างประเทศได้ในกรณีดังต่อไปนี้
             </Typography>
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px", marginTop: "16px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px", marginTop: "16px" }}
             >
               (ก)
               ประเทศปลายทางหรือองค์การระหว่างประเทศที่รับข้อมูลส่วนบุคคลนั้นมีมาตรฐานการคุ้มครองข้อมูลส่วนบุคคลที่เพียงพอตามที่กฎหมาย
@@ -878,7 +887,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
             >
               (ข) ได้รับความยินยอมจากเจ้าของข้อมูลส่วนบุคคล
               โดยที่ผู้ใช้งานเจ้าของข้อมูลส่วนบุคคลได้รับแจ้งและรับทราบถึงมาตรฐานการคุ้มครองข้อมูลส่วนบุคคลที่ไม่เพียงพอของประเทศปลายทางหรือองค์การระหว่างประเทศที่รับข้อมูลนั้นแล้ว
@@ -887,7 +896,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
             >
               (ค) เป็นการปฏิบัติตามกฎหมาย
             </Typography>
@@ -895,7 +904,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
             >
               (ง)
               เป็นการจำเป็นเพื่อการปฏิบัติตามสัญญาซึ่งผู้ใช้งานเจ้าของข้อมูลส่วนบุคคลเป็นคู่สัญญานั้นหรือเพื่อใช้ในการดำเนินการตามคำขอของผู้ใช้งานเจ้าของข้อมูลส่วนบุคคลก่อนการเข้าทำสัญญานั้น
@@ -904,7 +913,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
             >
               (จ)
               เป็นการกระทำการตามสัญญาระหว่างผู้ควบคุมข้อมูลกับบุคคลอื่นโดยเป็นไปเพื่อประโยชน์ของผู้ใช้งานเจ้าของข้อมูลส่วนบุคคลนั้น
@@ -913,7 +922,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
             >
               (ฉ) เพื่อป้องกันหรือระงับอันตรายต่อชีวิต ร่างกาย
               หรือสุขภาพของผู้ใช้งานเจ้าของข้อมูลส่วนบุคคลนั้นหรือบุคคลใดๆ
@@ -923,7 +932,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
             >
               (ช) เป็นการจำเป็นเพื่อการดำเนินภารกิจเพื่อประโยชน์สาธารณะที่สำคัญ
             </Typography>
@@ -937,15 +946,15 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ในกรณีที่ผู้ควบคุมข้อมูลทราบถึงการละเมิดข้อมูลส่วนบุคคลไม่ว่าจะมีการละเมิดโดยบุคคลใด
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ในกรณีที่ผู้ควบคุมข้อมูลทราบถึงการละเมิดข้อมูลส่วนบุคคลไม่ว่าจะมีการละเมิดโดยบุคคลใด
               ผู้ควบคุมข้อมูลจะดำเนินการดังต่อไปนี้
             </Typography>
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px", marginTop: "16px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px", marginTop: "16px" }}
             >
               (ก) ในกรณีมีความเสี่ยงที่จะมีผลกระทบต่อสิทธิหรือเสรีภาพของบุคคลใดๆ
               ผู้ควบคุมข้อมูลจะแจ้งเหตุการละเมิดข้อมูลส่วนบุคคลดังกล่าวต่อสำนักงานคณะกรรมการคุ้มครองข้อมูลส่วนบุคคล
@@ -956,7 +965,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
             >
               (ข)
               ในกรณีมีความเสี่ยงที่จะมีผลกระทบอย่างสูงต่อสิทธิหรือเสรีภาพของบุคคลใดๆ
@@ -974,9 +983,9 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้ใช้งานอาจร้องเรียนและรายงานปัญหาเกี่ยวกับข้อมูลส่วนบุคคล
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ผู้ใช้งานอาจร้องเรียนและรายงานปัญหาเกี่ยวกับข้อมูลส่วนบุคคล
               อันรวมถึงแต่ไม่จำกัดเพียง
               การขอให้ผู้ควบคุมข้อมูลแก้ไขปรับปรุงข้อมูลให้เป็นปัจจุบันและ/หรือให้ถูกต้อง
               การคัดค้านการเก็บรวบรวมข้อมูล หรือระงับการใช้ข้อมูล
@@ -999,9 +1008,9 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;เว้นแต่กฎหมายคุ้มครองข้อมูลส่วนบุคคลจะกำหนดให้สิทธิผู้ควบคุมข้อมูลไว้เป็นเป็นอย่างอื่น
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}เว้นแต่กฎหมายคุ้มครองข้อมูลส่วนบุคคลจะกำหนดให้สิทธิผู้ควบคุมข้อมูลไว้เป็นเป็นอย่างอื่น
               ผู้ควบคุมข้อมูลจะบันทึกรายการสำคัญเกี่ยวกับการจัดเก็บ การใช้
               หรือการเปิดเผยข้อมูลเป็นหนังสือหรือระบบอิเล็กทรอนิกส์เพื่อการตรวจสอบจากผู้ใช้งานเจ้าของข้อมูลหรือจากหน่วยงานของรัฐ
               อันรวมถึงแต่ไม่จำกัดเพียงรายการ ดังต่อไปนี้
@@ -1010,14 +1019,14 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px", marginTop: "16px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px", marginTop: "16px" }}
             >
               (ก) ข้อมูลส่วนบุคคลที่มีการเก็บรวบรวม
             </Typography>
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
             >
               (ข) วัตถุประสงค์ของการเก็บรวบรวมข้อมูลส่วนบุคคลแต่ละประเภท
             </Typography>
@@ -1025,7 +1034,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
             >
               (ค) ข้อมูลเกี่ยวกับผู้ควบคุมข้อมูล
             </Typography>
@@ -1033,7 +1042,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
             >
               (ง) ระยะเวลาการเก็บรักษาข้อมูลส่วนบุคคล
             </Typography>
@@ -1041,7 +1050,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
             >
               (จ) สิทธิและวิธีการเข้าถึงข้อมูลส่วนบุคคล
               รวมทั้งเงื่อนไขเกี่ยวกับบุคคลที่มีสิทธิเข้าถึงข้อมูลส่วนบุคคลและเงื่อนไขในการเข้าถึงข้อมูลส่วนบุคคลนั้น
@@ -1050,7 +1059,7 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
             >
               (ฉ) การเก็บรวบรวม ใช้
               หรือเปิดเผยข้อมูลส่วนบุคคลที่ได้รับยกเว้นไม่ต้องขอความยินยอมจากผู้ใช้งานเจ้าของข้อมูล
@@ -1059,14 +1068,14 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
             >
               (ช) การปฏิเสธคำขอและการคัดค้านต่างๆ
             </Typography>
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "32px" }}
+              style={{ marginLeft: isSmallDevice ? "16px":"32px" }}
             >
               (ซ)
               รายละเอียดเกี่ยวกับมาตรการรักษาความมั่นคงปลอดภัยในข้อมูลส่วนบุคคล
@@ -1081,9 +1090,9 @@ const PrivacyPolicy: NextPage = () => {
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ผู้ควบคุมข้อมูลอาจแก้ไขและเปลี่ยนแปลงข้อความในนโยบายฉบับนี้ได้
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>}ผู้ควบคุมข้อมูลอาจแก้ไขและเปลี่ยนแปลงข้อความในนโยบายฉบับนี้ได้
               ไม่ว่าเวลาใดก็ตาม และไม่ว่าทั้งหมดหรือบางส่วน
               โดยผู้ควบคุมข้อมูลจะแจ้งให้ผู้ใช้งานทราบเมื่อมีการเปลี่ยนแปลงในแต่ละคราวเพื่อให้ผู้ใช้งานได้พิจารณาและดำเนินการยอมรับด้วยวิธีการทางอิเล็กทรอนิกส์หรือวิธีการอื่นใด
               และหากว่าผู้ใช้งานได้ดำเนินการเพื่อยอมรับนั้นแล้วให้ถือว่านโยบายที่แก้ไขเพิ่มเติมดังกล่าวเป็นส่วนหนึ่งของนโยบายฉบับนี้ด้วย
@@ -1094,14 +1103,14 @@ const PrivacyPolicy: NextPage = () => {
               paragraph
               style={{ marginLeft: "16px", marginTop: "16px" }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; อนึ่ง
+              {!isSmallDevice && <React.Fragment>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</React.Fragment>} อนึ่ง
               ผู้ใช้งานอาจเข้าถึงนโยบายความเป็นส่วนตัวที่มีการแก้ไขและเปลี่ยนแปลงล่าสุดได้จากแหล่งที่ผู้ควบคุมข้อมูลจัดแสดงไว้จากช่องทาง
               ดังต่อไปนี้
             </Typography>
             <Typography
               variant="body1"
               paragraph
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: isSmallDevice? "0px":"16px" }}
             >
               <Link
                 href="https://www.kramtone.com/privacy-policy"
