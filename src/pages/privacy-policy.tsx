@@ -78,7 +78,7 @@ const PrivacyPolicy: NextPage = () => {
               style={{ marginLeft: "16px" }}
             >
               (ข) "ผู้ควบคุมข้อมูล" หมายความว่า ผู้ให้บริการหรือเจ้าของเว็บไซต์
-              ตามนโยบายฉบับนี้ อันได้แก่ <br /> อัครพล พิกุลศรี (BillowDev) ติดต่อ
+              ตามนโยบายฉบับนี้ อันได้แก่ <br /> BillowDev ติดต่อ
               akkarapon@billowdev.com
             </Typography>
             <Typography
@@ -155,7 +155,7 @@ const PrivacyPolicy: NextPage = () => {
               </Typography>
 
               <Typography
-                variant="body2"
+                variant="body1"
                 paragraph
                 style={{ marginLeft: "32px" }}
               >
@@ -176,7 +176,7 @@ const PrivacyPolicy: NextPage = () => {
               </Typography>
 
               <Typography
-                variant="body2"
+                variant="body1"
                 paragraph
                 style={{ marginLeft: "32px" }}
               >
@@ -196,7 +196,7 @@ const PrivacyPolicy: NextPage = () => {
               </Typography>
 
               <Typography
-                variant="body2"
+                variant="body1"
                 paragraph
                 style={{ marginLeft: "32px" }}
               >
@@ -378,7 +378,7 @@ const PrivacyPolicy: NextPage = () => {
             </Typography>
 
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px", marginTop: "16px" }}
             >
@@ -386,7 +386,7 @@ const PrivacyPolicy: NextPage = () => {
               หรือเปิดเผยข้อมูลส่วนบุคคลของผู้ใช้งานด้วยความจำเป็นเพื่อประโยชน์โดยชอบด้วยกฎหมายของผู้ควบคุมข้อมูลหรือของบุคคลอื่นซึ่งผู้ใช้งานอาจพิสูจน์ได้ว่าตนมีสิทธิดีกว่าผู้ควบคุมข้อมูล{" "}
             </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -395,7 +395,7 @@ const PrivacyPolicy: NextPage = () => {
             </Typography>
 
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -404,7 +404,7 @@ const PrivacyPolicy: NextPage = () => {
             </Typography>
 
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -425,7 +425,7 @@ const PrivacyPolicy: NextPage = () => {
             </Typography>
 
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -435,7 +435,7 @@ const PrivacyPolicy: NextPage = () => {
             </Typography>
 
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -446,7 +446,7 @@ const PrivacyPolicy: NextPage = () => {
               ใช้ หรือเปิดเผยข้อมูลส่วนบุคคลนั้นได้อีกต่อไป
             </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -454,7 +454,7 @@ const PrivacyPolicy: NextPage = () => {
               หรือเปิดเผยข้อมูลนั้นโดยชอบด้วยกฎหมาย
             </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -463,7 +463,7 @@ const PrivacyPolicy: NextPage = () => {
               ข้อบังคับเกี่ยวกับการคุ้มครองข้อมูลส่วนบุคคล
             </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "16px" }}
             >
@@ -480,7 +480,7 @@ const PrivacyPolicy: NextPage = () => {
               ผู้ควบคุมข้อมูลอยู่ในระหว่างการถูกตรวจสอบโดยคณะกรรมการผู้เชี่ยวชาญตามกฎหมายคุ้มครองข้อมูลส่วนบุคคลซึ่งผู้ใช้งานได้ร้องเรียนให้มีการตรวจสอบดังกล่าว
             </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -489,7 +489,7 @@ const PrivacyPolicy: NextPage = () => {
               ข้อบังคับเกี่ยวกับการคุ้มครองข้อมูลส่วนบุคคล
             </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -502,7 +502,7 @@ const PrivacyPolicy: NextPage = () => {
               ทำลาย หรือทำให้ข้อมูลไม่สามารถระบุตัวบุคคลผู้เป็นเจ้าของข้อมูลได้
             </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -723,7 +723,7 @@ const PrivacyPolicy: NextPage = () => {
               เป็นการจำเป็นในการปฏิบัติตามกฎหมายเพื่อให้บรรลุวัตถุประสงค์อันเกี่ยวกับ{" "}
             </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -733,7 +733,7 @@ const PrivacyPolicy: NextPage = () => {
               การจัดการด้านสุขภาพ หรือระบบและการให้บริการด้านสังคมสงเคราะห์
             </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -743,7 +743,7 @@ const PrivacyPolicy: NextPage = () => {
               ซึ่งได้จัดให้มีมาตรการที่เหมาะสมและเจาะจงเพื่อคุ้มครองสิทธิเสรีภาพของผู้ใช้งานเจ้าของข้อมูลส่วนบุคคลโดยเฉพาะการรักษาความลับของข้อมูลส่วนบุคคลตามหน้าที่หรือตามจริยธรรมแห่งวิชาชีพ
             </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -754,7 +754,7 @@ const PrivacyPolicy: NextPage = () => {
               โดยได้จัดให้มีมาตรการที่เหมาะสมเพื่อคุ้มครองสิทธิขั้นพื้นฐานและประโยชน์ของผู้ใช้งานเจ้าของข้อมูลส่วนบุคคลนั้น
             </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -763,7 +763,7 @@ const PrivacyPolicy: NextPage = () => {
               และ/หรือเปิดเผยเพียงเท่าที่จำเป็นและได้จัดให้มีมาตรการที่เหมาะสมเพื่อคุ้มครองสิทธิขั้นพื้นฐานและประโยชน์ของผู้ใช้งานเจ้าของข้อมูลส่วนบุคคลนั้นตามที่คณะกรรมการคุ้มครองข้อมูลส่วนบุคคลได้ประกาศกำหนด
             </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "32px" }}
             >
@@ -795,7 +795,7 @@ const PrivacyPolicy: NextPage = () => {
               ดังต่อไปนี้ เยี่ยมชม ใช้งาน หรือเป็นสมาชิกของเว็บไซต์
             </Typography>
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "16px", marginTop: "16px" }}
             >
@@ -803,7 +803,7 @@ const PrivacyPolicy: NextPage = () => {
             </Typography>
 
             <Typography
-              variant="body2"
+              variant="body1"
               paragraph
               style={{ marginLeft: "16px", marginTop: "16px" }}
             >

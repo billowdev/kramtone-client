@@ -220,7 +220,7 @@ export default function Footer({}: Props) {
                   </Link>
                 </Box>
 
-                <Link href="/group" style={footerLinkStyle}>
+                <Link href="/about" style={footerLinkStyle}>
                   <Typography align={isSmallDevice ? "center" : "right"}>
                     เกี่ยวกับเรา
                   </Typography>

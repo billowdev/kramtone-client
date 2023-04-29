@@ -108,10 +108,10 @@ const MainPage = ({}: Props) => {
         className={classes.container}
       >
         <Typography variant="h5" component="h5" gutterBottom align="center">
-          การพัฒนาระบบบริหารจัดการการเชื่อมโยงแผนภาพโทนสีครามธรรมชาติกับแหล่งผลิตผ้าย้อมคราม
+          ระบบบริหารจัดการการเชื่อมโยงแผนภาพโทนสีครามธรรมชาติกับแหล่งผลิตผ้าย้อมคราม
         </Typography>
         <Typography variant="h5" component="h5" gutterBottom align="center">
-          The development of management system for connecting color scheme of
+          The Management system for connecting color scheme of
           natural indigo dye with indigo textile production sites
         </Typography>
 
