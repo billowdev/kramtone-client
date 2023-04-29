@@ -14,7 +14,7 @@ import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
 
 import {
@@ -35,14 +35,13 @@ import StoreIcon from "@mui/icons-material/Store";
 import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 import dynamic from "next/dynamic";
 import {
-	FacebookShareButton,
-	TwitterShareButton,
-	LinkedinShareButton,
-	FacebookIcon,
-	TwitterIcon,
-	LinkedinIcon,
-  } from 'react-share';
-
+  FacebookShareButton,
+  TwitterShareButton,
+  LinkedinShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  LinkedinIcon,
+} from "react-share";
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -115,7 +114,7 @@ type Props = {
 function UserPanelProduct({ product }: Props) {
   const shareUrl = `https://www.kramtone.com/product/${product?.id}`;
   const shareTitle = `Kramtone เชื่อมโยงสินค้าผ้าครามกับแผนภาพโทนสีครามธรรมชาติ ${product?.name} ${product?.desc}`;
-  
+
   // console.log(product)
   const theme = useTheme();
   const [isMounted, setIsMounted] = useState(false);
@@ -242,172 +241,184 @@ function UserPanelProduct({ product }: Props) {
   }
 
   const renderProductTab = () => (
-<Box p={2}>
-  <Grid container spacing={3}>
-    <Grid item xs={12}>
-      <Paper sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}>
-        {isSmallDevice ? (
-          <ShoppingBasketIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
-        ) : (
-          <ShoppingBasketIcon sx={{ fontSize: "2.5rem", marginLeft: "16px" }} />
-        )}
-        <Typography
-          variant={isSmallDevice ? "subtitle1" : "h5"}
-          sx={{
-            fontWeight: "bold",
-            alignSelf: "center",
-          }}
-        >
-          หน้ารายละเอียดสินค้า
-        </Typography>
-      </Paper>
-    </Grid>
-  </Grid>
-
-  <Box p={4} sx={{ minHeight: "100vh" }}>
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={4}>
-        <Grid container spacing={2}>
-          <Carousel
-            showArrows
-            showStatus={false}
-            showIndicators={false}
-            showThumbs={false}
-            emulateTouch
-            autoPlay
-            infiniteLoop
-            interval={3000}
-            transitionTime={350}
-            swipeable
-            dynamicHeight
-            selectedItem={currentImageIndex}
-            width="100%"
+    <Box p={2}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Paper
+            sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}
           >
-            {images &&
-              images.map((image: string, index: number) => (
-                <div key={index}>
-                  <Image
-                    src={productImageURL(image)}
-                    alt={`Product image ${index}`}
-                    width="250"
-                    height="250"
-                    style={{ borderRadius: "5%", objectFit: "contain" }}
-                  />
-                </div>
-              ))}
-          </Carousel>
-          <Grid container spacing={2}>{imageCarousel}</Grid>
+            {isSmallDevice ? (
+              <ShoppingBasketIcon
+                sx={{ fontSize: "1.5rem", marginLeft: "8px" }}
+              />
+            ) : (
+              <ShoppingBasketIcon
+                sx={{ fontSize: "2.5rem", marginLeft: "16px" }}
+              />
+            )}
+            <Typography
+              variant={isSmallDevice ? "subtitle1" : "h5"}
+              sx={{
+                fontWeight: "bold",
+                alignSelf: "center",
+              }}
+            >
+              หน้ารายละเอียดสินค้า
+            </Typography>
+          </Paper>
         </Grid>
       </Grid>
-      <Grid item xs={12} sm={8}>
-        <Typography variant="h4" className={classes.price}>
-          ฿{product && product?.price}
-        </Typography>
-        <Box display="flex" alignItems="center" my={1}>
-          <VisibilityIcon />
-          <Typography variant="body2">
-            {product?.reloadCount?.toLocaleString()}
-          </Typography>
-        </Box>
-        <Typography gutterBottom variant="h6" component="div">
-          ชื่อสินค้า : {product?.name}
-        </Typography>
-        <Grid container alignItems="center">
-          <Grid item>
-            <Box
-              sx={{
-                width: 50,
-                height: 50,
-                backgroundColor: product?.colorScheme?.hex,
-                borderRadius: "5%",
-                border: "1px solid black",
-                marginRight: 2,
-              }}
-            />
+
+      <Box p={4} sx={{ minHeight: "100vh" }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={4}>
+            <Grid container spacing={2}>
+              <Carousel
+                showArrows
+                showStatus={false}
+                showIndicators={false}
+                showThumbs={false}
+                emulateTouch
+                autoPlay
+                infiniteLoop
+                interval={3000}
+                transitionTime={350}
+                swipeable
+                dynamicHeight
+                selectedItem={currentImageIndex}
+                width="100%"
+              >
+                {images &&
+                  images.map((image: string, index: number) => (
+                    <div key={index}>
+                      <Image
+                        src={productImageURL(image)}
+                        alt={`Product image ${index}`}
+                        width="250"
+                        height="250"
+                        style={{ borderRadius: "5%", objectFit: "contain" }}
+                      />
+                    </div>
+                  ))}
+              </Carousel>
+              <Grid container spacing={2}>
+                {imageCarousel}
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Typography gutterBottom component="div" className={classes.colorScheme}>
-              สี{product?.colorScheme?.nameTH}
+          <Grid item xs={12} sm={8}>
+            <Typography variant="h4" className={classes.price}>
+              ฿{product && product?.price}
+            </Typography>
+            <Box display="flex" alignItems="center" my={1}>
+              <VisibilityIcon />
+              <Typography variant="body2">
+                {product?.reloadCount?.toLocaleString()}
+              </Typography>
+            </Box>
+            <Typography gutterBottom variant="h6" component="div">
+              ชื่อสินค้า : {product?.name}
+            </Typography>
+            <Grid container alignItems="center">
+              <Grid item>
+                <Box
+                  sx={{
+                    width: 50,
+                    height: 50,
+                    backgroundColor: product?.colorScheme?.hex,
+                    borderRadius: "5%",
+                    border: "1px solid black",
+                    marginRight: 2,
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <Typography
+                  gutterBottom
+                  component="div"
+                  className={classes.colorScheme}
+                >
+                  สี{product?.colorScheme?.nameTH}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <StyledTypography gutterBottom className={classes.colorScheme}>
+                  {product?.colorScheme?.hex}
+                </StyledTypography>
+              </Grid>
+              <Grid item>
+                <StyledTypography gutterBottom className={classes.colorScheme}>
+                  รหัสสี {product?.colorScheme?.id}
+                </StyledTypography>
+              </Grid>
+            </Grid>
+            <Typography variant="body1" color="text.secondary">
+              <ShoppingBasketIcon className={classes.icon} />
+              ประเภทสินค้า: {product?.category?.name}
+            </Typography>
+
+            <Typography variant="body1" color="text.secondary">
+              <StoreIcon className={classes.icon} />
+              ชื่อกลุ่มผู้ผลิตหรือร้านค้า: {product?.groupData?.groupName}
+            </Typography>
+
+            <Typography variant="h6" component="div" className={classes.title}>
+              รายละเอียดเพิ่มเติม
+            </Typography>
+
+            <Typography variant="body1" color="text.secondary">
+              {product?.desc}
             </Typography>
           </Grid>
-          <Grid item>
-            <StyledTypography gutterBottom className={classes.colorScheme}>
-              {product?.colorScheme?.hex}
-            </StyledTypography>
-          </Grid>
-          <Grid item>
-            <StyledTypography gutterBottom className={classes.colorScheme}>
-              รหัสสี {product?.colorScheme?.id}
-            </StyledTypography>
-          </Grid>
         </Grid>
-        <Typography variant="body1" color="text.secondary">
-          <ShoppingBasketIcon className={classes.icon} />
-          ประเภทสินค้า: {product?.category?.name}
-        </Typography>
-
-        <Typography variant="body1" color="text.secondary">
-          <StoreIcon className={classes.icon} />
-          ชื่อกลุ่มผู้ผลิตหรือร้านค้า: {product?.groupData?.groupName}
-        </Typography>
-
-        <Typography variant="h6" component="div" className={classes.title}>
-          รายละเอียดเพิ่มเติม
-        </Typography>
-
-        <Typography variant="body1" color="text.secondary">
-          {product?.desc}
-        </Typography>
-      </Grid>
-    </Grid>
-  </Box>
-</Box>
-
+      </Box>
+    </Box>
   );
 
   const renderProducerTab = () => (
     <Box p={2}>
-    
       <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Paper
-              sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}
-            >
+        <Grid item xs={12}>
+          <Paper
+            sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}
+          >
+            {isSmallDevice ? (
+              <ShoppingBasketIcon
+                sx={{ fontSize: "1.5rem", marginLeft: "8px" }}
+              />
+            ) : (
+              <ShoppingBasketIcon
+                sx={{ fontSize: "2.5rem", marginLeft: "16px" }}
+              />
+            )}
+            <React.Fragment>
               {isSmallDevice ? (
-                <ShoppingBasketIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+                <Typography
+                  sx={{
+                    fontWeight: "bold",
+                    alignSelf: "center",
+                  }}
+                >
+                  {" "}
+                  หน้าข้อมูลกลุ่มผู้ผลิต : {product?.groupData?.groupName}
+                </Typography>
               ) : (
-                <ShoppingBasketIcon sx={{ fontSize: "2.5rem", marginLeft: "16px" }} />
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontWeight: "bold",
+                    alignSelf: "center",
+                  }}
+                >
+                  {" "}
+                  หน้าข้อมูลกลุ่มผู้ผลิต : {product?.groupData?.groupName}
+                </Typography>
               )}
-              <React.Fragment>
-                {isSmallDevice ? (
-                  <Typography
-                    sx={{
-                      fontWeight: "bold",
-                      alignSelf: "center",
-                    }}
-                  >
-                    {" "}
-                    หน้าข้อมูลกลุ่มผู้ผลิต : {product?.groupData?.groupName} 
-                  </Typography>
-				  
-                ) : (
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      fontWeight: "bold",
-                      alignSelf: "center",
-                    }}
-                  >
-                    {" "}
-                    หน้าข้อมูลกลุ่มผู้ผลิต : {product?.groupData?.groupName} 
-                  </Typography>
-                )}
-              </React.Fragment>
-            </Paper>
-          </Grid>
+            </React.Fragment>
+          </Paper>
         </Grid>
+      </Grid>
 
-     
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={2} style={{ marginTop: "16px" }}>
           <Grid item xs={12} md={12} lg={12}>
@@ -631,11 +642,11 @@ function UserPanelProduct({ product }: Props) {
 
   return (
     <MainLayout>
-       <NextSeo
-            title={`รายละเอียดสินค้า ${product?.name}`}
-            description={`หน้าสินค้าทั้งหมดของกลุ่มผู้ผลิตหรือร้านค้าผ้าย้อมคราม ชื่อกลุ่ม ${product?.groupData?.groupName} ประเภทกลุ่ม ${product?.groupData?.groupType} ชื่อสินค้า ${product?.name} รายละเอียด ${product?.desc}`}
-          />
-        <Box sx={{ flexGrow: 1, p: 5 }}> 
+      <NextSeo
+        title={`รายละเอียดสินค้า ${product?.name}`}
+        description={`หน้าสินค้าทั้งหมดของกลุ่มผู้ผลิตหรือร้านค้าผ้าย้อมคราม ชื่อกลุ่ม ${product?.groupData?.groupName} ประเภทกลุ่ม ${product?.groupData?.groupType} ชื่อสินค้า ${product?.name} รายละเอียด ${product?.desc}`}
+      />
+      <Box sx={{ flexGrow: 1, p: 5 }}>
         <Paper>
           <Tabs
             value={tabIndex}
@@ -649,25 +660,28 @@ function UserPanelProduct({ product }: Props) {
           </Tabs>
           {tabIndex === 0 && renderProductTab()}
           {tabIndex === 1 && renderProducerTab()}
-         
-		<Box display="flex" justifyContent="space-between" padding={2}>
-          <Box display="flex" gap="8px">
-            <FacebookShareButton url={shareUrl} quote={shareTitle}>
-              <FacebookIcon size={32} round />
-            </FacebookShareButton>
-            <TwitterShareButton url={shareUrl} title={shareTitle}>
-              <TwitterIcon size={32} round />
-            </TwitterShareButton>
-            <LinkedinShareButton url={shareUrl} title={shareTitle}>
-              <LinkedinIcon size={32} round />
-            </LinkedinShareButton>
+
+          <Box display="flex" justifyContent="space-between" padding={2}>
+            <Box display="flex" gap="8px">
+              <FacebookShareButton url={shareUrl} quote={shareTitle}>
+                <FacebookIcon size={32} round />
+              </FacebookShareButton>
+              <TwitterShareButton url={shareUrl} title={shareTitle}>
+                <TwitterIcon size={32} round />
+              </TwitterShareButton>
+              <LinkedinShareButton url={shareUrl} title={shareTitle}>
+                <LinkedinIcon size={32} round />
+              </LinkedinShareButton>
+            </Box>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleBackButtonClick}
+            >
+              กลับสู่ก่อนหน้า
+            </Button>
           </Box>
-          <Button variant="contained" color="primary" onClick={handleBackButtonClick}>
-            กลับสู่ก่อนหน้า
-          </Button>
-        </Box>
         </Paper>
-    
       </Box>
     </MainLayout>
   );

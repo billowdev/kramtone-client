@@ -206,21 +206,21 @@ export default function Footer({}: Props) {
                 }}
               >
                 <Box sx={{ marginRight: "16px" }}>
-                  <Link href="/product" style={footerLinkStyle}>
+                  <Link href="/privacy-policy" style={footerLinkStyle}>
                     <Typography align={isSmallDevice ? "center" : "right"}>
                       นโยบายความเป็นส่วนตัว
                     </Typography>
                   </Link>
                 </Box>
                 <Box sx={{ marginRight: "16px" }}>
-                  <Link href="/group-data" style={footerLinkStyle}>
+                  <Link href="/terms-and-conditions" style={footerLinkStyle}>
                     <Typography align={isSmallDevice ? "center" : "right"}>
                       ข้อตกลงและเงื่อนไข
                     </Typography>
                   </Link>
                 </Box>
 
-                <Link href="/group-data" style={footerLinkStyle}>
+                <Link href="/group" style={footerLinkStyle}>
                   <Typography align={isSmallDevice ? "center" : "right"}>
                     เกี่ยวกับเรา
                   </Typography>

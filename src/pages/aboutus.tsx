@@ -19,7 +19,6 @@ const AboutUs = ({}: Props) => {
           position="relative"
         />
       </Paper>
-      
     </Layout>
   );
 };
