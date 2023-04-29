@@ -12,7 +12,6 @@ import { decryptAES } from '@/common/utils/aes-encrypt.util';
 import { API_REQUEST_SUCCESS } from 'common/constants/api.constant';
 import { ISignIn } from 'models/auth.model';
 import axios from 'axios';
-import Cookies from 'universal-cookie';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.query.nextauth) {
