@@ -243,12 +243,12 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 
 	const [showConfirmation, setShowConfirmation] = useState(false);
 
-	const handleEditProduct = () => {
+	const handleAddProduct = () => {
 		// show confirmation dialog before editing product
 		setShowConfirmation(true);
 	};
 
-	const handleConfirmEditProduct = async () => {
+	const handleConfirmAddProduct = async () => {
 		try {
 			const values = addValue
 			const formData = new FormData();
@@ -290,7 +290,7 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 		setShowConfirmation(false);
 	};
 
-	const handleCancelEditProduct = () => {
+	const handleCancelAddProduct = () => {
 		setShowConfirmation(false);
 	};
 	  
@@ -359,7 +359,7 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 				}}
 				onSubmit={(values, { setSubmitting }) => {
 					setAddValue(values)
-					handleEditProduct()
+					handleAddProduct()
 					// handleSubmit(values); // call handleSubmit function here
 					setSubmitting(false);
 				}}
@@ -528,8 +528,8 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
         title="เพิ่มข้อมูล"
         message="ยืนยันการเพิ่มข้อมูล?"
         open={showConfirmation}
-        onClose={handleCancelEditProduct}
-        onConfirm={handleConfirmEditProduct}
+        onClose={handleCancelAddProduct}
+        onConfirm={handleConfirmAddProduct}
       />
 			{categoryModal()}
 			{colorSchemeModal()}

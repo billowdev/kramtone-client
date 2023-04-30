@@ -58,6 +58,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 // import EditDialog from "./components"
 import { makeStyles } from "@material-ui/core";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import toast from "react-hot-toast";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -71,7 +72,7 @@ import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
 import Swal from "sweetalert2";
 import { productImageURL } from "@/common/utils/utils";
-
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -151,6 +152,32 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedCategory, setSelectedCategory] = React.useState<ProductPayload | null>(null);
 
+
+  const [showConfirmation, setShowConfirmation] = React.useState(false);
+
+  const handleDeleteProduct =  () => {
+    setShowConfirmation(true);
+  }
+    const [deleteId, setDeleteId] = React.useState("")
+
+  const handleConfirmDeleteProduct = async () => {
+    // console.log(deleteId, accessToken)
+    const response = await dispatch(deleteProductAction({ deleteId, gid, accessToken }))
+      if (response.meta.requestStatus === "fulfilled") {
+        toast.success("ลบข้อมูลสินค้าสำเร็จ")
+        setTimeout(() => {
+          window.location.reload(); // Reload the page after 2 seconds
+        }, 200);
+        // router.push("/panel/user/manage-product");
+      }else{
+       toast.error("ลบข้อมูลสินค้าไม่สำเร็จ โปรดลองอีกครั้ง")
+      }
+    setShowConfirmation(false);
+  };
+  
+  const handleCancelDeleteProduct = () => {
+    setShowConfirmation(false);
+  };
 
   React.useEffect(() => {
     dispatch(getAllProductByGroupAction(gid!));
@@ -280,6 +307,7 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
         );
       },
     },
+    // handleDeleteProduct( id: row.id, accessToken)
     {
       headerName: "การดำเนินการ",
       field: ".",
@@ -297,6 +325,17 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
             <DeleteIcon fontSize="inherit" />
           </IconButton> */}
           <IconButton
+            aria-label="ลบข้อมูล"
+            size="large"
+            onClick={()=>{
+              setDeleteId(row.id)
+              handleDeleteProduct()
+            }}
+            >
+            <DeleteIcon fontSize="inherit" />
+            </IconButton>
+
+          {/* <IconButton
             aria-label="ลบข้อมูล"
             size="large"
             onClick={() => {
@@ -327,7 +366,8 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
             }}
           >
             <DeleteIcon fontSize="inherit" />
-          </IconButton>
+          </IconButton> */}
+
           <IconButton
             aria-label="แก้ไขข้อมูล"
             size="large"
@@ -351,77 +391,87 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
       ),
     },
   ];
+
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 
 
 
 
   return (
-<Layout>
-<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-     <Grid container spacing={3}>
-         <Grid item xs={12}>
-         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px'}}>
-         {isSmallDevice ? (
-             <ShoppingBagIcon sx={{fontSize:'1.5rem', marginLeft:'8px'}} />
-           ) : (
-             <ShoppingBagIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
-           )}
+    <Layout>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Grid container spacing={3}>
+            <Grid item xs={12}>
+            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px'}}>
+            {isSmallDevice ? (
+                <ShoppingBagIcon sx={{fontSize:'1.5rem', marginLeft:'8px'}} />
+              ) : (
+                <ShoppingBagIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
+              )}
 
-          
-         <React.Fragment> 
-           {isSmallDevice ? (
-             <Typography
-            sx={{
-               fontWeight: 'bold',  alignSelf:'center',
-           }}
-             > หน้าจัดการข้อมูลสินค้า</Typography>
-           ) : (
-             <Typography
-             variant='h5' sx={{
-               fontWeight: 'bold',  alignSelf:'center',
-           }}
-             > จัดการข้อมูลสินค้า</Typography>
-           )}
-         </React.Fragment>
-         </Paper>
-       </Grid> 
-       <Grid item xs={12} md={12} lg={12}>
-           <DataGrid
-           sx={{ backgroundColor: "white", width: "100%", height: "100%", minHeight: "200px" }}
-           rows={productData ?? []}
-           columns={columns}
-           // pageSize={25}
-           // rowsPerPageOptions={[25]}
-           localeText={
-            { noRowsLabel: "ไม่พบข้อมูล",}
-             }
-           components={{
-             Toolbar: CustomToolbar,
-           }}
-           componentsProps={{
-             panel: {
-               anchorEl: filterButtonEl,
-             },
-             toolbar: {
-               setFilterButtonEl,
-             },
-           }}
-         />
-   
-       </Grid>
-   
-     </Grid>
-   
-   </Container>
 
-   {/* <CategoryDialog category={selectedCategory} open={viewCategoryOpen} onClose={handleViewCategoryClose} /> */}
-   {showEditDialog()}
+            <React.Fragment> 
+              {isSmallDevice ? (
+                <Typography
+                sx={{
+                  fontWeight: 'bold',  alignSelf:'center',
+              }}
+                > หน้าจัดการข้อมูลสินค้า</Typography>
+              ) : (
+                <Typography
+                variant='h5' sx={{
+                  fontWeight: 'bold',  alignSelf:'center',
+              }}
+                > จัดการข้อมูลสินค้า</Typography>
+              )}
+            </React.Fragment>
+            </Paper>
+          </Grid> 
+          <Grid item xs={12} md={12} lg={12}>
+              <DataGrid
+              sx={{ backgroundColor: "white", width: "100%", height: "100%", minHeight: "200px" }}
+              rows={productData ?? []}
+              columns={columns}
+              // pageSize={25}
+              // rowsPerPageOptions={[25]}
+              localeText={
+                { noRowsLabel: "ไม่พบข้อมูล",}
+                }
+              components={{
+                Toolbar: CustomToolbar,
+              }}
+              componentsProps={{
+                panel: {
+                  anchorEl: filterButtonEl,
+                },
+                toolbar: {
+                  setFilterButtonEl,
+                },
+              }}
+            />
+      
+          </Grid>
+      
+        </Grid>
+      
+      </Container>
 
-</Layout>
+      {/* <CategoryDialog category={selectedCategory} open={viewCategoryOpen} onClose={handleViewCategoryClose} /> */}
+      {showEditDialog()}
+
+      {/* show confirmation dialog if user clicks Edit button */}
+      <ConfirmationDialog
+        title="ลบข้อมูลสินค้า"
+        message="ยืนยันการลบข้อมูลสินค้า"
+        open={showConfirmation}
+        onClose={handleCancelDeleteProduct}
+        onConfirm={handleConfirmDeleteProduct}
+      />
+
+    </Layout>
 
   )
-}
+            }
 
 export default withAuth(UserPanelManageCategory)
 

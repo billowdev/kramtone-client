@@ -52,7 +52,7 @@ export const updateProduct = async (id: string, data: FormData, accessToken: str
 };
 
 export const deleteProduct = async (id: string, accessToken: string): Promise<void> => {
-	await httpClient.delete(`/products/${id}`, {
+	await httpClient.delete(`/products/delete-product/${id}`, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
 		},
