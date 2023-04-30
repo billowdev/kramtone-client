@@ -18,6 +18,11 @@ import MainLayout from '@/components/MainLayout';
 import { styled } from "@mui/material/styles";
 import router from "next/router";
 import Link from "next/link"
+import { Pagination } from '@mui/material';
+import { TextField } from '@material-ui/core';
+  import { makeStyles } from "@material-ui/core/styles";
+
+
 const CustomTab = styled(Tab)(({ theme }) => ({
 	border: `1px solid ${theme.palette.divider}`,
 	borderBottom: "none",
@@ -28,13 +33,22 @@ const CustomTab = styled(Tab)(({ theme }) => ({
 	  borderBottom: "1px solid transparent",
 	},
   }));
+
+  const useStyles = makeStyles((theme) => ({
+    searchContainer: {
+      marginBottom: theme.spacing(2),
+    },
+  }));
+
 const NaturalColorTonesPage = () => {
+  const classes = useStyles();
   const theme = useTheme();
   const [tabIndex, setTabIndex] = useState(0);
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
   };
+
 
   const [colorSchemes, setColorSchemes] = useState<ColorSchemePayload[]>([]);
 
@@ -50,51 +64,109 @@ const NaturalColorTonesPage = () => {
     fetchData();
   }, []);
  
+  const [search, setSearch] = useState("");
+  const [filteredColorSchemes, setFilteredColorSchemes] = useState<ColorSchemePayload[]>([]);
+  const [page, setPage] = useState(1);
+  const [schemesPerPage, setSchemesPerPage] = useState(10);
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+  useEffect(() => {
+    setFilteredColorSchemes(
+      colorSchemes.filter((scheme) =>
+        scheme.nameEN.toLowerCase().includes(search.toLowerCase()) ||
+        scheme.nameTH.toLowerCase().includes(search.toLowerCase()) ||
+        scheme.hex.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search, colorSchemes]);
+      
+
   const renderColorSchemeTab = () => {
     return (
       <Box p={2}>
-      <Grid container spacing={3}>
-    <Grid item xs={12}>
-      <Paper sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}>
-        {isSmallDevice ? (
-          <ColorLensIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
-        ) : (
-          <ColorLensIcon sx={{ fontSize: "2.5rem", marginLeft: "16px" }} />
-        )}
-        <Typography
-          variant={isSmallDevice ? "subtitle1" : "h5"}
-          sx={{
-            fontWeight: "bold",
-            alignSelf: "center",
-          }}
-        >
-          หน้าข้อมูลโทนสี
-        </Typography>
-      </Paper>
-    </Grid>
-  </Grid>
-	<Grid container spacing={2}>
-	{colorSchemes.map((scheme: any) => (
-	  <Grid key={scheme.id} item xs={12} sm={6}>
-		<Card sx={{ display: 'flex' }}>
-		  <div
-			style={{
-			  width: 50,
-			  backgroundColor: scheme.hex,
-			}}
-		  />
-		  <CardContent>
-			<Typography variant="h5">{scheme.nameEN}</Typography>
-			<Typography variant="subtitle1">{scheme.nameTH}</Typography>
-			<Typography variant="subtitle2">{scheme.hex}</Typography>
-		  </CardContent>
-		</Card>
-	  </Grid>
-	))}
-  </Grid>
-  </Box>
-    )
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Paper
+              sx={{
+                p: 2,
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '16px',
+              }}
+            >
+              {isSmallDevice ? (
+                <ColorLensIcon sx={{ fontSize: '1.5rem', marginLeft: '8px' }} />
+              ) : (
+                <ColorLensIcon sx={{ fontSize: '2.5rem', marginLeft: '16px' }} />
+              )}
+              <Typography
+                variant={isSmallDevice ? 'subtitle1' : 'h5'}
+                sx={{
+                  fontWeight: 'bold',
+                  alignSelf: 'center',
+                }}
+              >
+                หน้าข้อมูลโทนสี
+              </Typography>
+            </Paper>
+          </Grid>
+        </Grid>
+        <React.Fragment>
+          <Grid container spacing={2}>
+            <Grid
+              item
+              xs={12}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <TextField
+                label='ค้นหาโทนสี'
+                variant='outlined'
+                value={search}
+                onChange={handleSearchChange}
+                fullWidth
+                style={{ height: '100%', marginTop: 16 }}
+              />
+            </Grid>
+            {filteredColorSchemes
+              .slice((page - 1) * schemesPerPage, page * schemesPerPage)
+              .map((scheme: any) => (
+                <Grid key={scheme.id} item xs={12} sm={6}>
+                  <Card sx={{ display: 'flex' }}>
+                    <div
+                      style={{
+                        width: 50,
+                        backgroundColor: scheme.hex,
+                      }}
+                    />
+                    <CardContent>
+                      <Typography variant='h5'>{scheme.nameEN}</Typography>
+                      <Typography variant='subtitle1'>{scheme.nameTH}</Typography>
+                      <Typography variant='subtitle2'>{scheme.hex}</Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+          </Grid>
+          <Pagination
+            count={Math.ceil(filteredColorSchemes.length / schemesPerPage)}
+            page={page}
+            onChange={handlePageChange}
+            color='primary'
+            style={{ marginTop: '16px' }}
+          />
+        </React.Fragment>
+      </Box>
+    );
   };
+  
 
   const renderHistoryOfColorScheme = () => {
     return (
