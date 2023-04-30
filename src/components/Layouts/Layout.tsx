@@ -219,7 +219,7 @@ function Layout({ children }: LayoutProps) {
             }}
           >
         <IconButton size="small">
-           {userData.activated ? "หน้าจัดการข้อมูล (บัญชียืนยันตัวตนแล้ว)" : "รอการยืนยัน"} 
+           {userData.activated ? "ระบบจัดการข้อมูล" : "รอการยืนยัน"} 
         </IconButton>
 
             <IconButton onClick={toggleDrawer}>
@@ -244,51 +244,68 @@ function Layout({ children }: LayoutProps) {
                   text="จัดการข้อมูลกลุ่ม"
                   open={open}
                 />
-      {userData && userData.activated  && (
-         <React.Fragment>
-          <CustomMenuListItem   
-          href="/panel/user/manage-product"
-            icon={ShoppingBagIcon}
-            text="จัดการสินค้า"
-            open={open}
+                  {userData && userData.activated  && (
+                    <React.Fragment>
+                      <CustomMenuListItem   
+                      href="/panel/user/manage-product"
+                        icon={ShoppingBagIcon}
+                        text="จัดการสินค้า"
+                        open={open}
 
-          />
-            <CustomMenuListItem   
-            href="/panel/user/manage-category"
-            icon={CheckroomIcon}
-            text="จัดการประเภทสินค้า"
-            open={open}
-          />
-            <CustomMenuListItem   
-                href="/panel/user/manage-colorscheme"
-                  icon={ColorLensIcon}
-                  text="จัดการโทนสีที่มีในร้าน"
-                  open={open}
-                />
-         </React.Fragment>
-      )}
-             
-      
+                      />
+                        <CustomMenuListItem   
+                        href="/panel/user/manage-category"
+                        icon={CheckroomIcon}
+                        text="จัดการประเภทสินค้า"
+                        open={open}
+                      />
+                        <CustomMenuListItem   
+                            href="/panel/user/manage-colorscheme"
+                              icon={ColorLensIcon}
+                              text="จัดการโทนสีที่มีในร้าน"
+                              open={open}
+                            />
+                    </React.Fragment>
+                  )}
+                        
+                  
+         
          
                </React.Fragment>
 
                 )}
 
             <Divider sx={{ my: 1 }} />
+
+
+            
+            {userData && userData.role === "admin" && (
+                     
+                     <React.Fragment>
+                           <CustomMenuListItem   
+                        href="/panel/admin/manage/category"
+                        icon={CheckroomIcon}
+                        text="จัดการประเภทสินค้า"
+                        open={open}
+                      />
+                      <CustomMenuListItem   
+                            href="/panel/admin/manage/color-scheme"
+                              icon={ColorLensIcon}
+                              text="จัดการโทนสีที่มีในร้าน"
+                              open={open}
+                            />
+
+                     </React.Fragment>
+                     )}
+     
+
+
             <CustomMenuListItem
                         href="/panel/user/manage-profile"
                         icon={SettingsIcon}
                         text="ตั้งค่าบัญชีผู้ใช้"
                         open={open}
                       />
-{/* 
-            {userData && userData.role === "admin" && (
-                     
-                          
-                  
-
-                )} */}
-
 
            
 

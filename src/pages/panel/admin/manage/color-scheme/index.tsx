@@ -7,7 +7,7 @@ import { useTheme } from '@material-ui/core/styles';
 
 type Props = {}
 
-function UserPanelManageColorScheme({}: Props) {
+function AdminPanelManageColorScheme({}: Props) {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down('xs'));
 
@@ -63,4 +63,4 @@ function UserPanelManageColorScheme({}: Props) {
   )
 }
 
-export default UserPanelManageColorScheme
+export default AdminPanelManageColorScheme
