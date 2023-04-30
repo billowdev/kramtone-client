@@ -17,6 +17,7 @@ import * as authService from "@/services/auth.service"
 import { CloudUpload } from '@material-ui/icons';
 import { Delete } from '@material-ui/icons';
 import * as colorSchemeService from "@/services/color-scheme.service"
+import ConfirmationDialog from "@/components/ConfirmationDialog"
 
 import {
 	Paper,
@@ -55,6 +56,7 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 	const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 	const [categories, setCategories] = useState<CategoryPayload[]>([]);
     const [colorSchemes, setColorSchemes] = useState<ColorSchemePayload[]>([]);
+
 
 
 	useEffect(() => {
@@ -188,8 +190,67 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 	  };
 
 
-	  const handleSubmit = async (values: Product) => {
+	//   const handleSubmit = async (values: Product) => {
+	// 	try {
+	// 		const formData = new FormData();
+	// 		if (images) {
+	// 			for (let i = 0; i < images.length; i++) {
+	// 				formData.append("images", images[i]);
+	// 			}
+	// 		}
+		
+	// 		formData.append(
+	// 			"product",
+	// 			JSON.stringify({
+	// 				name: values.name,
+	// 				desc: values.desc,
+	// 				price: values.price,
+	// 				categoryId: selectedCategory && selectedCategory?.id,
+	// 				groupId: gid,
+	// 				colorSchemeId: selectedColorScheme && selectedColorScheme?.id
+	// 			})
+	// 		);
+
+	// 		const result = await Swal.fire({
+	// 			title: 'เพิ่มข้อมูล?',
+	// 			text: `คุณต้องการเพิ่มข้อมูลสินค้า ${values.name}`,
+	// 			icon: 'question',
+	// 			showCancelButton: true,
+	// 			confirmButtonText: 'ใช่, ยืนยัน!',
+	// 			cancelButtonText: 'ไม่, ยกเลิก'
+	// 		})
+
+	// 		if (result.isConfirmed) {
+	// 			const createStatus = await dispatch(
+	// 				createProductAction({ body: formData, accessToken })
+	// 			);
+
+	// 			if (createStatus.meta.requestStatus === "fulfilled") {
+	// 				toast.success("เพิ่มข้อมูลประเภทสินค้าสำเร็จ");
+	// 				router.push("/panel/user/manage-product");
+	// 			} else {
+	// 				toast.error(
+	// 					"เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง"
+	// 				);
+	// 			}
+	// 		}
+	// 	} catch (error) {
+	// 		toast.error("เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ");
+	// 		console.error("An error occurred:", error);
+	// 		// Handle the error here
+	// 	}
+	// };
+
+	const [showConfirmation, setShowConfirmation] = useState(false);
+
+	const handleEditProduct = () => {
+		// show confirmation dialog before editing product
+		setShowConfirmation(true);
+	};
+
+	const handleConfirmEditProduct = async () => {
 		try {
+			const values = addValue
 			const formData = new FormData();
 			if (images) {
 				for (let i = 0; i < images.length; i++) {
@@ -209,37 +270,29 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 				})
 			);
 
-			const result = await Swal.fire({
-				title: 'เพิ่มข้อมูล?',
-				text: `คุณต้องการเพิ่มข้อมูลสินค้า ${values.name}`,
-				icon: 'question',
-				showCancelButton: true,
-				confirmButtonText: 'ใช่, ยืนยัน!',
-				cancelButtonText: 'ไม่, ยกเลิก'
-			})
+			const createStatus = await dispatch(
+				createProductAction({ body: formData, accessToken })
+			);
 
-			if (result.isConfirmed) {
-				const createStatus = await dispatch(
-					createProductAction({ body: formData, accessToken })
+			if (createStatus.meta.requestStatus === "fulfilled") {
+				toast.success("เพิ่มข้อมูลประเภทสินค้าสำเร็จ");
+				router.push("/panel/user/manage-product");
+			} else {
+				toast.error(
+					"เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง"
 				);
-
-				if (createStatus.meta.requestStatus === "fulfilled") {
-					toast.success("เพิ่มข้อมูลประเภทสินค้าสำเร็จ");
-					router.push("/panel/user/manage-product");
-				} else {
-					toast.error(
-						"เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง"
-					);
-				}
 			}
 		} catch (error) {
 			toast.error("เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ");
 			console.error("An error occurred:", error);
 			// Handle the error here
 		}
+		setShowConfirmation(false);
 	};
 
-
+	const handleCancelEditProduct = () => {
+		setShowConfirmation(false);
+	};
 	  
 	const categoryModal = () => {
 
@@ -305,8 +358,9 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 					return errors;
 				}}
 				onSubmit={(values, { setSubmitting }) => {
-					// setAddValue(values)
-					handleSubmit(values); // call handleSubmit function here
+					setAddValue(values)
+					handleEditProduct()
+					// handleSubmit(values); // call handleSubmit function here
 					setSubmitting(false);
 				}}
 			>
@@ -314,7 +368,7 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 					values,
 					handleChange,
 					handleBlur,
-
+					isValid,
 					isSubmitting,
 					setFieldValue,
 				}) => (
@@ -389,61 +443,61 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
   </Button>
 </div>
 
-								<div style={{ marginTop: 16 }}>
-									<input
-										type="file"
-										onChange={(event) => handleImageChange(event, setFieldValue, values)}
-										name="images"
-										multiple
-										accept="image/*"
-										id="files"
-										style={{ display: 'none' }}
+							<div style={{ marginTop: 16 }}>
+								<input
+									type="file"
+									onChange={(event) => handleImageChange(event, setFieldValue, values)}
+									name="images"
+									multiple
+									accept="image/*"
+									id="files"
+									style={{ display: 'none' }}
+								/>
+
+								<label htmlFor="files" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+									<CloudUpload style={{ marginRight: 10 }} />
+									<span style={{ color: '#00B0CD' }}>เพิ่มรูปภาพ</span>
+								</label>
+
+								{previewImages.map((url, index) => (
+									<div key={index} style={{ position: 'relative', display: 'inline-block' }}>
+									<Image
+									src={url}
+									alt="preview"
+									width={150}
+									height={150}
+									objectFit="cover"
+									className="preview-image"
 									/>
+										<button
+											onClick={() => {
+												const newImages = [...images];
+												newImages.splice(index, 1);
+												setImages(newImages);
 
-									<label htmlFor="files" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-										<CloudUpload style={{ marginRight: 10 }} />
-										<span style={{ color: '#00B0CD' }}>เพิ่มรูปภาพ</span>
-									</label>
-
-									{previewImages.map((url, index) => (
-										<div key={index} style={{ position: 'relative', display: 'inline-block' }}>
-										<Image
-										src={url}
-										alt="preview"
-										width={150}
-										height={150}
-										objectFit="cover"
-										className="preview-image"
-										/>
-											<button
-												onClick={() => {
-													const newImages = [...images];
-													newImages.splice(index, 1);
-													setImages(newImages);
-
-													const newPreviews = [...previewImages];
-													newPreviews.splice(index, 1);
-													setPreviewImages(newPreviews);
-												}}
-												style={{
-													position: 'absolute',
-													top: 0,
-													right: 0,
-													backgroundColor: 'transparent',
-													border: 'none',
-													color: 'red',
-													cursor: 'pointer',
-												}}
-											>
-												<Delete style={{ color: 'red' }} />
-											</button>
-										</div>
-									))}
-								</div>
+												const newPreviews = [...previewImages];
+												newPreviews.splice(index, 1);
+												setPreviewImages(newPreviews);
+											}}
+											style={{
+												position: 'absolute',
+												top: 0,
+												right: 0,
+												backgroundColor: 'transparent',
+												border: 'none',
+												color: 'red',
+												cursor: 'pointer',
+											}}
+										>
+											<Delete style={{ color: 'red' }} />
+										</button>
+									</div>
+								))}
+							</div>
 							</CardContent>
 							<CardActions>
 								<Button
-									disabled={isSubmitting}
+									disabled={isSubmitting || !isValid}
 									fullWidth
 									variant="contained"
 									color="primary"
@@ -470,6 +524,13 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
    
    </Container>
 
+   <ConfirmationDialog
+        title="เพิ่มข้อมูล"
+        message="ยืนยันการเพิ่มข้อมูล?"
+        open={showConfirmation}
+        onClose={handleCancelEditProduct}
+        onConfirm={handleConfirmEditProduct}
+      />
 			{categoryModal()}
 			{colorSchemeModal()}
 
