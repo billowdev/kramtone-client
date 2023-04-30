@@ -152,7 +152,7 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
 
   React.useEffect(() => {
     dispatch(getAllProductByGroupAction(gid!));
-  }, [dispatch]);
+  }, [dispatch, gid]);
 
   const [filterButtonEl, setFilterButtonEl] =
     React.useState<HTMLButtonElement | null>(null);

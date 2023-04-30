@@ -29,7 +29,11 @@ import {
   GridToolbarDensitySelector,
 
 } from "@mui/x-data-grid";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import {CategoryDialog} from "@/components/Panel/CategoryDialog"
+
 import {
+  Paper,
   Box,
   Button,
   Dialog,
@@ -232,6 +236,18 @@ function UserPanelManageCategory({ accessToken}: Props) {
     );
   };
 
+      
+  const [viewCategoryOpen, setViewCategoryOpen] = React.useState(false);
+
+  const handleViewCategoryOpen = (row:any) => {
+    setSelectedCategory(row)
+    setViewCategoryOpen(true);
+  };
+
+  const handleViewCategoryClose = () => {
+    setViewCategoryOpen(false);
+  };
+
 
   const columns: GridColDef[] = [
     {
@@ -285,35 +301,68 @@ function UserPanelManageCategory({ accessToken}: Props) {
 
   return (
     <Layout>
-      <Container sx={{
-        marginLeft: isSmallDevice ? 0 : 2,
-        marginTop: isSmallDevice ? 0 : 4,
-      }}>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+         <Grid container spacing={3}>
+             <Grid item xs={12}>
+             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px'}}>
+             {isSmallDevice ? (
+                 <ShoppingBagIcon sx={{fontSize:'1.5rem', marginLeft:'8px'}} />
+               ) : (
+                 <ShoppingBagIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
+               )}
 
-        {/* Summary Icons */}
-        <DataGrid
-          sx={{ backgroundColor: "white", height: "100vh", width: "80vw" }}
-          rows={categoryData?.categoryArray ?? []}
-          columns={columns}
-          // pageSize={25}
-          // rowsPerPageOptions={[25]}
-          components={{
-            Toolbar: CustomToolbar,
-          }}
-          componentsProps={{
-            panel: {
-              anchorEl: filterButtonEl,
-            },
-            toolbar: {
-              setFilterButtonEl,
-            },
-          }}
-        />
-      </Container>
+              
+             <React.Fragment> 
+               {isSmallDevice ? (
+                 <Typography
+                sx={{
+                   fontWeight: 'bold',  alignSelf:'center',
+               }}
+                 > หน้าจัดการข้อมูลประเภทสินค้า</Typography>
+               ) : (
+                 <Typography
+                 variant='h5' sx={{
+                   fontWeight: 'bold',  alignSelf:'center',
+               }}
+                 > จัดการข้อมูลประเภทสินค้า</Typography>
+               )}
+             </React.Fragment>
+             </Paper>
+           </Grid> 
+           <Grid item xs={12} md={12} lg={12}>
+           
+               <DataGrid
+               sx={{ backgroundColor: "white", width: "100%", height: "100%", minHeight: "200px" }}
+               rows={categoryData?.categoryArray ?? []}
+               columns={columns}
+               // pageSize={25}
+               // rowsPerPageOptions={[25]}
+               localeText={
+                { noRowsLabel: "ไม่พบข้อมูล",}
+                 }
+               components={{
+                 Toolbar: CustomToolbar,
+               }}
+               componentsProps={{
+                 panel: {
+                   anchorEl: filterButtonEl,
+                 },
+                 toolbar: {
+                   setFilterButtonEl,
+                 },
+               }}
+             />
+       
+           </Grid>
+       
+         </Grid>
+       
+       </Container>
 
-  
+       <CategoryDialog category={selectedCategory} open={viewCategoryOpen} onClose={handleViewCategoryClose} />
 {showEditDialog()}
-    </Layout>
+
+</Layout>
   )
 }
 

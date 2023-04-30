@@ -2,10 +2,10 @@ import React from 'react';
 import { Divider, Dialog, DialogTitle, DialogContent, Typography, DialogActions, Button } from '@mui/material';
 import Image from "next/image"
 import { categoryImageURL } from "@/common/utils/utils";
-import {CategoryPayload } from "@/model/category.model"
+import {CategoryPayload } from "@/models/category.model"
 
 interface CategoryDialogProps {
-  category: CategoryPayload;
+  category: CategoryPayload | null;
   open: boolean;
   onClose: () => void;
 }

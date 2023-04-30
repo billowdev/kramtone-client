@@ -35,6 +35,7 @@ export interface GroupDataResponse {
 	lng: string
 	createdAt?: string
 	updatedAt?: string
+	verified?: boolean;
 	products?: ProductPayload[]
 	logoFile?: any | Blob;
 	logoObj?: URL | string;

@@ -355,11 +355,14 @@ const AddProductForm = ({ accessToken, categories, gid, colorSchemes }: AddProdu
 
 									{previewImages.map((url, index) => (
 										<div key={index} style={{ position: 'relative', display: 'inline-block' }}>
-											<img
-												src={url}
-												alt="preview"
-												style={{ maxWidth: 150, maxHeight: 150, margin: 10 }}
-											/>
+										<Image
+										src={url}
+										alt="preview"
+										width={150}
+										height={150}
+										objectFit="cover"
+										className="preview-image"
+										/>
 											<button
 												onClick={() => {
 													const newImages = [...images];

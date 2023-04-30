@@ -20,7 +20,7 @@ import Link from "next/link";
 import { signOut, authSelector } from "@/store/slices/auth.slice";
 import { groupDataSelector } from "@/store/slices/group-data.slice";
 import { makeStyles } from '@material-ui/core';
-
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
 import { useAppDispatch } from "@/store/store";
@@ -282,6 +282,13 @@ function Layout({ children }: LayoutProps) {
             {userData && userData.role === "admin" && (
                      
                      <React.Fragment>
+                        <CustomMenuListItem   
+                            href="/panel/admin/manage/user"
+                              icon={AccountBoxIcon}
+                              text="จัดการบัญชีผู้ใช้"
+                              open={open}
+                            />
+
                            <CustomMenuListItem   
                         href="/panel/admin/manage/category"
                         icon={CheckroomIcon}
@@ -291,7 +298,7 @@ function Layout({ children }: LayoutProps) {
                       <CustomMenuListItem   
                             href="/panel/admin/manage/color-scheme"
                               icon={ColorLensIcon}
-                              text="จัดการโทนสีที่มีในร้าน"
+                              text="จัดการโทนสี"
                               open={open}
                             />
 

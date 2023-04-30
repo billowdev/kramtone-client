@@ -142,7 +142,7 @@ const ColorSchemeFilterModal = () => {
       }
     }
     fetchData();
-  }, []);
+  }, [groupId]);
 
   const handleSearchInputChange = (
     event: React.ChangeEvent<HTMLInputElement>

@@ -120,26 +120,22 @@ function SignInPage({}: Props) {
   };
 
 // Save the user's username and password in local storage
-function rememberPassword(values: FormValues) {
-  localStorage.setItem('username', values.username);
-  localStorage.setItem('password', values.password);
-}
-
-// Check if the user's username and password are stored in local storage
-function checkRememberedPassword(setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void) {
-  const username = localStorage.getItem('username');
-  const password = localStorage.getItem('password');
-  if (username && password) {
-    // Set the field values with the saved information
-    setFieldValue('username', username);
-    setFieldValue('password', password);
-  }
-}
-
-// // Call the checkRememberedPassword function when the page loads
-// if (typeof window !== 'undefined') {
-//   window.addEventListener('load', checkRememberedPassword);
+// function rememberPassword(values: FormValues) {
+//   localStorage.setItem('username', values.username);
+//   localStorage.setItem('password', values.password);
 // }
+
+// // Check if the user's username and password are stored in local storage
+// function checkRememberedPassword(setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void) {
+//   const username = localStorage.getItem('username');
+//   const password = localStorage.getItem('password');
+//   if (username && password) {
+//     // Set the field values with the saved information
+//     setFieldValue('username', username);
+//     setFieldValue('password', password);
+//   }
+// }
+
   return (
     <MainLayout>
       <Grid container>
@@ -167,9 +163,9 @@ function checkRememberedPassword(setFieldValue: (field: string, value: any, shou
     const { setFieldValue } = props;
 
     // Call the checkRememberedPassword function when the component mounts
-    React.useEffect(() => {
-      checkRememberedPassword(setFieldValue);
-    }, []);
+    // React.useEffect(() => {
+    //   checkRememberedPassword(setFieldValue);
+    // }, []);
 
     return (
                   <Form>
@@ -226,7 +222,7 @@ function checkRememberedPassword(setFieldValue: (field: string, value: any, shou
                           }}
                         />
 
-<FormControlLabel
+          {/* <FormControlLabel
               control={
                 <Checkbox
                   name="remember"
@@ -242,13 +238,15 @@ function checkRememberedPassword(setFieldValue: (field: string, value: any, shou
                 />
               }
               label="จดจำรหัสผ่าน"
-            />
+            /> */}
 
-                        <Typography>
+                        {/* <Typography>
                           <Link href="#">ลืมรหัสผ่าน ?</Link>
-                        </Typography>
-                      </CardContent>
+                        </Typography> */}
 
+
+
+                      </CardContent>
                       <CardActions>
                        <Link href="/auth/signup" style={{display: 'contents'}}>
                        <Button

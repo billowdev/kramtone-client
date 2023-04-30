@@ -123,7 +123,8 @@ const fetchGroupData = async () => {
     }
   }
   fetchData();
-}, []);
+}, [categoryService, colorSchemeService, fetchGroupData]);
+
 
  // Refetch group data when selectedCategory or selectedColorScheme changes
  useEffect(() => {
@@ -242,13 +243,6 @@ const ColorSchemeFilterModal = () => {
     <MainLayout>
         <Box sx={{  p: 5 }}> 
 
-     
-    
-
-   {/* <Box position="absolute" zIndex="modal">
-  <ColorSchemeFilterModal />
-</Box> */}
-
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
     
       <Grid container spacing={2}>
@@ -303,8 +297,8 @@ const ColorSchemeFilterModal = () => {
     <ColorSchemeFilterModal />
 
     
-    <FormControl style={{ width: '60%' }}>
-  <InputLabel id="groups-per-page-label">Groups per page</InputLabel>
+    <FormControl style={{ width: '60%', marginTop: "16px", marginBottom: "16px" }}>
+  <InputLabel id="groups-per-page-label">จำนวนรายการที่จะแสดง</InputLabel>
   <Select
     labelId="groups-per-page-label"
     id="groups-per-page"

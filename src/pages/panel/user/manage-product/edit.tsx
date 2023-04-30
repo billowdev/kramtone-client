@@ -554,7 +554,7 @@ const AddProductForm = ({
           <Grid item key={index} xs={12} sm={6} md={4}>
             <Paper elevation={3}>
               <Box position="relative">
-                <img src={image} alt="preview" width="100%" />
+                <Image src={productImageURL(image)} alt="preview" width={250} height={250} />
                 <Box
                   position="absolute"
                   top={0}
