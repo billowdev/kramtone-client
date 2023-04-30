@@ -9,7 +9,7 @@ export default async function acceptCookies(req: NextApiRequest, res: NextApiRes
       secure: process.env.NODE_ENV !== 'development',
       sameSite: 'strict',
       path: '/',
-      maxAge: 60 * 60 * 24 * 365, // 1 year in seconds
+      maxAge: 60 * 60 * 24 * 365 * 1000, // 365 days in milliseconds
     });
 
     res.status(200).json({ message: 'Cookie consent accepted.' });

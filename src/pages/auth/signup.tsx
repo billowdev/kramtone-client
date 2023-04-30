@@ -98,84 +98,51 @@ function SignUpPage({ }: Props) {
   const errorStyle = {
     color: "red",
   };
+  
   const validationSchema = Yup.object().shape({
     username: Yup.string()
-      .min(
-        4,
-        ReactDOMServer.renderToString(<span style={errorStyle}>ชื่อผู้ใช้ต้องมีอย่างน้อย 4 ตัวอักษร</span>)
-      )
-      .max(
-        64,
-        ReactDOMServer.renderToString(<span style={errorStyle}>ชื่อผู้ใช้ต้องมีไม่เกิน 64 ตัวอักษร</span>)
-      )
-      .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกชื่อผู้ใช้</span>)),
+      .min(4, `ชื่อผู้ใช้ต้องมีอย่างน้อย 4 ตัวอักษร`)
+      .max(64, `ชื่อผู้ใช้ต้องมีไม่เกิน 64 ตัวอักษร`)
+      .required(`กรุณากรอกชื่อผู้ใช้`),
     name: Yup.string()
-      .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกชื่อ</span>))
-      .max(
-        100,
-        ReactDOMServer.renderToString(<span style={errorStyle}>ชื่อต้องมีความยาวไม่เกิน 100 ตัวอักษร</span>)
-      ).trim(),
+      .required(`กรุณากรอกชื่อ`)
+      .max(100, `ชื่อต้องมีความยาวไม่เกิน 100 ตัวอักษร`)
+      .trim(),
     surname: Yup.string()
-      .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกนามสกุล</span>))
-      .max(
-        100,
-        ReactDOMServer.renderToString(<span style={errorStyle}>นามสกุลต้องมีความยาวไม่เกิน 100 ตัวอักษร</span>)
-      ),
+      .required(`กรุณากรอกนามสกุล`)
+      .max(100, `นามสกุลต้องมีความยาวไม่เกิน 100 ตัวอักษร`),
     email: Yup.string()
-      .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกอีเมล</span>))
-      .max(
-        120,
-        ReactDOMServer.renderToString(<span style={errorStyle}>อีเมลต้องมีความยาวไม่เกิน 120 ตัวอักษร</span>)
-      ),
+      .required(`กรุณากรอกอีเมล`)
+      .max(120, `อีเมลต้องมีความยาวไม่เกิน 120 ตัวอักษร`),
     phone: Yup.string()
-      .max(
-        10,
-        ReactDOMServer.renderToString(<span style={errorStyle}>เบอร์โทรต้องมีไม่เกิน 10 ตัวอักษร</span>)
-      )
-      .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกเบอร์โทร</span>)),
-    password: Yup.string()
-      .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกรหัสผ่าน</span>))
-      .min(
-        6,
-        ReactDOMServer.renderToString(
-          <span style={errorStyle}>
-            รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร
-          </span>
-        )
-      ),
-    passwordConfirmation: Yup.string()
-      .required(ReactDOMServer.renderToString(<span style={errorStyle}>กรุณากรอกรหัสผ่าน</span>))
-      .test(
-        "passwords-match",
-        ReactDOMServer.renderToString(<span style={errorStyle}>รหัสผ่านไม่ตรงกัน</span>),
-        function (value) {
-          return this.parent.password === value;
-        }
-      ),
+      .max(10, `เบอร์โทรต้องมีไม่เกิน 10 ตัวอักษร`)
   });
+  
 
   const onSubmit = async (
     values: FormValues,
     props: FormikHelpers<FormValues>
   ) => {
     const { username, password } = values;
-    const response = await dispatch(signIn({ username, password }));
+    console.log(values);
+    console.log(props);
+    // const response = await dispatch(signIn({ username, password }));
 
-    if (response.meta.requestStatus === "rejected") {
-      toast.error("สมัครสมาชิกไม่สำเร็จ");
-    } else {
-      // router.push("/panel");
-      if (response?.payload?.user?.role === "member") {
-        dispatch(getOneGroupDataAction(response?.payload?.user?.groupId));
-        router.push("/panel/user/manage-group", undefined, { shallow: false });
-      } else {
-        router.push("/panel", undefined, { shallow: false });
-      }
-    }
-    setTimeout(() => {
-      props.resetForm();
-      props.setSubmitting(false);
-    }, 2000);
+    // if (response.meta.requestStatus === "rejected") {
+    //   toast.error("สมัครสมาชิกไม่สำเร็จ");
+    // } else {
+    //   // router.push("/panel");
+    //   if (response?.payload?.user?.role === "member") {
+    //     dispatch(getOneGroupDataAction(response?.payload?.user?.groupId));
+    //     router.push("/panel/user/manage-group", undefined, { shallow: false });
+    //   } else {
+    //     router.push("/panel", undefined, { shallow: false });
+    //   }
+    // }
+    // setTimeout(() => {
+    //   props.resetForm();
+    //   props.setSubmitting(false);
+    // }, 2000);
   };
 
   const handlePasswordVisible = () => {
@@ -223,16 +190,6 @@ function SignUpPage({ }: Props) {
                         >
                           สมัครสมาชิก
                         </Typography>
-                        {/* 				
-						<Field
-                          as={TextField}
-                          label="ชื่อ"
-                          name="name"
-                          placeholder="กรุณากรอกชื่อ"
-                          fullWidth
-                          required
-						helperText={<ErrorMessage name="name" />}
-                        /> */}
 
                         <Field
                           as={TextField}
@@ -241,6 +198,7 @@ function SignUpPage({ }: Props) {
                           placeholder="กรุณากรอกชื่อ"
                           fullWidth
                           required
+                          maxLength={120}
                           helperText={<ErrorMessage name="name" />}
                         />
 

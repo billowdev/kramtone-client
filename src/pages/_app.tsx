@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 import { fetchSession } from "@/store/slices/auth.slice";
 import CookieConsentPopup from '@/components/CookieConsentPopup';
 import { useRouter } from 'next/router';
+import DevelopmentPopup from '@/components/DevelopmentPopup';
 
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -92,72 +93,81 @@ function MyApp({ Component, pageProps }: AppProps) {
 			}
 		},
 	});
-	// React.useEffect(() => {
-	// 	async function fetchData() {
-	// 		const response = await store.dispatch(fetchSession());
-	// 		if(response.payload?.gid){
-	// 			store.dispatch(getOneGroupxDataAction(response.payload?.gid));
-	// 		}
-	// 	}
-	// 	fetchData();
-
-	//   }, []);
 
 	React.useEffect(() => {
 		store.dispatch(fetchSession());
 	}, []);
 
-	// React.useEffect(() => {
-	// 	async function fetchData() {
-	// 		const response = await store.dispatch(fetchSession());
-	// 		if (response.payload) {
-	// 			@ts-ignore
-	// 			const { gid } = response.payload
-	// 			store.dispatch(getOneGroupDataAction(gid));
-	// 		}
-	// 	}
-	// 	fetchData();
-	// }, []);
 
-	
 	const router = useRouter();
-  
+
 	const [showPopup, setShowPopup] = React.useState(false);
 
 	const handleGetCookieAcceptance = async () => {
 		try {
-		  const response = await fetch('/api/get_cookie_acceptance', {
-			method: 'GET',
-			headers: {
-			  'Content-Type': 'application/json',
-			},
-		  });
-		  const data = await response.json();
-		  return data.accepted;
+			const response = await fetch('/api/get_cookie_acceptance', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+			const data = await response.json();
+			return data.accepted;
 		} catch (error) {
-		  console.error('An error occurred while getting the cookie:', error);
+			console.error('An error occurred while getting the cookie:', error);
 		}
-	  };
+	};
 
-	  React.useEffect(() => {
+
+
+
+	const handleClosePopup = () => {
+		setShowPopup(false);
+	};
+
+	// development consent
+
+	const [popupDevOpen, setPopupDevOpen] = React.useState(false);
+
+	const handleCloseDevPopup = () => {
+		setPopupDevOpen(false);
+	};
+
+	const handleDevAcceptance = async () => {
+		try {
+			const response = await fetch('/api/get_dev_acceptance', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+			const data = await response.json();
+			return data.accepted;
+		} catch (error) {
+			console.error('An error occurred while getting the cookie:', error);
+		}
+	};
+
+
+	React.useEffect(() => {
 		(async () => {
-		  // Check if the current route is /privacy-policy, and if so, skip showing the popup.
-		  if (router.pathname === '/privacy-policy') {
-			return;
-		  }
-	  
-		  const cookieAcceptance = await handleGetCookieAcceptance();
-		  if (!cookieAcceptance) {
-			setShowPopup(true);
-		  }
+			// Check if the current route is /privacy-policy, and if so, skip showing the popup.
+			if (router.pathname === '/privacy-policy' || router.pathname === '/terms-and-conditions') {
+				return;
+			}
+
+			const cookieAcceptance = await handleGetCookieAcceptance();
+			if (!cookieAcceptance) {
+				setShowPopup(true);
+			}
+			
+			const devAcceptance = await handleDevAcceptance();
+			if (!devAcceptance) {
+				setPopupDevOpen(true);
+			}
 		})();
-	  }, [router]);
-	  
-  
-	 const handleClosePopup = () => {
-    setShowPopup(false);
-  };
-  
+	}, [router]);
+
 	return (
 		<Provider store={store}>
 			<ThemeProvider theme={theme}>
@@ -165,6 +175,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<Toaster />
 			</ThemeProvider>
 			<CookieConsentPopup open={showPopup} onClose={handleClosePopup} />
+			<DevelopmentPopup open={popupDevOpen} onClose={handleCloseDevPopup} />
 		</Provider>
 	);
 }

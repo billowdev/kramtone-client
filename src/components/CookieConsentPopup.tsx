@@ -1,7 +1,11 @@
 import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography, Box} from '@mui/material';
 import Link from "next/link";
-const CookieConsentPopup = ({ open, onClose }) => {
+interface Props {
+  open: boolean;
+  onClose: () => void;
+}
+const CookieConsentPopup = ({ open, onClose }:Props) => {
   const handleAccept = async () => {
     try {
       await fetch('/api/accept_cookies', {
@@ -23,17 +27,26 @@ const CookieConsentPopup = ({ open, onClose }) => {
         <DialogContentText>
         
 			<Box>
-			<Link href="/privacy-policy" onClick={() => {
-    onClose();
-  }}>
-					<Typography  color="primary"> 
-					คลิกเพื่ออ่าน นโยบายความเป็นส่วนตัว
-					</Typography>
-			</Link>
+                <Link href="/privacy-policy" onClick={() => {
+              onClose();
+            }}>
+                    <Typography  color="primary"> 
+                    คลิกเพื่ออ่าน นโยบายความเป็นส่วนตัว
+                    </Typography>
+                </Link>
+
+              <Link href="/terms-and-conditions" onClick={() => {
+            onClose();
+          }}>
+                  <Typography  color="primary"> 
+                    คลิกเพื่ออ่าน ข้อกำหนดและเงื่อนไขการใช้งานเว็บไซต์
+                  </Typography>
+                  </Link>
 
 				<br />
 				<Typography>
-				เราใช้คุกกี้เพื่อเพิ่มประสิทธิภาพ และประสบการณ์ที่ดีในการใช้งานเว็บไซต์ คุณสามารถเลือกตั้งค่าความยินยอมการใช้คุกกี้ได้ โดยคลิก การตั้งค่าคุกกี้ 
+				เราใช้คุกกี้เพื่อเพิ่มประสิทธิภาพ และประสบการณ์ที่ดีในการใช้งานเว็บไซต์ 
+        {/* คุณสามารถเลือกตั้งค่าความยินยอมการใช้คุกกี้ได้ โดยคลิก การตั้งค่าคุกกี้  */}
 			</Typography>
 
 				</Box>

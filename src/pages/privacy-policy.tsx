@@ -23,36 +23,39 @@ const ContentPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
+interface useStyleProps {
+  isSmallDevice: any
+}
 const useStyles = makeStyles((theme) => ({
   topic: {
     fontWeight: "bold",
   },
   p1: {
-    marginLeft: (props) => (props.isSmallDevice ? 0 : 16),
+    marginLeft: (props: useStyleProps) => (props.isSmallDevice ? 0 : 16),
   },
   p1Extra: {
-    marginLeft: (props) => (props.isSmallDevice ? 0 : 16),
+    marginLeft: (props: useStyleProps) => (props.isSmallDevice ? 0 : 16),
     fontWeight: "bold",
   },
   p2: {
-    marginLeft: (props) => (props.isSmallDevice ? 16 : 32),
+    marginLeft: (props: useStyleProps) => (props.isSmallDevice ? 16 : 32),
   },
   p3: {
-    marginLeft: (props) => (props.isSmallDevice ? 16 : 48),
+    marginLeft: (props: useStyleProps) => (props.isSmallDevice ? 16 : 48),
   },
   p3Start: {
-    marginLeft: (props) => (props.isSmallDevice ? 16 : 48),
+    marginLeft: (props: useStyleProps) => (props.isSmallDevice ? 16 : 48),
     marginTop: 16,
   },
   p4: {
-    marginLeft: (props) => (props.isSmallDevice ? 32 : 80),
+    marginLeft: (props: useStyleProps) => (props.isSmallDevice ? 32 : 80),
   },
   PageTitle: {
     padding: 16,
     fontWeight: "bold",
   },
   ContentPaper: {
-    padding: (props) => (props.isSmallDevice ? 16 : 64),
+    padding: (props: useStyleProps) => (props.isSmallDevice ? 16 : 64),
   },
   link: {
     textDecoration: "none",
@@ -126,7 +129,7 @@ const PrivacyPolicy: NextPage = () => {
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </React.Fragment>
               )}
-              นโยบายความเป็นส่วนตัวฉบับนี้ ซึ่งต่อไปนี้จะเรียกว่า "นโยบาย"
+              นโยบายความเป็นส่วนตัวฉบับนี้ ซึ่งต่อไปนี้จะเรียกว่า &quot;นโยบาย&quot;
               บังคับใช้ครั้งแรกเมื่อวันที่ 1 พฤษภาคม 2566
               โดยมีรายละเอียดดังต่อไปนี้
             </Typography>

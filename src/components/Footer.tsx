@@ -81,7 +81,7 @@ export default function Footer({}: Props) {
                   </Link>
                 </Box>
                 <Box sx={{ marginRight: "16px" }}>
-                  <Link href="/group-data" style={footerLinkStyle}>
+                  <Link href="/group" style={footerLinkStyle}>
                     <Typography align="center">
                       หน้าข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
                     </Typography>
@@ -89,7 +89,7 @@ export default function Footer({}: Props) {
                 </Box>
 
                 <Box sx={{ marginRight: "16px" }}>
-                  <Link href="/group-data" style={footerLinkStyle}>
+                  <Link href="/group" style={footerLinkStyle}>
                     <Typography align="center">
                       ข้อมูลโทนสีครามธรรมชาติ
                     </Typography>
