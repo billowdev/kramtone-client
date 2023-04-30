@@ -33,6 +33,7 @@ import {
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 import {
+  Paper,
   Box,
   Button,
   Dialog,
@@ -56,6 +57,7 @@ import {
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 // import EditDialog from "./components"
 import { makeStyles } from "@material-ui/core";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -332,10 +334,6 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
             onClick={() =>
               router.push("/panel/user/manage-product/edit?id=" + row.id)
             }
-          // onClick={() => {
-          //   setSelectedCategory(row);
-          //   // setOpenEditDialog(true);
-          // }}
           >
             <EditIcon fontSize="inherit" />
           </IconButton>
@@ -359,36 +357,69 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
 
 
   return (
-    <Layout>
-      <Container sx={{
-        marginLeft: isSmallDevice ? 0 : 2,
-        marginTop: isSmallDevice ? 0 : 4,
-      }}>
+<Layout>
+<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+     <Grid container spacing={3}>
+         <Grid item xs={12}>
+         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px'}}>
+         {isSmallDevice ? (
+             <ShoppingBagIcon sx={{fontSize:'1.5rem', marginLeft:'8px'}} />
+           ) : (
+             <ShoppingBagIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
+           )}
 
-        {/* Summary Icons */}
-        <DataGrid
-          sx={{ backgroundColor: "white", height: "100vh", width: "80vw" }}
-          rows={productData ?? []}
-          columns={columns}
-          // pageSize={25}
-          // rowsPerPageOptions={[25]}
-          components={{
-            Toolbar: CustomToolbar,
-          }}
+          
+         <React.Fragment> 
+           {isSmallDevice ? (
+             <Typography
+            sx={{
+               fontWeight: 'bold',  alignSelf:'center',
+           }}
+             > หน้าจัดการข้อมูลสินค้า</Typography>
+           ) : (
+             <Typography
+             variant='h5' sx={{
+               fontWeight: 'bold',  alignSelf:'center',
+           }}
+             > จัดการข้อมูลสินค้า</Typography>
+           )}
+         </React.Fragment>
+         </Paper>
+       </Grid> 
+       <Grid item xs={12} md={12} lg={12}>
+           <DataGrid
+           sx={{ backgroundColor: "white", width: "100%", height: "100%", minHeight: "200px" }}
+           rows={productData ?? []}
+           columns={columns}
+           // pageSize={25}
+           // rowsPerPageOptions={[25]}
+           localeText={
+            { noRowsLabel: "ไม่พบข้อมูล",}
+             }
+           components={{
+             Toolbar: CustomToolbar,
+           }}
+           componentsProps={{
+             panel: {
+               anchorEl: filterButtonEl,
+             },
+             toolbar: {
+               setFilterButtonEl,
+             },
+           }}
+         />
+   
+       </Grid>
+   
+     </Grid>
+   
+   </Container>
 
-          componentsProps={{
-            panel: {
-              anchorEl: filterButtonEl,
-            },
-            toolbar: {
-              setFilterButtonEl,
-            },
-          }}
-        />
-      </Container>
+   {/* <CategoryDialog category={selectedCategory} open={viewCategoryOpen} onClose={handleViewCategoryClose} /> */}
+   {showEditDialog()}
 
-      {showEditDialog()}
-    </Layout>
+</Layout>
+
   )
 }
 

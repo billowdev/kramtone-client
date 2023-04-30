@@ -53,8 +53,7 @@ import {
   Select
 } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-
+import CheckroomIcon from "@mui/icons-material/Checkroom";
 
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 // import EditDialog from "./components"
@@ -319,9 +318,9 @@ function AdminPanelManageCategory({ accessToken}: Props) {
                 <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px'}}>
                 {isSmallDevice ? (
-                    <ShoppingBagIcon sx={{fontSize:'1.5rem', marginLeft:'8px'}} />
+                    <CheckroomIcon sx={{fontSize:'1.5rem', marginLeft:'8px'}} />
                   ) : (
-                    <ShoppingBagIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
+                    <CheckroomIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
                   )}
 
                  

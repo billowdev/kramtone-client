@@ -1,7 +1,7 @@
 import { ProductPayload, ProductArrayPayload, ProductArrayResponse, ProductResponse } from "@/models/product.model";
 import httpClient from "@/common/utils/httpClient.util";
 import axios from 'axios'
-import { CategoryArrayResponse, CategoryResponse } from "@/models/category.model";
+import { CategoryArrayResponse, CategoryResponse, CategoryPayload } from "@/models/category.model";
 
 export const getOneCategory = async (id: string): Promise<CategoryResponse> => {
 	const { data: response } = await httpClient.get(`/categories/get/${id}`);
@@ -13,7 +13,7 @@ export const getAllCategoryByGroupId = async (id: string): Promise<CategoryArray
 	return response.payload;
 };
 
-export const getAllCategoryByGroup = async (accessToken:string): Promise<CategoryArrayResponse> => {
+export const getAllCategoryByGroup = async (accessToken:string): Promise<CategoryPayload[]> => {
 	const {data:response} = await axios.get(`/categories/group`, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
@@ -23,7 +23,7 @@ export const getAllCategoryByGroup = async (accessToken:string): Promise<Categor
 	return response.payload;
 };
 
-export const getAllCategory = async (): Promise<CategoryArrayResponse> => {
+export const getAllCategory = async (): Promise<CategoryPayload[]> => {
 	const { data: response } = await httpClient.get(`/categories`)
 	return response.payload;
 };

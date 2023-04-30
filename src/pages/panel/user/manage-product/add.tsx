@@ -1,10 +1,10 @@
+import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { TextField, Button, Box } from '@mui/material';
 import { Card, CardContent, CardActions, Typography } from '@mui/material';
 import Link from 'next/link';
 import Layout from '@/components/Layouts/Layout';
 import withAuth from '@/components/withAuth';
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from "next/image";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
@@ -19,11 +19,14 @@ import { Delete } from '@material-ui/icons';
 import * as colorSchemeService from "@/services/color-scheme.service"
 
 import {
+	Paper,
+	Grid,
+	Container,
 	Dialog,
 	DialogTitle,
 	DialogContent,
 	DialogActions,
-
+	
 	List,
 	ListItem,
 	ListItemText,
@@ -31,7 +34,9 @@ import {
 import { CategoryPayload } from '@/models/category.model';
 import Swal from 'sweetalert2';
 import { ColorSchemePayload } from '@/models/color-scheme.model';
-
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 
 
 interface Product {
@@ -42,12 +47,31 @@ interface Product {
 }
 interface AddProductFormProps {
 	accessToken?: string;
-	categories?: CategoryPayload[],
 	gid?: string,
-	colorSchemes?: ColorSchemePayload[]
 }
 
-const AddProductForm = ({ accessToken, categories, gid, colorSchemes }: AddProductFormProps) => {
+const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
+	const theme = useTheme();
+	const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
+	const [categories, setCategories] = useState<CategoryPayload[]>([]);
+    const [colorSchemes, setColorSchemes] = useState<ColorSchemePayload[]>([]);
+
+
+	useEffect(() => {
+		async function fetchData() {
+		  try {
+			const categoriesPayload = await categoryService.getAllCategory();
+			const colorSchemesPayload = await colorSchemeService.getAllColorScheme();
+			setCategories(categoriesPayload);
+			setColorSchemes(colorSchemesPayload);
+	
+			// setLoading(false);
+		  } catch (error) {
+			console.error(error);
+		  }
+		}
+		fetchData();
+	  }, []);
 
 	const [selectedCategory, setSelectedCategory] = useState<CategoryPayload>({
 		id: "",
@@ -72,7 +96,6 @@ const AddProductForm = ({ accessToken, categories, gid, colorSchemes }: AddProdu
 	const [images, setImages] = useState<File[]>([]);
 
 
-	
 
 	const [previewImages, setPreviewImages] = useState<string[]>([]);
 
@@ -244,7 +267,36 @@ const AddProductForm = ({ accessToken, categories, gid, colorSchemes }: AddProdu
 
 	return (
 		<Layout>
-			<Formik initialValues={initialValues}
+<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+     <Grid container spacing={3}>
+         <Grid item xs={12}>
+         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px'}}>
+         {isSmallDevice ? (
+             <ShoppingBagIcon sx={{fontSize:'1.5rem', marginLeft:'8px'}} />
+           ) : (
+             <ShoppingBagIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
+           )}
+
+          
+         <React.Fragment> 
+           {isSmallDevice ? (
+             <Typography
+            sx={{
+               fontWeight: 'bold',  alignSelf:'center',
+           }}
+             > หน้าจัดการข้อมูลสินค้า</Typography>
+           ) : (
+             <Typography
+             variant='h5' sx={{
+               fontWeight: 'bold',  alignSelf:'center',
+           }}
+             > จัดการข้อมูลสินค้า</Typography>
+           )}
+         </React.Fragment>
+         </Paper>
+       </Grid> 
+       <Grid item xs={12} md={12} lg={12}>
+	   <Formik initialValues={initialValues}
 				validate={(values) => {
 					let errors: any = {};
 					if (!values.name) errors.name = "กรุณากรอกชื่อสินค้า";
@@ -269,9 +321,9 @@ const AddProductForm = ({ accessToken, categories, gid, colorSchemes }: AddProdu
 					<Form>
 						<Card>
 							<CardContent sx={{ padding: 4 }}>
-								<Typography gutterBottom variant="h3">
+								{/* <Typography gutterBottom variant="h3">
 									เพิ่มข้อมูลสินค้า
-								</Typography>
+								</Typography> */}
 
 								<Field
 									style={{ marginTop: 16 }}
@@ -411,9 +463,19 @@ const AddProductForm = ({ accessToken, categories, gid, colorSchemes }: AddProdu
 					</Form>
 				)}
 			</Formik>
+   
+       </Grid>
+   
+     </Grid>
+   
+   </Container>
+
 			{categoryModal()}
 			{colorSchemeModal()}
-		</Layout>
+
+</Layout>
+
+	
 	);
 };
 

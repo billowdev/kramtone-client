@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import {  Grid, Typography, Toolbar } from "@material-ui/core";
+import { Grid, Typography, Toolbar } from "@material-ui/core";
 import { authSelector } from "@/store/slices/auth.slice";
 import { useSelector } from "react-redux";
 import Link from "next/link";

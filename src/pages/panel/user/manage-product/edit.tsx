@@ -4,7 +4,7 @@ import { Card, CardContent, CardActions, Typography, Grid } from "@mui/material"
 import Link from "next/link";
 import Layout from "@/components/Layouts/Layout";
 import withAuth from "@/components/withAuth";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
@@ -21,14 +21,16 @@ import * as colorSchemeService from "@/services/color-scheme.service"
 
 import { ColorSchemePayload } from "@/models/color-scheme.model"
 import {
+ 
+  CardMedia,
+  Container,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   List,
   ListItem,
-  ListItemText,
-  useMediaQuery
+  ListItemText
 } from "@mui/material";
 import { CategoryPayload } from "@/models/category.model";
 import Swal from "sweetalert2";
@@ -38,6 +40,9 @@ import { IconButton } from "@material-ui/core";
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+
 
 interface AddProductFormProps {
   accessToken?: string;
@@ -62,6 +67,8 @@ const AddProductForm = ({
   });
   const [modalOpen, setModalOpen] = useState(false);
   const theme = useTheme();
+	const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
+
   const [selectedColorScheme, setSelectedColorScheme] = useState<any>({
     id: product?.colorScheme?.id,
     nameEN: product?.colorScheme?.nameEN,
@@ -316,236 +323,108 @@ const AddProductForm = ({
     );
   };
 
-  return (
-    <Layout>
-      <Formik
-        initialValues={initialValues} // pass initial values as props
-        validate={(values) => {
-          let errors: any = {};
-          if (!values.name) errors.name = "กรุณากรอกชื่อสินค้า";
-          if (!values.desc) errors.desc = "กรุณากรอกรายละเอียดสินค้า";
-          if (!values.price) errors.price = "กรุณากรอกราคาสินค้า";
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          handleUpdate(values); // call handleUpdate function for updating the product
-          setSubmitting(false);
-        }}
-      >
-        {({
-          values,
-          handleChange,
-          handleBlur,
-          isSubmitting,
-          setFieldValue,
-        }) => (
-          <Form>
-            <Card>
-              <CardContent sx={{ padding: 4 }}>
-                <Typography gutterBottom variant="h3">
-                  แก้ไขข้อมูลสินค้า
-                </Typography>
+  const showForm = ({
+    values,
+  handleChange,
+  handleBlur,
+  isSubmitting,
+  setFieldValue,
+  }: FormikProps<CategoryPayload>) => {
+    return (
+      <Form>
+        <Card>
+          <CardContent sx={{ padding: 4 }}>
+          <Field
+		  style={{ marginTop: 16 }}
+		  fullWidth
+		  as={TextField}
+		  name="name"
+		  type="text"
+		  label="ชื่อสินค้า"
+		  value={values.name}
+		  onChange={handleChange}
+		  onBlur={handleBlur}
+		/>
+		<br />
+		<Field
+		  style={{ marginTop: 16 }}
+		  fullWidth
+		  as={TextField}
+		  name="desc"
+		  type="string"
+		  label="รายละเอียดสินค้า"
+		  value={values.desc}
+		  onChange={handleChange}
+		  onBlur={handleBlur}
+		/>
+		<br />
+		<Field
+		  style={{ marginTop: 16 }}
+		  fullWidth
+		  as={TextField}
+		  name="price"
+		  type="number"
+		  label="ราคาสินค้า"
+		  value={values.price}
+		  onChange={handleChange}
+		  onBlur={handleBlur}
+		/>
+		<br />
+           
+    <Box mt={2}>
+        <Button variant="outlined" onClick={handleOpenModal}>
+          {selectedCategory && selectedCategory.name !== ""
+            ? selectedCategory.name
+            : "เลือกประเภทสินค้า"}
+        </Button>
+      </Box>
+      <Box mt={2}>
+        <Button variant="outlined" onClick={handleOpenColorSchemeModal}>
+          {selectedColorScheme ? (
+            <Box
+              sx={{
+                width: 50,
+                height: 50,
+                backgroundColor: selectedColorScheme.hex,
+                borderRadius: "50%",
+                border: "1px solid black",
+                marginRight: 2,
+              }}
+            />
+          ) : null}
+          {selectedColorScheme
+            ? `${selectedColorScheme.nameTH} / ${selectedColorScheme.nameEN} / ${selectedColorScheme.hex}  `
+            : "เลือกโทนสี"}
+        </Button>
+      </Box>
 
-                <Field
-                  style={{ marginTop: 16 }}
-                  fullWidth
-                  as={TextField}
-                  name="name"
-                  type="text"
-                  label="ชื่อสินค้า"
-                  value={values.name}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <br />
-                <Field
-                  style={{ marginTop: 16 }}
-                  fullWidth
-                  as={TextField}
-                  name="desc"
-                  type="string"
-                  label="รายละเอียดสินค้า"
-                  value={values.desc}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <br />
-                <Field
-                  style={{ marginTop: 16 }}
-                  fullWidth
-                  as={TextField}
-                  name="price"
-                  type="number"
-                  label="ราคาสินค้า"
-                  value={values.price}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <br />
+      <Box mt={2}>
+       
+    
+          <label
+            htmlFor="files"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              cursor: "pointer",
+            }}
+          >
+            {existingImages?.map((image: any) => (
+              <div key={image.id}>
+                {showPreviewImage({ image: image.image })}
+              
+                <Button onClick={() => handleDeleteExistImage(image)} style={{ background: "none", border: "none", cursor: "pointer" }}>
+                  <Delete sx={{ fontSize: 20 }} />
+                </Button>
 
-                <div style={{ marginTop: 16 }}>
-                  <Button variant="outlined" onClick={handleOpenModal}>
-                    {selectedCategory && selectedCategory.name !== ""
-                      ? selectedCategory.name
-                      : "เลือกประเภทสินค้า"}
-                  </Button>
-                </div>
-                <br />
-                <div style={{ marginTop: 16 }}>
-  <Button variant="outlined" onClick={handleOpenColorSchemeModal}>
-    {selectedColorScheme ? (
-      <Box
-        sx={{
-          width: 50,
-          height: 50,
-          backgroundColor: selectedColorScheme.hex,
-          borderRadius: "50%",
-          border: "1px solid black",
-          marginRight: 2,
-        }}
-      />
-    ) : null}
-    {selectedColorScheme
-      ? `${selectedColorScheme.nameTH} / ${selectedColorScheme.nameEN} / ${selectedColorScheme.hex}  `
-      : "เลือกโทนสี"}
-  </Button>
-</div>
+              </div>
+            ))}
+          </label>
 
+      </Box>
 
-                <div style={{ marginTop: 16 }}>
-  <label
-    htmlFor="files"
-    style={{
-      display: "flex",
-      alignItems: "center",
-      cursor: "pointer",
-    }}
-  >
-    {existingImages?.map((image: any) => (
-      <div key={image.id}>
-        {showPreviewImage({ image: image.image })}
-        <IconButton onClick={() => handleDeleteExistImage(image)}>
-          <Delete />
-        </IconButton>
-      </div>
-    ))}
-  </label>
-</div>
-
-{/* <div style={{ marginTop: 16 }}>
-  <label
-    htmlFor="files"
-    style={{
-      display: "flex",
-      alignItems: "center",
-      cursor: "pointer",
-    }}
-  >
-    <Grid container spacing={2}>
-      {existingImages?.map((image) => (
-        <Grid item key={image.id} xs={12} sm={6} md={4} lg={3}>
-          <Paper elevation={3}>
-            <Box position="relative">
-              <img
-                src={productImageURL(image.image)}
-                alt="product image"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  borderRadius: "5%",
-                }}
-              />
-              <Box
-                position="absolute"
-                top={0}
-                right={0}
-                zIndex="tooltip"
-                bgcolor="rgba(0, 0, 0, 0.5)"
-                borderRadius="0 0 0 5px"
-              >
-                <IconButton
-                  onClick={() => handleDeleteExistImage(image)}
-                  color="secondary"
-                >
-                  <Delete />
-                </IconButton>
-              </Box>
-            </Box>
-          </Paper>
-        </Grid>
-      ))}
-    </Grid>
-  </label>
-</div> */}
-
-
-
-{/* <div style={{ marginTop: 16 }}>
-      <label
-        htmlFor="files"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          cursor: "pointer",
-        }}
-      >
-        <Grid container spacing={2}>
-          {existingImages?.map((image) => (
-            <Grid item key={image.id} xs={12} sm={6} md={4} lg={3}>
-              <Paper elevation={3}>
-                <Box position="relative">
-                  <img
-                    src={productImageURL(image.image)}
-                    alt="product image"
-                    style={{
-                      width:  '100%',
-                      height:  '100%',
-                      objectFit: "cover",
-                      borderRadius: "5%",
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => handleClickOpen(image.image)}
-                  />
-                  <Box
-                    position="absolute"
-                    top={0}
-                    right={0}
-                    // bgcolor="rgba(0, 0, 0, 0.5)"
-                    // borderRadius="0 0 0 5px"
-                  >
-                    <IconButton
-                      onClick={() => handleDeleteExistImage(image)}
-                      color="secondary"
-                    >
-                      <Delete />
-                    </IconButton>
-                  </Box>
-                </Box>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
-      </label>
-
-      <Dialog
-        open={openDialog}
-        onClose={handleClose}
-        maxWidth="md"
-        fullWidth
-      >
-        <img
-          src={productImageURL(selectedImage)}
-          alt="product image"
-          style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
-        />
-      </Dialog>
-    </div> */}
-
-
-
-
-    <FieldArray
+          
+      <FieldArray
   name="images"
   render={(arrayHelpers) => (
     <div style={{ marginTop: 16 }}>
@@ -554,7 +433,8 @@ const AddProductForm = ({
           <Grid item key={index} xs={12} sm={6} md={4}>
             <Paper elevation={3}>
               <Box position="relative">
-                <Image src={productImageURL(image)} alt="preview" width={250} height={250} />
+              {showPreviewImage(image)}
+                {/* <Image src={productImageURL(image)} alt="preview" width={250} height={250} /> */}
                 <Box
                   position="absolute"
                   top={0}
@@ -563,12 +443,10 @@ const AddProductForm = ({
                   bgcolor="rgba(0, 0, 0, 0.5)"
                   borderRadius="0 0 0 5px"
                 >
-                  <IconButton
-                    onClick={() => handleDeleteImage(image)}
-                    color="secondary"
-                  >
-                    <Delete />
-                  </IconButton>
+                    
+                <Button onClick={() => handleDeleteImage(image)} style={{ background: "none", border: "none", cursor: "pointer" }}>
+                  <Delete sx={{ fontSize: 20 }} />
+                </Button>
                 </Box>
               </Box>
             </Paper>
@@ -609,32 +487,88 @@ const AddProductForm = ({
 />
 
 
-              </CardContent>
-              <CardActions>
-                <Button
-                  disabled={isSubmitting}
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  sx={{ marginRight: 1 }}
-                >
-                  แก้ไข
-                </Button>
-                <Link href="/panel/user/manage-product" passHref>
-                  <Button variant="outlined" fullWidth>
-                    ยกเลิก
-                  </Button>
-                </Link>
-                <input type="hidden" name="id" value={product && product?.id} />{" "}
-                {/* add hidden field for product ID */}
-              </CardActions>
-            </Card>
-          </Form>
-        )}
+
+
+          </CardContent>
+          <CardActions>
+            <Button
+              // disabled={!isValid}
+              fullWidth
+              variant="contained"
+              color="primary"
+              type="submit"
+              sx={{ marginRight: 1 }}
+            >
+              แก้ไข
+            </Button>
+            <Link href="/panel/user/manage-category" passHref>
+              <Button variant="outlined" fullWidth>
+                ยกเลิก
+              </Button>
+            </Link>
+          </CardActions>
+        </Card>
+      </Form>
+    );
+  };
+
+
+  return (
+    <Layout>
+
+<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+     <Grid container spacing={3}>
+         <Grid item xs={12}>
+         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px'}}>
+         {isSmallDevice ? (
+             <ShoppingBagIcon sx={{fontSize:'1.5rem', marginLeft:'8px'}} />
+           ) : (
+             <ShoppingBagIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
+           )}
+
+          
+         <React.Fragment> 
+           {isSmallDevice ? (
+             <Typography
+            sx={{
+               fontWeight: 'bold',  alignSelf:'center',
+           }}
+             > แก้ไขข้อมูลสินค้า</Typography>
+           ) : (
+             <Typography
+             variant='h5' sx={{
+               fontWeight: 'bold',  alignSelf:'center',
+           }}
+             > แก้ไขข้อมูลสินค้า</Typography>
+           )}
+         </React.Fragment>
+         </Paper>
+       </Grid> 
+       <Grid item xs={12} md={12} lg={12}>
+       <Formik
+        validate={(values) => {
+          let errors: any = {};
+          if (!values.name) errors.name = "กรุณากรอกชื่อสินค้า";
+          return errors;
+        }}
+        initialValues={initialValues!}
+        onSubmit={async (values, { setSubmitting }) => {
+          handleUpdate(values); // call handleUpdate function for updating the product
+          setSubmitting(false);
+        }}
+      >
+        {(props) => showForm(props)}
       </Formik>
+
       {categoryModal()}
       {colorSchemeModal()}
+       </Grid>
+   
+     </Grid>
+   
+   </Container>
+
+     
     </Layout>
   );
 };
