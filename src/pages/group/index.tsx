@@ -79,12 +79,12 @@ const handleColorSchemeSelect = (colorScheme: ColorSchemePayload) => {
 const [groups, setGroups] = useState<any>([]);
 
 // Function to fetch group data with filters
-const fetchGroupData = async (filters: {
-  categoryId?: string | null;
-  colorSchemeId?: string | null;
-}) => {
+const fetchGroupData = async () => {
   try {
-    const payload = await groupDataService.getAllGroupData(filters);
+    const payload = await groupDataService.getAllGroupData({
+      categoryId : selectedCategory?.id || null,  
+      colorSchemeId : selectedColorScheme?.id || null
+    });
     setGroups(payload);
   } catch (error) {
     console.error("Failed to fetch group data:", error);
@@ -127,11 +127,11 @@ const fetchGroupData = async (filters: {
 
  // Refetch group data when selectedCategory or selectedColorScheme changes
  useEffect(() => {
-  const filters = {
-    categoryId: selectedCategory?.id || null,
-    colorSchemeId: selectedColorScheme?.id || null,
-  };
-  fetchGroupData(filters);
+  // const filters = {
+  //   categoryId: selectedCategory?.id || null,
+  //   colorSchemeId: selectedColorScheme?.id || null,
+  // };
+  fetchGroupData();
 }, [selectedCategory, selectedColorScheme]);
 
  const [searchTerm, setSearchTerm] = useState("");
@@ -145,18 +145,18 @@ const fetchGroupData = async (filters: {
 const filteredGroups = useMemo(() => {
   let filtered = groups;
 
-  if (selectedCategory) {
-    filtered = filtered.filter(
-      (group: GroupDataPayload) => group.categoryId === selectedCategory.id
-    );
-  }
+  // if (selectedCategory) {
+  //   filtered = filtered.filter(
+  //     (group: GroupDataPayload) => group.categoryId === selectedCategory.id
+  //   );
+  // }
 
-  if (selectedColorScheme) {
-    filtered = filtered.filter(
-      (group: GroupDataPayload) =>
-        group.colorSchemeId === selectedColorScheme.id
-    );
-  }
+  // if (selectedColorScheme) {
+  //   filtered = filtered.filter(
+  //     (group: GroupDataPayload) =>
+  //       group.colorSchemeId === selectedColorScheme.id
+  //   );
+  // }
 
   return filtered;
 }, [groups, selectedCategory, selectedColorScheme]);

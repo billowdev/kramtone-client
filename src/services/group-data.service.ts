@@ -20,22 +20,21 @@ export const getAllGroupData = async (
 	filters: Filters = {}
   ): Promise<GroupDataArrayResponse> => {
 	const { categoryId, colorSchemeId } = filters;
-	const params = new URLSearchParams();
+	let params = {};
   
 	if (categoryId) {
-	  params.append("categoryId", categoryId);
+	  params = { ...params, categoryId };
 	}
   
 	if (colorSchemeId) {
-	  params.append("colorSchemeId", colorSchemeId);
+	  params = { ...params, colorSchemeId };
 	}
   
-	const { data: response } = await httpClient.get(`/groups/get`, {
-	  params: params.toString(),
-	});
-  
+	const { data: response } = await httpClient.get(`/groups/get`, { params });
+	console.log(response.payload)
 	return response.payload;
   };
+  
 
 export const createGroupData = async (data: FormData, accessToken: string): Promise<any> => {
 	await axios.post(`/groups`, data, {
