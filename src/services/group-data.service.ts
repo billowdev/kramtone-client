@@ -1,16 +1,41 @@
 import { GroupDataPayload, GroupDataArrayPayload, GroupDataArrayResponse, GroupDataResponse } from "@/models/group-data.model";
 import httpClient from "@/common/utils/httpClient.util";
 import axios from 'axios'
-
+export interface Filters {
+	categoryId?: string | null;
+	colorSchemeId?: string | null;
+  }
+  
 export const getOneGroupData = async (id: string | undefined): Promise<GroupDataResponse> => {
 	const { data: response } = await httpClient.get(`/groups/get/${id}`);
 	return response.payload
 };
 
-export const getAllGroupData = async (): Promise<GroupDataArrayResponse> => {
-	const { data: response } = await httpClient.get(`/groups/get`)
+// export const getAllGroupData = async (): Promise<GroupDataArrayResponse> => {
+// 	const { data: response } = await httpClient.get(`/groups/get`)
+// 	return response.payload;
+// };
+
+export const getAllGroupData = async (
+	filters: Filters = {}
+  ): Promise<GroupDataArrayResponse> => {
+	const { categoryId, colorSchemeId } = filters;
+	const params = new URLSearchParams();
+  
+	if (categoryId) {
+	  params.append("categoryId", categoryId);
+	}
+  
+	if (colorSchemeId) {
+	  params.append("colorSchemeId", colorSchemeId);
+	}
+  
+	const { data: response } = await httpClient.get(`/groups/get`, {
+	  params: params.toString(),
+	});
+  
 	return response.payload;
-};
+  };
 
 export const createGroupData = async (data: FormData, accessToken: string): Promise<any> => {
 	await axios.post(`/groups`, data, {
