@@ -89,7 +89,7 @@ export default function Footer({}: Props) {
                 </Box>
 
                 <Box sx={{ marginRight: "16px" }}>
-                  <Link href="/group" style={footerLinkStyle}>
+                  <Link href="/color-scheme" style={footerLinkStyle}>
                     <Typography align="center">
                       ข้อมูลโทนสีครามธรรมชาติ
                     </Typography>

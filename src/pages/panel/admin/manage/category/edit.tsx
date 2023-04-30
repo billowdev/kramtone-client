@@ -113,7 +113,7 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
             >
               แก้ไข
             </Button>
-            <Link href="/panel/user/manage-category" passHref>
+            <Link href="/panel/admin/manage/category" passHref>
               <Button variant="outlined" fullWidth>
                 ยกเลิก
               </Button>
@@ -141,7 +141,7 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
 
       if (updateStatus.meta.requestStatus === "fulfilled") {
         toast.success("แก้ไขข้อมูลประเภทสินค้าสำเร็จ")
-        router.push("/panel/user/manage-category");
+        router.push("/panel/admin/manage/category");
       }else{
         toast.error("แก้ไขข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง")
       }

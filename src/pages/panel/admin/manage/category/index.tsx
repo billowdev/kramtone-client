@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Layout from '@/components/Layouts/Layout';
 import { useAppDispatch } from "@/store/store";
 import { getAllCategoryByGroupAction, categorySelector, deleteCategoryAction } from "@/store/slices/category.slice";
@@ -14,6 +14,7 @@ import * as categoryService from "@/services/category.service"
 import * as authService from "@/services/auth.service"
 import { CategoryPayload } from "@/models/category.model"
 import { useSelector } from "react-redux";
+import {CategoryDialog} from "@/components/Panel/CategoryDialog"
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
@@ -50,6 +51,9 @@ import {
   InputLabel,
   Select
 } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+
+
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 // import EditDialog from "./components"
 import { makeStyles } from "@material-ui/core";
@@ -119,6 +123,7 @@ const CustomToolbar: React.FunctionComponent<{
 
 
 
+
 type Props = {
   // gid?: string,
   accessToken?: string,
@@ -152,6 +157,18 @@ function AdminPanelManageCategory({ accessToken}: Props) {
     setPage(0);
   };
  
+
+  const [viewCategoryOpen, setViewCategoryOpen] = useState(false);
+
+  const handleViewCategoryOpen = (row:any) => {
+    setSelectedCategory(row)
+    setViewCategoryOpen(true);
+  };
+
+  const handleViewCategoryClose = () => {
+    setViewCategoryOpen(false);
+  };
+
 
   React.useEffect(() => {
     dispatch(getAllCategoryByGroupAction());
@@ -275,7 +292,17 @@ function AdminPanelManageCategory({ accessToken}: Props) {
           >
             <EditIcon fontSize="inherit" />
           </IconButton>
+          <IconButton
+            aria-label="edit"
+            size="large"
+            onClick={()=>{
+              handleViewCategoryOpen(row)
+            }}
+          >
+            <VisibilityIcon fontSize="inherit" />
+          </IconButton>
 
+          
         </Stack>
       ),
     },
@@ -311,7 +338,7 @@ function AdminPanelManageCategory({ accessToken}: Props) {
         />
       </Container>
 
-  
+      <CategoryDialog category={selectedCategory} open={viewCategoryOpen} onClose={handleViewCategoryClose} />
 {showEditDialog()}
     </Layout>
   )

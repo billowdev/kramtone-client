@@ -118,7 +118,7 @@ const AdminPanelAddCategory = ({accessToken }: Props) => {
             >
               เพิ่ม
             </Button>
-            <Link href="/panel/user/manage-category" passHref>
+            <Link href="/panel/admin/manage/category" passHref>
               <Button variant="outlined" fullWidth>
                 ยกเลิก
               </Button>
@@ -145,7 +145,7 @@ const AdminPanelAddCategory = ({accessToken }: Props) => {
 
       if (createStatus.meta.requestStatus === "fulfilled") {
         toast.success("เพิ่มข้อมูลประเภทสินค้าสำเร็จ")
-        router.push("/panel/user/manage-category");
+        router.push("/panel/admin/manage/category");
       }else{
         toast.error("เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง")
       }
