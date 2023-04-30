@@ -42,6 +42,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 
 
 interface AddProductFormProps {
@@ -95,58 +96,58 @@ const AddProductForm = ({
 
   const [updateValue, setUpdateValue] = useState<ProductPayload>(initialValues);
 
-  const handleUpdate = async (values: ProductPayload) => {
-    try {
-      const formData = new FormData();
-      if (images) {
-        for (let i = 0; i < images.length; i++) {
-          formData.append("images", images[i]);
-        }
-      }
+  // const handleUpdate = async (values: ProductPayload) => {
+  //   try {
+  //     const formData = new FormData();
+  //     if (images) {
+  //       for (let i = 0; i < images.length; i++) {
+  //         formData.append("images", images[i]);
+  //       }
+  //     }
 
-      formData.append(
-        "product",
-        JSON.stringify({
-          name: values.name,
-          desc: values.desc,
-          price: values.price,
-          categoryId: selectedCategory && selectedCategory?.id,
-          colorSchemeId: selectedColorScheme && selectedColorScheme?.id,
-        })
-      );
+  //     formData.append(
+  //       "product",
+  //       JSON.stringify({
+  //         name: values.name,
+  //         desc: values.desc,
+  //         price: values.price,
+  //         categoryId: selectedCategory && selectedCategory?.id,
+  //         colorSchemeId: selectedColorScheme && selectedColorScheme?.id,
+  //       })
+  //     );
 
-      const result = await Swal.fire({
-        title: "แก้ไขข้อมูล?",
-        text: `คุณต้องการแก้ไขข้อมูลสินค้า ${values.name}`,
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonText: "ใช่, ยืนยัน!",
-        cancelButtonText: "ไม่, ยกเลิก",
-      });
+  //     const result = await Swal.fire({
+  //       title: "แก้ไขข้อมูล?",
+  //       text: `คุณต้องการแก้ไขข้อมูลสินค้า ${values.name}`,
+  //       icon: "question",
+  //       showCancelButton: true,
+  //       confirmButtonText: "ใช่, ยืนยัน!",
+  //       cancelButtonText: "ไม่, ยกเลิก",
+  //     });
 
-      if (result.isConfirmed) {
-        const updateStatus = await dispatch(
-          updateProductAction({
-            id: product?.id, // pass the ID of the product being edited as a parameter
-            body: formData,
-            accessToken,
-          })
-        );
+  //     if (result.isConfirmed) {
+  //       const updateStatus = await dispatch(
+  //         updateProductAction({
+  //           id: product?.id, // pass the ID of the product being edited as a parameter
+  //           body: formData,
+  //           accessToken,
+  //         })
+  //       );
 
-        if (updateStatus.meta.requestStatus === "fulfilled") {
-          toast.success("แก้ไขข้อมูลสินค้าสำเร็จ");
-          // console.log(updateStatus)
-          router.push("/panel/user/manage-product");
-        } else {
-          toast.error("แก้ไขข้อมูลสินค้าไม่สำเร็จ โปรดลองอีกครั้ง");
-        }
-      }
-    } catch (error) {
-      toast.error("แก้ไขข้อมูลสินค้าไม่สำเร็จ");
-      console.error("An error occurred:", error);
-      // Handle the error here
-    }
-  };
+  //       if (updateStatus.meta.requestStatus === "fulfilled") {
+  //         toast.success("แก้ไขข้อมูลสินค้าสำเร็จ");
+  //         // console.log(updateStatus)
+  //         router.push("/panel/user/manage-product");
+  //       } else {
+  //         toast.error("แก้ไขข้อมูลสินค้าไม่สำเร็จ โปรดลองอีกครั้ง");
+  //       }
+  //     }
+  //   } catch (error) {
+  //     toast.error("แก้ไขข้อมูลสินค้าไม่สำเร็จ");
+  //     console.error("An error occurred:", error);
+  //     // Handle the error here
+  //   }
+  // };
 
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -231,6 +232,63 @@ const AddProductForm = ({
 
   const handleCloseColorSchemeModal = () => {
     setColorSchemeModalOpen(false);
+  };
+
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const handleEditProduct = () => {
+    // show confirmation dialog before editing product
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmEditProduct = async () => {
+    // edit product
+    // console.log(updateValue)
+    const values = updateValue
+    try {
+      const formData = new FormData();
+      if (images) {
+        for (let i = 0; i < images.length; i++) {
+          formData.append("images", images[i]);
+        }
+      }
+
+      formData.append(
+        "product",
+        JSON.stringify({
+          name: values.name,
+          desc: values.desc,
+          price: values.price,
+          categoryId: selectedCategory && selectedCategory?.id,
+          colorSchemeId: selectedColorScheme && selectedColorScheme?.id,
+        })
+      );
+      const updateStatus = await dispatch(
+        updateProductAction({
+          id: product?.id, // pass the ID of the product being edited as a parameter
+          body: formData,
+          accessToken,
+        })
+      );
+
+      if (updateStatus.meta.requestStatus === "fulfilled") {
+        toast.success("แก้ไขข้อมูลสินค้าสำเร็จ");
+        // console.log(updateStatus)
+        router.push("/panel/user/manage-product");
+      } else {
+        toast.error("แก้ไขข้อมูลสินค้าไม่สำเร็จ โปรดลองอีกครั้ง");
+      }
+    } catch (error) {
+      toast.error("แก้ไขข้อมูลสินค้าไม่สำเร็จ");
+      console.error("An error occurred:", error);
+      // Handle the error here
+    }
+
+    setShowConfirmation(false);
+  };
+
+  const handleCancelEditProduct = () => {
+    setShowConfirmation(false);
   };
 
 
@@ -433,7 +491,7 @@ const AddProductForm = ({
           <Grid item key={index} xs={12} sm={6} md={4}>
             <Paper elevation={3}>
               <Box position="relative">
-              {showPreviewImage(image)}
+              {showPreviewImage({file_obj: image})}
                 {/* <Image src={productImageURL(image)} alt="preview" width={250} height={250} /> */}
                 <Box
                   position="absolute"
@@ -486,9 +544,6 @@ const AddProductForm = ({
   )}
 />
 
-
-
-
           </CardContent>
           <CardActions>
             <Button
@@ -501,7 +556,7 @@ const AddProductForm = ({
             >
               แก้ไข
             </Button>
-            <Link href="/panel/user/manage-category" passHref>
+            <Link href="/panel/user/manage-product" passHref>
               <Button variant="outlined" fullWidth>
                 ยกเลิก
               </Button>
@@ -553,7 +608,9 @@ const AddProductForm = ({
         }}
         initialValues={initialValues!}
         onSubmit={async (values, { setSubmitting }) => {
-          handleUpdate(values); // call handleUpdate function for updating the product
+          setUpdateValue(values)
+          handleEditProduct()
+          // handleUpdate(values); // call handleUpdate function for updating the product
           setSubmitting(false);
         }}
       >
@@ -562,6 +619,16 @@ const AddProductForm = ({
 
       {categoryModal()}
       {colorSchemeModal()}
+
+      <ConfirmationDialog
+        title="ยืนยันการแก้ไขสินค้า"
+        message="คุณต้องการแก้ไขสินค้าใช่หรือไม่ ?"
+        open={showConfirmation}
+        onClose={handleCancelEditProduct}
+        onConfirm={handleConfirmEditProduct}
+      />
+
+
        </Grid>
    
      </Grid>
