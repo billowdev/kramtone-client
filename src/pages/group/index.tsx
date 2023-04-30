@@ -177,7 +177,7 @@ const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
 
 
 const handleGroupsPerPageChange = (
-  event: React.ChangeEvent<{ value: unknown }>
+  event: any
 ) => {
   setGroupsPerPage(event.target.value as number);
   setPage(1); // Reset page to 1 when changing the number of groups per page
@@ -312,7 +312,7 @@ const ColorSchemeFilterModal = () => {
     label="จำนวนรายการที่จะแสดง"
     onChange={handleGroupsPerPageChange}
     MenuProps={{
-      getContentAnchorEl: null,
+      // getContentAnchorEl: null,
       anchorOrigin: {
         vertical: 'bottom',
         horizontal: 'center',

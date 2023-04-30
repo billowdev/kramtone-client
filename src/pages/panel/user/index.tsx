@@ -2,7 +2,7 @@ import React from "react";
 import Layout from "@/components/Layouts/Layout";
 import { Grid, Paper, Typography, Container, Box, Divider } from "@mui/material";
 import { Dialog, DialogTitle, DialogContent, ListItem, DialogContentText, Button, DialogActions} from "@mui/material";
-
+import { useSelector } from "react-redux";
 import CustomMenuListItem from "@/components/Layouts/CustomMenuListItem";
 import GroupsIcon from "@mui/icons-material/Groups";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
@@ -16,12 +16,12 @@ import CheckroomIcon from "@mui/icons-material/Checkroom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import HomeIcon from '@mui/icons-material/Home';
-import { signOut } from "@/store/slices/auth.slice";
-
+import {  signOut, authSelector } from "@/store/slices/auth.slice";
 import { useTheme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "next/link";
 import { useAppDispatch } from "@/store/store";
+import { groupDataSelector } from "@/store/slices/group-data.slice";
 
 type Props = {};
 
@@ -31,7 +31,8 @@ function GroupShopPanel({}: Props) {
   const dispatch:any = useAppDispatch();
   
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
-
+  const userData = useSelector(authSelector);
+  const groupData = useSelector(groupDataSelector);
   const handleLogout = async () => {
     dispatch(signOut());
     setOpenDialog(false);
@@ -94,15 +95,19 @@ function GroupShopPanel({}: Props) {
                   </Typography>
                 ) : (
                   <Typography
-                    variant="h5"
-                    sx={{
-                      fontWeight: "bold",
-                      alignSelf: "center",
-                    }}
-                  >
-                    {" "}
-                    ยินดีต้อนรับเข้าสู่หน้าระบบหลังบ้าน{" "}
-                  </Typography>
+                  variant="h5"
+                  sx={{
+                    fontWeight: "bold",
+                    alignSelf: "center",
+                  }}
+                >
+                  ยินดีต้อนรับเข้าสู่หน้าระบบหลังบ้าน
+                  {!userData.activated && (
+                    <Box component="span" sx={{ marginLeft: 2, color: "red" }}>
+                      หมายเหตุ : บัญชีของคุณยังไม่ถูกยืนยัน
+                    </Box>
+                  )}
+                </Typography>
                 )}
               </React.Fragment>
             </Paper>
@@ -131,7 +136,9 @@ function GroupShopPanel({}: Props) {
                   />
                 </Grid>
                 
-                <Grid item xs={12} sm={12} md={6}>
+                {userData && userData.activated  && (
+         <React.Fragment>
+          <Grid item xs={12} sm={12} md={6}>
                   <CustomMenuListItem
                     href="/panel/user/manage-product"
                     icon={ShoppingBagIcon}
@@ -145,6 +152,8 @@ function GroupShopPanel({}: Props) {
                     text="จัดการประเภทสินค้า"
                   />
                 </Grid>
+        
+              
                 <Grid item xs={12} sm={12} md={6}>
                
                 <CustomMenuListItem   
@@ -153,6 +162,12 @@ function GroupShopPanel({}: Props) {
             text="จัดการโทนสีที่มีในร้าน"
           />
                 </Grid>
+
+         </React.Fragment>
+      )}
+             
+      
+
              
               </Grid>
 

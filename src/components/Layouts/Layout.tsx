@@ -219,7 +219,7 @@ function Layout({ children }: LayoutProps) {
             }}
           >
         <IconButton size="small">
-          {groupData?.groupData?.groupName || "หน้าระบบหลังบ้าน"}
+           {userData.activated ? "หน้าจัดการข้อมูล (บัญชียืนยันตัวตนแล้ว)" : "รอการยืนยัน"} 
         </IconButton>
 
             <IconButton onClick={toggleDrawer}>
@@ -230,7 +230,7 @@ function Layout({ children }: LayoutProps) {
           <List component="nav">
             
               {userData && userData.role === "member" && (
-               <>
+               <React.Fragment>
                 <CustomMenuListItem
                 href="/panel/user"
                 icon={WidgetsIcon}
@@ -244,29 +244,33 @@ function Layout({ children }: LayoutProps) {
                   text="จัดการข้อมูลกลุ่ม"
                   open={open}
                 />
-      
-              <CustomMenuListItem   
-                href="/panel/user/manage-product"
-                  icon={ShoppingBagIcon}
-                  text="จัดการสินค้า"
-                  open={open}
-      
-                />
-                 <CustomMenuListItem   
-                  href="/panel/user/manage-category"
-                  icon={CheckroomIcon}
-                  text="จัดการประเภทสินค้า"
-                  open={open}
-                />
-         <CustomMenuListItem   
+      {userData && userData.activated  && (
+         <React.Fragment>
+          <CustomMenuListItem   
+          href="/panel/user/manage-product"
+            icon={ShoppingBagIcon}
+            text="จัดการสินค้า"
+            open={open}
+
+          />
+            <CustomMenuListItem   
+            href="/panel/user/manage-category"
+            icon={CheckroomIcon}
+            text="จัดการประเภทสินค้า"
+            open={open}
+          />
+            <CustomMenuListItem   
                 href="/panel/user/manage-colorscheme"
                   icon={ColorLensIcon}
                   text="จัดการโทนสีที่มีในร้าน"
                   open={open}
                 />
+         </React.Fragment>
+      )}
+             
       
          
-               </>
+               </React.Fragment>
 
                 )}
 

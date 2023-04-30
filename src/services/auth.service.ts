@@ -30,7 +30,7 @@ export async function signOut() {
 
 // server api
 export const signUp = async (user: signProps): Promise<SignUp> => {
-	const { data: response } = await httpClient.post<SignUp>("/auth/register", user);
+	const { data: response } = await httpClient.post<SignUp>("/users/signup", user);
 	return response;
 };
 

@@ -31,6 +31,7 @@ export type UserState = {
 	sub: string;
 	role: string;
 	gid: string;
+	activated: boolean;
 	username: string;
 	isAuthenticated: boolean;
 	isAuthenticating: boolean;
@@ -55,6 +56,7 @@ export type SessionResponseType = {
 	gid: string,
 	role: string,
 	accessToken: string;
+	activated: boolean;
 	iat: string,
 	exp: string,
 }

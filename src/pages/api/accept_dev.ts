@@ -9,7 +9,7 @@ export default async function acceptDev(req: NextApiRequest, res: NextApiRespons
       secure: process.env.NODE_ENV !== 'development',
       sameSite: 'strict',
       path: '/',
-	  maxAge: 60 * 60 * 1 * 1000, // 1 hours in milliseconds
+	  maxAge: 60 * 60 * 6 * 1000, // 6 hours in milliseconds
     });
 
     res.status(200).json({ message: 'Dev consent accepted.' });

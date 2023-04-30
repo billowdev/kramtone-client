@@ -102,11 +102,11 @@ function SignInPage({}: Props) {
       toast.error("เข้าสู่ระบบไม่สำเร็จ");
     } else {
       // router.push("/panel");
-      if (response.payload.user.role === "member") {
+      if (response.payload.user.role === "admin") {
+        router.push("/panel/admin", undefined, { shallow: false });       
+      } else {
         dispatch(getOneGroupDataAction(response.payload.user.groupId));
         router.push("/panel/user/manage-group", undefined, { shallow: false });
-      } else {
-        router.push("/panel/admin", undefined, { shallow: false });
       }
     }
     setTimeout(() => {
@@ -119,6 +119,27 @@ function SignInPage({}: Props) {
     setPasswordVisible(!passwordVisible);
   };
 
+// Save the user's username and password in local storage
+function rememberPassword(values: FormValues) {
+  localStorage.setItem('username', values.username);
+  localStorage.setItem('password', values.password);
+}
+
+// Check if the user's username and password are stored in local storage
+function checkRememberedPassword(setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void) {
+  const username = localStorage.getItem('username');
+  const password = localStorage.getItem('password');
+  if (username && password) {
+    // Set the field values with the saved information
+    setFieldValue('username', username);
+    setFieldValue('password', password);
+  }
+}
+
+// // Call the checkRememberedPassword function when the page loads
+// if (typeof window !== 'undefined') {
+//   window.addEventListener('load', checkRememberedPassword);
+// }
   return (
     <MainLayout>
       <Grid container>
@@ -142,7 +163,15 @@ function SignInPage({}: Props) {
                 onSubmit={onSubmit}
                 validationSchema={validationSchema}
               >
-                {(props: FormikProps<FormValues>) => (
+                {(props: FormikProps<FormValues>) => {
+    const { setFieldValue } = props;
+
+    // Call the checkRememberedPassword function when the component mounts
+    React.useEffect(() => {
+      checkRememberedPassword(setFieldValue);
+    }, []);
+
+    return (
                   <Form>
                     <Card style={{ background: 'none', boxShadow: 'none' }}>
                       <CardContent style={{ padding: 4 }}>
@@ -197,12 +226,23 @@ function SignInPage({}: Props) {
                           }}
                         />
 
-                        <Field
-                          as={FormControlLabel}
-                          name="remember"
-                          control={<Checkbox color="primary" />}
-                          label="จดจำรหัสผ่าน"
-                        />
+<FormControlLabel
+              control={
+                <Checkbox
+                  name="remember"
+                  color="primary"
+                  onChange={(event) => {
+                    if (event.target.checked) {
+                      rememberPassword(props.values);
+                    } else {
+                      localStorage.removeItem('username');
+                      localStorage.removeItem('password');
+                    }
+                  }}
+                />
+              }
+              label="จดจำรหัสผ่าน"
+            />
 
                         <Typography>
                           <Link href="#">ลืมรหัสผ่าน ?</Link>
@@ -236,7 +276,7 @@ function SignInPage({}: Props) {
                       </CardActions>
                     </Card>
                   </Form>
-                )}
+                )}}
               </Formik>
             </Grid>
           </Grid>
