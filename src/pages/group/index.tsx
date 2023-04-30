@@ -28,7 +28,7 @@ import { Container, TextField,   Dialog,
   DialogContent,
   DialogTitle,
   Pagination  } from "@mui/material";
-  import { FormControl, MenuItem, Select, InputLabel  } from "@mui/material";
+  import { FormControl, MenuItem, Select, InputLabel, ListSubheader   } from "@mui/material";
 
   
 const GroupItem = () => {
@@ -117,7 +117,7 @@ const fetchGroupData = async () => {
       setColorSchemes(colorSchemesPayload);
 
       // Fetch initial group data without filters
-      await fetchGroupData({});
+      await fetchGroupData();
     } catch (error) {
       console.error(error);
     }
@@ -303,7 +303,7 @@ const ColorSchemeFilterModal = () => {
     <ColorSchemeFilterModal />
 
     
-      <FormControl style={{width: "60%"}}>
+    <FormControl style={{ width: '60%' }}>
   <InputLabel id="groups-per-page-label">Groups per page</InputLabel>
   <Select
     labelId="groups-per-page-label"
@@ -311,15 +311,37 @@ const ColorSchemeFilterModal = () => {
     value={groupsPerPage}
     label="จำนวนรายการที่จะแสดง"
     onChange={handleGroupsPerPageChange}
+    MenuProps={{
+      getContentAnchorEl: null,
+      anchorOrigin: {
+        vertical: 'bottom',
+        horizontal: 'center',
+      },
+      transformOrigin: {
+        vertical: 'top',
+        horizontal: 'center',
+      },
+      PaperProps: {
+        style: {
+          maxHeight: 250,
+          width: 250,
+        },
+      },
+    }}
   >
-    <MenuItem value={5}>5</MenuItem>
-    <MenuItem value={25}>25</MenuItem>
-    <MenuItem value={50}>50</MenuItem>
-    <MenuItem value={75}>75</MenuItem>
-    <MenuItem value={100}>100</MenuItem>
-    <MenuItem value={-1}>All</MenuItem>
+    {[5, 25, 50, 75, 100, -1].map((value) => (
+     <MenuItem key={value} value={value} style={{ padding: '8px 16px' }}>
+     {value === -1 ? 'All' : value}
+   </MenuItem>
+   
+    ))}
   </Select>
 </FormControl>
+
+
+
+
+
 
 
         <Paper elevation={3} style={{ padding: 2 }}>
