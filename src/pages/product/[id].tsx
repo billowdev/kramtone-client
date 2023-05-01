@@ -295,9 +295,9 @@ function UserPanelProduct({ product }: Props) {
                       <Image
                         src={productImageURL(image)}
                         alt={`Product image ${index}`}
-                        width={isSmallDevice ? 100:250}
-                        height={isSmallDevice ? 100:250}
-                        style={{ borderRadius: "5%", objectFit: "contain" }}
+                        width={250}
+                        height={250}
+                        style={{ borderRadius: "5%", objectFit: "contain", marginTop:8, marginBottom:8 }}
                       />
                     </div>
                   ))}
