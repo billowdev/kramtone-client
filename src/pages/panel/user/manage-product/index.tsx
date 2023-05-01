@@ -162,7 +162,7 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
 
   const handleConfirmDeleteProduct = async () => {
     // console.log(deleteId, accessToken)
-    const response = await dispatch(deleteProductAction({ deleteId, gid, accessToken }))
+    const response = await dispatch(deleteProductAction({ id:deleteId, gid, accessToken }))
       if (response.meta.requestStatus === "fulfilled") {
         toast.success("ลบข้อมูลสินค้าสำเร็จ")
         setTimeout(() => {

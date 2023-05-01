@@ -268,10 +268,11 @@ function UserPanelProduct({ product }: Props) {
           </Paper>
         </Grid>
       </Grid>
-
-      <Box p={4} sx={{ minHeight: "100vh" }}>
+  
+      <Box sx={{ minHeight: "100vh" }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
+
+        <Grid item xs={12} sm={4}>
             <Grid container spacing={2}>
               <Carousel
                 showArrows
@@ -286,7 +287,7 @@ function UserPanelProduct({ product }: Props) {
                 swipeable
                 dynamicHeight
                 selectedItem={currentImageIndex}
-                width="100%"
+                // width="100%"
               >
                 {images &&
                   images.map((image: string, index: number) => (
@@ -294,18 +295,17 @@ function UserPanelProduct({ product }: Props) {
                       <Image
                         src={productImageURL(image)}
                         alt={`Product image ${index}`}
-                        width="250"
-                        height="250"
+                        width={isSmallDevice ? 100:250}
+                        height={isSmallDevice ? 100:250}
                         style={{ borderRadius: "5%", objectFit: "contain" }}
                       />
                     </div>
                   ))}
               </Carousel>
-              <Grid container spacing={2}>
-                {imageCarousel}
-              </Grid>
+              <Grid container spacing={2}>{imageCarousel}</Grid>
             </Grid>
           </Grid>
+
           <Grid item xs={12} sm={8}>
             <Typography variant="h4" className={classes.price}>
               ฿{product && product?.price}
@@ -350,33 +350,33 @@ function UserPanelProduct({ product }: Props) {
                 <StyledTypography gutterBottom className={classes.colorScheme}>
                   รหัสสี {product?.colorScheme?.id}
                 </StyledTypography>
-              </Grid>
-            </Grid>
-            <Typography variant="body1" color="text.secondary">
-              <ShoppingBasketIcon className={classes.icon} />
-              ประเภทสินค้า: {product?.category?.name}
-            </Typography>
-
-            <Typography variant="body1" color="text.secondary">
-              <StoreIcon className={classes.icon} />
-              ชื่อกลุ่มผู้ผลิตหรือร้านค้า: {product?.groupData?.groupName}
-            </Typography>
-
-            <Typography variant="h6" component="div" className={classes.title}>
-              รายละเอียดเพิ่มเติม
-            </Typography>
-
-            <Typography variant="body1" color="text.secondary">
-              {product?.desc}
-            </Typography>
+                </Grid>
           </Grid>
+          <Typography variant="body1" color="text.secondary">
+            <ShoppingBasketIcon className={classes.icon} />
+            ประเภทสินค้า: {product?.category?.name}
+          </Typography>
+
+          <Typography variant="body1" color="text.secondary">
+            <StoreIcon className={classes.icon} />
+            ชื่อกลุ่มผู้ผลิตหรือร้านค้า: {product?.groupData?.groupName}
+          </Typography>
+
+          <Typography variant="h6" component="div" className={classes.title}>
+            รายละเอียดเพิ่มเติม
+          </Typography>
+
+          <Typography variant="body1" color="text.secondary">
+            {product?.desc}
+          </Typography>
         </Grid>
-      </Box>
+      </Grid>
     </Box>
-  );
+  </Box>
+);  
 
   const renderProducerTab = () => (
-    <Box p={2}>
+    <Box p={isSmallDevice ? 0 :2}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Paper
@@ -518,7 +518,7 @@ function UserPanelProduct({ product }: Props) {
           <Grid item xs={12} md={12} lg={12}>
             <Paper
               sx={{
-                p: 2,
+                // p: 2,
                 display: "flex",
                 flexDirection: "column",
                 gap: "16px",
@@ -646,7 +646,7 @@ function UserPanelProduct({ product }: Props) {
         title={`รายละเอียดสินค้า ${product?.name}`}
         description={`หน้าสินค้าทั้งหมดของกลุ่มผู้ผลิตหรือร้านค้าผ้าย้อมคราม ชื่อกลุ่ม ${product?.groupData?.groupName} ประเภทกลุ่ม ${product?.groupData?.groupType} ชื่อสินค้า ${product?.name} รายละเอียด ${product?.desc}`}
       />
-      <Box sx={{ flexGrow: 1, p: 5 }}>
+      <Box sx={{ flexGrow: 1, p: isSmallDevice ? 0 : 5 }}>
         <Paper>
           <Tabs
             value={tabIndex}
@@ -660,7 +660,7 @@ function UserPanelProduct({ product }: Props) {
           </Tabs>
           {tabIndex === 0 && renderProductTab()}
           {tabIndex === 1 && renderProducerTab()}
-
+  
           <Box display="flex" justifyContent="space-between" padding={2}>
             <Box display="flex" gap="8px">
               <FacebookShareButton url={shareUrl} quote={shareTitle}>
@@ -685,6 +685,8 @@ function UserPanelProduct({ product }: Props) {
       </Box>
     </MainLayout>
   );
+ 
+    
 }
 
 export const getServerSideProps: GetServerSideProps = async (

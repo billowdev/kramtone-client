@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { setCookie } from "@/common/utils/cookies.util";
+import { setLocalStorage } from "@/common/utils/localStorage.util";
 
 export default async function acceptCookies(req: NextApiRequest, res: NextApiResponse<any>) {
   try {
@@ -11,6 +12,9 @@ export default async function acceptCookies(req: NextApiRequest, res: NextApiRes
       path: '/',
       maxAge: 60 * 60 * 24 * 365 * 1000, // 365 days in milliseconds
     });
+
+    // Set the cookie acceptance in local storage
+    setLocalStorage('cookie_acceptance', 'true');
 
     res.status(200).json({ message: 'Cookie consent accepted.' });
   } catch (error: any) {

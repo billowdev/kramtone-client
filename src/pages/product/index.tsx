@@ -37,6 +37,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import { CategoryPayload } from "@/models/category.model";
 import { ColorSchemePayload } from "@/models/color-scheme.model";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 type Props = {};
 
@@ -49,7 +50,7 @@ const ProductTest = ({}: Props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [products, setProducts] = React.useState<any>([]);
-
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const [searchTerm, setSearchTerm] = useState("");
 
   const [categories, setCategories] = useState<any>([]);
@@ -219,7 +220,7 @@ const ProductTest = ({}: Props) => {
 
   return (
     <MainLayout>
-       <Box sx={{ flexGrow: 1, p: 4 }}> 
+       <Box sx={{ flexGrow: 1, p: isSmallDevice ? 0:4 }}> 
 
       <NextSeo
         title="หน้าสินค้าทั้งหมด"

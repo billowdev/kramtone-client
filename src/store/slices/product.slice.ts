@@ -45,7 +45,7 @@ export const getOneProductAction = createAsyncThunk("PRODUCT/GET_ONE", async (id
 
 export const deleteProductAction = createAsyncThunk(
 	"PRODUCT/DELETE",
-	async (data: { id?: string, gid?: string, accessToken?: string }) => {
+	async (data: { id?: string | undefined, gid?: string | undefined, accessToken?: string | undefined }) => {
 		await productService.deleteProduct(data.id!, data.accessToken!);
 		store.dispatch(getOneProductAction(data.gid!));
 	}

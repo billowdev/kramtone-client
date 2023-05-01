@@ -1,4 +1,4 @@
-import { Formik, Form, Field, FieldArray } from "formik";
+import { Formik, Form, Field, FieldArray, FormikProps } from "formik";
 import { TextField, Button, Box, Paper } from "@mui/material";
 import { Card, CardContent, CardActions, Typography, Grid } from "@mui/material";
 import Link from "next/link";
@@ -387,7 +387,7 @@ const AddProductForm = ({
   handleBlur,
   isSubmitting,
   setFieldValue,
-  }: FormikProps<CategoryPayload>) => {
+  }: FormikProps<ProductPayload>) => {
     return (
       <Form>
         <Card>
@@ -423,7 +423,7 @@ const AddProductForm = ({
 		  name="price"
 		  type="number"
 		  label="ราคาสินค้า"
-		  value={values.price}
+		  value={values?.price}
 		  onChange={handleChange}
 		  onBlur={handleBlur}
 		/>
@@ -472,7 +472,7 @@ const AddProductForm = ({
                 {showPreviewImage({ image: image.image })}
               
                 <Button onClick={() => handleDeleteExistImage(image)} style={{ background: "none", border: "none", cursor: "pointer" }}>
-                  <Delete sx={{ fontSize: 20 }} />
+                  <Delete style={{ fontSize: 20 }} />
                 </Button>
 
               </div>
@@ -503,7 +503,7 @@ const AddProductForm = ({
                 >
                     
                 <Button onClick={() => handleDeleteImage(image)} style={{ background: "none", border: "none", cursor: "pointer" }}>
-                  <Delete sx={{ fontSize: 20 }} />
+                  <Delete style={{ fontSize: 20 }} />
                 </Button>
                 </Box>
               </Box>
