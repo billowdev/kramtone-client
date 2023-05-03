@@ -163,11 +163,11 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
       >
         <DialogTitle id="alert-dialog-slide-title">
           <br />
-          คุณต้องการแก้ไขข้อมูลใช่หรือไม่? : {category?.name}
+          แก้ไขข้อมูล? : {category?.name}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-          การแก้ไขข้อมูลโหนดอาจจะกระทบกับระบบนำทาง
+          คุณต้องการแก้ไขข้อมูลใช่หรือไม่ ?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -183,22 +183,22 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
   };
 
   const showPreviewImage = (values: any) => {
-    if (values.image_obj) {
+    if (values?.image_obj) {
       return (
         <Image
           // objectFit="contain"
           alt="รูปภาพประเภทสินค้า"
-          src={values.image_obj}
+          src={values?.image_obj}
           width={250}
           height={250}
         />
       );
-    } else if (values.image) {
+    } else if (values?.image) {
       return (
         <Image
           // objectFit="contain"
           alt="รูปภาพประเภทสินค้า"
-          src={categoryImageURL(values.image)}
+          src={categoryImageURL(values?.image)}
           width={250}
           height={250}
         />

@@ -25,6 +25,18 @@ export const getAllUser = createAsyncThunk(
 	}
 )
 
+export const updateUser = createAsyncThunk(
+	"USER/UPDATE",
+	async (data: UserPayload) => {
+	  const response = await httpClient.put(`/users/update`, data, {
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+	  });
+	  return response.data;
+	}
+  );
+  
+
+
 export const userSlice = createSlice({
 	name: "user",
 	initialState: initialState,

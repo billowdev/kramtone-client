@@ -79,36 +79,7 @@ const handleColorSchemeSelect = (colorScheme: ColorSchemePayload) => {
 const [groups, setGroups] = useState<any>([]);
 
 // Function to fetch group data with filters
-const fetchGroupData = async () => {
-  try {
-    const payload = await groupDataService.getAllGroupData({
-      categoryId : selectedCategory?.id || null,  
-      colorSchemeId : selectedColorScheme?.id || null
-    });
-    setGroups(payload);
-  } catch (error) {
-    console.error("Failed to fetch group data:", error);
-  }
-};
-
-// useEffect(() => {
-//   async function fetchData() {
-//     try {
-//       const payload = await groupDataService.getAllGroupData();
-//       const categoriesPayload = await categoryService.getAllCategory();
-//       const colorSchemesPayload = await colorSchemeService.getAllColorScheme();
-//       setCategories(categoriesPayload);
-//       setColorSchemes(colorSchemesPayload);
-
-//       setGroups(payload);
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   }
-//   fetchData();
-// }, []);
- // Fetch initial data
- useEffect(() => {
+useEffect(() => {
   async function fetchData() {
     try {
       const categoriesPayload = await categoryService.getAllCategory();
@@ -122,18 +93,23 @@ const fetchGroupData = async () => {
       console.error(error);
     }
   }
+
+  async function fetchGroupData() {
+    try {
+      const payload = await groupDataService.getAllGroupData({
+        categoryId: selectedCategory?.id || null,
+        colorSchemeId: selectedColorScheme?.id || null,
+      });
+      setGroups(payload);
+    } catch (error) {
+      console.error("Failed to fetch group data:", error);
+    }
+  }
+
   fetchData();
-}, [categoryService, colorSchemeService, fetchGroupData]);
-
-
- // Refetch group data when selectedCategory or selectedColorScheme changes
- useEffect(() => {
-  // const filters = {
-  //   categoryId: selectedCategory?.id || null,
-  //   colorSchemeId: selectedColorScheme?.id || null,
-  // };
-  fetchGroupData();
 }, [selectedCategory, selectedColorScheme]);
+
+
 
  const [searchTerm, setSearchTerm] = useState("");
   const handleSearchInputChange = (
