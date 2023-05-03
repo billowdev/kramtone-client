@@ -281,63 +281,6 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
 
   return (
 
-	// <Layout>
-
-	// <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-	// 	 <Grid container spacing={3}>
-	// 		 <Grid item xs={12}>
-	// 		 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px'}}>
-	// 		 {isSmallDevice ? (
-	// 			 <PersonIcon sx={{fontSize:'1.5rem', marginLeft:'8px'}} />
-	// 		   ) : (
-	// 			 <PersonIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
-	// 		   )}
-
-	// 		 <React.Fragment> 
-	// 		   {isSmallDevice ? (
-	// 			 <Typography
-	// 			sx={{
-	// 			   fontWeight: 'bold',  alignSelf:'center',
-	// 		   }}
-	// 			 > แก้ไขข้อมูลสมาชิก</Typography>
-	// 		   ) : (
-	// 			 <Typography
-	// 			 variant='h5' sx={{
-	// 			   fontWeight: 'bold',  alignSelf:'center',
-	// 		   }}
-	// 			 > แก้ไขข้อมูลสมาชิก</Typography>
-	// 		   )}
-	// 		 </React.Fragment>
-	// 		 </Paper>
-	// 	   </Grid> 
-	// 	   <Grid item xs={12} md={12} lg={12}>
-	// 	   <Formik
-    //     validate={(values) => {
-    //       let errors: any = {};
-    //       if (!values.name) errors.name = "กรุณากรอกชื่อผู้ใช้";
-    //       return errors;
-    //     }}
-    //     initialValues={user!}
-    //     onSubmit={async (values, { setSubmitting }) => {
-    //       setUpdateValue(values)
-    //       setOpenDialog(true);
-    //       setSubmitting(false);
-    //     }}
-    //   >
-    //     {(props) => showForm(props)}
-    //   </Formik>
-    //   {showDialog()}
-	
-	
-	// 	   </Grid>
-	   
-	// 	 </Grid>
-	   
-	//    </Container>
-	
-		 
-	// 	</Layout>
-
     <Layout>
       <Formik
         validate={(values) => {
