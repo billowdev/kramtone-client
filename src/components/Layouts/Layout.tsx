@@ -37,6 +37,7 @@ import WidgetsIcon from '@mui/icons-material/Widgets';
 import HomeIcon from '@mui/icons-material/Home';
 import { useTheme } from "@material-ui/core/styles";
 
+
 import {
   Box,
   Button,
@@ -240,6 +241,7 @@ function Layout({ children }: LayoutProps) {
 
                 <CustomMenuListItem   
                 href="/panel/user/manage-group"
+                startWithPath="/panel/user/manage-group"
                   icon={GroupsIcon}
                   text="จัดการข้อมูลกลุ่ม"
                   open={open}
@@ -248,6 +250,7 @@ function Layout({ children }: LayoutProps) {
                     <React.Fragment>
                       <CustomMenuListItem   
                       href="/panel/user/manage-product"
+                      startWithPath="/panel/user/manage-product"
                         icon={ShoppingBagIcon}
                         text="จัดการสินค้า"
                         open={open}
@@ -255,12 +258,14 @@ function Layout({ children }: LayoutProps) {
                       />
                         <CustomMenuListItem   
                         href="/panel/user/manage-category"
+                        startWithPath="/panel/user/manage-category"
                         icon={CheckroomIcon}
                         text="จัดการประเภทสินค้า"
                         open={open}
                       />
                         <CustomMenuListItem   
                             href="/panel/user/manage-colorscheme"
+                            startWithPath="/panel/user/manage-colorscheme"
                               icon={ColorLensIcon}
                               text="จัดการโทนสีที่มีในร้าน"
                               open={open}
@@ -287,16 +292,25 @@ function Layout({ children }: LayoutProps) {
                               icon={AccountBoxIcon}
                               text="จัดการบัญชีผู้ใช้"
                               open={open}
+                              startWithPath="/panel/admin/manage/user"
                             />
-
+                    <CustomMenuListItem   
+                            href="/panel/admin/manage/group"
+                              icon={GroupsIcon}
+                              text="จัดการข้อมูลกลุ่ม"
+                              open={open}
+                              startWithPath="/panel/admin/manage/group"
+                            />
                            <CustomMenuListItem   
                         href="/panel/admin/manage/category"
+                        startWithPath="/panel/admin/manage/category"
                         icon={CheckroomIcon}
                         text="จัดการประเภทสินค้า"
                         open={open}
                       />
                       <CustomMenuListItem   
                             href="/panel/admin/manage/color-scheme"
+                            startWithPath="/panel/admin/manage/color-scheme"
                               icon={ColorLensIcon}
                               text="จัดการโทนสี"
                               open={open}

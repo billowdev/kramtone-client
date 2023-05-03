@@ -57,7 +57,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import router from "next/router";
 
-import { getAllUser, userSelector } from '@/store/slices/user.slice';
+import { getAllGroupDataAction, groupDataSelector } from '@/store/slices/group-data.slice';
 import Moment from 'react-moment';
 import 'moment/locale/th'; // import Thai locale
 import {  GridCellParams } from '@mui/x-data-grid';
@@ -126,11 +126,11 @@ const CustomToolbar: React.FunctionComponent<{
 
 
 
-function AdminPanelManageUser({}: Props) {
+function AdminPanelManageGroup({}: Props) {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down('xs'));
   const dispatch = useAppDispatch();
-  const userData = useSelector(userSelector);
+  const groupData = useSelector(groupDataSelector);
   const classes = useStyles(); // Add this line to use the custom styles
 
   const [openAddDialog, setOpenAddDialog] = React.useState<boolean>(false);
@@ -152,7 +152,7 @@ function AdminPanelManageUser({}: Props) {
 
 
   React.useEffect(() => {
-    dispatch(getAllUser());
+    dispatch(getAllGroupDataAction());
   }, [dispatch]);
 
   const [filterButtonEl, setFilterButtonEl] =
@@ -200,22 +200,24 @@ function AdminPanelManageUser({}: Props) {
   
   const columns: GridColDef[] = [
     {
-      field: "username",
+      field: "groupName",
       editable: true,
-      headerName: "ชื่อผู้ใช้",
-      width: 120,
+      headerName: "ชื่อกลุ่ม",
+      width: 240,
     },
+	{
+		field: 'groupType',
+		headerName: 'ประเภทกลุ่ม',
+		width: 100,
+		valueFormatter: (params) => {
+		  return params.value === 'producer' ? 'กลุ่มผู้ผลิต' : 'ร้านค้า';
+		},
+	  },
     {
-      field: "name",
+      field: "agency",
       editable: true,
-      headerName: "ชื่อ",
-      width: 100,
-    },
-    {
-      field: "surname",
-      editable: true,
-      headerName: "นามสกุล",
-      width: 100,
+      headerName: "ประธานกลุ่ม",
+      width: 180,
     },
     // {
     //   field: 'createdAt',
@@ -236,8 +238,8 @@ function AdminPanelManageUser({}: Props) {
     //   width: 40,
     // },
     {
-      field: 'activated',
-      headerName: 'Status',
+      field: 'verified',
+      headerName: 'สถานะการยืนยันตัวตน',
       width: 100,
       renderCell: (params: GridCellParams<UserPayload>) => <StatusCellRenderer {...params} />,
     },
@@ -261,37 +263,20 @@ function AdminPanelManageUser({}: Props) {
             aria-label="edit"
             size="large"
             onClick={() => 
-            router.push("/panel/admin/manage/user/edit?id=" + row.id)
+            router.push("/panel/admin/manage/group/edit?id=" + row.id)
             }
-            // onClick={() => {
-            //   console.log(row)
-            //   setUser(row)
-            //   setSelectedUser(row);
-            //     handleEditClick(row)
-            // }}
           >
             <EditIcon fontSize="inherit" />
           </IconButton>
           <IconButton
             aria-label="view"
             size="large"
-            onClick={()=>{
-              handleViewUserOpen(row)
-            }}
+            onClick={() => 
+				router.push("/panel/admin/manage/group/" + row.id)
+				}
           >
             <VisibilityIcon fontSize="inherit" />
-          </IconButton>
-
-          <IconButton
-            aria-label="edit"
-            size="large"
-            onClick={() => 
-              router.push("/panel/admin/manage/group/" + row?.group?.id)
-              }
-          >
-            <GroupsIcon fontSize="inherit" />
-          </IconButton>
-          
+          </IconButton>  
         </Stack>
       ),
     },
@@ -332,7 +317,7 @@ function AdminPanelManageUser({}: Props) {
               <Grid item xs={12} md={12} lg={12}>
               <DataGrid
                   sx={{ backgroundColor: "white",  width: "100%", height: "100%", minHeight: "200px" }}
-                  rows={userData.users ?? []}
+                  rows={groupData.groupDataArray ?? []}
                   columns={columns}
                   components={{
                     Toolbar: CustomToolbar,
@@ -355,4 +340,4 @@ function AdminPanelManageUser({}: Props) {
   )
 }
 
-export default withAuth(AdminPanelManageUser)
+export default withAuth(AdminPanelManageGroup)

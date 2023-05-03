@@ -25,12 +25,14 @@ type Props = {
 	icon: React.ElementType;
 	text: string;
 	open?: boolean
+	startWithPath?: string;
 }
 
-const CustomMenuListItem: React.FC<Props> = ({ href, icon, text, open }) => {
+const CustomMenuListItem: React.FC<Props> = ({ href, icon, text, open, startWithPath }) => {
 	const theme = useTheme();
 	const router = useRouter();
-	const isActive = router.pathname === href;
+	const isActive = router.pathname === href ||
+    router.pathname.startsWith(startWithPath);
 	
 	return (
 	  <Link href={href} passHref>

@@ -36,6 +36,8 @@ import * as thaiAddressService from "@/services/thai-address.service";
 import { updateGroupDataAction } from "@/store/slices/group-data.slice"
 // import { TextField } from "formik-material-ui";
 import toast from "react-hot-toast";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
+
 
 import TextField from "@material-ui/core/TextField";
 
@@ -179,11 +181,17 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   const [currentLng, setCurrentLng] = React.useState<number>(parseFloat(groupData?.lng!));
   const [currentLatLng, setCurrentLatLng] = React.useState<[number, number]>([parseFloat(groupData?.lat!), parseFloat(groupData?.lng!)]);
 
-  const center: LatLngExpression = [currentLatLng[0], currentLatLng[1]]; // Centered on Sakon Nakhon Province
+const defaultLatitude = 17.16077251931186;
+const defaultLongitude = 104.14256629586718;
+
+const center: LatLngExpression = [
+	currentLatLng[0] || defaultLatitude,
+	currentLatLng[1] || defaultLongitude
+  ];
 
   const position: LatLngExpression = [
-    parseFloat(groupData?.lat ?? "17.1634"),
-    parseFloat(groupData?.lng ?? "104.1476"),
+    parseFloat(groupData?.lat ?? defaultLatitude),
+    parseFloat(groupData?.lng ?? defaultLongitude),
   ]; // Centered on Sakon Nakhon Province
   const zoom: number = 12;
 
@@ -359,35 +367,86 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   };
 
 
-  const showDialog = () => {
-    return (
-      <Dialog
-        open={openDialog}
-        keepMounted
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">
-          ยืนยันการแก้ไขข้อมูล
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            คุณต้องการแก้ไขข้อมูลใช่หรือไม่
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleEditConfirm} color="primary">
-            ยืนยัน
-          </Button>
-          <Button onClick={() => setOpenDialog(false)} color="info">
-            ยกเลิก
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
+//   const showDialog = () => {
+//     return (
+//       <Dialog
+//         open={openDialog}
+//         keepMounted
+//         aria-labelledby="alert-dialog-slide-title"
+//         aria-describedby="alert-dialog-slide-description"
+//       >
+//         <DialogTitle id="alert-dialog-slide-title">
+//           ยืนยันการแก้ไขข้อมูล
+//         </DialogTitle>
+//         <DialogContent>
+//           <DialogContentText id="alert-dialog-slide-description">
+//             คุณต้องการแก้ไขข้อมูลใช่หรือไม่
+//           </DialogContentText>
+//         </DialogContent>
+//         <DialogActions>
+//           <Button onClick={handleEditConfirm} color="primary">
+//             ยืนยัน
+//           </Button>
+//           <Button onClick={() => setOpenDialog(false)} color="info">
+//             ยกเลิก
+//           </Button>
+//         </DialogActions>
+//       </Dialog>
+//     );
+//   };
+
+
+ 
+//   const handleEditConfirm = async () => {
+//     let formData: FormData = new FormData();
+    
+//     if (logoFile!="") {
+//       formData.append("logoFile", logoFile);
+//     }
+//     if (bannerFile!="") {
+//       formData.append("bannerFile", bannerFile);
+//     }
+//     formData.append('groupData', JSON.stringify({
+//       'groupName': updateGroupData.groupName,
+//       'groupType': groupTypeState,
+//       'agency': updateGroupData.agency,
+//       'phone': updateGroupData.phone,
+//       'email': updateGroupData.email,
+//       'hno': updateGroupData.hno,
+//       'village': updateGroupData.village,
+//       'lane': updateGroupData.lane,
+//       'road': updateGroupData.road,
+//       'subdistrict': updateGroupData.subdistrict,
+//       'district': updateGroupData.district,
+//       'province': updateGroupData.province,
+//       'zipCode': zipCodeState,
+//       'lat': currentLat,
+//       'lng': currentLng,
+//     }));
+
+
+//     const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }))
+
+// 		if (updateStatus.meta.requestStatus === "fulfilled") {
+// 		toast.success("แก้ไขข้อมูลสำเร็จ")
+// 		router.push("/panel/admin/manage/group")
+// 		} else {
+// 		toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+// 		}
+//     setOpenDialog(false);
+  
+//   };
+
+
+  
+  const [showConfirmation, setShowConfirmation] = React.useState(false);
+
+  const handleEdit = () => {
+    setShowConfirmation(true);
   };
-  const handleEditConfirm = async () => {
-    let formData: FormData = new FormData();
+
+  const handleConfirmEdit = async () => {
+	let formData: FormData = new FormData();
     
     if (logoFile!="") {
       formData.append("logoFile", logoFile);
@@ -413,18 +472,22 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
       'lng': currentLng,
     }));
 
-
     const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }))
 
-    if (updateStatus.meta.requestStatus === "fulfilled") {
-      toast.success("แก้ไขข้อมูลสำเร็จ")
-      router.push("/panel/user/manage-group")
-    } else {
-      toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
-    }
+		if (updateStatus.meta.requestStatus === "fulfilled") {
+		toast.success("แก้ไขข้อมูลสำเร็จ")
+		router.push("/panel/admin/manage/group")
+		} else {
+		toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+		}
     setOpenDialog(false);
-    // }
+    setShowConfirmation(false);
   };
+
+  const handleCancelEdit = () => {
+    setShowConfirmation(false);
+  };
+
 
   const showForm = ({
     values,
@@ -510,8 +573,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       type="file"
                       onChange={(e: React.ChangeEvent<any>) => {
                         e.preventDefault();
-                        // setBannerFile(e.target.files[0])
-                        // setBannerObj(URL.createObjectURL(e.target.files[0]))
+
                         setFieldValue("bannerFile", e.target.files[0]); // for upload
                         setFieldValue(
                           "bannerObj",
@@ -876,7 +938,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
             type="submit"
             variant="contained"
             fullWidth
-            disabled={!isValid}
+			onClick={()=>{
+				handleEdit()
+			}}
+            // disabled={!isValid}
             sx={{ marginRight: 1 }}
           >
             {isSmallDevice ? "บันทึก" : "บันทึกข้อมูล"}
@@ -954,11 +1019,19 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 <Box sx={{ padding: 4 }}>
                   <Formik
                     initialValues={groupData!}
-                    validationSchema={validationSchema}
+					validate={(values) => {
+						console.log(values)
+						let errors: any = {};
+						if (!values?.groupName) errors.groupName = "กรุณากรอกชื่อกลุ่ม";
+						if (!values?.phone) errors.phone = "กรุณากรอกเบอร์โทร";
+						return errors;
+					  }}
+					validationSchema={validationSchema}
+
                     onSubmit={async (values, { setSubmitting }) => {
+					  handleEdit()
                       setLogoFile(values?.logoFile)
                       setBannerFile(values?.bannerFile)
-                      setOpenDialog(true);
                       setSubmitting(false);
                     }}
                   >
@@ -997,7 +1070,15 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
           </Grid>
         </Grid>
       </Container>
-      {showDialog()}
+      {/* {showDialog()} */}
+	  <ConfirmationDialog
+        title="ยืนยันการแก้ไขบัญชีผู้ใช้"
+        message="คุณต้องการแก้ไขบัญชีผู้ใช้ใช่หรือไม่ ?"
+        open={showConfirmation}
+        onClose={handleCancelEdit}
+        onConfirm={handleConfirmEdit}
+      />
+
     </Layout>
   );
 };
