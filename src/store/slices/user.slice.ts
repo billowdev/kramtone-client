@@ -27,11 +27,22 @@ export const getAllUser = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
 	"USER/UPDATE",
-	async (data: UserPayload) => {
+	async (data: any) => {
 		// console.log("======== user slice ===========")
 		// console.log(data)
 		// console.log("======== user slice ===========")
 	  const response = await httpClient.patch(`/users/update/${data.id}`, data, {
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+	  });
+	  return response.data;
+	}
+  );
+
+  export const addUser = createAsyncThunk(
+	"USER/ADD",
+	async (data: any) => {
+	
+	  const response = await httpClient.post(`/users/create`, data, {
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
 	  });
 	  return response.data;

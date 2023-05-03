@@ -2,8 +2,8 @@ import Layout from "@/components/Layouts/Layout";
 import withAuth from "@/components/withAuth";
 import { UserPayload } from "@/models/user.model";
 // import { updateCategory } from "@/services/user.service";
-import { updateUser } from "@/store/slices/user.slice";
-import { Formik, Form, Field, FormikHelpers, FormikProps, useFormikContext   } from 'formik';
+import { addUser } from "@/store/slices/user.slice";
+import { Formik, Form, Field, FormikHelpers, FormikProps, useFormikContext,   ErrorMessage,  } from 'formik';
 import { TextField, CheckboxWithLabel } from 'formik-material-ui';
 
 import {
@@ -38,7 +38,8 @@ import { Switch,
 	   FormControl,
 	   Container,
 	   Paper,
-
+	   InputAdornment,
+	   IconButton,
 	 } from '@material-ui/core';
 import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
@@ -47,73 +48,96 @@ import { ServerStyleSheets } from '@material-ui/core';
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
-
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 
 type Props = {
-  user?: UserPayload;
-  accessToken?: string;
+ 
 };
-const AdminPanelEditUser = ({ user, accessToken}: Props) => {
+const AdminPanelEditUser = ({
+	
+}: Props) => {
   const router = useRouter();
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
-  const [updateValue, setUpdateValue] = React.useState<UserPayload>(user!);
+  interface UserType extends UserPayload {
+	password: string;
+	passwordConfirmation: string;
+  }
+  const initialValue : any = {
+	id: "",
+	username: "",
+	email: "",
+	role: "",
+	name: "",
+	surname: "",
+	phone: "",
+	activated: false,
+	removed: false,
+	groupId: "",
+	password: '',
+	passwordConfirmation: '',
+}
+  const [addValues, setAddValues] = React.useState<UserType>(initialValue);
   const dispatch = useAppDispatch();
-	const [userRole, setUserRole] = React.useState<String>(user?.role!);
+	const [userRole, setUserRole] = React.useState<String>('member');
 	const sheets = new ServerStyleSheets();
 	const theme = useTheme();
 	const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
-	const [activated, setActivated] = React.useState<boolean>(user?.activated!)
-
-
+	const [activated, setActivated] = React.useState<boolean>(false)
+	const [passwordVisible, setPasswordVisible] = React.useState(false);
+	const handlePasswordVisible = () => {
+		setPasswordVisible(!passwordVisible);
+	  };
+	  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+	  };
 
   const [showConfirmation, setShowConfirmation] = React.useState(false);
 
-  const handleEdit = () => {
+  const handleAdd = () => {
     setShowConfirmation(true);
   };
 
-  const handleConfirmEdit = async () => {
-    const updateData = {...updateValue, role: userRole, activated}
-    const updateStatus = await dispatch(updateUser(updateData))
+  const handleConfirmAdd = async () => {
+    const addData = {...addValues, role: userRole, activated}
+    const addStatus = await dispatch(addUser(addData))
 
-    if (updateStatus?.meta?.requestStatus === "fulfilled") {
-      if(updateStatus?.payload?.error?.code === 400){
-        if(updateStatus?.payload?.error?.message?.response?.message){
-          const msg = updateStatus?.payload?.error?.message?.response?.message;
-          toast.error("แก้ไขข้อมูลไม่สำเร็จ " + msg)
+    if (addStatus?.meta?.requestStatus === "fulfilled") {
+      if(addStatus?.payload?.error?.code === 400){
+        if(addStatus?.payload?.error?.message?.response?.message){
+          const msg = addStatus?.payload?.error?.message?.response?.message;
+          toast.error("เพิ่มข้อมูลไม่สำเร็จ " + msg)
         }else{
-          toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+          toast.error("เพิ่มข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
         }
       } else{
 
-        toast.success("แก้ไขข้อมูลสำเร็จ")
+        toast.success("เพิ่มข้อมูลสำเร็จ")
         router.push("/panel/admin/manage/user");
       }
     }else{
-      toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+      toast.error("เพิ่มข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
     }
     setOpenDialog(false);
     setShowConfirmation(false);
   };
 
-  const handleCancelEdit = () => {
+  const handleCancelAdd = () => {
     setShowConfirmation(false);
   };
-
 
 	const showForm = ({
 		values,
 		setFieldValue,
 		isValid,
-	  }: FormikProps<UserPayload>) => {
+	  }: FormikProps<UserType>) => {
 		return (
 		  <Form>
 			<Card>
 			  <CardContent sx={{ padding: 4 }}>
 				<Typography gutterBottom variant="h3">
-				  แก้ไขข้อมูลสมาชิก
+				  เพิ่มข้อมูลสมาชิก
 				</Typography>
 	  
 				<Field
@@ -123,9 +147,69 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
               name="username"
               type="text"
               label="ชื่อผู้ใช้"
+			  maxLength={64}
               required
             />
             <br />
+			<Field
+              style={{ marginTop: 16 }}
+              fullWidth
+              component={TextField}
+              name="password"
+              type="text"
+              label="รหัสผ่าน"
+			  maxLength={120}
+              required
+            />
+            <br />
+			{/* <Field
+			as={TextField}
+			label="รหัสผ่าน"
+			name="password"
+			placeholder="กรอก รหัสผ่าน"
+			type={passwordVisible ? 'text' : 'password'}
+			fullWidth
+			required
+			helperText={<ErrorMessage name="password" />}
+			InputProps={{
+				endAdornment: (
+				<InputAdornment position="end">
+					<IconButton
+					aria-label="toggle password visibility"
+					onClick={handlePasswordVisible}
+					onMouseDown={handleMouseDownPassword}
+					>
+					{passwordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+					</IconButton>
+				</InputAdornment>
+				),
+			}}
+			/>
+
+                      <Field
+                        as={TextField}
+                        label="ยืนยันรหัสผ่าน"
+                        name="passwordConfirmation"
+                        placeholder="กรอกรหัสผ่านอีกครั้ง"
+                        type={passwordVisible ? 'text' : 'password'}
+                        fullWidth
+                        required
+                        helperText={<ErrorMessage name="passwordConfirmation" />}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handlePasswordVisible}
+                                onMouseDown={handleMouseDownPassword}
+                              >
+                                {passwordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                      /> */}
+
 			<Field
               style={{ marginTop: 16 }}
               fullWidth
@@ -217,7 +301,7 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
 				  type="submit"
 				  sx={{ marginRight: 2 }}
 				>
-				  แก้ไข
+				  เพิ่ม
 				</Button>
 				<Link href="/panel/admin/manage/user" passHref>
 				  <Button variant="outlined" fullWidth>
@@ -242,46 +326,25 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
           if (!values.surname) errors.surname = "กรุณากรอกนามสกุล";
           return errors;
         }}
-        initialValues={user!}
+        initialValues={initialValue}
         onSubmit={async (values, { setSubmitting }) => {
-          setUpdateValue(values)
+          setAddValues(values)
           // setOpenDialog(true);
-          handleEdit()
+          handleAdd()
           setSubmitting(false);
         }}
       >
         {(props) => showForm(props)}
       </Formik>
       <ConfirmationDialog
-        title="ยืนยันการแก้ไขบัญชีผู้ใช้"
-        message="คุณต้องการแก้ไขบัญชีผู้ใช้ใช่หรือไม่ ?"
+        title="ยืนยันการเพิ่มบัญชีผู้ใช้"
+        message="คุณต้องการเพิ่มบัญชีผู้ใช้ใช่หรือไม่ ?"
         open={showConfirmation}
-        onClose={handleCancelEdit}
-        onConfirm={handleConfirmEdit}
+        onClose={handleCancelAdd}
+        onConfirm={handleConfirmAdd}
       />
     </Layout>
   );
 };
 
 export default withAuth(AdminPanelEditUser);
-
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const { id }: any = context.query;
-  
-  if (id) {
-    const accessToken = context.req.cookies['access_token']
-
-    const { data: user } = await httpClient.get(`/users/get/${id}`, {
-		headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    return {
-      props: {
-        user
-      },
-    };
-  } else {
-    return { props: {} };
-  }
-};

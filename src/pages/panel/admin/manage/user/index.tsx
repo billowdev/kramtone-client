@@ -107,7 +107,7 @@ const CustomToolbar: React.FunctionComponent<{
       <GridToolbarColumnsButton />
     <GridToolbarDensitySelector />
     <GridToolbarFilterButton ref={setFilterButtonEl} />
-    <Link href="/panel/admin/manage/category/add" passHref>
+    <Link href="/panel/admin/manage/user/add" passHref>
       <Fab
         color="primary"
         aria-label="add"
@@ -170,149 +170,11 @@ function AdminPanelManageUser({}: Props) {
   };
 
 
-  const handleAddClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setOpenAddDialog(true);
-  }
-  const handleAddConfirm = (product: UserPayload) => {
-    console.log(product)
-  }
-
-  const handleAddCancel = () => {
-    setOpenAddDialog(false);
-  };
-
 
   const handleDeleteClick = (e: React.ChangeEvent<HTMLInputElement>, row: UserPayload | null) => {
     setOpenDeleteDialog(true)
   }
 
-  const [openEditDialog, setOpenEditDialog] = React.useState<boolean>(false);
-
-  const [user, setUser] = useState({
-    username: selectedUser?.username,
-    email: selectedUser?.email,
-    role: selectedUser?.role,
-    name: selectedUser?.name,
-    surname: selectedUser?.surname,
-    phone: selectedUser?.phone,
-    activated: selectedUser?.activated,
-  });
-
-  const handleChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
-    const { name, value } = event.target;
-    if (typeof name === 'string') {
-      setUser({ ...user, [name]: value });
-    }
-  };
-  
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = event.target;
-    setUser({ ...user, [name]: checked });
-  };
-
-  const handleEditClick = (row:any) =>{
-    // setSelectedUser(row);
-    // console.log(selectedUser)
-    setOpenEditDialog(true)
-  }
-  const handleEditConfirm = () => {
-    if (user) {
-      console.log(user)
-    }
-    setOpenEditDialog(false);
-  }
-
-  const handleEditClose = () => {
-    setOpenEditDialog(false);
-  };
-
-
-  // const showEditDialog = () => {
-  //   if (user === null) {
-  //     return;
-  //   }
-  //   return (
-  //     <Dialog
-  //       open={openEditDialog}
-  //       keepMounted
-  //       aria-labelledby="alert-dialog-slide-title"
-  //       aria-describedby="alert-dialog-slide-description"
-  //     >
-  //       <DialogTitle id="alert-dialog-slide-title">
-  //       แก้ไขสมาชิก {user.name}
-  //       </DialogTitle>
-  //       <DialogContent  className={classes.dialogContent}>
-  //         <Grid container direction="column" spacing={2} padding={2}>
-  //           <Grid item>
-  //             <InputLabel htmlFor="username">ชื่อผู้ใช้</InputLabel>
-  //             <TextField name="username" id="username" value={user.username} onChange={handleChange} />
-  //           </Grid>
-  //           <Grid item>
-  //             <InputLabel htmlFor="email">อีเมล</InputLabel>
-  //             <TextField name="email" id="email" value={user.email} onChange={handleChange} />
-  //           </Grid>
-
-  //           <Grid item>
-  //         <FormControl fullWidth>
-  //           <InputLabel id="role-select-label">สถานะ</InputLabel>
-  //           <Select
-  //             labelId="role-select-label"
-  //             name="role"
-  //             value={user.role}
-  //             onChange={handleChange}
-  //             key={user.id} // Add this line to force a re-render when the user object changes
-  //           >
-  //             <MenuItem value="member">สมาชิก</MenuItem>
-  //             <MenuItem value="admin">ผู้ดูแลระบบ</MenuItem>
-  //           </Select>
-  //         </FormControl>
-  //       </Grid>
-
-
-
-  
-  //           <Grid item>
-  //             <InputLabel htmlFor="name">Name</InputLabel>
-  //             <TextField name="name" id="name" value={user.name} onChange={handleChange} />
-  //           </Grid>
-  //           <Grid item>
-  //             <InputLabel htmlFor="surname">Surname</InputLabel>
-  //             <TextField name="surname" id="surname" value={user.surname} onChange={handleChange} />
-  //           </Grid>
-  //           <Grid item>
-  //             <InputLabel htmlFor="phone">Phone</InputLabel>
-  //             <TextField name="phone" id="phone" value={user.phone} onChange={handleChange} />
-  //           </Grid>
-
-  //           <Grid item>
-  //             <FormControlLabel
-  //               control={
-  //                 <Checkbox
-  //                   name="activated"
-  //                   key={user.id}
-  //                   id="activated-checkbox"
-  //                   checked={user.activated}
-  //                   onChange={handleCheckboxChange}
-  //                 />
-  //               }
-  //               label="สถานะการยืนยันตัวตน (Activate)"
-  //             />
-  //           </Grid>
-
-  //         </Grid>
-  //       </DialogContent>
-  //       <DialogActions>
-  //         <Button onClick={() => setOpenEditDialog(false)} color="info">
-  //           ยกเลิก
-  //         </Button>
-  //         <Button onClick={handleEditConfirm} color="primary">
-  //           แก้ไข
-  //         </Button>
-  //       </DialogActions>
-  //     </Dialog>
-  //   );
-  // };
-  
 
   function DateTimeCellRenderer(params: GridCellParams<any>) {
     const { value } = params;

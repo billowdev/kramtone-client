@@ -10,12 +10,16 @@ export default async function handler(
 	const cookies = cookie.parse(req.headers.cookie || "");
 	const token = cookies[ACCESS_TOKEN_KEY];
 	const body = req.body
-	const id = req.query.id as string; // Get the id parameter
-    const { data: response } = await httpClient.patch(`/users/${id}`, body, {
+
+    const { data: response } = await httpClient.post(`/users/create`, body, {
       headers: { Authorization: `Bearer ${token}` },
     });
+
     res.status(200).json(response)
   } catch (error) {
+    console.log("=================")
+    console.log(error)
+    console.log("=================")
     res.status(500).json({ message: 'Something went wrong.' })
   }
 }
