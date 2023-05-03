@@ -48,8 +48,16 @@ export const updateUser = createAsyncThunk(
 	  return response.data;
 	}
   );
+  export const deleteUser = createAsyncThunk(
+	"USER/DELETE",
+	async (data: any) => {
+	  const response = await httpClient.delete(`/users/${data.id}`, {
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+	  });
+	  return response.data;
+	}
+  );
   
-
 
 export const userSlice = createSlice({
 	name: "user",

@@ -26,6 +26,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import Link from "next/link";
 import AddIcon from "@mui/icons-material/Add";
 import withAuth from "@/components/withAuth";
+import toast from "react-hot-toast";
 
 import {
   Paper,
@@ -56,8 +57,9 @@ import { UserPayload } from '@/models/user.model';
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import router from "next/router";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 
-import { getAllUser, userSelector } from '@/store/slices/user.slice';
+import { getAllUser, userSelector, deleteUser } from '@/store/slices/user.slice';
 import Moment from 'react-moment';
 import 'moment/locale/th'; // import Thai locale
 import {  GridCellParams } from '@mui/x-data-grid';
@@ -176,6 +178,64 @@ function AdminPanelManageUser({}: Props) {
     setOpenDeleteDialog(true)
   }
 
+  // const showDeleteDialog = () => {
+  //   if (selectedUser=== null) {
+  //     return;
+  //   }
+
+  //   return (
+  //     <Dialog
+  //       open={openDeleteDialog}
+  //       keepMounted
+  //       aria-labelledby="alert-dialog-slide-title"
+  //       aria-describedby="alert-dialog-slide-description"
+  //     >
+  //       <DialogTitle id="alert-dialog-slide-title">
+  //         ลบข้อมูลผู้ใช้ : {selectedUser.username}
+  //       </DialogTitle>
+  //       <DialogContent>
+        
+  //       </DialogContent>
+  //       <DialogActions>
+  //         <Button onClick={() => setOpenDeleteDialog(false)} color="info">
+  //           ยกเลิก
+  //         </Button>
+  //         <Button onClick={handleDeleteConfirm} color="primary">
+  //           ลบ
+  //         </Button>
+  //       </DialogActions>
+  //     </Dialog>
+  //   );
+  // };
+
+  const [showConfirmation, setShowConfirmation] = React.useState(false);
+
+  const handleDelete =  () => {
+    setShowConfirmation(true);
+  }
+ 
+  const handleConfirmDelete = async () => {
+    if (selectedUser) {
+      console.log(selectedUser)
+      
+    const response = await dispatch(deleteUser({ id:selectedUser.id}))
+      if (response.meta.requestStatus === "fulfilled") {
+        toast.success("ลบข้อมูลสำเร็จ")
+        setTimeout(() => {
+          window.location.reload(); // Reload the page after 2 seconds
+        }, 200);
+        // router.push("/panel/user/manage-product");
+      }else{
+       toast.error("ลบข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+      }
+    }
+
+    setShowConfirmation(false);
+  };
+  
+  const handleCancelDelete = () => {
+    setShowConfirmation(false);
+  };
 
   function DateTimeCellRenderer(params: GridCellParams<any>) {
     const { value } = params;
@@ -252,11 +312,13 @@ function AdminPanelManageUser({}: Props) {
             size="large"
             onClick={() => {
               setSelectedUser(row);
-              setOpenDeleteDialog(true);
+              handleDelete()
+              // setOpenDeleteDialog(true);
             }}
           >
             <DeleteIcon fontSize="inherit" />
           </IconButton>
+
           <IconButton
             aria-label="edit"
             size="large"
@@ -348,8 +410,15 @@ function AdminPanelManageUser({}: Props) {
                 />
               </Grid>
             </Grid>
-       
-      
+         {/* show confirmation dialog if user clicks Edit button */}
+      <ConfirmationDialog
+        title="ลบข้อมูล"
+        message="ยืนยันการลบข้อมูล"
+        open={showConfirmation}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+      />
+                {/* {showDeleteDialog()} */}
           </Container>
   </Layout>
   )

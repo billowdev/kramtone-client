@@ -71,8 +71,6 @@ const ProductTest = ({}: Props) => {
       setIsModalOpen(false);
     };
 
-   
-
     const [colorSchemes, setColorSchemes] = React.useState<any>([]);
     const [selectedColorScheme, setSelectedColorScheme] =
     useState<ColorSchemePayload | null>(null);
