@@ -135,22 +135,12 @@ function AdminPanelManageUser({}: Props) {
   const userData = useSelector(userSelector);
   const classes = useStyles(); // Add this line to use the custom styles
 
-  const [openAddDialog, setOpenAddDialog] = React.useState<boolean>(false);
+ 
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState<boolean>(false);
 
   const [selectedUser, setSelectedUser] = React.useState<UserPayload | null>(null);
 
 
-  const [viewUserOpen, setViewUserOpen] = useState(false);
-
-  const handleViewUserOpen = (row:any) => {
-    setSelectedUser(row)
-    setViewUserOpen(true);
-  };
-
-  const handleViewUserClose = () => {
-    setViewUserOpen(false);
-  };
 
 
   React.useEffect(() => {
@@ -161,52 +151,60 @@ function AdminPanelManageUser({}: Props) {
     React.useState<HTMLButtonElement | null>(null);
 
 
-  const handleDeleteConfirm = () => {
-    if (selectedUser) {
-      console.log(selectedUser)
+    const [openViewDialog, setOpenViewDialog] = React.useState<boolean>(false);
+    const handlViewClick = (row:any) => {
+      setSelectedUser(row)
+      setOpenViewDialog(true)
     }
-    setOpenDeleteDialog(false);
-  }
 
-  const handleDeleteCancel = () => {
-    setOpenDeleteDialog(false);
+    const handlViewCancel = () => {
+    setOpenViewDialog(false);
   };
 
+  const showViewDialog = () => {
+    if (selectedUser=== null) {
+      return;
+    }
 
+    return (
+      <Dialog
+        open={openViewDialog}
+        keepMounted
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">
+        รายละเอียด
+        </DialogTitle>
+        <DialogContent>
+        <div>
+      <Typography>{`ชื่อผู้ใช้: ${selectedUser?.username}`}</Typography>
+      <Typography>{`ชื่อ-นามสกุล: ${name} ${selectedUser?.surname}`}</Typography>
+      {selectedUser?.email && <Typography>{`อีเมล: ${selectedUser?.email}`}</Typography>}
+      {selectedUser?.phone && <Typography>{`เบอร์โทรศัพท์: ${selectedUser?.phone}`}</Typography>}
+      <Typography>{`สถานะการใช้งาน: ${selectedUser?.activated ? 'เปิดใช้งาน' : 'ปิดใช้งาน'}`}</Typography>
+      {/* <Typography>{`สถานะการลบ: ${removed ? 'ลบแล้ว' : 'ยังไม่ลบ'}`}</Typography> */}
+      {selectedUser?.group && (
+        <Typography>
+          {`กลุ่ม: ${selectedUser?.group?.groupName} (${selectedUser?.group?.groupType === "producer" ? "กลุ่มผู้ผลิต":"ร้านค้า"})`}
+        </Typography>
+      )}
+        {selectedUser?.group && (
+        <Typography>
+          {`ประเภทกลุ่ม ${selectedUser?.group?.groupType === "producer" ? "กลุ่มผู้ผลิต":"ร้านค้า"}`}
+        </Typography>
+      )}
+    </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handlViewCancel} color="info">
+            ปิด
+          </Button>
 
-  const handleDeleteClick = (e: React.ChangeEvent<HTMLInputElement>, row: UserPayload | null) => {
-    setOpenDeleteDialog(true)
-  }
-
-  // const showDeleteDialog = () => {
-  //   if (selectedUser=== null) {
-  //     return;
-  //   }
-
-  //   return (
-  //     <Dialog
-  //       open={openDeleteDialog}
-  //       keepMounted
-  //       aria-labelledby="alert-dialog-slide-title"
-  //       aria-describedby="alert-dialog-slide-description"
-  //     >
-  //       <DialogTitle id="alert-dialog-slide-title">
-  //         ลบข้อมูลผู้ใช้ : {selectedUser.username}
-  //       </DialogTitle>
-  //       <DialogContent>
-        
-  //       </DialogContent>
-  //       <DialogActions>
-  //         <Button onClick={() => setOpenDeleteDialog(false)} color="info">
-  //           ยกเลิก
-  //         </Button>
-  //         <Button onClick={handleDeleteConfirm} color="primary">
-  //           ลบ
-  //         </Button>
-  //       </DialogActions>
-  //     </Dialog>
-  //   );
-  // };
+        </DialogActions>
+      </Dialog>
+    );
+  };
 
   const [showConfirmation, setShowConfirmation] = React.useState(false);
 
@@ -338,7 +336,7 @@ function AdminPanelManageUser({}: Props) {
             aria-label="view"
             size="large"
             onClick={()=>{
-              handleViewUserOpen(row)
+              handlViewClick(row)
             }}
           >
             <VisibilityIcon fontSize="inherit" />
@@ -410,6 +408,7 @@ function AdminPanelManageUser({}: Props) {
                 />
               </Grid>
             </Grid>
+            {showViewDialog()}
          {/* show confirmation dialog if user clicks Edit button */}
       <ConfirmationDialog
         title="ลบข้อมูล"

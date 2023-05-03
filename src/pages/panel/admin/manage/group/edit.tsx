@@ -946,7 +946,7 @@ const center: LatLngExpression = [
           >
             {isSmallDevice ? "บันทึก" : "บันทึกข้อมูล"}
           </Button>
-          <Link href="/panel/user/manage-group" passHref>
+          <Link href="/panel/admin/manage/group" passHref>
             <Button variant="outlined" fullWidth>
               ยกเลิก
             </Button>

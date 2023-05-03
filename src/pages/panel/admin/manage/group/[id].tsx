@@ -215,7 +215,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
 
   const showDialog = () => {
-    if (groupData === null) {
+    if (groupDataProp === null) {
       return;
     }
 
@@ -315,7 +315,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
         <Grid container spacing={2} style={{ marginTop: "16px" }}>
 
        {
-        !groupData?.verified && <Grid item xs={12} md={12} lg={12}>
+        !groupDataProp?.verified && <Grid item xs={12} md={12} lg={12}>
         <Paper
           sx={{
             p: 2,
@@ -348,7 +348,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
             >
               <Image
                 alt="product image"
-                src={groupDataImageURL(groupData?.banner)}
+                src={groupDataImageURL(groupDataProp?.banner)}
                 width={1120}
                 height={160}
               />
@@ -371,7 +371,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                 <Image
                   style={{ objectFit: "cover" }}
                   alt="product image"
-                  src={groupDataImageURL(groupData?.logo)}
+                  src={groupDataImageURL(groupDataProp?.logo)}
                   width={250}
                   height={250}
                 />
@@ -384,7 +384,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                       ชื่อกลุ่ม / ร้านค้า
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.groupName}
+                      {groupDataProp?.groupName}
                     </Typography>
                   </Box>
                   <Box sx={boxStyle}>
@@ -392,7 +392,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                       ประเภทกลุ่ม
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.groupType === "shop"
+                      {groupDataProp?.groupType === "shop"
                         ? "ร้านค้า"
                         : "กลุ่มผู้ผลิต"}
                     </Typography>
@@ -403,7 +403,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                       ชื่อประธาน / เจ้าของร้าน
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.agency}
+                      {groupDataProp?.agency}
                     </Typography>
                   </Box>
 
@@ -412,14 +412,14 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                       เบอร์โทร
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.phone}
+                      {groupDataProp?.phone}
                     </Typography>
                   </Box>
 
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>อีเมล :</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.email}
+                      {groupDataProp?.email}
                     </Typography>
                   </Box>
                 </React.Fragment>
@@ -451,7 +451,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                       บ้านเลขที่/หมู่
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.hno}
+                      {groupDataProp?.hno}
                     </Typography>
                   </Box>
                 </Grid>
@@ -460,7 +460,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>ถนน :</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.road}
+                      {groupDataProp?.road}
                     </Typography>
                   </Box>
                 </Grid>
@@ -469,7 +469,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>ซอย :</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.lane}
+                      {groupDataProp?.lane}
                     </Typography>
                   </Box>
                 </Grid>
@@ -480,7 +480,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                       หมู่บ้าน
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.village}
+                      {groupDataProp?.village}
                     </Typography>
                   </Box>
                 </Grid>
@@ -489,7 +489,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>ตำบล</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.subdistrict}
+                      {groupDataProp?.subdistrict}
                     </Typography>
                   </Box>
                 </Grid>
@@ -497,7 +497,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>อำเภอ</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.district}
+                      {groupDataProp?.district}
                     </Typography>
                   </Box>
                 </Grid>
@@ -505,7 +505,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>จังหวัด</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.province}
+                      {groupDataProp?.province}
                     </Typography>
                   </Box>
                 </Grid>
@@ -516,7 +516,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                       รหัสไปรษณีย์
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.zipCode}
+                      {groupDataProp?.zipCode}
                     </Typography>
                   </Box>
                 </Grid>
@@ -549,7 +549,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
             </Link>
           </Container>
 
-          {groupData?.lat && groupData?.lng ? (
+          {groupDataProp?.lat && groupDataProp?.lng ? (
   <Grid item xs={12} md={12} lg={12}>
     <Paper
       sx={{
