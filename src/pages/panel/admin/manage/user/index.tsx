@@ -64,6 +64,7 @@ import {  GridCellParams } from '@mui/x-data-grid';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
+import GroupsIcon from '@mui/icons-material/Groups';
 
 type Props = {}
 
@@ -243,7 +244,7 @@ function AdminPanelManageUser({}: Props) {
     {
       headerName: "การดำเนินการ",
       field: ".",
-      width: 180,
+      width: 240,
       renderCell: ({ row }: GridRenderCellParams<any>) => (
         <Stack direction="row">
           <IconButton
@@ -272,7 +273,7 @@ function AdminPanelManageUser({}: Props) {
             <EditIcon fontSize="inherit" />
           </IconButton>
           <IconButton
-            aria-label="edit"
+            aria-label="view"
             size="large"
             onClick={()=>{
               handleViewUserOpen(row)
@@ -281,6 +282,15 @@ function AdminPanelManageUser({}: Props) {
             <VisibilityIcon fontSize="inherit" />
           </IconButton>
 
+          <IconButton
+            aria-label="edit"
+            size="large"
+            onClick={() => 
+              router.push("/panel/admin/manage/group/?id=" + row?.group?.id)
+              }
+          >
+            <GroupsIcon fontSize="inherit" />
+          </IconButton>
           
         </Stack>
       ),

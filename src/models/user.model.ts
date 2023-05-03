@@ -1,3 +1,5 @@
+import {GroupDataPayload} from "./group-data.model"
+
 export interface UserArrayResponse {
 	status: string
 	payload: UserPayload[]
@@ -17,5 +19,6 @@ export interface UserArrayResponse {
 	groupId?: string
 	createdAt: string
 	updatedAt: string
+	group? : GroupDataPayload | null
   }
   
