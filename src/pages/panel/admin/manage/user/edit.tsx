@@ -46,55 +46,15 @@ import * as Yup from 'yup';
 import { ServerStyleSheets } from '@material-ui/core';
 import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
+
+
+
 
 type Props = {
   user?: UserPayload;
   accessToken?: string;
 };
-
-// Define validation schema
-const validationSchema = Yup.object().shape({
-	username: Yup.string().required('Required'),
-	email: Yup.string().email('Invalid email').required('Required'),
-	role: Yup.string().required('Required'),
-	name: Yup.string().required('Required'),
-	surname: Yup.string().required('Required'),
-	phone: Yup.string().required('Required'),
-	activated: Yup.boolean(),
-  });
-
-
-//   const RoleSelection = ({ userRole, setUserRole }: any) => {
-// 	return (
-// 	  <Grid item>
-// 		<InputLabel id="role-select-label">สถานะ</InputLabel>
-// 		<div style={{ display: 'flex' }}>
-// 		  <div style={{ marginRight: '1rem' }}>
-// 			<input
-// 			  type="radio"
-// 			  name="role"
-// 			  id="member"
-// 			  checked={userRole === 'member'}
-// 			  onChange={() => setUserRole('member')}
-// 			/>
-// 			<label htmlFor="member">สมาชิก</label>
-// 		  </div>
-// 		  <div>
-// 			<input
-// 			  type="radio"
-// 			  name="role"
-// 			  id="admin"
-// 			  checked={userRole === 'admin'}
-// 			  onChange={() => setUserRole('admin')}
-// 			/>
-// 			<label htmlFor="admin">ผู้ดูแลระบบ</label>
-// 		  </div>
-// 		</div>
-// 	  </Grid>
-// 	);
-//   };
-  
-
 const AdminPanelEditUser = ({ user, accessToken}: Props) => {
   const router = useRouter();
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
@@ -105,6 +65,44 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
 	const theme = useTheme();
 	const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 	const [activated, setActivated] = React.useState<boolean>(user?.activated!)
+
+
+
+  const [showConfirmation, setShowConfirmation] = React.useState(false);
+
+  const handleEdit = () => {
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmEdit = async () => {
+    const updateData = {...updateValue, role: userRole, activated}
+    const updateStatus = await dispatch(updateUser(updateData))
+
+    if (updateStatus?.meta?.requestStatus === "fulfilled") {
+      if(updateStatus?.payload?.error?.code === 400){
+        if(updateStatus?.payload?.error?.message?.response?.message){
+          const msg = updateStatus?.payload?.error?.message?.response?.message;
+          toast.error("แก้ไขข้อมูลไม่สำเร็จ " + msg)
+        }else{
+
+          toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+        }
+      } else{
+
+        toast.success("แก้ไขข้อมูลสำเร็จ")
+        router.push("/panel/admin/manage/user");
+      }
+    }else{
+      toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+    }
+    setOpenDialog(false);
+    setShowConfirmation(false);
+  };
+
+  const handleCancelEdit = () => {
+    setShowConfirmation(false);
+  };
+
 
 	const showForm = ({
 		values,
@@ -126,6 +124,7 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
               name="username"
               type="text"
               label="ชื่อผู้ใช้"
+              required
             />
             <br />
 			<Field
@@ -190,6 +189,7 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
               name="phone"
               type="text"
               label="เบอร์โทร"
+              required
             />
             <br />
 			<Grid item>
@@ -232,72 +232,34 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
 	  };
 	  
 
-  const handleEditConfirm = async () => {
-    if (user) {
-      const updateStatus = await dispatch(updateUser(updateValue))
-
-      if (updateStatus.meta.requestStatus === "fulfilled") {
-        toast.success("แก้ไขข้อมูลสำเร็จ")
-        router.push("/panel/admin/manage/user");
-      }else{
-        toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
-      }
-      setOpenDialog(false);
-    }
-  };
-
-  const showDialog = () => {
-    if (user === null) {
-      return;
-    }
-
-    return (
-      <Dialog
-        open={openDialog}
-        keepMounted
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">
-          <br />
-          แก้ไขข้อมูล? : {user?.name}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-          คุณต้องการแก้ไขข้อมูลใช่หรือไม่
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)} color="info">
-            ยกเลิก
-          </Button>
-          <Button onClick={handleEditConfirm} color="primary">
-            แก้ไข
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
-  };
-
   return (
 
     <Layout>
       <Formik
         validate={(values) => {
           let errors: any = {};
-          if (!values.name) errors.name = "กรุณากรอกชื่อผู้ใช้";
+          if (!values.username) errors.username = "กรุณากรอกชื่อผู้ใช้";
+          if (!values.name) errors.name = "กรุณากรอกชื่อ";
+          if (!values.surname) errors.surname = "กรุณากรอกนามสกุล";
           return errors;
         }}
         initialValues={user!}
         onSubmit={async (values, { setSubmitting }) => {
           setUpdateValue(values)
-          setOpenDialog(true);
+          // setOpenDialog(true);
+          handleEdit()
           setSubmitting(false);
         }}
       >
         {(props) => showForm(props)}
       </Formik>
-      {showDialog()}
+      <ConfirmationDialog
+        title="ยืนยันการแก้ไขบัญชีผู้ใช้"
+        message="คุณต้องการแก้ไขบัญชีผู้ใช้ใช่หรือไม่ ?"
+        open={showConfirmation}
+        onClose={handleCancelEdit}
+        onConfirm={handleConfirmEdit}
+      />
     </Layout>
   );
 };

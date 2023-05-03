@@ -96,60 +96,6 @@ const AddProductForm = ({
 
   const [updateValue, setUpdateValue] = useState<ProductPayload>(initialValues);
 
-  // const handleUpdate = async (values: ProductPayload) => {
-  //   try {
-  //     const formData = new FormData();
-  //     if (images) {
-  //       for (let i = 0; i < images.length; i++) {
-  //         formData.append("images", images[i]);
-  //       }
-  //     }
-
-  //     formData.append(
-  //       "product",
-  //       JSON.stringify({
-  //         name: values.name,
-  //         desc: values.desc,
-  //         price: values.price,
-  //         categoryId: selectedCategory && selectedCategory?.id,
-  //         colorSchemeId: selectedColorScheme && selectedColorScheme?.id,
-  //       })
-  //     );
-
-  //     const result = await Swal.fire({
-  //       title: "แก้ไขข้อมูล?",
-  //       text: `คุณต้องการแก้ไขข้อมูลสินค้า ${values.name}`,
-  //       icon: "question",
-  //       showCancelButton: true,
-  //       confirmButtonText: "ใช่, ยืนยัน!",
-  //       cancelButtonText: "ไม่, ยกเลิก",
-  //     });
-
-  //     if (result.isConfirmed) {
-  //       const updateStatus = await dispatch(
-  //         updateProductAction({
-  //           id: product?.id, // pass the ID of the product being edited as a parameter
-  //           body: formData,
-  //           accessToken,
-  //         })
-  //       );
-
-  //       if (updateStatus.meta.requestStatus === "fulfilled") {
-  //         toast.success("แก้ไขข้อมูลสินค้าสำเร็จ");
-  //         // console.log(updateStatus)
-  //         router.push("/panel/user/manage-product");
-  //       } else {
-  //         toast.error("แก้ไขข้อมูลสินค้าไม่สำเร็จ โปรดลองอีกครั้ง");
-  //       }
-  //     }
-  //   } catch (error) {
-  //     toast.error("แก้ไขข้อมูลสินค้าไม่สำเร็จ");
-  //     console.error("An error occurred:", error);
-  //     // Handle the error here
-  //   }
-  // };
-
-
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
 

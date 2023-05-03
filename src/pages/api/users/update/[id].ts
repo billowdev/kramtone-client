@@ -14,11 +14,12 @@ export default async function handler(
     const { data: response } = await httpClient.patch(`/users/${id}`, body, {
       headers: { Authorization: `Bearer ${token}` },
     });
-	console.log("api update")
-	console.log(body)
+	// console.log("api update")
+	// console.log(body)
     res.status(200).json(response)
   } catch (error) {
     console.error(error)
+    console.log(error)
     res.status(500).json({ message: 'Something went wrong.' })
   }
 }
