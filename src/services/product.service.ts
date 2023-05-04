@@ -9,6 +9,12 @@ export const getOneProduct = async (id: any): Promise<ProductResponse> => {
 	return response.payload
 };
 
+
+export const getAllProductByGroupForManage = async (id: string): Promise<ProductArrayResponse> => {
+	const { data: response } = await httpClient.get(`/products/group/manage/${id}`)
+	return response.payload;
+};
+
 export const getAllProductByGroup = async (id: string): Promise<ProductArrayResponse> => {
 	const { data: response } = await httpClient.get(`/products/group/${id}`)
 	return response.payload;

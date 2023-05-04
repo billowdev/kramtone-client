@@ -210,6 +210,8 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
           name: values.name,
           desc: values.desc,
           price: values.price,
+          publish: publish,
+          recommend: recommend,
           categoryId: selectedCategory && selectedCategory?.id,
           colorSchemeId: selectedColorScheme && selectedColorScheme?.id,
         })
@@ -403,7 +405,7 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
       id="recommend-checkbox"
       checked={recommend}
       onChange={() => {
-        setPublish(!recommend);
+        setRecommend(!recommend);
       }}
       Label={{
         label: 'สินค้าแนะนำ',

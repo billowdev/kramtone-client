@@ -4,12 +4,20 @@ import {Container, Grid, Paper, Typography} from '@mui/material';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
+import withAuth from "@/components/withAuth";
 
-type Props = {}
+type Props = {
+  gid:string
+}
 
-function UserPanelManageColorScheme({}: Props) {
+function UserPanelManageGroupColorScheme({gid}: Props) {
   const theme = useTheme();
+  const dispatch = useAppDispatch();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down('xs'));
+  const colorSchemeData = useSelector(colorSchemeSelector);
+
+  const [selectedGroupColorScheme, setSelectedGroupColorScheme] = React.useState<GroupColorSchemePayload | null>(null);
+
 
   return (
 	<Layout>
@@ -63,4 +71,27 @@ function UserPanelManageColorScheme({}: Props) {
   )
 }
 
-export default UserPanelManageColorScheme
+export default withAuth(UserPanelManageGroupColorScheme)
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  try {
+    const accessToken = context.req.cookies['access_token']
+    const { gid } = await authService.getSessionServerSide(accessToken!)
+
+    return {
+      props: {
+        gid,
+        accessToken,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+
+      },
+    };
+  }
+
+};
