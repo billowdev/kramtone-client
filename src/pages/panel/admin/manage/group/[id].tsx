@@ -528,7 +528,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
             maxWidth="lg"
             sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}
           >
-            <Link href={"/panel/admin/manage/group/edit?gid=" + groupDataProp.id}>
+            <Link href={"/panel/admin/manage/group/edit?gid=" + groupDataProp?.id}>
               <Button
                 color="primary"
                 variant="contained"
@@ -610,7 +610,7 @@ export const getServerSideProps: GetServerSideProps = async (
   try {
     const accessToken = context.req.cookies["access_token"];
 	const params = context.params;
-    const groupDataProp = await groupDataService.getOneGroupData(params.id?.toString());
+    const groupDataProp = await groupDataService.getOneGroupData(params?.id?.toString());
 
     return {
       props: {

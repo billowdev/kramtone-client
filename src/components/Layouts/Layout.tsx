@@ -234,6 +234,7 @@ function Layout({ children }: LayoutProps) {
                <React.Fragment>
                 <CustomMenuListItem
                 href="/panel/user"
+                useStartWithPath={true}
                 icon={WidgetsIcon}
                 text="เมนูหลัก"
                 open={open}
@@ -242,6 +243,7 @@ function Layout({ children }: LayoutProps) {
                 <CustomMenuListItem   
                 href="/panel/user/manage-group"
                 startWithPath="/panel/user/manage-group"
+                useStartWithPath={true}
                   icon={GroupsIcon}
                   text="จัดการข้อมูลกลุ่ม"
                   open={open}
@@ -250,6 +252,7 @@ function Layout({ children }: LayoutProps) {
                     <React.Fragment>
                       <CustomMenuListItem   
                       href="/panel/user/manage-product"
+                      useStartWithPath={true}
                       startWithPath="/panel/user/manage-product"
                         icon={ShoppingBagIcon}
                         text="จัดการสินค้า"
@@ -258,6 +261,7 @@ function Layout({ children }: LayoutProps) {
                       />
                         <CustomMenuListItem   
                         href="/panel/user/manage-category"
+                        useStartWithPath={true}
                         startWithPath="/panel/user/manage-category"
                         icon={CheckroomIcon}
                         text="จัดการประเภทสินค้า"
@@ -267,6 +271,7 @@ function Layout({ children }: LayoutProps) {
                             href="/panel/user/manage-colorscheme"
                             startWithPath="/panel/user/manage-colorscheme"
                               icon={ColorLensIcon}
+                              useStartWithPath={true} 
                               text="จัดการโทนสีที่มีในร้าน"
                               open={open}
                             />
@@ -289,9 +294,10 @@ function Layout({ children }: LayoutProps) {
                      <React.Fragment>
                         <CustomMenuListItem   
                             href="/panel/admin/manage/user"
-                              icon={AccountBoxIcon}
-                              text="จัดการบัญชีผู้ใช้"
-                              open={open}
+                            icon={AccountBoxIcon}
+                            text="จัดการบัญชีผู้ใช้"
+                            open={open}
+                            useStartWithPath={true}
                               startWithPath="/panel/admin/manage/user"
                             />
                     <CustomMenuListItem   
@@ -299,10 +305,12 @@ function Layout({ children }: LayoutProps) {
                               icon={GroupsIcon}
                               text="จัดการข้อมูลกลุ่ม"
                               open={open}
+                              useStartWithPath={true}
                               startWithPath="/panel/admin/manage/group"
                             />
                            <CustomMenuListItem   
                         href="/panel/admin/manage/category"
+                        useStartWithPath={true}
                         startWithPath="/panel/admin/manage/category"
                         icon={CheckroomIcon}
                         text="จัดการประเภทสินค้า"
@@ -310,6 +318,7 @@ function Layout({ children }: LayoutProps) {
                       />
                       <CustomMenuListItem   
                             href="/panel/admin/manage/color-scheme"
+                            useStartWithPath={true}
                             startWithPath="/panel/admin/manage/color-scheme"
                               icon={ColorLensIcon}
                               text="จัดการโทนสี"
@@ -324,15 +333,15 @@ function Layout({ children }: LayoutProps) {
             <CustomMenuListItem
                         href="/panel/user/manage-profile"
                         icon={SettingsIcon}
+                        useStartWithPath={false}
                         text="ตั้งค่าบัญชีผู้ใช้"
                         open={open}
                       />
 
-           
-
             <CustomMenuListItem
               href="/aboutus"
               icon={InfoIcon}
+              useStartWithPath={false}
               text="เกี่ยวกับผู้พัฒนาระบบ"
               open={open}
             />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import Layout from '@/components/Layouts/Layout';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -59,7 +59,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import router from "next/router";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 
-import { getAllUser, userSelector, deleteUser } from '@/store/slices/user.slice';
+import { getAllUser, userSelector, deleteUser, updateUser } from '@/store/slices/user.slice';
 import Moment from 'react-moment';
 import 'moment/locale/th'; // import Thai locale
 import {  GridCellParams } from '@mui/x-data-grid';
@@ -245,17 +245,32 @@ function AdminPanelManageUser({}: Props) {
     );
   }
   
-  function StatusCellRenderer(params: GridCellParams<UserPayload>) {
-    const { value, row } = params;
+  // function StatusCellRenderer(params: GridCellParams<UserPayload>) {
+  //   const { value, row } = params;
   
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const updatedRow = { ...row, activated: event.target.checked };
-      // api.updateRows([updatedRow]);
-    };
+  //   const handleChange = async(event: React.ChangeEvent<HTMLInputElement>) => {
+  //     const updatedRow = { ...row, activated: event.target.checked };
+  //      await dispatch(updateUser(updatedRow))
+  //   };
   
-    return <Switch checked={value as boolean} onChange={handleChange} />;
-  }
-  
+  //   return <Switch checked={value as boolean} onChange={handleChange} />;
+  // }
+
+  type StatusCellRendererProps = GridCellParams<UserPayload>;
+
+const StatusCellRenderer: React.FC<StatusCellRendererProps> = ({ value }) => {
+  const isActive = value as boolean;
+
+  return (
+    <Typography
+      style={{
+        color: isActive ? 'green' : 'orange', // Set the color based on the value of 'activated'
+      }}
+    >
+      {isActive ? 'Active' : 'Inactive'} {/* Show different text based on the value of 'activated' */}
+    </Typography>
+  );
+};
   const columns: GridColDef[] = [
     {
       field: "username",
@@ -295,7 +310,7 @@ function AdminPanelManageUser({}: Props) {
     // },
     {
       field: 'activated',
-      headerName: 'Status',
+      headerName: 'สถานะ',
       width: 100,
       renderCell: (params: GridCellParams<UserPayload>) => <StatusCellRenderer {...params} />,
     },

@@ -190,8 +190,8 @@ const center: LatLngExpression = [
   ];
 
   const position: LatLngExpression = [
-    parseFloat(groupData?.lat ?? defaultLatitude),
-    parseFloat(groupData?.lng ?? defaultLongitude),
+    parseFloat(groupData?.lat ?? defaultLatitude.toString()),
+    parseFloat(groupData?.lng ?? defaultLongitude.toString()),
   ]; // Centered on Sakon Nakhon Province
   const zoom: number = 12;
 

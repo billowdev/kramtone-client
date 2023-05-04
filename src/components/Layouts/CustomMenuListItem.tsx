@@ -24,16 +24,16 @@ type Props = {
 	href: string;
 	icon: React.ElementType;
 	text: string;
-	open?: boolean
-	startWithPath?: string;
+	open?: boolean;
+	useStartWithPath?: boolean; // Changed the type to boolean
+	startWithPath?: string; // Added a new prop for the string value
 }
 
-const CustomMenuListItem: React.FC<Props> = ({ href, icon, text, open, startWithPath }) => {
+const CustomMenuListItem: React.FC<Props> = ({ href, icon, text, open, useStartWithPath, startWithPath }) => {
 	const theme = useTheme();
 	const router = useRouter();
-	const isActive = router.pathname === href ||
-    router.pathname.startsWith(startWithPath);
-	
+	const isActive = href != null && (router.pathname === href || (useStartWithPath || false) && router.pathname.startsWith(startWithPath || ''));
+
 	return (
 	  <Link href={href} passHref>
 		<Box boxShadow={2} style={{ borderRadius: "50px", 
@@ -47,22 +47,17 @@ const CustomMenuListItem: React.FC<Props> = ({ href, icon, text, open, startWith
 			style={{
 			  backgroundColor: isActive ?  theme.palette.primary.main : "#FFF",
 			  borderRadius: "50px",
-			//   paddingTop: "16px",
-			//   paddingBottom: "16px"
 			}}
 		  >
-			
 			 <ListItemIcon>
 			  {React.createElement(icon, {
 				  style: {
 					  color: isActive ? "#ffffff" :  theme.palette.grey[900],
-					//   margin: `${open ? '0 0 0 0px' : '0 0 0 -8px'}`
 					}
 				})}
 			</ListItemIcon>
 			<ListItemText primary={text}
 			  style={{ color: isActive ? "#ffffff" : theme.palette.grey[900], 
-			//    margin: '0 0 0 -16px'
 			 }}
 			  /> 
 
