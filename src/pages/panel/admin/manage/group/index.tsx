@@ -99,17 +99,19 @@ const useStyles = makeStyles({
   },
 });
 
-const CustomToolbar: React.FunctionComponent<{
-  setFilterButtonEl: React.Dispatch<
-    React.SetStateAction<HTMLButtonElement | null>
+
+const CustomToolbar: FunctionComponent<{
+  setFilterButtonEl: Dispatch<
+    SetStateAction<HTMLButtonElement | null>
   >;
 }> = ({ setFilterButtonEl }) => (
   <GridToolbarContainer>
-      <GridToolbarColumnsButton />
+    <GridToolbarColumnsButton />
     <GridToolbarDensitySelector />
     <GridToolbarFilterButton ref={setFilterButtonEl} />
-    <Link href="/panel/admin/manage/user/add" passHref>
-      <Fab
+    <Link href="/panel/admin/manage/category/add" passHref>
+      <Button
+        variant="contained"
         color="primary"
         aria-label="add"
         sx={{
@@ -119,7 +121,7 @@ const CustomToolbar: React.FunctionComponent<{
         }}
       >
         <AddIcon />
-      </Fab>
+      </Button>
     </Link>
   </GridToolbarContainer>
 );
@@ -187,16 +189,33 @@ function AdminPanelManageGroup({}: Props) {
     );
   }
   
-  function StatusCellRenderer(params: GridCellParams<UserPayload>) {
-    const { value, row } = params;
+  // function StatusCellRenderer(params: GridCellParams<UserPayload>) {
+  //   const { value, row } = params;
   
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const updatedRow = { ...row, activated: event.target.checked };
-      // api.updateRows([updatedRow]);
-    };
+  //   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //     const updatedRow = { ...row, activated: event.target.checked };
+  //     // api.updateRows([updatedRow]);
+  //   };
   
-    return <Switch checked={value as boolean} onChange={handleChange} />;
-  }
+  //   return <Switch checked={value as boolean} onChange={handleChange} />;
+  // }
+
+  type StatusCellRendererProps = GridCellParams<UserPayload>;
+
+  const StatusCellRenderer: React.FC<StatusCellRendererProps> = ({ value }) => {
+    const isActive = value as boolean;
+  
+    return (
+      <Typography
+        style={{
+          color: isActive ? 'green' : 'orange', // Set the color based on the value of 'activated'
+        }}
+      >
+        {isActive ? 'verified' : 'pending'} {/* Show different text based on the value of 'activated' */}
+      </Typography>
+    );
+  };
+
   
   const columns: GridColDef[] = [
     {

@@ -1020,7 +1020,7 @@ const center: LatLngExpression = [
                   <Formik
                     initialValues={groupData!}
 					validate={(values) => {
-						console.log(values)
+						// console.log(values)
 						let errors: any = {};
 						if (!values?.groupName) errors.groupName = "กรุณากรอกชื่อกลุ่ม";
 						if (!values?.phone) errors.phone = "กรุณากรอกเบอร์โทร";
@@ -1088,9 +1088,9 @@ export default withAuth(UserPanelEditGroup);
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const { gid }: any = context.query;
-  if (gid) {
-    const groupData = await groupDataService.getOneGroupData(gid);
+  const { id }: any = context.query;
+  if (id) {
+    const groupData = await groupDataService.getOneGroupData(id);
     const accessToken = context.req.cookies["access_token"];
     const provinces = await thaiAddressService.getProvinces();
     return {

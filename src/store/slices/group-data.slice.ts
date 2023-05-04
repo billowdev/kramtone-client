@@ -53,11 +53,6 @@ export const updateGroupDataAction = createAsyncThunk(
 );
 
 
-// export const createGroupDataAction = createAsyncThunk("GROUP_DATA/GET_ONE", async () => {
-// 	const response = await groupDataService.createGroupData()
-// 	return response.payload;
-// });
-
 export const groupDataSlice = createSlice({
 	name: "groupData",
 	initialState: initialState,

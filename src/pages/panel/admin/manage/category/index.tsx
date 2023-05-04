@@ -1,12 +1,12 @@
-import React, {useState} from 'react'
+import React, {Dispatch, FunctionComponent, SetStateAction, useState} from 'react'
 import Layout from '@/components/Layouts/Layout';
 import { useAppDispatch } from "@/store/store";
 import { getAllCategoryByGroupAction, categorySelector, deleteCategoryAction } from "@/store/slices/category.slice";
 import router from "next/router";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { TransitionProps } from "@mui/material/transitions";
 import Link from "next/link";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import withAuth from "@/components/withAuth";
 import { useTheme } from "@material-ui/core/styles";
@@ -97,17 +97,18 @@ const useStyles = makeStyles({
   },
 });
 
-const CustomToolbar: React.FunctionComponent<{
-  setFilterButtonEl: React.Dispatch<
-    React.SetStateAction<HTMLButtonElement | null>
+const CustomToolbar: FunctionComponent<{
+  setFilterButtonEl: Dispatch<
+    SetStateAction<HTMLButtonElement | null>
   >;
 }> = ({ setFilterButtonEl }) => (
   <GridToolbarContainer>
-      <GridToolbarColumnsButton />
+    <GridToolbarColumnsButton />
     <GridToolbarDensitySelector />
     <GridToolbarFilterButton ref={setFilterButtonEl} />
     <Link href="/panel/admin/manage/category/add" passHref>
-      <Fab
+      <Button
+        variant="contained"
         color="primary"
         aria-label="add"
         sx={{
@@ -117,12 +118,10 @@ const CustomToolbar: React.FunctionComponent<{
         }}
       >
         <AddIcon />
-      </Fab>
+      </Button>
     </Link>
   </GridToolbarContainer>
 );
-
-
 
 
 type Props = {
@@ -255,7 +254,7 @@ function AdminPanelManageCategory({ accessToken}: Props) {
     {
       field: "name",
       editable: true,
-      headerName: "ชื่อโหนด",
+      headerName: "ชื่อ",
       width: 180,
     },
     {
@@ -398,7 +397,6 @@ export const getServerSideProps: GetServerSideProps = async (
       },
     };
   }
-
 };
 
 

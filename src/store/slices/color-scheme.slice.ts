@@ -34,6 +34,13 @@ export const getAllColorSchemeByGroupAction = createAsyncThunk("COLOR_SCHEME/GRO
 	return response.payload;
 });
 
+export const getAllColorScheme = createAsyncThunk("COLOR_SCHEME/GET_ALL", async (): Promise<any> => {
+	const { data: response } = await httpClient.get(`/color-schemes/getAll`, {
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+	});
+	return response.payload;
+});
+
 export const getOneColorSchemeAction = createAsyncThunk("COLOR_SCHEME/GET_ONE", async (id: string): Promise<any> => {
 	const response = await colorSchemeService.getOneColorScheme(id)
 	return response;
@@ -79,7 +86,14 @@ export const colorSchemeSlice = createSlice({
 		builder.addCase(getAllColorSchemeByGroupAction.rejected, (state, action) => {
 			state.colorSchemeArray = [];
 		})
+		
+		builder.addCase(getAllColorScheme.fulfilled, (state, action) => {
+			state.colorSchemeArray = action.payload
+		});
 
+		builder.addCase(getAllColorScheme.rejected, (state, action) => {
+			state.colorSchemeArray = [];
+		})
 		builder.addCase(getAllColorSchemeByGroupIdAction.fulfilled, (state, action) => {
 			state.colorSchemeArray = action.payload
 		});
