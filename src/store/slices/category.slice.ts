@@ -45,9 +45,12 @@ export const getOneCategoryAction = createAsyncThunk("CATEGORY/GET_ONE", async (
 
 export const deleteCategoryAction = createAsyncThunk(
 	"CATEGORY/DELETE",
-	async (data: { id: string, gid: string, accessToken: string }) => {
-		await categoryService.deleteCategory(data.id!, data.accessToken!);
-		store.dispatch(getOneCategoryAction(data.gid!));
+	async (data: { id: string }) => {
+		const { data: response } = await httpClient.delete(`/categories/${data.id}`, {
+			baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+		});
+		return response.payload;
+		// store.dispatch(getOneCategoryAction(data.gid!));
 	}
 );
 

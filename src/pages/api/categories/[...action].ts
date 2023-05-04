@@ -60,7 +60,7 @@ async function deleteCategory(req: NextApiRequest, res: NextApiResponse<any>) {
 			return res.status(401).json({ message: 'Unauthorized' });
 		}
 		if (req.query) {
-			const { data } = await httpClient.delete(`/categorys/delete/${req.query['id']}`, {
+			const { data } = await httpClient.delete(`/categories/delete/${req.query['id']}`, {
 				headers: {
 					'Authorization': `Bearer ${accessToken}`,
 				},

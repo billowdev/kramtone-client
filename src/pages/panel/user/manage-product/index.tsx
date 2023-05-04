@@ -73,7 +73,7 @@ import Zoom from "react-medium-image-zoom";
 import Swal from "sweetalert2";
 import { productImageURL } from "@/common/utils/utils";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
-
+import { GridCellParams } from '@mui/x-data-grid';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
@@ -236,7 +236,7 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
   };
 
 
-  type PublishCellRendererProps = GridCellParams<UserPayload>;
+  type PublishCellRendererProps = GridCellParams<ProductPayload>;
 
 const PublishCellRenderer: React.FC<PublishCellRendererProps> = ({ value }) => {
   const isPublish = value as boolean;
@@ -252,7 +252,7 @@ const PublishCellRenderer: React.FC<PublishCellRendererProps> = ({ value }) => {
   );
 };
 
-type RecommendCellRendererProps = GridCellParams<UserPayload>;
+type RecommendCellRendererProps = GridCellParams<ProductPayload>;
 
 const RecommendCellRenderer: React.FC<RecommendCellRendererProps> = ({ value }) => {
   const isRecommend = value as boolean;
@@ -289,13 +289,13 @@ const RecommendCellRenderer: React.FC<RecommendCellRendererProps> = ({ value }) 
       field: 'publish',
       headerName: 'แสดงสินค้า',
       width: 100,
-      renderCell: (params: GridCellParams<UserPayload>) => <PublishCellRenderer {...params} />,
+      renderCell: (params: GridCellParams<ProductPayload>) => <PublishCellRenderer {...params} />,
     },
     {
       field: 'recommend',
       headerName: 'แสดงบนกลุ่ม',
       width: 100,
-      renderCell: (params: GridCellParams<UserPayload>) => <RecommendCellRenderer {...params} />,
+      renderCell: (params: GridCellParams<ProductPayload>) => <RecommendCellRenderer {...params} />,
     },
     // {
     //   field: 'colorScheme',
@@ -319,8 +319,9 @@ const RecommendCellRenderer: React.FC<RecommendCellRendererProps> = ({ value }) 
       editable: false,
       headerName: "สี",
       width: 100,
-      renderCell: (params: GridCellParams) => {
-        const hex = params.value.hex as string;
+      renderCell: (params: GridCellParams<ColorSchemePayload>) => {
+        // const hex = params?.value?.hex as string;
+        const hex = (params?.value as { hex: string })?.hex;
         return (
           <div style={{
             backgroundColor: hex,

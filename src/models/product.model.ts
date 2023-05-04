@@ -25,8 +25,8 @@ export interface ProductPayload {
 	reloadCount?: string
 	createdAt?: string
 	updatedAt?: string
-	recommend: boolean
-	publish: boolean
+	recommend?: boolean
+	publish?: boolean 
 	category?: CategoryPayload
 	productImages?: ProductImage[]
 	colorScheme? : ColorSchemePayload

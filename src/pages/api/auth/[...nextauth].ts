@@ -53,6 +53,7 @@ async function signin(req: NextApiRequest, res: NextApiResponse<any>) {
 			secure: process.env.NODE_ENV !== "development",
 			sameSite: "strict",
 			path: "/",
+			maxAge: 60 * 60 * 24 * 30 * 1000, // 30 days in milliseconds
 		});
 		// res.status(200).json(decryptData);
 		res.json(response.data)

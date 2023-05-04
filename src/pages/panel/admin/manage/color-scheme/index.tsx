@@ -148,7 +148,7 @@ function AdminPanelManageColorScheme({}: Props) {
     {
       field: "hex",
       editable: false,
-      headerName: "สี",
+      headerName: "โทนสี",
       width: 100,
       renderCell: (params: GridCellParams) => {
         const hex = params.value as string;

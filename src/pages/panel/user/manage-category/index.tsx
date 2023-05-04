@@ -14,6 +14,9 @@ import * as categoryService from "@/services/category.service"
 import * as authService from "@/services/auth.service"
 import { CategoryPayload } from "@/models/category.model"
 import { useSelector } from "react-redux";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
+import toast from "react-hot-toast";
+
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
@@ -273,7 +276,7 @@ function UserPanelManageCategory({ accessToken}: Props) {
             size="large"
             onClick={() => {
               setSelectedCategory(row);
-              setOpenDeleteDialog(true);
+              handleDelete()
             }}
           >
             <DeleteIcon fontSize="inherit" />
@@ -298,6 +301,34 @@ function UserPanelManageCategory({ accessToken}: Props) {
   ];
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 
+  const [showConfirmation, setShowConfirmation] = React.useState(false);
+
+  const handleDelete =  () => {
+    setShowConfirmation(true);
+  }
+ 
+  const handleConfirmDelete = async () => {
+    if (selectedCategory) {
+      console.log(selectedCategory)
+      
+    const response = await dispatch(deleteCategoryAction({ id:selectedCategory.id}))
+      if (response.meta.requestStatus === "fulfilled") {
+        toast.success("ลบข้อมูลสำเร็จ")
+        setTimeout(() => {
+          window.location.reload(); // Reload the page after 2 seconds
+        }, 200);
+        // router.push("/panel/user/manage-product");
+      }else{
+       toast.error("ลบข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+      }
+    }
+
+    setShowConfirmation(false);
+  };
+  
+  const handleCancelDelete = () => {
+    setShowConfirmation(false);
+  };
 
   return (
     <Layout>
@@ -310,8 +341,6 @@ function UserPanelManageCategory({ accessToken}: Props) {
                ) : (
                  <CheckroomIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
                )}
-
-              
              <React.Fragment> 
                {isSmallDevice ? (
                  <Typography
@@ -361,6 +390,14 @@ function UserPanelManageCategory({ accessToken}: Props) {
 
        <CategoryDialog category={selectedCategory} open={viewCategoryOpen} onClose={handleViewCategoryClose} />
 {showEditDialog()}
+
+<ConfirmationDialog
+        title="ลบข้อมูล"
+        message="ยืนยันการลบข้อมูล"
+        open={showConfirmation}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+      />
 
 </Layout>
   )
