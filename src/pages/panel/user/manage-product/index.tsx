@@ -236,12 +236,43 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
   };
 
 
+  type PublishCellRendererProps = GridCellParams<UserPayload>;
+
+const PublishCellRenderer: React.FC<PublishCellRendererProps> = ({ value }) => {
+  const isPublish = value as boolean;
+
+  return (
+    <Typography
+      style={{
+        color: isPublish ? 'green' : 'orange', // Set the color based on the value of 'activated'
+      }}
+    >
+      {isPublish ? 'แสดง' : 'ไม่แสดง'} {/* Show different text based on the value of 'activated' */}
+    </Typography>
+  );
+};
+
+type RecommendCellRendererProps = GridCellParams<UserPayload>;
+
+const RecommendCellRenderer: React.FC<RecommendCellRendererProps> = ({ value }) => {
+  const isRecommend = value as boolean;
+
+  return (
+    <Typography
+      style={{
+        color: isRecommend ? 'green' : 'orange', // Set the color based on the value of 'activated'
+      }}
+    >
+      {isRecommend ? 'แสดง' : 'ไม่แสดง'} {/* Show different text based on the value of 'activated' */}
+    </Typography>
+  );
+};
   const columns: GridColDef[] = [
     {
       field: "name",
       editable: true,
-      headerName: "ชื่อโหนด",
-      width: 180,
+      headerName: "ชื่อสินค้า",
+      width: 160,
     },
     {
       field: "desc",
@@ -252,25 +283,61 @@ function UserPanelManageCategory({ accessToken, gid, productArray }: Props) {
     {
       field: "price",
       headerName: "ราคา",
-      width: 180,
+      width: 80,
     },
     {
-      field: 'colorScheme',
-      headerName: 'โทนสี',
+      field: 'publish',
+      headerName: 'แสดงสินค้า',
       width: 100,
-      renderCell: ({ value }: GridRenderCellParams<ProductPayload>) => (
-        <Box
-          sx={{
-            width: 50,
-            height: 50,
-            backgroundColor: value?.hex,
-            borderRadius: "50%",
-            border: "1px solid black",
-            marginLeft: 2,
-          }}
-        />
-      ),
+      renderCell: (params: GridCellParams<UserPayload>) => <PublishCellRenderer {...params} />,
     },
+    {
+      field: 'recommend',
+      headerName: 'แสดงบนกลุ่ม',
+      width: 100,
+      renderCell: (params: GridCellParams<UserPayload>) => <RecommendCellRenderer {...params} />,
+    },
+    // {
+    //   field: 'colorScheme',
+    //   headerName: 'โทนสี',
+    //   width: 100,
+    //   renderCell: ({ value }: GridRenderCellParams<ProductPayload>) => (
+    //     <Box
+    //       sx={{
+    //         width: 50,
+    //         height: 50,
+    //         backgroundColor: value?.hex,
+    //         borderRadius: "50%",
+    //         border: "1px solid black",
+    //         marginLeft: 2,
+    //       }}
+    //     />
+    //   ),
+    // },
+    {
+      field: "colorScheme",
+      editable: false,
+      headerName: "สี",
+      width: 100,
+      renderCell: (params: GridCellParams) => {
+        const hex = params.value.hex as string;
+        return (
+          <div style={{
+            backgroundColor: hex,
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            color:"white",
+            alignItems: 'center',
+          }}>
+            {hex}
+          </div>
+        );
+      },
+  
+    },
+  
     {
       field: 'productImages',
       headerName: 'รูปภาพ',

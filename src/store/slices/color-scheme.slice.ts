@@ -27,7 +27,7 @@ export const getAllColorSchemeByGroupIdAction = createAsyncThunk("COLOR_SCHEME/G
 	return response;
 });
 
-export const getAllColorSchemeByGroupAction = createAsyncThunk("COLOR_SCHEME/GROUP_GET_ALL_BY_GROUP", async (): Promise<any> => {
+export const getAllColorSchemeByGroupAction = createAsyncThunk("COLOR_SCHEME/GROUP_GET_ALL_BY_GROUP", async () => {
 	const { data: response } = await httpClient.get(`/categories/getAllByGroup`, {
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
 	});
@@ -47,28 +47,33 @@ export const getOneColorSchemeAction = createAsyncThunk("COLOR_SCHEME/GET_ONE", 
 });
 
 
-export const deleteColorSchemeAction = createAsyncThunk(
+export const deleteColorScheme = createAsyncThunk(
 	"COLOR_SCHEME/DELETE",
-	async (data: { id: string, gid: string, accessToken: string }) => {
-		await colorSchemeService.deleteColorScheme(data.id!, data.accessToken!);
-		store.dispatch(getOneColorSchemeAction(data.gid!));
+	async (data: { id: string}) => {
+		const { data: response } = await httpClient.delete(`/color-schemes/${data.id}`, {
+			baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+		});
+		return response.payload;
+		// store.dispatch(getAllColorScheme());
 	}
 );
 
 export const updateColorSchemeAction = createAsyncThunk(
 	"COLOR_SCHEME/UPDATE",
 	async (data: any) => {
-		// console.log(data)
-		await colorSchemeService.updateColorScheme(data.id!, data.body, data.accessToken!);
+		const { data: response } = await httpClient.patch(`/color-schemes/${data.id}`, {
+			baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+		});
 		store.dispatch(getAllColorSchemeByGroupAction());
 	}
 );
 
-export const createColorSchemeAction = createAsyncThunk(
+export const createColorScheme = createAsyncThunk(
 	"COLOR_SCHEME/CREATE",
 	async (data: any) => {
-		await colorSchemeService.createColorScheme(data.body, data.accessToken);
-		// store.dispatch(getAllColorSchemeByGroupAction());
+		const { data: response } = await httpClient.post(`/color-schemes/create`, data, {
+			baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+		});
 	}
 );
 

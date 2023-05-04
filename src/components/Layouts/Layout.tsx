@@ -234,7 +234,7 @@ function Layout({ children }: LayoutProps) {
                <React.Fragment>
                 <CustomMenuListItem
                 href="/panel/user"
-                useStartWithPath={true}
+                useStartWithPath={false}
                 icon={WidgetsIcon}
                 text="เมนูหลัก"
                 open={open}

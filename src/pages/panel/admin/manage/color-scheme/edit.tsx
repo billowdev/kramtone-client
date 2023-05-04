@@ -48,7 +48,7 @@ const AdminPanelEditColorScheme = ({ category, accessToken}: Props) => {
         <Card>
           <CardContent sx={{ padding: 4 }}>
             <Typography gutterBottom variant="h3">
-             แก้ไขข้อมูลประเภทสินค้า
+             แก้ไขข้อมูลโทนสีครามธรรมชาติ
             </Typography>
 
             <Field
@@ -57,7 +57,7 @@ const AdminPanelEditColorScheme = ({ category, accessToken}: Props) => {
               component={TextField}
               name="name"
               type="text"
-              label="ชื่อประเภทสินค้า"
+              label="ชื่อโทนสีครามธรรมชาติ"
             />
             <br />
             <Field
@@ -66,7 +66,7 @@ const AdminPanelEditColorScheme = ({ category, accessToken}: Props) => {
               component={TextField}
               name="desc"
               type="string"
-              label="รายละเอียดประเภทสินค้า"
+              label="รายละเอียดโทนสีครามธรรมชาติ"
             />
 
             <div style={{ margin: 16 }}>{showPreviewImage(values)}</div>
@@ -113,11 +113,13 @@ const AdminPanelEditColorScheme = ({ category, accessToken}: Props) => {
             >
               แก้ไข
             </Button>
-            <Link href="/panel/admin/manage/category" passHref>
-              <Button variant="outlined" fullWidth>
-                ยกเลิก
-              </Button>
-            </Link>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={() => router.back()}
+            >
+              ยกเลิก
+            </Button>
           </CardActions>
         </Card>
       </Form>
@@ -140,10 +142,10 @@ const AdminPanelEditColorScheme = ({ category, accessToken}: Props) => {
       const updateStatus = await dispatch(updateCategoryAction({id:updateValue.id, body:data, accessToken}))
 
       if (updateStatus.meta.requestStatus === "fulfilled") {
-        toast.success("แก้ไขข้อมูลประเภทสินค้าสำเร็จ")
+        toast.success("แก้ไขข้อมูลโทนสีครามธรรมชาติสำเร็จ")
         router.push("/panel/admin/manage/category");
       }else{
-        toast.error("แก้ไขข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง")
+        toast.error("แก้ไขข้อมูลโทนสีครามธรรมชาติไม่สำเร็จ โปรดลองอีกครั้ง")
       }
       setOpenDialog(false);
     }
@@ -187,7 +189,7 @@ const AdminPanelEditColorScheme = ({ category, accessToken}: Props) => {
       return (
         <Image
           // objectFit="contain"
-          alt="รูปภาพประเภทสินค้า"
+          alt="รูปภาพโทนสีครามธรรมชาติ"
           src={values?.image_obj}
           width={250}
           height={250}
@@ -197,7 +199,7 @@ const AdminPanelEditColorScheme = ({ category, accessToken}: Props) => {
       return (
         <Image
           // objectFit="contain"
-          alt="รูปภาพประเภทสินค้า"
+          alt="รูปภาพโทนสีครามธรรมชาติ"
           src={categoryImageURL(values?.image)}
           width={250}
           height={250}
@@ -211,7 +213,7 @@ const AdminPanelEditColorScheme = ({ category, accessToken}: Props) => {
       <Formik
         validate={(values) => {
           let errors: any = {};
-          if (!values.name) errors.name = "กรุณากรอกชื่อประเภทสินค้า";
+          if (!values.name) errors.name = "กรุณากรอกชื่อโทนสีครามธรรมชาติ";
           return errors;
         }}
         initialValues={category!}

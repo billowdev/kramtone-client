@@ -43,6 +43,7 @@ import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
+import { CheckboxWithLabel } from 'formik-material-ui';
 
 
 interface AddProductFormProps {
@@ -91,8 +92,12 @@ const AddProductForm = ({
     name: product?.name,
     desc: product?.desc,
     price: product?.price,
+    publish: product?.publish,
+    recommend: product?.recommend,
     images: undefined,
   };
+const [publish, setPublish] = useState<boolean>(product?.publish!)
+const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
 
   const [updateValue, setUpdateValue] = useState<ProductPayload>(initialValues);
 
@@ -375,6 +380,39 @@ const AddProductForm = ({
 		/>
 		<br />
            
+    <Grid container direction="row">
+  <Grid item>
+    <Field
+      component={CheckboxWithLabel}
+      name="publish"
+      id="publish-checkbox"
+      checked={publish}
+      onChange={() => {
+        setPublish(!publish);
+      }}
+      Label={{
+        label: 'แสดงสินค้า',
+      }}
+    />
+  </Grid>
+
+  <Grid item>
+    <Field
+      component={CheckboxWithLabel}
+      name="recommend"
+      id="recommend-checkbox"
+      checked={recommend}
+      onChange={() => {
+        setPublish(!recommend);
+      }}
+      Label={{
+        label: 'สินค้าแนะนำ',
+      }}
+    />
+  </Grid>
+</Grid>
+
+
     <Box mt={2}>
         <Button variant="outlined" onClick={handleOpenModal}>
           {selectedCategory && selectedCategory.name !== ""

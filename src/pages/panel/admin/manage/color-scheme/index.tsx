@@ -3,7 +3,7 @@ import Layout from '@/components/Layouts/Layout';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
-import {colorSchemeSelector, getAllColorScheme} from "@/store/slices/color-scheme.slice"
+import {colorSchemeSelector, getAllColorScheme, deleteColorScheme} from "@/store/slices/color-scheme.slice"
 import {useAppDispatch} from "@/store/store"
 import {ColorSchemePayload} from "@/models/color-scheme.model"
 import {useSelector} from "react-redux"
@@ -16,6 +16,7 @@ import {
   GridValueGetterParams,
   GridToolbarColumnsButton,
   GridToolbarDensitySelector,
+  GridCellParams,
 } from "@mui/x-data-grid";
 import Link from "next/link"
 import {
@@ -46,6 +47,7 @@ import AddIcon from "@mui/icons-material/Add";
 import router from "next/router";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import toast from "react-hot-toast";
 
 
 
@@ -60,7 +62,7 @@ const CustomToolbar: FunctionComponent<{
     <GridToolbarColumnsButton />
     <GridToolbarDensitySelector />
     <GridToolbarFilterButton ref={setFilterButtonEl} />
-    <Link href="/panel/admin/manage/category/add" passHref>
+    <Link href="/panel/admin/manage/color-scheme/add" passHref>
       <Button
         variant="contained"
         color="primary"
@@ -113,7 +115,7 @@ function AdminPanelManageColorScheme({}: Props) {
   }
  
   const handleConfirmDelete = async () => {
-    if (selectedUser) {
+    if (selectedColorScheme) {
       // console.log(selectedUser)
       
     const response = await dispatch(deleteColorScheme({ id:selectedColorScheme.id}))
@@ -156,6 +158,7 @@ function AdminPanelManageColorScheme({}: Props) {
             width: '100%',
             height: '100%',
             display: 'flex',
+            color:"white",
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -189,7 +192,7 @@ function AdminPanelManageColorScheme({}: Props) {
             size="large"
             onClick={() => {
               setSelectedColorScheme(row);
-              // setOpenDeleteDialog(true);
+              handleDelete()
             }}
           >
             <DeleteIcon fontSize="inherit" />
@@ -207,7 +210,8 @@ function AdminPanelManageColorScheme({}: Props) {
           >
             <EditIcon fontSize="inherit" />
           </IconButton>
-          <IconButton
+        
+          {/* <IconButton
             aria-label="edit"
             size="large"
             onClick={()=>{
@@ -215,7 +219,7 @@ function AdminPanelManageColorScheme({}: Props) {
             }}
           >
             <VisibilityIcon fontSize="inherit" />
-          </IconButton>
+          </IconButton> */}
 
           
         </Stack>

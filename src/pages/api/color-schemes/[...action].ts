@@ -10,18 +10,22 @@ import {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.query.action) {
-		const requestAction = req.query['action'][0]
-		
+		const requestAction = req.query.action[0]
+
 		if (req.method === HTTP_METHOD_GET && requestAction == "getAll") {
 			return getAll(req, res);
-		}	
+		}
 		else if (req.method === HTTP_METHOD_GET && requestAction == "getOne") {
 			return getOne(req, res);
-		}	
+		}
 		else if (req.method === HTTP_METHOD_DELETE) {
 			return deleteColorScheme(req, res);
 		} else if (req.method === HTTP_METHOD_PATCH) {
 			return updateColorScheme(req, res);
+		}
+		else if (req.method === HTTP_METHOD_POST && requestAction == "create") {
+
+			return createColorScheme(req, res);
 		}
 		else {
 			return res
@@ -83,15 +87,18 @@ async function deleteColorScheme(req: NextApiRequest, res: NextApiResponse<any>)
 			return res.status(401).json({ message: 'Unauthorized' });
 		}
 		if (req.query) {
-			const { data } = await httpClient.delete(`/colorschemes/${req.query['id']}`, {
+			// console.log("=================")
+			// console.log(req.query['action'])
+			// console.log("=================")
+			const { data: response } = await httpClient.delete(`/colorschemes/${req.query['action']}`, {
 				headers: {
 					'Authorization': `Bearer ${accessToken}`,
 				},
 			});
-			if (data) {
-				return res.status(200).json(data);
+			if (response) {
+				return res.status(200).json(response);
 			} else {
-				return res.status(400).json(data);
+				return res.status(400).json(response);
 			}
 		} else {
 			return res.status(400).json({ message: 'id required' });
@@ -135,31 +142,31 @@ async function updateColorScheme(req: NextApiRequest, res: NextApiResponse<any>)
 }
 
 async function createColorScheme(req: NextApiRequest, res: NextApiResponse<any>) {
-  try {
-    const accessToken = req.cookies[ACCESS_TOKEN_KEY];
-    if (!accessToken) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-    const createBody = req.body;
-	// console.log(createBody)
-    if (createBody) {
-      const { data } = await httpClient.post(`/colorschemes`, createBody, {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-        },
-      });
+	try {
+		const accessToken = req.cookies[ACCESS_TOKEN_KEY];
+		if (!accessToken) {
+			return res.status(401).json({ message: 'Unauthorized' });
+		}
+		const createBody = req.body;
 
-      if(data){
-        return res.status(200).json(data);
-      }else{
-        return res.status(400).json(data);
-      }
-    } else {
-      return res.status(400).json({ message: 'create color scheme is failed' });
-    }
+		if (createBody) {
+			const { data: response } = await httpClient.post(`/colorschemes`, createBody, {
+				headers: {
+					'Authorization': `Bearer ${accessToken}`,
+				},
+			});
 
-  } catch (error) {
-    // console.error(error);
-    return res.status(500).json({ message: 'Internal Server Error' });
-  }
+			if (response) {
+				return res.status(200).json(response);
+			} else {
+				return res.status(400).json(response);
+			}
+		} else {
+			return res.status(400).json({ message: 'create color scheme is failed' });
+		}
+
+	} catch (error) {
+		// console.error(error);
+		return res.status(500).json({ message: 'Internal Server Error' });
+	}
 }

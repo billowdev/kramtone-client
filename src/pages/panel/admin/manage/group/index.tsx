@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { FunctionComponent, useState, SetStateAction, Dispatch } from 'react'
 import Layout from '@/components/Layouts/Layout';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import useMediaQuery from '@material-ui/core/useMediaQuery';

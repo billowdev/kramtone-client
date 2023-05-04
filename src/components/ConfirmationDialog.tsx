@@ -16,7 +16,7 @@ import {
 	onConfirm: (event: MouseEvent<HTMLButtonElement>) => void;
   }
   
-  const ConfirmationDialog = ({
+ export const ConfirmationDialog = ({
 	title,
 	message,
 	open,
