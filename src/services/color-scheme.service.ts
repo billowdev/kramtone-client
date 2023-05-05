@@ -37,23 +37,11 @@ export const createColorScheme = async ( data: FormData, accessToken: string): P
 		},
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
 	});
-	// const {data:response} = await axios.post(`/colorschemes/${id}`, data, {
-	// 	headers: {
-	// 		Authorization: `Bearer ${accessToken}`
-	// 	},
-	// 	baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
-	// });
-	console.log(response)
+
 };
 
 
 export const updateColorScheme = async (id: string, data: FormData, accessToken: string): Promise<void> => {
-	// console.log('Form Data:');
-	// for (const [key, value] of data.entries()) {
-	// 	console.log(key, value);
-	// }
-	// console.log("===============")
-	// console.log(id, accessToken)
 	const {data:response} = await axios.patch(`/colorschemes/${id}`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`

@@ -11,11 +11,6 @@ export const getOneGroupData = async (id: string | undefined): Promise<GroupData
 	return response.payload
 };
 
-// export const getAllGroupData = async (): Promise<GroupDataArrayResponse> => {
-// 	const { data: response } = await httpClient.get(`/groups/get`)
-// 	return response.payload;
-// };
-
 export const getAllGroupData = async (
 	filters: Filters = {}
   ): Promise<GroupDataArrayResponse> => {
@@ -31,7 +26,6 @@ export const getAllGroupData = async (
 	}
   
 	const { data: response } = await httpClient.get(`/groups/get`, { params });
-	console.log(response.payload)
 	return response.payload;
   };
   
@@ -46,17 +40,13 @@ export const createGroupData = async (data: FormData, accessToken: string): Prom
 };
 
 export const updateGroupData = async (id: string, data: FormData, accessToken: string): Promise<void> => {
-	// console.log('Form Data:');
-	// for (const [key, value] of data.entries()) {
-	// 	console.log(key, value);
-	// }
+
 	const {data:response} = await axios.patch(`/groups/${id}`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
 		},
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
 	});
-	console.log(response)
 
 };
 

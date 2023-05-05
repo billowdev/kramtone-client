@@ -31,11 +31,6 @@ export const increaseReloadCount = async (id:string): Promise<any> => {
 }
 
 export const createProduct = async (data: FormData, accessToken: string): Promise<any> => {
-	// 	console.log('Form Data:');
-	// for (const [key, value] of data.entries()) {
-	// 	console.log(key, value);
-	// }
-	// console.log("===============")
 	await axios.post(`/products`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
@@ -45,10 +40,10 @@ export const createProduct = async (data: FormData, accessToken: string): Promis
 };
 
 export const updateProduct = async (id: string, data: FormData, accessToken: string): Promise<void> => {
-	console.log('Form Data:');
-	for (const [key, value] of data.entries()) {
-		console.log(key, value);
-	}
+	// console.log('Form Data:');
+	// for (const [key, value] of data.entries()) {
+	// 	console.log(key, value);
+	// }
 	const { data: response } = await axios.patch(`/products/${id}/data`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`

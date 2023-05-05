@@ -3,7 +3,7 @@ const path = require('path');
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["localhost", "127.0.0.1", 'fastly.picsum.photos', 'picsum.photos', 'www.kramtone.com', 'kramtone.com'],
+    domains: ["localhost", "127.0.0.1", 'fastly.picsum.photos', 'picsum.photos', 'www.kramtone.com', 'kramtone.com', 'kramtone.com/images'],
 
   },
   swcMinify: true,
