@@ -21,3 +21,12 @@ export interface ColorSchemePayload {
 	hex: string
 }
 
+export interface GroupColorSchemePayload {
+	id: string
+	groupId: string
+	colorSchemeId: string
+	createdAt: string
+	updatedAt: string
+	colorScheme: ColorSchemePayload
+}
+

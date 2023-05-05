@@ -23,14 +23,6 @@ const initialState: ProductState = {
 };
 
 
-
-// export const getAllGroupDataAction = createAsyncThunk("PRODUCT/GET_ALL", async (): Promise<any> => {
-// 	const response = await productService.getAllGroupData()
-// 	// console.log("===========slice===========")
-// 	// console.log(response)
-// 	return response;
-// });
-
 export const getAllProductByGroupAction = createAsyncThunk("PRODUCT/GROUP_GET_ALL", async (id: string): Promise<any> => {
 	const response = await productService.getAllProductByGroup(id)
 	return response;

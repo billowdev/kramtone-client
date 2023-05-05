@@ -3,11 +3,12 @@ import axios from 'axios'
 import * as  colorSchemeService from '@/services/color-scheme.service';
 import { RootState, store } from "@/store/store";
 import httpClient from "@/common/utils/httpClient.util";
-import { ColorSchemeArrayPayload, ColorSchemePayload } from "@/models/color-scheme.model";
+import { ColorSchemeArrayPayload, ColorSchemePayload,GroupColorSchemePayload } from "@/models/color-scheme.model";
 
 interface ColorSchemeState {
 	colorScheme: Partial<ColorSchemePayload>,
 	colorSchemeArray: ColorSchemeArrayPayload,
+	groupColorSchemes: GroupColorSchemePayload[]
 
 }
 const initialState: ColorSchemeState = {
@@ -19,7 +20,7 @@ const initialState: ColorSchemeState = {
 		hex: "",
 	},
 	colorSchemeArray: [],
-
+	groupColorSchemes: [],
 };
 
 export const getAllColorSchemeByGroupIdAction = createAsyncThunk("COLOR_SCHEME/GROUP_GET_ALL_BY_GROUP_ID", async (id: string): Promise<any> => {
@@ -27,12 +28,6 @@ export const getAllColorSchemeByGroupIdAction = createAsyncThunk("COLOR_SCHEME/G
 	return response;
 });
 
-export const getAllColorSchemeByGroupAction = createAsyncThunk("COLOR_SCHEME/GROUP_GET_ALL_BY_GROUP", async () => {
-	const { data: response } = await httpClient.get(`/categories/getAllByGroup`, {
-		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
-	});
-	return response.payload;
-});
 
 export const getAllColorScheme = createAsyncThunk("COLOR_SCHEME/GET_ALL", async (): Promise<any> => {
 	const { data: response } = await httpClient.get(`/color-schemes/getAll`, {
@@ -64,7 +59,6 @@ export const updateColorSchemeAction = createAsyncThunk(
 		const { data: response } = await httpClient.patch(`/color-schemes/${data.id}`, {
 			baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
 		});
-		store.dispatch(getAllColorSchemeByGroupAction());
 	}
 );
 
@@ -77,6 +71,33 @@ export const createColorScheme = createAsyncThunk(
 	}
 );
 
+
+
+export const deleteGroupColorScheme = createAsyncThunk(
+	"COLOR_SCHEME/GROUOP_DELETE",
+	async (groupColorSchemeId:string) => {
+		const { data: response } = await httpClient.delete(`/color-schemes/deleteGroupColorScheme?id=${groupColorSchemeId}`, {
+			baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+		});
+		return response.payload;
+		// store.dispatch(getAllColorScheme());
+	}
+);
+
+export const getAllGroupColorScheme = createAsyncThunk("COLOR_SCHEME/GET_ALL_GROUP", async (gid:string): Promise<any> => {
+	const { data: response } = await httpClient.get(`/color-schemes/getAllGroupColorScheme?id=${gid}`, {
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+	});
+	return response.payload;
+});
+
+export const createGroupColorScheme = createAsyncThunk("COLOR_SCHEME/CREATE", async (colorSchemeId:string): Promise<any> => {
+	const { data: response } = await httpClient.post(`/color-schemes/createGroupColorScheme`, {colorSchemeId}, {
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+	});
+	return response.payload;
+});
+
 export const colorSchemeSlice = createSlice({
 	name: "colorScheme",
 	initialState: initialState,
@@ -84,13 +105,13 @@ export const colorSchemeSlice = createSlice({
 
 	},
 	extraReducers: (builder) => {
-		builder.addCase(getAllColorSchemeByGroupAction.fulfilled, (state, action) => {
-			state.colorSchemeArray = action.payload
-		});
+		// builder.addCase(getAllColorSchemeByGroupAction.fulfilled, (state, action) => {
+		// 	state.colorSchemeArray = action.payload
+		// });
 
-		builder.addCase(getAllColorSchemeByGroupAction.rejected, (state, action) => {
-			state.colorSchemeArray = [];
-		})
+		// builder.addCase(getAllColorSchemeByGroupAction.rejected, (state, action) => {
+		// 	state.colorSchemeArray = [];
+		// })
 		
 		builder.addCase(getAllColorScheme.fulfilled, (state, action) => {
 			state.colorSchemeArray = action.payload
@@ -111,8 +132,15 @@ export const colorSchemeSlice = createSlice({
 		builder.addCase(getOneColorSchemeAction.fulfilled, (state, action) => {
 			state.colorScheme = action.payload
 		});
+		
+		builder.addCase(getAllGroupColorScheme.fulfilled, (state, action) => {
+			state.groupColorSchemes = action.payload
+		});
 
+		builder.addCase(getAllGroupColorScheme.rejected, (state, action) => {
+			state.groupColorSchemes = [];
 
+		})
 		// builder.addCase(createColorSchemeAction.rejected, (state, action) => {
 		// 	state.error = action.payload
 		// })
