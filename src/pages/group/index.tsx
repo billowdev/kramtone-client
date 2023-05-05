@@ -241,7 +241,7 @@ const ColorSchemeFilterModal = () => {
         >
           {selectedCategory && selectedCategory.name !== ""
             ? selectedCategory.name
-            : "กรองตามประเภทกลุ่ม"}
+            : "กรองตามประเภทสินค้า"}
         </Button>
       </Grid>
       <Grid item xs={12} md={2}>
@@ -253,7 +253,7 @@ const ColorSchemeFilterModal = () => {
           >
                {selectedColorScheme && selectedColorScheme.nameTH !== ""
             ? selectedColorScheme.nameTH
-            : "กรองตามประเภทกลุ่ม"}
+            : "กรองตามโทนสี"}
           </Button>
 
       </Grid>
@@ -366,7 +366,7 @@ const ColorSchemeFilterModal = () => {
         <Card style={{ marginBottom: 2, background: 'none', boxShadow: 'none' }}>
         <CardContent>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={3}>
+              <Grid item xs={12} sm={2}>
                 <Image
                   src={groupDataImageURL(group?.logo)}
                   alt="Group Image"
@@ -374,7 +374,7 @@ const ColorSchemeFilterModal = () => {
                   height={100}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={5}>
                 <Typography variant="subtitle1">
                   ชื่อกลุ่มผู้ผลิตหรือร้านค้า : {group?.groupName}
                 </Typography>
@@ -390,8 +390,54 @@ const ColorSchemeFilterModal = () => {
                 <Typography variant="subtitle1">
                   ชื่อประธานกลุ่ม : {group?.agency}
                 </Typography>
+                
+                <Typography variant="subtitle1">
+                สินค้าแนะนำ :
+                </Typography>
+                {group?.products.slice(0, 3).map((product: any, index: any) => (
+                  <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+                    <Typography variant="subtitle1">
+                      {product.recommend ? 
+                       <Typography> {product.name} </Typography> : <React.Fragment></React.Fragment>
+                      }
+                    </Typography>
+                  </div>
+                ))}
+
               </Grid>
+
               <Grid item xs={12} sm={3}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                  <Typography variant="subtitle1">
+                  โทนสีที่มีในร้าน
+                </Typography>
+              
+
+                {group?.colorSchemes.slice(0, 3).map((colorScheme: any, index: any) => (
+                  <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+                    <div
+                      style={{
+                        backgroundColor: colorScheme.hex,
+                        width: '25px',
+                        height: '25px',
+                        marginRight: '4px',
+                      }}
+                    ></div>
+                    <Typography variant="subtitle1">
+                      รหัสสี {colorScheme.id}
+                    </Typography>
+                  </div>
+                ))}
+
+
+
+
+                  </Grid>
+                </Grid>
+              </Grid>
+              
+              <Grid item xs={12} sm={2}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Button
@@ -420,7 +466,9 @@ const ColorSchemeFilterModal = () => {
                   </Grid>
                 </Grid>
               </Grid>
+
             </Grid>
+
           </CardContent>
         </Card>
         {index < filteredGroups.length - 1 && <Divider />}
