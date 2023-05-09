@@ -249,7 +249,7 @@ const ProductTest = ({}: Props) => {
       >
         {selectedCategory && selectedCategory.name !== ""
           ? selectedCategory.name
-          : "กรองตามประเภทสินค้า"}
+          : "เลือกตามประเภทสินค้า"}
       </Button>
     </Grid>
     <Grid item xs={12} md={2}>
@@ -261,7 +261,7 @@ const ProductTest = ({}: Props) => {
       >
         {selectedColorScheme && selectedColorScheme.nameTH !== ""
           ? selectedColorScheme.nameTH
-          : "กรองตามโทนสี"}
+          : "เลือกตามโทนสี"}
       </Button>
     </Grid>
     <Grid item xs={12} md={2}>
@@ -272,7 +272,7 @@ const ProductTest = ({}: Props) => {
         fullWidth
         style={{ height: '100%' }}
       >
-        ล้างตัวกรอง
+        ล้างตัวเลือก
       </Button>
     </Grid>
   </Grid>

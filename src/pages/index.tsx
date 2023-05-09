@@ -107,7 +107,10 @@ const MainPage = ({}: Props) => {
         style={{  backgroundImage: "url('/static/img/M014-01.jpg')" } }
         className={classes.container}
       >
-        <Typography variant="h5" component="h5" gutterBottom align="center">
+        <Typography variant="h5" component="h5" gutterBottom align="center" style={{
+         
+
+        }}>
           ระบบบริหารจัดการการเชื่อมโยงแผนภาพโทนสีครามธรรมชาติกับแหล่งผลิตผ้าย้อมคราม
         </Typography>
         <Typography variant="h5" component="h5" gutterBottom align="center">

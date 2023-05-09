@@ -77,13 +77,13 @@ export default function Footer({}: Props) {
                 </Box>
                 <Box sx={{ marginRight: "16px" }}>
                   <Link href="/product" style={footerLinkStyle}>
-                    <Typography align="center">หน้าสินค้า</Typography>
+                    <Typography align="center">สินค้า</Typography>
                   </Link>
                 </Box>
                 <Box sx={{ marginRight: "16px" }}>
                   <Link href="/group" style={footerLinkStyle}>
                     <Typography align="center">
-                      หน้าข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
+                      ข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
                     </Typography>
                   </Link>
                 </Box>
@@ -109,7 +109,7 @@ export default function Footer({}: Props) {
               {userSession && userSession.role ? (
                 <Link href="/panel" style={footerLinkStyle}>
                   <Typography align="center">
-                    หน้าจัดการกลุ่มผู้ผลิตหรือร้านค้า
+                    จัดการกลุ่มผู้ผลิตหรือร้านค้า
                   </Typography>
                 </Link>
               ) : (

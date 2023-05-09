@@ -58,8 +58,8 @@ export default function Navbar() {
 
   const navItems = [
     { href: '/', text: 'หน้าหลัก' },
-    { href: '/product', text: 'หน้าสินค้า' },
-    { href: '/group', text: 'หน้าข้อมูลกลุ่มผู้ผลิตหรือร้านค้า' },
+    { href: '/product', text: 'สินค้า' },
+    { href: '/group', text: 'ข้อมูลกลุ่มผู้ผลิตหรือร้านค้า' },
     { href: '/color-scheme', text: 'ข้อมูลโทนสีครามธรรมชาติ' },
   ];
 
