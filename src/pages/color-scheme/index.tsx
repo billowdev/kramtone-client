@@ -175,28 +175,36 @@ const NaturalColorTonesPage = () => {
                   </Card>
                 </Grid>
               ))} */}
-     <Grid container spacing={2}>
+
+<Grid container spacing={2}>
   {groups.map((group, i) => (
     <Grid key={i} item xs={12}>
-      <Typography variant='h4' gutterBottom>
+      <Typography variant='h5' gutterBottom>
         {group.prefix} - {group.schemes[0].nameTH} ({group.schemes[0].nameEN})
       </Typography>
       <Grid container spacing={2}>
-        {group.schemes.map((scheme: any, j) => (
-          <Grid key={j} item xs={12} sm={6} md={4} lg={3} xl={2}>
-            <Card sx={{ display: 'flex' }}>
+        {group.schemes.map((scheme: ColorSchemePayload, j) => (
+          <Grid key={j} item xs={12} sm={6} md={4} lg={2} xl={2}>
+            <Card
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: 1,
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
+              }}
+            >
               <div
                 style={{
                   width: 100,
                   height: 100,
                   backgroundColor: scheme.hex,
-                  padding: 10,
                 }}
               />
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Typography variant='h5'>{scheme.nameEN}</Typography>
-                <Typography variant='subtitle1'>{scheme.nameTH}</Typography>
-                <Typography variant='subtitle2'>{scheme.id}</Typography>
+              <CardContent>
+                <Typography variant='h6'>{scheme.id}</Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -205,6 +213,9 @@ const NaturalColorTonesPage = () => {
     </Grid>
   ))}
 </Grid>
+
+
+
 
 
 
