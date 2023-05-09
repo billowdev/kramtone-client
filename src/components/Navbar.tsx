@@ -55,12 +55,13 @@ export default function Navbar() {
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
-
+  // authData
   const navItems = [
     { href: '/', text: 'หน้าหลัก' },
     { href: '/product', text: 'สินค้า' },
     { href: '/group', text: 'ข้อมูลกลุ่มผู้ผลิตหรือร้านค้า' },
     { href: '/color-scheme', text: 'ข้อมูลโทนสีครามธรรมชาติ' },
+
   ];
 
   const NavList = ({ style }: any) => (
@@ -146,6 +147,17 @@ export default function Navbar() {
                     </Link>
                   </Grid>
                 ))}
+
+                {authData.role ? <> 
+                <Grid item>
+                    <Link href={'/auth/signin'} passHref style={navLinkStyle}>
+                        <Typography align="center">จัดการกลุ่มผู้ผลิตหรือร้านค้า</Typography>
+                    </Link>
+                  </Grid>
+                </> : <></>}
+                  
+                  
+
               </Grid>
             )}
           </Toolbar>
