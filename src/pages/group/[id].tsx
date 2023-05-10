@@ -236,45 +236,45 @@ const handleBackButtonClick = () => {
               <Grid item xs={12} md={8} lg={9}>
                 <React.Fragment>
                   <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
+                    <Typography style={typeographyHeaderStyle}>
                       ชื่อกลุ่ม / ร้านค้า
                     </Typography>
-                    <Typography sx={typeographyValueStyle}>
+                    <Typography style={typeographyValueStyle}>
                       {groupData?.groupName}
                     </Typography>
                   </Box>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>
                       ประเภทกลุ่ม
                     </Typography>
-                    <Typography sx={typeographyValueStyle}>
+                    <Typography style={typeographyValueStyle}>
                       {groupData?.groupType === "shop"
                         ? "ร้านค้า"
                         : "กลุ่มผู้ผลิต"}
                     </Typography>
                   </Box>
 
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>
                       ชื่อประธาน / เจ้าของร้าน
                     </Typography>
-                    <Typography sx={typeographyValueStyle}>
+                    <Typography style={typeographyValueStyle}>
                       {groupData?.agency}
                     </Typography>
                   </Box>
 
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>
                       เบอร์โทร
                     </Typography>
-                    <Typography sx={typeographyValueStyle}>
+                    <Typography style={typeographyValueStyle}>
                       {groupData?.phone}
                     </Typography>
                   </Box>
 
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>อีเมล :</Typography>
-                    <Typography sx={typeographyValueStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>อีเมล</Typography>
+                    <Typography style={typeographyValueStyle}>
                       {groupData?.email}
                     </Typography>
                   </Box>
@@ -285,7 +285,7 @@ const handleBackButtonClick = () => {
 
           <Grid item xs={12} md={12} lg={12}>
             <Paper
-              sx={{
+              style={{
                 p: 2,
                 display: "flex",
                 flexDirection: "column",
@@ -295,87 +295,110 @@ const handleBackButtonClick = () => {
               <Grid
                 container
                 spacing={2}
-                sx={{
+                style={{
                   alignSelf: "flex-center",
                   paddingBottom: "16px",
                   paddingLeft: "16px",
                 }}
               >
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>
                       บ้านเลขที่/หมู่
                     </Typography>
-                    <Typography sx={typeographyValueStyle}>
+                    <Typography style={typeographyValueStyle}>
                       {groupData?.hno}
                     </Typography>
                   </Box>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>ถนน :</Typography>
-                    <Typography sx={typeographyValueStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>ถนน</Typography>
+                    <Typography style={typeographyValueStyle}>
                       {groupData?.road}
                     </Typography>
                   </Box>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>ซอย :</Typography>
-                    <Typography sx={typeographyValueStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>ซอย</Typography>
+                    <Typography style={typeographyValueStyle}>
                       {groupData?.lane}
                     </Typography>
                   </Box>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>
                       หมู่บ้าน
                     </Typography>
-                    <Typography sx={typeographyValueStyle}>
+                    <Typography style={typeographyValueStyle}>
                       {groupData?.village}
                     </Typography>
                   </Box>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>ตำบล</Typography>
-                    <Typography sx={typeographyValueStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>ตำบล</Typography>
+                    <Typography style={typeographyValueStyle}>
                       {groupData?.subdistrict}
                     </Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>อำเภอ</Typography>
-                    <Typography sx={typeographyValueStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>อำเภอ</Typography>
+                    <Typography style={typeographyValueStyle}>
                       {groupData?.district}
                     </Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>จังหวัด</Typography>
-                    <Typography sx={typeographyValueStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>จังหวัด</Typography>
+                    <Typography style={typeographyValueStyle}>
                       {groupData?.province}
                     </Typography>
                   </Box>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>
                       รหัสไปรษณีย์
                     </Typography>
-                    <Typography sx={typeographyValueStyle}>
+                    <Typography style={typeographyValueStyle}>
                       {groupData?.zipCode}
                     </Typography>
                   </Box>
                 </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>
+                      ละติจูด
+                    </Typography>
+                    <Typography style={typeographyValueStyle}>
+                      {groupData?.lat}
+                    </Typography>
+                  </Box>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>
+                      ลองจิจูด
+                    </Typography>
+                    <Typography style={typeographyValueStyle}>
+                      {groupData?.lng}
+                    </Typography>
+                  </Box>
+                </Grid>
+
               </Grid>
             </Paper>
           </Grid>

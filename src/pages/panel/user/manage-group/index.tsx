@@ -417,7 +417,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                   </Box>
 
                   <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>อีเมล :</Typography>
+                    <Typography sx={typeographyHeaderStyle}>อีเมล</Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData?.email}
                     </Typography>
@@ -458,7 +458,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
 
                 <Grid item xs={12} md={6}>
                   <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>ถนน :</Typography>
+                    <Typography sx={typeographyHeaderStyle}>ถนน</Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData?.road}
                     </Typography>
@@ -467,7 +467,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
 
                 <Grid item xs={12} md={6}>
                   <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>ซอย :</Typography>
+                    <Typography sx={typeographyHeaderStyle}>ซอย</Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupData?.lane}
                     </Typography>
@@ -520,7 +520,33 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                     </Typography>
                   </Box>
                 </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Box sx={boxStyle}>
+                    <Typography sx={typeographyHeaderStyle}>
+                      ละติจูด
+                    </Typography>
+                    <Typography sx={typeographyValueStyle}>
+                      {groupData?.lat}
+                    </Typography>
+                  </Box>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <Box sx={boxStyle}>
+                    <Typography sx={typeographyHeaderStyle}>
+                      ลองจิจูด
+                    </Typography>
+                    <Typography sx={typeographyValueStyle}>
+                      {groupData?.lng}
+                    </Typography>
+                  </Box>
+                </Grid>
+
               </Grid>
+
+
+
             </Paper>
           </Grid>
 

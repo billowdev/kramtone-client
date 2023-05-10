@@ -195,9 +195,19 @@ const GroupItem = () => {
           <Grid container spacing={1} direction="column">
             {colorSchemes.map((colorScheme: ColorSchemePayload, index: number) => (
               <Grid item key={index}>
-                <Button onClick={() => handleColorSchemeSelect(colorScheme)}>
 
-                  {colorScheme.id} - {colorScheme.hex} - {colorScheme.nameTH} ({colorScheme.nameEN})
+                <Button onClick={() => handleColorSchemeSelect(colorScheme)}>
+                   <Box
+                    style={{
+                      display: "inline-block",
+                      width: 50,
+                      height: 50,
+                      backgroundColor: colorScheme.hex,
+                      border: "1px solid black",
+                      marginRight: 4,
+                    }}
+                  />
+                  {colorScheme.id}  {colorScheme.nameTH} ({colorScheme.nameEN})
                 </Button>
               </Grid>
             ))}
@@ -219,9 +229,9 @@ const GroupItem = () => {
 
   return (
     <MainLayout>
-      <Box sx={{ p: 5 }}>
+      <Box style={{flexGrow: 1, p: isSmallDevice ? 0:4 }}>
 
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Container maxWidth="lg" style={{ mt: 4, mb: 4 }}>
 
           <Grid container spacing={2}>
             <Grid item xs={12} md={3}>
@@ -275,47 +285,6 @@ const GroupItem = () => {
           <ColorSchemeFilterModal />
 
 
-          {/* <FormControl style={{ width: '60%', marginTop: "16px", marginBottom: "16px" }}>
-  <InputLabel id="groups-per-page-label">จำนวนรายการที่จะแสดง</InputLabel>
-  <Select
-    labelId="groups-per-page-label"
-    id="groups-per-page"
-    value={groupsPerPage}
-    label="จำนวนรายการที่จะแสดง"
-    onChange={handleGroupsPerPageChange}
-    MenuProps={{
-      // getContentAnchorEl: null,
-      anchorOrigin: {
-        vertical: 'bottom',
-        horizontal: 'center',
-      },
-      transformOrigin: {
-        vertical: 'top',
-        horizontal: 'center',
-      },
-      PaperProps: {
-        style: {
-          maxHeight: 250,
-          width: 250,
-        },
-      },
-    }}
-  >
-    {[5, 25, 50, 75, 100, -1].map((value) => (
-     <MenuItem key={value} value={value} style={{ padding: '8px 16px' }}>
-     {value === -1 ? 'All' : value}
-   </MenuItem>
-   
-    ))}
-  </Select>
-</FormControl> */}
-
-
-
-
-
-
-
           <Paper elevation={3} style={{ padding: 2 }}>
             <Grid
               container
@@ -330,9 +299,9 @@ const GroupItem = () => {
                 alignItems="center"
               >
                 {isSmallDevice ? (
-                  <GroupsIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+                  <GroupsIcon style={{ fontSize: "1.5rem", marginLeft: "8px" }} />
                 ) : (
-                  <GroupsIcon sx={{ fontSize: "2.5rem", marginLeft: "16px" }} />
+                  <GroupsIcon style={{ fontSize: "2.5rem", marginLeft: "16px" }} />
                 )}
                 <Typography variant="h5" style={{ marginLeft: "16px" }}>
                   ข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
