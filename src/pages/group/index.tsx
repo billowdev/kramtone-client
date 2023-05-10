@@ -100,7 +100,7 @@ const GroupItem = () => {
       try {
         const payload = await groupDataService.getAllGroupData({
           categoryId: selectedCategory?.id || null,
-          colorSchemeId: selectedColorScheme?.id || null,
+          // colorSchemeId: selectedColorScheme?.id || null,
         });
         setGroups(payload);
       } catch (error) {
@@ -130,12 +130,14 @@ const GroupItem = () => {
     //   );
     // }
 
-    // if (selectedColorScheme) {
-    //   filtered = filtered.filter(
-    //     (group: GroupDataPayload) =>
-    //       group.colorSchemeId === selectedColorScheme.id
-    //   );
-    // }
+
+   // filter `filtered` based on the selected color scheme
+  if (selectedColorScheme) {
+    filtered = filtered.filter((group: GroupDataPayload) =>
+    group.products && group.products.some(product => product.colorSchemeId === selectedColorScheme.id)
+  );
+  
+  }
 
     return filtered;
   }, [groups, selectedCategory, selectedColorScheme]);
@@ -229,9 +231,9 @@ const GroupItem = () => {
 
   return (
     <MainLayout>
-      <Box style={{flexGrow: 1, p: isSmallDevice ? 0:4 }}>
+      <Box sx={{flexGrow: 1, p: isSmallDevice ? 0:4 }}>
 
-        <Container maxWidth="lg" style={{ mt: 4, mb: 4 }}>
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
 
           <Grid container spacing={2}>
             <Grid item xs={12} md={3}>
@@ -401,32 +403,71 @@ const GroupItem = () => {
 
                             <Grid item xs={12} sm={3}>
                               <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                  <Typography variant="subtitle1">
-                                    โทนสีที่มีในร้าน
-                                  </Typography>
+                        {/* 
+                          <Grid item xs={12}>
+                        <Typography variant="subtitle1">
+                          โทนสีที่มีในร้าน
+                        </Typography>
+                        {group?.products && (
+                          <>
+                            {[...new Set(group.products.map((product: any) => product.colorScheme.id))]
+                              .sort(() => Math.random() - 0.5)
+                              .slice(0, 3)
+                              .map((colorSchemeId: string, index: number) => {
+                                const product = group.products.find((product: any) => product.colorScheme.id === colorSchemeId);
+                                return (
+                                  <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+                                    <div
+                                      style={{
+                                        backgroundColor: product.colorScheme.hex,
+                                        width: '25px',
+                                        height: '25px',
+                                        marginRight: '4px',
+                                      }}
+                                    ></div>
+                                    <Typography variant="subtitle1">
+                                      รหัสสี {product.colorScheme.id}
+                                    </Typography>
+                                  </div>
+                                );
+                              })}
+                          </>
+                        )}
+                      </Grid> */}
+
+<Grid item xs={12}>
+  <Typography variant="subtitle1">
+    โทนสีที่มีในร้าน
+  </Typography>
+  {group?.products && (
+    <>
+      {[...new Set<string>(group.products.map((product: any) => product.colorScheme.id))]
+        .slice(0, 3)
+        .map((colorSchemeId: string, index: number) => {
+          const product = group.products.find((product: any) => product.colorScheme.id === colorSchemeId);
+          return (
+            <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+              <div
+                style={{
+                  backgroundColor: product.colorScheme.hex,
+                  width: '25px',
+                  height: '25px',
+                  marginRight: '4px',
+                }}
+              ></div>
+              <Typography variant="subtitle1">
+                รหัสสี {product.colorScheme.id}
+              </Typography>
+            </div>
+          ) as JSX.Element; // Cast the return value to JSX.Element to satisfy TypeScript
+        })}
+    </>
+  )}
+</Grid>
 
 
-                                  {group?.colorSchemes.slice(0, 3).map((colorScheme: any, index: any) => (
-                                    <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
-                                      <div
-                                        style={{
-                                          backgroundColor: colorScheme.hex,
-                                          width: '25px',
-                                          height: '25px',
-                                          marginRight: '4px',
-                                        }}
-                                      ></div>
-                                      <Typography variant="subtitle1">
-                                        รหัสสี {colorScheme.id}
-                                      </Typography>
-                                    </div>
-                                  ))}
 
 
-
-
-                                </Grid>
                               </Grid>
                             </Grid>
 

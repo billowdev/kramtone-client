@@ -278,14 +278,60 @@ const handleBackButtonClick = () => {
                       {groupData?.email}
                     </Typography>
                   </Box>
+
+
+
+
+
                 </React.Fragment>
               </Grid>
+            
             </Paper>
+        
           </Grid>
 
+<Grid item xs= {12} md={12} lg = {12}>
+  <Paper sx={{
+                p: 2,
+                display: "flex",
+                gap: "4rem",
+                flexDirection: {
+                  xs: "column",
+                  md: "row",
+                },
+              }}>
+ <Box>
+  <Typography style={typeographyHeaderStyle}>โทนสีที่มีในร้าน</Typography>
+  {groupData?.products && (
+    <>
+      {[...new Set(groupData?.products?.map((product: any) => product.colorScheme.id) ?? [])].map((colorSchemeId: string, index: number) => {
+        const product = groupData?.products?.find((product: any) => product.colorScheme.id === colorSchemeId);
+        return (
+          <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+            <div
+              style={{
+                backgroundColor: product?.colorScheme?.hex,
+                width: '25px',
+                height: '25px',
+                marginRight: '4px',
+              }}
+            ></div>
+            <Typography variant="subtitle1">
+              รหัสสี {product?.colorScheme?.id}
+            </Typography>
+          </div>
+        );
+      })}
+    </>
+  )}
+</Box>
+
+
+    </Paper>
+  </Grid>
           <Grid item xs={12} md={12} lg={12}>
             <Paper
-              style={{
+              sx={{
                 p: 2,
                 display: "flex",
                 flexDirection: "column",

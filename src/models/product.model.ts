@@ -18,6 +18,7 @@ export type ProductArrayPayload = ProductPayload[]
 
 
 export interface ProductPayload {
+  colorSchemeId: string
 	id?: string
 	name?: string
 	desc?: string
