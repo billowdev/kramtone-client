@@ -259,7 +259,7 @@ function Layout({ children }: LayoutProps) {
                         open={open}
 
                       />
-                        <CustomMenuListItem   
+                        {/* <CustomMenuListItem   
                         href="/panel/user/manage-category"
                         useStartWithPath={true}
                         startWithPath="/panel/user/manage-category"
@@ -274,7 +274,7 @@ function Layout({ children }: LayoutProps) {
                               useStartWithPath={true} 
                               text="จัดการโทนสีที่มีในร้าน"
                               open={open}
-                            />
+                            /> */}
                     </React.Fragment>
                   )}
                         

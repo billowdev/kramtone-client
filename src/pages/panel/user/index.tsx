@@ -145,7 +145,7 @@ function GroupShopPanel({}: Props) {
                     text="จัดการสินค้า"
                   />
                 </Grid>
-                <Grid item xs={12} sm={12} md={6}>
+                {/* <Grid item xs={12} sm={12} md={6}>
                 <CustomMenuListItem
                     href="/panel/user/manage-category"
                     icon={CheckroomIcon}
@@ -161,7 +161,7 @@ function GroupShopPanel({}: Props) {
             icon={ColorLensIcon}
             text="จัดการโทนสีที่มีในร้าน"
           />
-                </Grid>
+                </Grid> */}
 
          </React.Fragment>
       )}
