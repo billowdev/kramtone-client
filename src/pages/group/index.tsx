@@ -98,10 +98,7 @@ const GroupItem = () => {
 
     async function fetchGroupData() {
       try {
-        const payload = await groupDataService.getAllGroupData({
-          categoryId: selectedCategory?.id || null,
-          // colorSchemeId: selectedColorScheme?.id || null,
-        });
+        const payload = await groupDataService.getAllGroupData();
         setGroups(payload);
       } catch (error) {
         console.error("Failed to fetch group data:", error);
@@ -109,7 +106,7 @@ const GroupItem = () => {
     }
 
     fetchData();
-  }, [selectedCategory, selectedColorScheme]);
+  }, []);
 
 
 
@@ -121,26 +118,61 @@ const GroupItem = () => {
   };
 
 
+  // const filteredGroups = useMemo(() => {
+  //   let filtered = groups;
+
+  //   if (selectedColorScheme) {
+  //     filtered = filtered.filter((group: GroupDataPayload) =>
+  //     group.products && group.products.some(product => product.colorSchemeId === selectedColorScheme.id)
+  //   );
+    
+  //   }
+
+  //     return filtered;
+  //   }, [groups, selectedCategory, selectedColorScheme]);
+
   const filteredGroups = useMemo(() => {
     let filtered = groups;
-
+  
+    if (selectedColorScheme) {
+      filtered = filtered.filter((group: GroupDataPayload) =>
+        group.products && group.products.some(product => product.colorSchemeId === selectedColorScheme.id)
+      );
+    }
+  
+    if (searchTerm) {
+      filtered = filtered.filter((group: GroupDataPayload) =>
+        group.groupName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.groupType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.agency.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.phone.includes(searchTerm) ||
+        group.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.hno.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.village.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.lane.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.road.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.subdistrict.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.district.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.province.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.zipCode.includes(searchTerm) ||
+        group.lat.includes(searchTerm) ||
+        group.lng.includes(searchTerm) ||
+        (group.products && group.products.some(product =>
+          (product.name?.toLowerCase() ?? '').includes(searchTerm.toLowerCase()) ||
+          (product.colorSchemeId?.toLowerCase() ?? '').includes(searchTerm.toLowerCase())
+        ))
+      );
+    }
+    
     // if (selectedCategory) {
-    //   filtered = filtered.filter(
-    //     (group: GroupDataPayload) => group.categoryId === selectedCategory.id
+    //   filtered = filtered.filter((group: GroupDataPayload) =>
+    //     group.products && group.products.some(product => product.category.id === selectedCategory.id)
     //   );
     // }
-
-
-   // filter `filtered` based on the selected color scheme
-  if (selectedColorScheme) {
-    filtered = filtered.filter((group: GroupDataPayload) =>
-    group.products && group.products.some(product => product.colorSchemeId === selectedColorScheme.id)
-  );
   
-  }
-
     return filtered;
-  }, [groups, selectedCategory, selectedColorScheme]);
+  }, [groups, searchTerm, selectedColorScheme]);
+
 
   const handleClearFilters = () => {
     setSelectedCategory(null);
@@ -157,12 +189,12 @@ const GroupItem = () => {
   };
 
 
-  const handleGroupsPerPageChange = (
-    event: any
-  ) => {
-    setGroupsPerPage(event.target.value as number);
-    setPage(1); // Reset page to 1 when changing the number of groups per page
-  };
+  // const handleGroupsPerPageChange = (
+  //   event: any
+  // ) => {
+  //   setGroupsPerPage(event.target.value as number);
+  //   setPage(1); // Reset page to 1 when changing the number of groups per page
+  // };
 
   // CategoryFilterModal component
   const CategoryFilterModal = () => {
@@ -246,7 +278,7 @@ const GroupItem = () => {
                 style={{ height: '100%' }}
               />
             </Grid>
-            <Grid item xs={12} md={2}>
+            {/* <Grid item xs={12} md={2}>
               <Button
                 variant="outlined"
                 onClick={handleOpenModal}
@@ -257,7 +289,7 @@ const GroupItem = () => {
                   ? selectedCategory.name
                   : "เลือกตามประเภทสินค้า"}
               </Button>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} md={2}>
               <Button
                 variant="outlined"
@@ -269,7 +301,6 @@ const GroupItem = () => {
                   ? selectedColorScheme.nameTH
                   : "เลือกตามโทนสี"}
               </Button>
-
             </Grid>
             <Grid item xs={12} md={2}>
               <Button
@@ -329,8 +360,6 @@ const GroupItem = () => {
             </Grid>
             <Divider />
             <Box p={4}>
-
-
               {filteredGroups &&
                 filteredGroups
                   .slice((page - 1) * groupsPerPage, page * groupsPerPage)
@@ -464,9 +493,6 @@ const GroupItem = () => {
     </>
   )}
 </Grid>
-
-
-
 
                               </Grid>
                             </Grid>

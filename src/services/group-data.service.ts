@@ -12,20 +12,20 @@ export const getOneGroupData = async (id: string | undefined): Promise<GroupData
 };
 
 export const getAllGroupData = async (
-	filters: Filters = {}
+	// filters: Filters = {}
   ): Promise<GroupDataArrayResponse> => {
-	const { categoryId, colorSchemeId } = filters;
-	let params = {};
+	// const { categoryId, colorSchemeId } = filters;
+	// let params = {};
   
-	if (categoryId) {
-	  params = { ...params, categoryId };
-	}
+	// if (categoryId) {
+	//   params = { ...params, categoryId };
+	// }
   
-	if (colorSchemeId) {
-	  params = { ...params, colorSchemeId };
-	}
+	// if (colorSchemeId) {
+	//   params = { ...params, colorSchemeId };
+	// }
   
-	const { data: response } = await httpClient.get(`/groups/get`, { params });
+	const { data: response } = await httpClient.get(`/groups/get`);
 	return response.payload;
   };
   

@@ -116,9 +116,6 @@ const ProductTest = ({}: Props) => {
   };
 
 
-
-
-
   const handleClearFilters = () => {
     setSelectedCategory(null);
     setSelectedColorScheme(null);
