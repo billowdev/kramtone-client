@@ -67,36 +67,44 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
 	const [activated, setActivated] = React.useState<boolean>(user?.activated!)
 
 
-
   const [showConfirmation, setShowConfirmation] = React.useState(false);
 
   const handleEdit = () => {
     setShowConfirmation(true);
   };
 
+  const [password, setPassword] = React.useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = React.useState('');
+  
   const handleConfirmEdit = async () => {
-    const updateData = {...updateValue, role: userRole, activated}
-    const updateStatus = await dispatch(updateUser(updateData))
+  // Validate password field
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  if (!passwordRegex.test(password)) {
+    toast.error('รหัสผ่านต้องประกอบด้วยตัวอักษรและตัวเลข อย่างน้อย 8 ตัว');
+    return;
+  }
 
-    if (updateStatus?.meta?.requestStatus === "fulfilled") {
-      if(updateStatus?.payload?.error?.code === 400){
-        if(updateStatus?.payload?.error?.message?.response?.message){
-          const msg = updateStatus?.payload?.error?.message?.response?.message;
-          toast.error("แก้ไขข้อมูลไม่สำเร็จ " + msg)
-        }else{
-          toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
-        }
-      } else{
+  const updateData = {...updateValue, role: userRole, activated, password};
+  const updateStatus = await dispatch(updateUser(updateData));
 
-        toast.success("แก้ไขข้อมูลสำเร็จ")
-        router.push("/panel/admin/manage/user");
+  if (updateStatus?.meta?.requestStatus === "fulfilled") {
+    if(updateStatus?.payload?.error?.code === 400){
+      if(updateStatus?.payload?.error?.message?.response?.message){
+        const msg = updateStatus?.payload?.error?.message?.response?.message;
+        toast.error("แก้ไขข้อมูลไม่สำเร็จ " + msg)
+      } else {
+        toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
       }
-    }else{
-      toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+    } else {
+      toast.success("แก้ไขข้อมูลสำเร็จ")
+      router.push("/panel/admin/manage/user");
     }
-    setOpenDialog(false);
-    setShowConfirmation(false);
-  };
+  } else {
+    toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+  }
+  setOpenDialog(false);
+  setShowConfirmation(false);
+};
 
   const handleCancelEdit = () => {
     setShowConfirmation(false);
@@ -192,6 +200,31 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
             />
             <br />
 			<Grid item>
+
+      <Field
+      style={{ marginTop: 16 }}
+      fullWidth
+      component={TextField}
+      name="password"
+      type="password"
+      label="รหัสผ่าน"
+      value={password}
+      onChange={(event) => setPassword(event.target.value)}
+      required
+    />
+
+    <Field
+      style={{ marginTop: 16 }}
+      fullWidth
+      component={TextField}
+      name="passwordConfirmation"
+      type="password"
+      label="ยืนยันรหัสผ่าน"
+      value={passwordConfirmation}
+      onChange={(event) => setPasswordConfirmation(event.target.value)}
+      required
+    />
+  
 
 			<Field
 				component={CheckboxWithLabel}
