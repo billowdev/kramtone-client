@@ -7,6 +7,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import * as authService from '@/services/auth.service';
 import { UserPayload } from '@/models/auth.model';
 import TextField from '@material-ui/core/TextField';
+import toast from "react-hot-toast";
+
 
 import { Container, Grid, Paper } from '@mui/material';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
@@ -74,7 +76,7 @@ function UserPanelProfile({
          baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API
         },
         );
-        console.log(response.payload)
+        // console.log(response.payload)
         setUserPayload(response.payload);
         setLoading(false);
       } catch (error) {
@@ -84,48 +86,31 @@ function UserPanelProfile({
     fetchData();
   }, []);
 
-  // async function handleSubmit(
-  //   // event: React.FormEvent<HTMLFormElement>
-  //   updateValue : UserPayload
-  //   ) {
-  //   // event.preventDefault();
-  //   // values: UserPayload
-  //   console.log(updateValue)
-  //   try {
-  //     const { isConfirmed } = await Swal.fire({
-  //       title: 'ยืนยันการแก้ไขข้อมูล',
-  //       text: 'คุณแน่ใจที่จะแก้ไขข้อมูลบัญชี?',
-  //       icon: 'question',
-  //       showCancelButton: true,
-  //       cancelButtonText: 'ยกเลิก',
-  //       confirmButtonText: 'ยืนยัน',
-  //     });
-  //     if (isConfirmed) {
-  //       console.log(updateValue)
-  //       const {id, name, surname, phone, email} = updateValue
-  //       // const response = await authService.updateUserById(id, { name, surname, phone, email });
-        
-  //       const { data: response } = await httpClient.patch(`/users/update/${id}`, {name, surname, phone, email}, {
-  //         baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
-  //       });
-  //       Swal.fire(
-  //         'สำเร็จ',
-  //         'แก้ไขข้อมูลบัญชีสำเร็จ',
-  //         'success'
-  //       );
-  //       console.log(response);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     Swal.fire(
-  //       'ผิดพลาด',
-  //       'อัปเดตข้อมูลผู้ใช้ไม่สำเร็จ',
-  //       'error'
-  //     );
-  //   }
-  // }
 
- 
+  const [password, setPassword] = React.useState('');
+  const [oldPassword, setOldPassword] = React.useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = React.useState('');
+  const [isPasswordValid, setIsPasswordValid] = React.useState(true);
+
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+  const validatePassword = () => {
+    if (!passwordRegex.test(password)) {
+      toast.error('รหัสผ่านต้องประกอบด้วยตัวอักษรและตัวเลข อย่างน้อย 8 ตัว');
+      return false;
+    }
+  
+    const isValid = password === passwordConfirmation;
+    setIsPasswordValid(isValid);
+  
+    if (!isValid) {
+      toast.error('The new password and confirmation do not match.');
+    }
+  
+    return isValid;
+  };
+  
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -203,6 +188,43 @@ function UserPanelProfile({
               maxLength={120}
               label="อีเมล"
             />
+
+  <Field
+        style={{ marginTop: 16 }}
+        fullWidth
+        component={TextField}
+        name="oldPassword"
+        type="password"
+        label="รหัสผ่านเดิม"
+        value={oldPassword}
+        onChange={(event) => setOldPassword(event.target.value)}
+        required
+      />
+
+  <Field
+        style={{ marginTop: 16 }}
+        fullWidth
+        component={TextField}
+        name="password"
+        type="password"
+        label="รหัสผ่าน"
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+        required
+      />
+
+      <Field
+        style={{ marginTop: 16 }}
+        fullWidth
+        component={TextField}
+        name="passwordConfirmation"
+        type="password"
+        label="ยืนยันรหัสผ่าน"
+        value={passwordConfirmation}
+        onChange={(event) => setPasswordConfirmation(event.target.value)}
+        required
+      />
+
           </CardContent>
           <CardActions>
             <Button
@@ -278,24 +300,43 @@ function UserPanelProfile({
             if (isConfirmed) {
               const {id, name, surname, phone, email} = values
               // const response = await authService.updateUserById(id, { name, surname, phone, email });
-              
-              const { data: response } = await httpClient.patch(`/users/update/${id}`, {name, surname, phone, email}, {
-                baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
-              });
-              Swal.fire(
-                'สำเร็จ',
-                'แก้ไขข้อมูลบัญชีสำเร็จ',
-                'success'
-              );
-              // console.log(response);
-            }
+              if (!validatePassword()) {
+                Swal.fire('Error', 'The new password and confirmation do not match.', 'error');
+                return;
+              }
+              if(oldPassword && password ){
+                const { data: response } = await httpClient.patch(`/users/update/${id}`, {name, surname, phone, email, oldPassword, password}, {
+                  baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+                });
+                if(response.status === 400){
+                  toast.error('ผิดพลาดขณะ แก้ไขข้อมูลโปรไฟล์')
+                }else{
+                  
+                  toast.success('แก้ไขข้อมูลโปรไฟล์สำเร็จ')
+                }
+
+                // console.log(response);
+                }
+                else{
+                const { data: response } = await httpClient.patch(`/users/update/${id}`, {name, surname, phone, email}, {
+                  baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+                });
+                if(response.status === 400){
+                  toast.error('ผิดพลาดขณะ แก้ไขข้อมูลโปรไฟล์')
+                }else{
+                  
+                  toast.success('แก้ไขข้อมูลโปรไฟล์สำเร็จ')
+                }
+                }
+              }
+             
           } catch (error) {
             console.error(error);
-            Swal.fire(
-              'ผิดพลาด',
-              'อัปเดตข้อมูลผู้ใช้ไม่สำเร็จ',
-              'error'
-            );
+            // Swal.fire(
+            //   'ผิดพลาด',
+            //   'อัปเดตข้อมูลผู้ใช้ไม่สำเร็จ',
+            //   'error'
+            // );
           }
 
           setSubmitting(false);

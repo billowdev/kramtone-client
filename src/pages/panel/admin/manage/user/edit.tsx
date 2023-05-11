@@ -50,7 +50,6 @@ import ConfirmationDialog from "@/components/ConfirmationDialog";
 
 
 
-
 type Props = {
   user?: UserPayload;
   accessToken?: string;
