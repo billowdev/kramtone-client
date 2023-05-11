@@ -470,10 +470,10 @@ const GroupItem = () => {
   </Typography>
   {group?.products && (
     <>
-      {[...new Set<string>(group.products.map((product: any) => product.colorScheme.id))]
+      {[...new Set<string>(group.products.map((product: any) => product.colorSchemeId))]
         .slice(0, 3)
         .map((colorSchemeId: string, index: number) => {
-          const product = group.products.find((product: any) => product.colorScheme.id === colorSchemeId);
+          const product = group.products.find((product: any) => product.colorSchemeId === colorSchemeId);
           return (
             <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
               <div

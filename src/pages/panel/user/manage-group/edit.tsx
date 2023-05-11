@@ -867,6 +867,53 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 </Box>
               </Grid>
 
+
+              <Grid item xs={12} md={6}>
+                <Box sx={{ marginTop: 3 }}>
+                  <FormLabel htmlFor="village" sx={{ fontWeight: "bold" }}>
+                  ลองจิจูด <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+                  <Field
+                    name="lat"
+                    value={currentLat}
+                    onChange={(e: React.ChangeEvent<any>) => {
+                      const newLat = parseFloat(e.target.value);
+                      setCurrentLat(newLat);
+                      setFieldValue("lat", newLat);
+                    }}
+                    type="text"
+                    fullWidth
+                    label="ละติจูด"
+                    component={TextField}
+                    sx={{ marginTop: 3 }}
+                  />
+                  <ErrorMessage name="village" />
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Box sx={{ marginTop: 3 }}>
+                  <FormLabel htmlFor="village" sx={{ fontWeight: "bold" }}>
+                  ลองจิจูด <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+                  <Field
+                    name="lat"
+                    value={currentLng}
+                    onChange={(e: React.ChangeEvent<any>) => {
+                      const newLng = parseFloat(e.target.value);
+                    setCurrentLng(newLng);
+                    setFieldValue("lng", newLng);
+                    }}
+                    type="text"
+                    fullWidth
+                    label="ลองจิจูด"
+                    component={TextField}
+                    sx={{ marginTop: 3 }}
+                  />
+                  <ErrorMessage name="village" />
+                </Box>
+              </Grid>
+
             </Grid>
           </Grid>
         </Grid>

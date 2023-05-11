@@ -18,7 +18,6 @@ export type ProductArrayPayload = ProductPayload[]
 
 
 export interface ProductPayload {
-  colorSchemeId: string
 	id?: string
 	name?: string
 	desc?: string
@@ -28,6 +27,7 @@ export interface ProductPayload {
 	updatedAt?: string
 	recommend?: boolean
 	publish?: boolean 
+	colorSchemeId?: string
 	category?: CategoryPayload
 	productImages?: ProductImage[]
 	colorScheme? : ColorSchemePayload

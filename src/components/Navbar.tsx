@@ -154,7 +154,13 @@ export default function Navbar() {
                         <Typography align="center">จัดการกลุ่มผู้ผลิตหรือร้านค้า</Typography>
                     </Link>
                   </Grid>
-                </> : <></>}
+                </> : <>
+                <Grid item>
+                    <Link href={'/auth/signin'} passHref style={navLinkStyle}>
+                        <Typography align="center">เข้าสู่ระบบสำหรับกลุ่มผู้ผลิต</Typography>
+                    </Link>
+                  </Grid>
+                </>}
                   
                   
 

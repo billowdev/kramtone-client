@@ -1,6 +1,6 @@
 import { Formik, Form, Field, FieldArray, FormikProps } from "formik";
 import { TextField, Button, Box, Paper } from "@mui/material";
-import { Card, CardContent, CardActions, Typography, Grid } from "@mui/material";
+import { Card, CardContent, CardActions, Typography, Grid} from "@mui/material";
 import Link from "next/link";
 import Layout from "@/components/Layouts/Layout";
 import withAuth from "@/components/withAuth";
@@ -18,6 +18,10 @@ import { CloudUpload } from "@material-ui/icons";
 import { Delete } from "@material-ui/icons";
 import { ProductPayload } from "@/models/product.model";
 import * as colorSchemeService from "@/services/color-scheme.service"
+
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+
 
 import { ColorSchemePayload } from "@/models/color-scheme.model"
 import {
@@ -86,6 +90,10 @@ const AddProductForm = ({
   const [images, setImages] = useState<any>([]);
   const [existingImages, setExistingImages] = useState<any>(product?.productImages);
   const [selectedImage, setSelectedImage] = useState(null);
+  const totalImages = existingImages.length + images.length;
+
+const disableAddImage = totalImages === 3;
+
   // Pass the product object as a prop to this component
 
   const initialValues: ProductPayload = {
@@ -125,37 +133,50 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
     newImages.splice(index, 1);
     setImages(newImages);
   };
+  const [deleteImage, setDeleteImage] = useState(null);
+  const [openDeleteConfirmationDialog, setOpenDeleteConfirmationDialog] = useState(false)
 
-  const handleDeleteExistImage = async (image: any) => {
-    const { id } = image
-    // await dispatch(deleteProductImageAction({ productId: product?.id, id, accessToken, gid }));
-    // const updatedImages = existingImages.filter((image: any) => image.id !== id);
-    // setExistingImages(updatedImages);
+  const handleOpenDeleteConfirmationDialog = ()=>{
+    setOpenDeleteConfirmationDialog(true)
+    
+  }
+  const handleCloseDeleteConfirmationDialog = ()=>{
+    setOpenDeleteConfirmationDialog(false)
+  }
+  const showDeleteConfirmDialog = () =>{
+   return (
+    <Dialog open={openDeleteConfirmationDialog}>
+		<DialogTitle>ลบรูปภาพ</DialogTitle>
+		<DialogContent>
+		  <Typography>คุณต้องการลบรูปภาพ</Typography>
+		</DialogContent>
+		<DialogActions>
+		  <Button variant="outlined" onClick={handleCloseDeleteConfirmationDialog}>
+			ยกเลิก
+		  </Button>
+		  <Button variant="contained" onClick={handleDeleteExistImage} autoFocus>
+			ลบ
+		  </Button>
+		</DialogActions>
+	  </Dialog>
+   )
+  } 
+ const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
-
-    const result = await Swal.fire({
-      title: 'ลบรูปภาพ',
-      text: 'เมื่อลบแล้วไม่สามารถกู้คืนได้!',
-      icon: 'warning',
-      showCancelButton: true,
-      cancelButtonText: 'ยกเลิก',
-      confirmButtonText: 'ยืนยันการลบ',
-      reverseButtons: true
-    });
-
-    if (result.isConfirmed) {
-      // Call the API or function to delete the image
-      // await deleteImage(id);
-      await dispatch(deleteProductImageAction({ productId: product?.id, id, accessToken, gid }));
-      Swal.fire(
-        'ลบข้อมูลเรียบร้อย!',
-        'รูปภาพของคุณถูกลบเรียบร้อยแล้ว',
-        'success'
-      );
-      const updatedImages = existingImages.filter((image: any) => image.id !== id);
-      setExistingImages(updatedImages);
-    }
-
+  const handleDeleteExistImage = async () => {
+    const { id } = deleteImage
+   
+    await dispatch(deleteProductImageAction({ productId: product?.id, id, accessToken, gid }));
+    // Swal.fire(
+    //   'ลบข้อมูลเรียบร้อย!',
+    //   'รูปภาพของคุณถูกลบเรียบร้อยแล้ว',
+    //   'success'
+    // );
+    const updatedImages = existingImages.filter((image: any) => image.id !== id);
+    setExistingImages(updatedImages);
+    setOpenDeleteConfirmationDialog(false)
+    setShowSuccessAlert(true);
+   
   };
 
 
@@ -457,7 +478,11 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
               <div key={image.id}>
                 {showPreviewImage({ image: image.image })}
               
-                <Button onClick={() => handleDeleteExistImage(image)} style={{ background: "none", border: "none", cursor: "pointer" }}>
+                <Button onClick={() => {
+                  setDeleteImage(image)
+                  handleOpenDeleteConfirmationDialog()
+                }
+                } style={{ background: "none", border: "none", cursor: "pointer" }}>
                   <Delete style={{ fontSize: 20 }} />
                 </Button>
 
@@ -483,7 +508,7 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
                   position="absolute"
                   top={0}
                   right={0}
-                  zIndex="tooltip"
+                  // zIndex="tooltip"
                   bgcolor="rgba(0, 0, 0, 0.5)"
                   borderRadius="0 0 0 5px"
                 >
@@ -496,35 +521,40 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
             </Paper>
           </Grid>
         ))}
+
+         {!disableAddImage && (
+         
         <Grid item xs={12} sm={6} md={4}>
-          <label htmlFor="images" style={{ cursor: "pointer" }}>
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="center"
-              alignItems="center"
-              border="1px dashed #00B0CD"
-              borderRadius="5px"
-              minHeight="250px"
-            >
-              <CloudUpload style={{ marginRight: 10 }} />
-              <span style={{ color: "#00B0CD" }}>เพิ่มรูปภาพ</span>
-            </Box>
-            <input
-              id="images"
-              name="images"
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={(event) => {
-                if (event.currentTarget.files) {
-                  handleImageChange(event);
-                }
-              }}
-              style={{ display: "none" }}
-            />
-          </label>
-        </Grid>
+        <label htmlFor="images" style={{ cursor: "pointer" }}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            border="1px dashed #00B0CD"
+            borderRadius="5px"
+            minHeight="250px"
+          >
+            <CloudUpload style={{ marginRight: 10 }} />
+            <span style={{ color: "#00B0CD" }}>เพิ่มรูปภาพ</span>
+          </Box>
+          <input
+            id="images"
+            name="images"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={(event) => {
+              if (event.currentTarget.files) {
+                handleImageChange(event);
+              }
+            }}
+            style={{ display: "none" }}
+          />
+        </label>
+      </Grid>
+        )}
+
       </Grid>
     </div>
   )}
@@ -613,8 +643,22 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
         onClose={handleCancelEditProduct}
         onConfirm={handleConfirmEditProduct}
       />
-
-
+  {showDeleteConfirmDialog()}
+  <Snackbar
+      open={showSuccessAlert}
+      autoHideDuration={6000}
+      onClose={() => setShowSuccessAlert(false)}
+    >
+      <MuiAlert
+        elevation={6}
+        variant="filled"
+        onClose={() => setShowSuccessAlert(false)}
+        severity="success"
+        sx={{ width: '100%' }}
+      >
+        {"ลบข้อมูลเรียบร้อย! รูปภาพของคุณถูกลบเรียบร้อยแล้ว"}
+      </MuiAlert>
+    </Snackbar>
        </Grid>
    
      </Grid>
