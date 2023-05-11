@@ -256,12 +256,14 @@ function AdminPanelManageGroup({}: Props) {
     //   headerName: "สถานะ",
     //   width: 40,
     // },
-    {
-      field: 'verified',
-      headerName: 'สถานะการยืนยันตัวตน',
-      width: 100,
-      renderCell: (params: GridCellParams<UserPayload>) => <StatusCellRenderer {...params} />,
-    },
+
+    // {
+    //   field: 'verified',
+    //   headerName: 'สถานะการยืนยันตัวตน',
+    //   width: 100,
+    //   renderCell: (params: GridCellParams<UserPayload>) => <StatusCellRenderer {...params} />,
+    // },
+    
     {
       headerName: "การดำเนินการ",
       field: ".",

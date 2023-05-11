@@ -516,7 +516,7 @@ const center: LatLngExpression = [
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12} md={12} lg={6}>
                 <FormLabel htmlFor="logo" style={{ fontWeight: "bold" }}>
-                  ภาพโลโก้ ขนาด 250 x 250 px
+                  ภาพโลโก้ ขนาดแนะนำ 250 x 250 px
                 </FormLabel>
 
                 <Box style={{ padding: isSmallDevice ? 0 : 4 }}>
@@ -555,7 +555,7 @@ const center: LatLngExpression = [
                 </Box>
 
                 <FormLabel htmlFor="banner" style={{ fontWeight: "bold" }}>
-                  ภาพแบนเนอร์ ขนาด 1200 x 160 px
+                  ภาพแบนเนอร์ ขนาดแนะนำ 1200 x 160 px
                 </FormLabel>
                 <Box style={{ padding: isSmallDevice ? 0 : 4 }}>
                   <div>{showPreviewBanner(values)}</div>
@@ -929,6 +929,53 @@ const center: LatLngExpression = [
                 </Box>
               </Grid>
 
+              <Grid item xs={12} md={6}>
+                <Box sx={{ marginTop: 3 }}>
+                  <FormLabel htmlFor="lat" sx={{ fontWeight: "bold" }}>
+                  ลองจิจูด <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+                  <Field
+                    name="lat"
+                    value={currentLat}
+                    onChange={(e: React.ChangeEvent<any>) => {
+                      const newLat = parseFloat(e.target.value);
+                      setCurrentLat(newLat);
+                      setFieldValue("lat", newLat);
+                    }}
+                    type="text"
+                    fullWidth
+                    label="ละติจูด"
+                    component={TextField}
+                    sx={{ marginTop: 3 }}
+                  />
+                  <ErrorMessage name="lat" />
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Box sx={{ marginTop: 3 }}>
+                  <FormLabel htmlFor="lng" sx={{ fontWeight: "bold" }}>
+                  ลองจิจูด <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+                  <Field
+                    name="lng"
+                    value={currentLng}
+                    onChange={(e: React.ChangeEvent<any>) => {
+                      const newLng = parseFloat(e.target.value);
+                    setCurrentLng(newLng);
+                    setFieldValue("lng", newLng);
+                    }}
+                    type="text"
+                    fullWidth
+                    label="ลองจิจูด"
+                    component={TextField}
+                    sx={{ marginTop: 3 }}
+                  />
+                  <ErrorMessage name="lng" />
+                </Box>
+              </Grid>
+
+
             </Grid>
           </Grid>
         </Grid>
@@ -1072,8 +1119,8 @@ const center: LatLngExpression = [
       </Container>
       {/* {showDialog()} */}
 	  <ConfirmationDialog
-        title="ยืนยันการแก้ไขบัญชีผู้ใช้"
-        message="คุณต้องการแก้ไขบัญชีผู้ใช้ใช่หรือไม่ ?"
+        title="ยืนยันการแก้ไขข้อมูลกลุ่ม"
+        message="คุณต้องการแก้ไขข้อมูลกลุ่มใช่หรือไม่ ?"
         open={showConfirmation}
         onClose={handleCancelEdit}
         onConfirm={handleConfirmEdit}

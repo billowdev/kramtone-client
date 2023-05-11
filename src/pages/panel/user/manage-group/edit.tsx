@@ -870,7 +870,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
               <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
-                  <FormLabel htmlFor="village" sx={{ fontWeight: "bold" }}>
+                  <FormLabel htmlFor="lat" sx={{ fontWeight: "bold" }}>
                   ลองจิจูด <span style={{ color: "red" }}>*</span>
                   </FormLabel>
                   <Field
@@ -887,17 +887,17 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     component={TextField}
                     sx={{ marginTop: 3 }}
                   />
-                  <ErrorMessage name="village" />
+                  <ErrorMessage name="lat" />
                 </Box>
               </Grid>
 
               <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
-                  <FormLabel htmlFor="village" sx={{ fontWeight: "bold" }}>
+                  <FormLabel htmlFor="lng" sx={{ fontWeight: "bold" }}>
                   ลองจิจูด <span style={{ color: "red" }}>*</span>
                   </FormLabel>
                   <Field
-                    name="lat"
+                    name="lng"
                     value={currentLng}
                     onChange={(e: React.ChangeEvent<any>) => {
                       const newLng = parseFloat(e.target.value);
@@ -910,7 +910,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     component={TextField}
                     sx={{ marginTop: 3 }}
                   />
-                  <ErrorMessage name="village" />
+                  <ErrorMessage name="lng" />
                 </Box>
               </Grid>
 
