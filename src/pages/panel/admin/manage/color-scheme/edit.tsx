@@ -2,7 +2,7 @@ import Layout from "@/components/Layouts/Layout";
 import withAuth from "@/components/withAuth";
 import { CategoryPayload } from "@/models/category.model";
 // import { updateCategory } from "@/services/category.service";
-import { updateCategoryAction } from "@/store/slices/category.slice";
+import { updateColorScheme } from "@/store/slices/color-scheme.slice";
 import { categoryImageURL } from "@/common/utils/utils";
 import {
   Card,
@@ -22,27 +22,53 @@ import httpClient from "@/common/utils/httpClient.util";
 import { Switch, FormControlLabel, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
 import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
-
-
+import {ColorSchemePayload} from "@/models/color-scheme.model"
+import ConfirmationDialog from "@/components/ConfirmationDialog"
 
 type Props = {
-  category?: CategoryPayload;
+  colorScheme?: ColorSchemePayload;
   accessToken?: string;
 };
 
-const AdminPanelEditColorScheme = ({ category, accessToken}: Props) => {
+const AdminPanelEditColorScheme = ({ colorScheme, accessToken}: Props) => {
   const router = useRouter();
-  const [openDialog, setOpenDialog] = React.useState<boolean>(false);
-  const [updateValue, setUpdateValue] = React.useState<CategoryPayload>(category!);
+  const [updateValue, setUpdateValue] = React.useState<ColorSchemePayload>(colorScheme!);
   const dispatch = useAppDispatch();
-  const [imageFile, setImageFile] = React.useState<any | Blob>("")
-  const [imageObj, setImageObj] = React.useState<URL | string>("")
+
+
+
+  const [showConfirmation, setShowConfirmation] = React.useState(false);
+
+  const handleEdit =() => {
+    setShowConfirmation(true);
+  }
+ 
+  const handleConfirmEdit = async () => {
+    if (updateValue) {
+
+    const response = await dispatch(updateColorScheme({colorSchemeId:colorScheme.id,updateValue, accessToken}))
+
+      if (response.meta.requestStatus === "fulfilled") {
+        toast.success("แก้ไขข้อมูลสำเร็จ")
+        router.push("/panel/admin/manage/color-scheme");        // router.push("/panel/user/manage-product");
+      }else{
+        console.log(response)
+       toast.error("เพิ่มข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+      }
+    }
+
+    setShowConfirmation(false);
+  };
+  
+  const handleCancelEdit= () => {
+    setShowConfirmation(false);
+  };
 
   const showForm = ({
     values,
     setFieldValue,
     isValid,
-  }: FormikProps<CategoryPayload>) => {
+  }: FormikProps<ColorSchemePayload>) => {
     return (
       <Form>
         <Card>
@@ -55,56 +81,45 @@ const AdminPanelEditColorScheme = ({ category, accessToken}: Props) => {
               style={{ marginTop: 16 }}
               fullWidth
               component={TextField}
-              name="name"
+              name="id"
               type="text"
-              label="ชื่อโทนสีครามธรรมชาติ"
+              label="รหัสประจำสี"
+            />
+            <br />
+
+            <Field
+              style={{ marginTop: 16 }}
+              fullWidth
+              component={TextField}
+              name="nameTH"
+              type="text"
+              label="ชื่อสีภาษาไทย"
+            />
+            <br />
+            
+            <Field
+              style={{ marginTop: 16 }}
+              fullWidth
+              component={TextField}
+              name="nameEN"
+              type="text"
+              label="ชื่อสีภาษาอังกฤษ"
             />
             <br />
             <Field
               style={{ marginTop: 16 }}
               fullWidth
               component={TextField}
-              name="desc"
-              type="string"
-              label="รายละเอียดโทนสีครามธรรมชาติ"
+              name="hex"
+              type="text"
+              label="HEX CODE"
             />
-
-            <div style={{ margin: 16 }}>{showPreviewImage(values)}</div>
-
-            <div>
-              <Image
-                objectFit="cover"
-                alt="category image"
-                src="/static/img/default.png"
-                width={25}
-                height={20}
-              />
-              <span style={{ color: "#00B0CD", marginLeft: 10 }}>
-               เพิ่มรูปภาพ
-              </span>
-
-              <input
-                type="file"
-                onChange={(e: React.ChangeEvent<any>) => {
-                  e.preventDefault();
-                  setFieldValue("image_file", e.target.files[0]); // for upload
-                  setFieldValue(
-                    "image_obj",
-                    URL.createObjectURL(e.target.files[0])
-                  ); // for preview image
-                }}
-                name="image"
-                click-type="type1"
-                multiple
-                accept="image/*"
-                id="files"
-                style={{ padding: "20px 0 0 20px" }}
-              />
-            </div>
+            <br />
+           
           </CardContent>
           <CardActions>
             <Button
-              disabled={!isValid}
+              // disabled={!isValid}
               fullWidth
               variant="contained"
               color="primary"
@@ -126,107 +141,37 @@ const AdminPanelEditColorScheme = ({ category, accessToken}: Props) => {
     );
   };
 
-  const handleEditConfirm = async () => {
-    if (category) {
-
-      let data = new FormData();
-
-      if (imageFile!="") {
-        data.append("image", imageFile);
-      }
-      // data.append("id", String(updateValue.id));
-      data.append("name", String(updateValue.name));
-      data.append("desc", String(updateValue.desc));
-   
-
-      const updateStatus = await dispatch(updateCategoryAction({id:updateValue.id, body:data, accessToken}))
-
-      if (updateStatus.meta.requestStatus === "fulfilled") {
-        toast.success("แก้ไขข้อมูลโทนสีครามธรรมชาติสำเร็จ")
-        router.push("/panel/admin/manage/category");
-      }else{
-        toast.error("แก้ไขข้อมูลโทนสีครามธรรมชาติไม่สำเร็จ โปรดลองอีกครั้ง")
-      }
-      setOpenDialog(false);
-    }
-  };
-
-  const showDialog = () => {
-    if (category === null) {
-      return;
-    }
-
-    return (
-      <Dialog
-        open={openDialog}
-        keepMounted
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">
-          <br />
-          แก้ไขข้อมูล? : {category?.name}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-          คุณต้องการแก้ไขข้อมูลใช่หรือไม่ ?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)} color="info">
-            ยกเลิก
-          </Button>
-          <Button onClick={handleEditConfirm} color="primary">
-            แก้ไข
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
-  };
-
-  const showPreviewImage = (values: any) => {
-    if (values?.image_obj) {
-      return (
-        <Image
-          // objectFit="contain"
-          alt="รูปภาพโทนสีครามธรรมชาติ"
-          src={values?.image_obj}
-          width={250}
-          height={250}
-        />
-      );
-    } else if (values?.image) {
-      return (
-        <Image
-          // objectFit="contain"
-          alt="รูปภาพโทนสีครามธรรมชาติ"
-          src={categoryImageURL(values?.image)}
-          width={250}
-          height={250}
-        />
-      );
-    }
-  };
 
   return (
     <Layout>
       <Formik
         validate={(values) => {
           let errors: any = {};
-          if (!values.name) errors.name = "กรุณากรอกชื่อโทนสีครามธรรมชาติ";
+          if (!values.nameTH) errors.nameTH = "กรุณากรอกชื่อโทนสีครามธรรมชาติ";
+          if (!values.nameEN) errors.nameEN = "กรุณากรอกชื่อโทนสีครามธรรมชาติ";
+          if (!values.hex) errors.hex = "กรุณากรอกชื่อโทนสีครามธรรมชาติ";
+          if (!values.id) errors.id = "กรุณากรอกชื่อโทนสีครามธรรมชาติ";
+
           return errors;
         }}
-        initialValues={category!}
+        initialValues={colorScheme!}
         onSubmit={async (values, { setSubmitting }) => {
           setUpdateValue(values)
-          setImageFile(values.image_file)
-          setOpenDialog(true);
+          handleEdit()
           setSubmitting(false);
         }}
       >
         {(props) => showForm(props)}
       </Formik>
-      {showDialog()}
+
+      <ConfirmationDialog
+        title="ยืนยันการแก้ไขข้อมูล"
+        message="คุณต้องการแก้ไขข้อมูลใช่หรือไม่ ?"
+        open={showConfirmation}
+        onClose={handleCancelEdit}
+        onConfirm={handleConfirmEdit}
+      />
+
     </Layout>
   );
 };
@@ -240,18 +185,18 @@ export const getServerSideProps: GetServerSideProps = async (
   
   if (id) {
     const accessToken = context.req.cookies['access_token']
-    const { data: response } = await httpClient.get(`/categories/${id}`, {
-	headers: {
-			Authorization: `Bearer ${accessToken}`
-		},
-		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
+    const { data: response } = await httpClient.get(`/colorschemes/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      },
+      baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
     });
 
     
-    const category = response.payload
+    const colorScheme = response.payload
     return {
       props: {
-        category,
+        colorScheme,
         accessToken
       },
     };

@@ -199,13 +199,11 @@ function AdminPanelManageUser({}: Props) {
         <Typography style={{fontWeight: 'bold'}}>สถานะการใช้งาน:</Typography>
         <Typography>&nbsp;{`${selectedUser?.activated ? 'เปิดใช้งาน' : 'ปิดใช้งาน'}`}</Typography>
       </Box>
-    
       {selectedUser?.group && (
           <Box display="flex" alignItems="center">
           <Typography style={{fontWeight: 'bold'}}>กลุ่ม:</Typography>
           <Typography>&nbsp;{selectedUser?.group?.groupName}</Typography>
         </Box>
-
       )}
         {selectedUser?.group && (
           <Box display="flex" alignItems="center">

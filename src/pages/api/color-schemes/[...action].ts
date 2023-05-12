@@ -12,7 +12,7 @@ import * as authService from "@/services/auth.service"
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.query.action) {
 		const requestAction = req.query.action[0]
-	
+
 		if (req.method === HTTP_METHOD_GET && requestAction == "getAll") {
 			return getAll(req, res);
 		}
@@ -151,11 +151,10 @@ async function updateColorScheme(req: NextApiRequest, res: NextApiResponse<any>)
 		if (!accessToken) {
 			return res.status(401).json({ message: 'Unauthorized' });
 		}
-
 		const updateBody = req.body
 
 		if (req.query) {
-			const { data } = await httpClient.patch(`/colorschemes/${req.query['id']}`, updateBody, {
+			const { data } = await httpClient.patch(`/colorschemes/${req.query['action'][0]}`, updateBody, {
 				headers: {
 					'Authorization': `Bearer ${accessToken}`,
 				},

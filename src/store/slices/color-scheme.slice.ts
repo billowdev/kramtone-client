@@ -53,12 +53,30 @@ export const deleteColorScheme = createAsyncThunk(
 	}
 );
 
-export const updateColorSchemeAction = createAsyncThunk(
+
+// export const updateColorScheme = createAsyncThunk(
+// 	"COLOR_SCHEME/UPDATE",
+// 	async (data: any) => {
+// 		const { data: response } = await httpClient.delete(`/color-schemes/${data.updateValue.id}`, {
+// 			baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+// 		});
+// 		return response.payload;
+// 		// store.dispatch(getOneCategoryAction(data.gid!));
+// 	}
+// );
+
+export const updateColorScheme = createAsyncThunk(
 	"COLOR_SCHEME/UPDATE",
 	async (data: any) => {
-		const { data: response } = await httpClient.patch(`/color-schemes/${data.id}`, {
+		const { data: response } = await httpClient.patch(`/color-schemes/${data.colorSchemeId}`, data.updateValue,{
 			baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
+			headers: {
+				'Authorization': `Bearer ${data.accessToken}`,
+			},
 		});
+		// console.log("========= slice =================")
+		// console.log(response)
+		return response.payload
 	}
 );
 
