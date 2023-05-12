@@ -303,7 +303,6 @@ function AdminPanelManageGroup({}: Props) {
     },
   ];
 
-  
   return (
 	<Layout>
      	<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -311,9 +310,9 @@ function AdminPanelManageGroup({}: Props) {
                 <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px'}}>
                 {isSmallDevice ? (
-                    <AccountBoxIcon sx={{fontSize:'1.5rem', marginLeft:'8px'}} />
+                    <GroupsIcon sx={{fontSize:'1.5rem', marginLeft:'8px'}} />
                   ) : (
-                    <AccountBoxIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
+                    <GroupsIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
                   )}
 
                  
@@ -323,13 +322,13 @@ function AdminPanelManageGroup({}: Props) {
                    sx={{
                       fontWeight: 'bold',  alignSelf:'center',
                   }}
-                    > หน้าจัดการข้อมูลบัญชีผู้ใช้</Typography>
+                    > หน้าจัดการข้อมูลกลุ่ม</Typography>
                   ) : (
                     <Typography
                     variant='h5' sx={{
                       fontWeight: 'bold',  alignSelf:'center',
                   }}
-                    > จัดการข้อมูลบัญชีผู้ใช้</Typography>
+                    > จัดการข้อมูลกลุ่ม</Typography>
                   )}
                 </React.Fragment>
                 </Paper>

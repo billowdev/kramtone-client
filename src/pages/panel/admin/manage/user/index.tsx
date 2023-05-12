@@ -178,21 +178,40 @@ function AdminPanelManageUser({}: Props) {
         </DialogTitle>
         <DialogContent>
         <div>
-      <Typography>{`ชื่อผู้ใช้: ${selectedUser?.username}`}</Typography>
-      <Typography>{`ชื่อ-นามสกุล: ${name} ${selectedUser?.surname}`}</Typography>
-      {selectedUser?.email && <Typography>{`อีเมล: ${selectedUser?.email}`}</Typography>}
-      {selectedUser?.phone && <Typography>{`เบอร์โทรศัพท์: ${selectedUser?.phone}`}</Typography>}
-      <Typography>{`สถานะการใช้งาน: ${selectedUser?.activated ? 'เปิดใช้งาน' : 'ปิดใช้งาน'}`}</Typography>
-      {/* <Typography>{`สถานะการลบ: ${removed ? 'ลบแล้ว' : 'ยังไม่ลบ'}`}</Typography> */}
+        <Box display="flex" alignItems="center">
+        <Typography style={{fontWeight: 'bold'}}>ชื่อผู้ใช้:</Typography>
+        <Typography>&nbsp;{selectedUser?.username}</Typography>
+      </Box>
+
+      <Box display="flex" alignItems="center">
+        <Typography style={{fontWeight: 'bold'}}>ชื่อ-นามสกุล:</Typography>
+        <Typography>&nbsp;{` ${name} ${selectedUser?.surname}`}</Typography>
+      </Box>
+      <Box display="flex" alignItems="center">
+        <Typography style={{fontWeight: 'bold'}}>อีเมล:</Typography>
+        <Typography>&nbsp;{`${selectedUser?.email}`}</Typography>
+      </Box>
+      <Box display="flex" alignItems="center">
+        <Typography style={{fontWeight: 'bold'}}>เบอร์โทรศัพท์:</Typography>
+        <Typography>&nbsp;{`${selectedUser?.phone}`}</Typography>
+      </Box>
+      <Box display="flex" alignItems="center">
+        <Typography style={{fontWeight: 'bold'}}>สถานะการใช้งาน:</Typography>
+        <Typography>&nbsp;{`${selectedUser?.activated ? 'เปิดใช้งาน' : 'ปิดใช้งาน'}`}</Typography>
+      </Box>
+    
       {selectedUser?.group && (
-        <Typography>
-          {`กลุ่ม: ${selectedUser?.group?.groupName} (${selectedUser?.group?.groupType === "producer" ? "กลุ่มผู้ผลิต":"ร้านค้า"})`}
-        </Typography>
+          <Box display="flex" alignItems="center">
+          <Typography style={{fontWeight: 'bold'}}>กลุ่ม:</Typography>
+          <Typography>&nbsp;{selectedUser?.group?.groupName}</Typography>
+        </Box>
+
       )}
         {selectedUser?.group && (
-        <Typography>
-          {`ประเภทกลุ่ม ${selectedUser?.group?.groupType === "producer" ? "กลุ่มผู้ผลิต":"ร้านค้า"}`}
-        </Typography>
+          <Box display="flex" alignItems="center">
+          <Typography style={{fontWeight: 'bold'}}>ประเภทกลุ่ม:</Typography>
+          <Typography>&nbsp;{selectedUser?.group?.groupType === "producer" ? "กลุ่มผู้ผลิต":"ร้านค้า"}</Typography>
+        </Box>
       )}
     </div>
         </DialogContent>

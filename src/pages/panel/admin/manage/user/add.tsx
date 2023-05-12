@@ -137,7 +137,7 @@ const AdminPanelEditUser = ({
 			<Card>
 			  <CardContent sx={{ padding: 4 }}>
 				<Typography gutterBottom variant="h3">
-				  เพิ่มข้อมูลสมาชิก
+				  เพิ่มข้อมูลบัญชีผู้ใช้
 				</Typography>
 	  
 				<Field

@@ -120,7 +120,7 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
 			<Card>
 			  <CardContent sx={{ padding: 4 }}>
 				<Typography gutterBottom variant="h3">
-				  แก้ไขข้อมูลสมาชิก
+				  แก้ไขข้อมูลบัญชีผู้ใช้
 				</Typography>
 	  
 				<Field

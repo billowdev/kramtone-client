@@ -246,13 +246,13 @@ function AdminPanelManageColorScheme({}: Props) {
                    sx={{
                       fontWeight: 'bold',  alignSelf:'center',
                   }}
-                    > หน้าจัดการข้อมูลโทนสี<br />ครามธรรมชาติ</Typography>
+                    > จัดการข้อมูลโทนสี<br />ครามธรรมชาติ</Typography>
                   ) : (
                     <Typography
                     variant='h5' sx={{
                       fontWeight: 'bold',  alignSelf:'center',
                   }}
-                    > จัดการโทนสีที่มีในร้าน</Typography>
+                    > จัดการข้อมูลโทนสี</Typography>
                   )}
                 </Fragment>
                 </Paper>
