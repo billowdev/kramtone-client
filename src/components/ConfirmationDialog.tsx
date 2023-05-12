@@ -30,11 +30,11 @@ import {
 		  <Typography>{message}</Typography>
 		</DialogContent>
 		<DialogActions>
-		  <Button variant="outlined" onClick={onClose}>
-			ยกเลิก
-		  </Button>
 		  <Button variant="contained" onClick={onConfirm} autoFocus>
 			ยืนยัน
+		  </Button>
+		  <Button variant="outlined" onClick={onClose}>
+			ยกเลิก
 		  </Button>
 		</DialogActions>
 	  </Dialog>

@@ -105,18 +105,18 @@ const useStyles = makeStyles({
   },
 });
 
-const CustomToolbar: React.FunctionComponent<{
-  setFilterButtonEl: React.Dispatch<
-    React.SetStateAction<HTMLButtonElement | null>
+const CustomToolbar: FunctionComponent<{
+  setFilterButtonEl: Dispatch<
+    SetStateAction<HTMLButtonElement | null>
   >;
 }> = ({ setFilterButtonEl }) => (
   <GridToolbarContainer>
     <GridToolbarColumnsButton />
     <GridToolbarDensitySelector />
-
     <GridToolbarFilterButton ref={setFilterButtonEl} />
     <Link href="/panel/user/manage-product/add" passHref>
-      <Fab
+      <Button
+        variant="contained"
         color="primary"
         aria-label="add"
         sx={{
@@ -126,7 +126,7 @@ const CustomToolbar: React.FunctionComponent<{
         }}
       >
         <AddIcon />
-      </Fab>
+      </Button>
     </Link>
   </GridToolbarContainer>
 );

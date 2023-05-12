@@ -376,10 +376,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleEditConfirm} color="primary">
+          <Button onClick={handleEditConfirm} variant="contained" color="primary">
             ยืนยัน
           </Button>
-          <Button onClick={() => setOpenDialog(false)} color="info">
+          <Button onClick={() => setOpenDialog(false)}  variant="outlined" color="info">
             ยกเลิก
           </Button>
         </DialogActions>

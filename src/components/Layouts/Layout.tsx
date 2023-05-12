@@ -194,11 +194,11 @@ function Layout({ children }: LayoutProps) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)} color="info">
-            ยกเลิก
-          </Button>
-          <Button onClick={handleLogout} color="primary">
+          <Button variant="contained" onClick={handleLogout} color="primary">
             ออกจากระบบ
+          </Button>
+          <Button variant="outlined" onClick={() => setOpenDialog(false)} color="info">
+            ยกเลิก
           </Button>
         </DialogActions>
       </Dialog>
