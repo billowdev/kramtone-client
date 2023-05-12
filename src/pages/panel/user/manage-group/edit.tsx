@@ -107,6 +107,7 @@ interface PageProps {
   groupData?: GroupDataPayload;
   accessToken?: string;
   provinces?: ProvinceType[] | undefined;
+  sakonNakhonProvinces?: ProvinceType
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -167,6 +168,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   groupData,
   accessToken,
   provinces,
+  sakonNakhonProvinces
 }) => {
   const theme = useTheme();
   const classes = useStyles();
@@ -224,7 +226,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   const [provinceState, setProvinceState] = React.useState<string>(
     groupData?.province ?? ""
   );
-
+    console.log()
   const [districtState, setDistrictState] = React.useState<string>(
     groupData?.district ?? ""
   );
@@ -247,6 +249,15 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   const [districts, setDistrict] = React.useState<DistrictType[]>([]);
   const [subdistricts, setSubDistrict] = React.useState<SubdistrictType[]>([]);
 
+  React.useEffect(() => {
+    const fetchDistrict = async () => {
+      const districtData = await thaiAddressService.getDistricts(sakonNakhonProvinces[0].id);
+      setDistrict(districtData);
+    }
+    fetchDistrict();
+  }, [sakonNakhonProvinces]);
+  
+  
   const [selectedProvince, setSelectedProvince] =
     React.useState<ProvinceType | null>(null);
 
@@ -264,7 +275,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     setSelectedProvince(selected!);
     setFieldValue("province", provinceName);
     const districtData = await thaiAddressService.getDistricts(
-      provinceId.toString()
+      sakonNakhonProvinces[0].id
     );
     setDistrict(districtData);
   };
@@ -657,8 +668,34 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
               <Divider style={{ width: "50%", margin: 8 }} />
             </Box>
 
+
             <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
+            {console.log(sakonNakhonProvinces[0])}
+            <Grid item xs={12} md={6}>
+                <Box sx={{ marginTop: 3 }}>
+                  <FormLabel htmlFor="hno" style={{ fontWeight: "bold" }}>
+                    จังหวัด <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+                  <Field
+                    name="hno"
+                    type="text"
+                    fullWidth
+                    readonly
+                    disabled
+                    inputProps={{ maxLength: 5 }}
+                    value={sakonNakhonProvinces[0].nameTH}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleInputChange(e, 'province')
+                    }}
+                    label="จังหวัด"
+                    component={TextField}
+                    sx={{ marginTop: 3 }}
+                  />
+                  <ErrorMessage name="hno" />
+                </Box>
+              </Grid>
+
+              {/* <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormControl fullWidth>
                     <FormLabel htmlFor="province" sx={{ fontWeight: "bold" }}>
@@ -686,7 +723,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     <ErrorMessage name="province" />
                   </FormControl>
                 </Box>
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
@@ -1059,11 +1096,14 @@ export const getServerSideProps: GetServerSideProps = async (
     const groupData = await groupDataService.getOneGroupData(gid);
     const accessToken = context.req.cookies["access_token"];
     const provinces = await thaiAddressService.getProvinces();
+    let sakonNakhonProvinces = provinces.filter(province => province.id === 35);
+    // console.log(provinces)
     return {
       props: {
         groupData,
         accessToken,
         provinces,
+        sakonNakhonProvinces
       },
     };
   } else {

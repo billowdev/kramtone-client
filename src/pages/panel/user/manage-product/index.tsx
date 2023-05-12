@@ -105,9 +105,9 @@ const useStyles = makeStyles({
   },
 });
 
-const CustomToolbar: FunctionComponent<{
-  setFilterButtonEl: Dispatch<
-    SetStateAction<HTMLButtonElement | null>
+const CustomToolbar: React.FunctionComponent<{
+  setFilterButtonEl: React.Dispatch<
+  React.SetStateAction<HTMLButtonElement | null>
   >;
 }> = ({ setFilterButtonEl }) => (
   <GridToolbarContainer>
