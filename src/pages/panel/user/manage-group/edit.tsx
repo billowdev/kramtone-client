@@ -670,7 +670,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
 
             <Grid container spacing={2}>
-            {console.log(sakonNakhonProvinces[0])}
+    
             <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="hno" style={{ fontWeight: "bold" }}>
