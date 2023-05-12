@@ -125,7 +125,7 @@ const GroupItem = () => {
   //     filtered = filtered.filter((group: GroupDataPayload) =>
   //     group.products && group.products.some(product => product.colorSchemeId === selectedColorScheme.id)
   //   );
-    
+
   //   }
 
   //     return filtered;
@@ -133,13 +133,13 @@ const GroupItem = () => {
 
   const filteredGroups = useMemo(() => {
     let filtered = groups;
-  
+
     if (selectedColorScheme) {
       filtered = filtered.filter((group: GroupDataPayload) =>
         group.products && group.products.some(product => product.colorSchemeId === selectedColorScheme.id)
       );
     }
-  
+
     if (searchTerm) {
       filtered = filtered.filter((group: GroupDataPayload) =>
         group.groupName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -163,13 +163,13 @@ const GroupItem = () => {
         ))
       );
     }
-    
+
     // if (selectedCategory) {
     //   filtered = filtered.filter((group: GroupDataPayload) =>
     //     group.products && group.products.some(product => product.category.id === selectedCategory.id)
     //   );
     // }
-  
+
     return filtered;
   }, [groups, searchTerm, selectedColorScheme]);
 
@@ -231,7 +231,7 @@ const GroupItem = () => {
               <Grid item key={index}>
 
                 <Button onClick={() => handleColorSchemeSelect(colorScheme)}>
-                   <Box
+                  <Box
                     style={{
                       display: "inline-block",
                       width: 50,
@@ -263,7 +263,7 @@ const GroupItem = () => {
 
   return (
     <MainLayout>
-      <Box sx={{flexGrow: 1, p: isSmallDevice ? 0:4 }}>
+      <Box sx={{ flexGrow: 1, p: isSmallDevice ? 0 : 4 }}>
 
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
 
@@ -432,7 +432,7 @@ const GroupItem = () => {
 
                             <Grid item xs={12} sm={3}>
                               <Grid container spacing={2}>
-                        {/* 
+                                {/* 
                           <Grid item xs={12}>
                         <Typography variant="subtitle1">
                           โทนสีที่มีในร้าน
@@ -464,35 +464,35 @@ const GroupItem = () => {
                         )}
                       </Grid> */}
 
-<Grid item xs={12}>
-  <Typography variant="subtitle1">
-    โทนสีที่มีในร้าน
-  </Typography>
-  {group?.products && (
-    <>
-      {[...new Set<string>(group.products.map((product: any) => product.colorSchemeId))]
-        .slice(0, 3)
-        .map((colorSchemeId: string, index: number) => {
-          const product = group.products.find((product: any) => product.colorSchemeId === colorSchemeId);
-          return (
-            <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
-              <div
-                style={{
-                  backgroundColor: product.colorScheme.hex,
-                  width: '25px',
-                  height: '25px',
-                  marginRight: '4px',
-                }}
-              ></div>
-              <Typography variant="subtitle1">
-                รหัสสี {product.colorScheme.id}
-              </Typography>
-            </div>
-          ) as JSX.Element; // Cast the return value to JSX.Element to satisfy TypeScript
-        })}
-    </>
-  )}
-</Grid>
+                                <Grid item xs={12}>
+                                  <Typography variant="subtitle1">
+                                    โทนสีที่มีในร้าน
+                                  </Typography>
+                                  {group?.products && (
+                                    <>
+                                      {[...new Set<string>(group.products.map((product: any) => product.colorSchemeId))]
+                                        .slice(0, 3)
+                                        .map((colorSchemeId: string, index: number) => {
+                                          const product = group.products.find((product: any) => product.colorSchemeId === colorSchemeId);
+                                          return (
+                                            <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+                                              <div
+                                                style={{
+                                                  backgroundColor: product.colorScheme.hex,
+                                                  width: '25px',
+                                                  height: '25px',
+                                                  marginRight: '4px',
+                                                }}
+                                              ></div>
+                                              <Typography variant="subtitle1">
+                                                รหัสสี {product.colorScheme.id}
+                                              </Typography>
+                                            </div>
+                                          ) as JSX.Element; // Cast the return value to JSX.Element to satisfy TypeScript
+                                        })}
+                                    </>
+                                  )}
+                                </Grid>
 
                               </Grid>
                             </Grid>

@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
 
 import {
+  Divider,
   Container,
   Box,
   Button,
@@ -306,70 +307,79 @@ function UserPanelProduct({ product }: Props) {
             </Grid>
           </Grid>
 
+
           <Grid item xs={12} sm={8}>
-            <Typography variant="h4" className={classes.price}>
-              ฿{product && product?.price}
-            </Typography>
-            <Box display="flex" alignItems="center" my={1}>
-              <VisibilityIcon />
-              <Typography variant="body2">
-                {product?.reloadCount?.toLocaleString()}
-              </Typography>
-            </Box>
-            <Typography gutterBottom variant="h6" component="div">
-              ชื่อสินค้า : {product?.name}
-            </Typography>
-            <Grid container alignItems="center">
-              <Grid item>
-                <Box
-                  sx={{
-                    width: 50,
-                    height: 50,
-                    backgroundColor: product?.colorScheme?.hex,
-                    borderRadius: "5%",
-                    border: "1px solid black",
-                    marginRight: 2,
-                  }}
-                />
-              </Grid>
-              <Grid item>
-                <Typography
-                  gutterBottom
-                  component="div"
-                  className={classes.colorScheme}
-                >
-                  สี{product?.colorScheme?.nameTH}
-                </Typography>
-              </Grid>
-              <Grid item>
-                <StyledTypography gutterBottom className={classes.colorScheme}>
-                  {product?.colorScheme?.hex}
-                </StyledTypography>
-              </Grid>
-              <Grid item>
-                <StyledTypography gutterBottom className={classes.colorScheme}>
-                  รหัสสี {product?.colorScheme?.id}
-                </StyledTypography>
-                </Grid>
-          </Grid>
-          <Typography variant="body1" color="text.secondary">
-            <ShoppingBasketIcon className={classes.icon} />
-            ประเภทสินค้า: {product?.category?.name}
+          <Typography variant="h4" className={classes.price}>
+            ฿{product?.price}
           </Typography>
 
-          <Typography variant="body1" color="text.secondary">
-            <StoreIcon className={classes.icon} />
-            ชื่อกลุ่มผู้ผลิตหรือร้านค้า: {product?.groupData?.groupName}
+          <Box display="flex" alignItems="center" my={1}>
+            <VisibilityIcon />
+            <Typography variant="body2">{product?.reloadCount?.toLocaleString()}</Typography>
+          </Box>
+
+          <Divider />
+
+          <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
+            ชื่อสินค้า
+          </Typography>
+          <Typography variant="body1" style={{  marginTop: '1em' }}>
+          {product?.name}
+          </Typography>
+          <Divider />
+          <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
+            ประเภทสินค้า
+          </Typography>
+          <Typography variant="body1" style={{  marginTop: '1em' }}>
+          {product?.category?.name}
           </Typography>
 
-          <Typography variant="h6" component="div" className={classes.title}>
+
+
+          <Divider />
+          <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
+            โทนสี
+          </Typography>
+          <Box display="flex" alignItems="center" my={1}>
+            <Box
+              sx={{
+                width: 50,
+                height: 50,
+                backgroundColor: product?.colorScheme?.hex,
+                borderRadius: "5%",
+                border: "1px solid black",
+                marginRight: 2,
+              }}
+            />
+            <Typography className={classes.colorScheme}>
+              รหัสสี {product?.colorScheme?.id} - สี{product?.colorScheme?.nameTH} ({product?.colorScheme?.nameEN})
+            </Typography>
+          </Box>
+
+          <Divider />
+
+          <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
+            ชื่อกลุ่มผู้ผลิตหรือร้านค้า
+          </Typography>
+
+          <Typography variant="body1" style={{  marginTop: '1em' }}>
+          {product?.groupData?.groupName}
+          </Typography>
+
+          <Divider />
+
+          <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
             รายละเอียดเพิ่มเติม
           </Typography>
-
-          <Typography variant="body1" color="text.secondary">
-            {product?.desc}
+          
+          <Typography variant="body1" style={{  marginTop: '1em' }}>
+          {product?.desc}
           </Typography>
-        </Grid>
+          <Divider />
+      </Grid>
+
+
+
       </Grid>
     </Box>
   </Box>
@@ -468,45 +478,45 @@ function UserPanelProduct({ product }: Props) {
               <Grid item xs={12} md={8} lg={9}>
                 <React.Fragment>
                   <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
+                    <Typography style={typeographyHeaderStyle}>
                       ชื่อกลุ่ม / ร้านค้า
                     </Typography>
-                    <Typography sx={typeographyValueStyle}>
+                    <Typography style={typeographyValueStyle}>
                       {product?.groupData?.groupName}
                     </Typography>
                   </Box>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>
                       ประเภทกลุ่ม
                     </Typography>
-                    <Typography sx={typeographyValueStyle}>
+                    <Typography style={typeographyValueStyle}>
                       {product?.groupData?.groupType === "shop"
                         ? "ร้านค้า"
                         : "กลุ่มผู้ผลิต"}
                     </Typography>
                   </Box>
 
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>
                       ชื่อประธาน / เจ้าของร้าน
                     </Typography>
-                    <Typography sx={typeographyValueStyle}>
+                    <Typography style={typeographyValueStyle}>
                       {product?.groupData?.agency}
                     </Typography>
                   </Box>
 
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>
                       เบอร์โทร
                     </Typography>
-                    <Typography sx={typeographyValueStyle}>
+                    <Typography style={typeographyValueStyle}>
                       {product?.groupData?.phone}
                     </Typography>
                   </Box>
 
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>อีเมล :</Typography>
-                    <Typography sx={typeographyValueStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>อีเมล :</Typography>
+                    <Typography style={typeographyValueStyle}>
                       {product?.groupData?.email}
                     </Typography>
                   </Box>
@@ -515,9 +525,12 @@ function UserPanelProduct({ product }: Props) {
             </Paper>
           </Grid>
 
+
+
+
           <Grid item xs={12} md={12} lg={12}>
             <Paper
-              sx={{
+              style={{
                 // p: 2,
                 display: "flex",
                 flexDirection: "column",
@@ -527,83 +540,83 @@ function UserPanelProduct({ product }: Props) {
               <Grid
                 container
                 spacing={2}
-                sx={{
+                style={{
                   alignSelf: "flex-center",
                   paddingBottom: "16px",
                   paddingLeft: "16px",
                 }}
               >
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>
                       บ้านเลขที่/หมู่
                     </Typography>
-                    <Typography sx={typeographyValueStyle}>
+                    <Typography style={typeographyValueStyle}>
                       {product?.groupData?.hno}
                     </Typography>
                   </Box>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>ถนน :</Typography>
-                    <Typography sx={typeographyValueStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>ถนน :</Typography>
+                    <Typography style={typeographyValueStyle}>
                       {product?.groupData?.road}
                     </Typography>
                   </Box>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>ซอย :</Typography>
-                    <Typography sx={typeographyValueStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>ซอย :</Typography>
+                    <Typography style={typeographyValueStyle}>
                       {product?.groupData?.lane}
                     </Typography>
                   </Box>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>
                       หมู่บ้าน
                     </Typography>
-                    <Typography sx={typeographyValueStyle}>
+                    <Typography style={typeographyValueStyle}>
                       {product?.groupData?.village}
                     </Typography>
                   </Box>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>ตำบล</Typography>
-                    <Typography sx={typeographyValueStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>ตำบล</Typography>
+                    <Typography style={typeographyValueStyle}>
                       {product?.groupData?.subdistrict}
                     </Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>อำเภอ</Typography>
-                    <Typography sx={typeographyValueStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>อำเภอ</Typography>
+                    <Typography style={typeographyValueStyle}>
                       {product?.groupData?.district}
                     </Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>จังหวัด</Typography>
-                    <Typography sx={typeographyValueStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>จังหวัด</Typography>
+                    <Typography style={typeographyValueStyle}>
                       {product?.groupData?.province}
                     </Typography>
                   </Box>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>
+                  <Box style={boxStyle}>
+                    <Typography style={typeographyHeaderStyle}>
                       รหัสไปรษณีย์
                     </Typography>
-                    <Typography sx={typeographyValueStyle}>
+                    <Typography style={typeographyValueStyle}>
                       {product?.groupData?.zipCode}
                     </Typography>
                   </Box>
@@ -614,8 +627,8 @@ function UserPanelProduct({ product }: Props) {
 
           <Grid item xs={12} md={12} lg={12}>
             <Paper
-              sx={{
-                p: 2,
+              style={{
+                padding: 2,
                 display: "flex",
                 flexDirection: "column",
                 gap: "16px",

@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     padding: theme.spacing(4),
-    backgroundImage: "url('/static/img/M014-01.jpg')",
+    backgroundImage: "url('/static/img/sitebanner.jpg')",
     backgroundSize: "cover",
     backgroundPosition: "center",
     color: theme.palette.common.white,
@@ -104,7 +104,7 @@ const MainPage = ({}: Props) => {
         // padding={4}
         bgcolor="primary.secondary"
         color="white"
-        style={{  backgroundImage: "url('/static/img/M014-01.jpg')" } }
+        style={{  backgroundImage: "url('/static/img/sitebanner.jpg')" } }
         className={classes.container}
       >
         <Typography variant="h5" component="h5" gutterBottom align="center" style={{

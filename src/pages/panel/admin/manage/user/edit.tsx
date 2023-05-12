@@ -208,7 +208,7 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
       type="password"
       label="รหัสผ่าน"
       value={password}
-      onChange={(event) => setPassword(event.target.value)}
+      onChange={(event:React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
       required
     />
 
@@ -220,7 +220,7 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
       type="password"
       label="ยืนยันรหัสผ่าน"
       value={passwordConfirmation}
-      onChange={(event) => setPasswordConfirmation(event.target.value)}
+      onChange={(event:React.ChangeEvent<HTMLInputElement>) => setPasswordConfirmation(event.target.value)}
       required
     />
   

@@ -16,7 +16,7 @@ import * as categoryService from "@/services/category.service";
 import * as authService from "@/services/auth.service";
 import { CloudUpload } from "@material-ui/icons";
 import { Delete } from "@material-ui/icons";
-import { ProductPayload } from "@/models/product.model";
+import { ProductPayload, ProductImage } from "@/models/product.model";
 import * as colorSchemeService from "@/services/color-scheme.service"
 
 import Snackbar from '@mui/material/Snackbar';
@@ -133,7 +133,7 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
     newImages.splice(index, 1);
     setImages(newImages);
   };
-  const [deleteImage, setDeleteImage] = useState(null);
+  const [deleteImage, setDeleteImage] = useState<any>({});
   const [openDeleteConfirmationDialog, setOpenDeleteConfirmationDialog] = useState(false)
 
   const handleOpenDeleteConfirmationDialog = ()=>{
@@ -165,13 +165,7 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
 
   const handleDeleteExistImage = async () => {
     const { id } = deleteImage
-   
     await dispatch(deleteProductImageAction({ productId: product?.id, id, accessToken, gid }));
-    // Swal.fire(
-    //   'ลบข้อมูลเรียบร้อย!',
-    //   'รูปภาพของคุณถูกลบเรียบร้อยแล้ว',
-    //   'success'
-    // );
     const updatedImages = existingImages.filter((image: any) => image.id !== id);
     setExistingImages(updatedImages);
     setOpenDeleteConfirmationDialog(false)
