@@ -16,7 +16,7 @@ import ColorLensIcon from "@mui/icons-material/ColorLens";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-
+import WidgetsIcon from '@mui/icons-material/Widgets';
 
 import { useTheme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
@@ -37,9 +37,9 @@ function AdminPanel({}: Props) {
               sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}
             >
               {isSmallDevice ? (
-                <AdminPanelSettingsIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+                <WidgetsIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
               ) : (
-                <AdminPanelSettingsIcon
+                <WidgetsIcon
                   sx={{ fontSize: "2.5rem", marginLeft: "16px" }}
                 />
               )}
@@ -52,10 +52,7 @@ function AdminPanel({}: Props) {
                       alignSelf: "center",
                     }}
                   >
-                    {" "}
-                    ยินดีต้อนรับเข้าสู่
-                    <br />
-                    หน้าระบบหลังบ้าน (ADMIN)
+                   เมนู
                   </Typography>
                 ) : (
                   <Typography
@@ -65,8 +62,7 @@ function AdminPanel({}: Props) {
                       alignSelf: "center",
                     }}
                   >
-                    {" "}
-                    ยินดีต้อนรับเข้าสู่หน้าระบบหลังบ้าน{" "}
+                   เมนู
                   </Typography>
                 )}
               </React.Fragment>
@@ -82,9 +78,9 @@ function AdminPanel({}: Props) {
                 height: "100vh",
               }}
             >
-              <Typography variant="h5" gutterBottom>
+              {/* <Typography variant="h5" gutterBottom>
                 เลือกเมนูที่ต้องการ
-              </Typography>
+              </Typography> */}
 
               <Grid container spacing={2} columns={16}>
                 <Grid item xs={8}>

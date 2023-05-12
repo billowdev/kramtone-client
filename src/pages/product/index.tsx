@@ -324,55 +324,49 @@ const ProductTest = ({}: Props) => {
               </Carousel>
     
               <Typography gutterBottom variant="h5" component="div">
-                {product.name}
-              </Typography>
-              {product?.colorScheme ? (
-                <Grid container alignItems="center">
-                  <Grid item>
-                    <Box
-                      sx={{
-                        width: 50, // Adjust width for the rectangle
-                        height: 50,
-                        backgroundColor: product?.colorScheme.hex,
-                        borderRadius: "5%", // Adjust borderRadius for the rectangle
-                        border: "1px solid black",
-                        marginRight: 2,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item sx={{ marginRight: "16px" }}>
-                    <Typography gutterBottom component="div">
-                      {product?.colorScheme?.hex}
-                    </Typography>
-                  </Grid>
-    
-                  <Grid item>
-                    <Typography gutterBottom component="div">
-                      {product?.colorScheme?.nameTH}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              ) : null}
-    
-              <Typography variant="body1" color="text.secondary">
-                ประเภทสินค้า: {product?.category?.name}
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                โทนสี: {product?.colorScheme?.nameTH} (
-                {product?.colorScheme?.nameEN})
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                ราคา: {product?.price} THB
-              </Typography>
+                    {product.name}
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                    <span style={{fontWeight:'bold'}}> โทนสี:</span> 
+                    {product?.colorScheme?.nameTH} (
+                    {product?.colorScheme?.nameEN})
+                  </Typography>
+                  {product?.colorScheme ? (
+                    <Grid container alignItems="center">
+                      <Grid item>
+                        <Box
+                          sx={{
+                            width: 50, // Adjust width for the rectangle
+                            height: 50,
+                            backgroundColor: product?.colorScheme.hex,
+                            borderRadius: "5%", // Adjust borderRadius for the rectangle
+                            border: "1px solid black",
+                            marginRight: 2,
+                          }}
+                        />
+                      </Grid>
+                      <Grid item sx={{ marginRight: "16px" }}>
+                        <Typography gutterBottom component="div">
+                          {product?.colorScheme?.id} &nbsp;
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  ) : null}
+
+                  <Typography variant="body1" color="text.secondary">
+                  <span style={{fontWeight:'bold'}}> ประเภทสินค้า:</span> 
+                  {product?.category?.name}
+                  </Typography>
+            
+                  <Typography variant="body1" color="text.secondary">
+                   <span style={{fontWeight:'bold'}}> ราคา:</span> {product?.price} THB
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                   <span style={{fontWeight:'bold'}}> รายละเอียดสินค้า:</span> {product?.desc}
+                  </Typography>
+               
             </CardContent>
-    
-            {/* <CardActionArea onClick={() => {
-                  handleOpen(product)
-                }}>
-                </CardActionArea> */}
-    
-            <Typography variant="subtitle1">{product?.desc}</Typography>
-    
+ 
             <Button
               variant="contained"
               color="primary"

@@ -251,8 +251,11 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
   React.useEffect(() => {
     const fetchDistrict = async () => {
-      const districtData = await thaiAddressService.getDistricts(sakonNakhonProvinces[0].id);
-      setDistrict(districtData);
+      if(sakonNakhonProvinces){
+        const pid = sakonNakhonProvinces.id
+        const districtData = await thaiAddressService.getDistricts(pid.toString());
+        setDistrict(districtData);
+      }
     }
     fetchDistrict();
   }, [sakonNakhonProvinces]);
@@ -274,10 +277,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     setProvinceState(provinceName);
     setSelectedProvince(selected!);
     setFieldValue("province", provinceName);
-    const districtData = await thaiAddressService.getDistricts(
-      sakonNakhonProvinces[0].id
-    );
-    setDistrict(districtData);
+    // const districtData = await thaiAddressService.getDistricts(
+    //   sakonNakhonProvinces.id
+    // );
+    // setDistrict(districtData);
   };
 
   const [selectedDistrict, setSelectedDistrict] =
@@ -671,7 +674,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
             <Grid container spacing={2}>
     
-            <Grid item xs={12} md={6}>
+    {
+      sakonNakhonProvinces && <>
+        <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="hno" style={{ fontWeight: "bold" }}>
                     จังหวัด <span style={{ color: "red" }}>*</span>
@@ -683,7 +688,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     readonly
                     disabled
                     inputProps={{ maxLength: 5 }}
-                    value={sakonNakhonProvinces[0].nameTH}
+                    value={sakonNakhonProvinces.nameTH}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       handleInputChange(e, 'province')
                     }}
@@ -694,6 +699,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   <ErrorMessage name="hno" />
                 </Box>
               </Grid>
+      </>
+    }
+          
 
               {/* <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
@@ -1103,7 +1111,7 @@ export const getServerSideProps: GetServerSideProps = async (
         groupData,
         accessToken,
         provinces,
-        sakonNakhonProvinces
+        sakonNakhonProvinces : sakonNakhonProvinces[0]
       },
     };
   } else {

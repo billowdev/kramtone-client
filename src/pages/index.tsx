@@ -180,6 +180,11 @@ const MainPage = ({}: Props) => {
                   <Typography gutterBottom variant="h5" component="div">
                     {product.name}
                   </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                  <span style={{fontWeight:'bold'}}> โทนสี:</span> 
+                  {product?.colorScheme?.nameTH} (
+                    {product?.colorScheme?.nameEN})
+                  </Typography>
                   {product?.colorScheme ? (
                     <Grid container alignItems="center">
                       <Grid item>
@@ -196,36 +201,26 @@ const MainPage = ({}: Props) => {
                       </Grid>
                       <Grid item sx={{ marginRight: "16px" }}>
                         <Typography gutterBottom component="div">
-                          {product?.colorScheme?.hex}
-                        </Typography>
-                      </Grid>
-
-                      <Grid item>
-                        <Typography gutterBottom component="div">
-                          {product?.colorScheme?.nameTH}
+                          {product?.colorScheme?.id} &nbsp;
                         </Typography>
                       </Grid>
                     </Grid>
                   ) : null}
 
                   <Typography variant="body1" color="text.secondary">
-                    ประเภทสินค้า: {product?.category?.name}
+                  <span style={{fontWeight:'bold'}}> ประเภทสินค้า:</span> 
+                  {product?.category?.name}
+                  </Typography>
+            
+                  <Typography variant="body1" color="text.secondary">
+                   <span style={{fontWeight:'bold'}}> ราคา:</span> {product?.price} THB
                   </Typography>
                   <Typography variant="body1" color="text.secondary">
-                    โทนสี: {product?.colorScheme?.nameTH} (
-                    {product?.colorScheme?.nameEN})
+                   <span style={{fontWeight:'bold'}}> รายละเอียดสินค้า:</span> {product?.desc}
                   </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    ราคา: {product?.price} THB
-                  </Typography>
+               
                 </CardContent>
 
-                {/* <CardActionArea onClick={() => {
-                      handleOpen(product)
-                    }}>
-                    </CardActionArea> */}
-
-                <Typography variant="subtitle1">{product?.desc}</Typography>
 
                 <Button
                   variant="contained"

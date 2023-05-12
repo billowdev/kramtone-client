@@ -89,9 +89,8 @@ function GroupShopPanel({}: Props) {
                     }}
                   >
                     {" "}
-                    ยินดีต้อนรับเข้าสู่
-                    <br />
-                    หน้าระบบหลังบ้าน
+                    เมนู
+                 
                   </Typography>
                 ) : (
                   <Typography
@@ -101,7 +100,7 @@ function GroupShopPanel({}: Props) {
                     alignSelf: "center",
                   }}
                 >
-                  ยินดีต้อนรับเข้าสู่หน้าระบบหลังบ้าน
+                เมนู
                   {!userData.activated && (
                     <Box component="span" sx={{ marginLeft: 2, color: "red" }}>
                       หมายเหตุ : บัญชีของคุณยังไม่ถูกยืนยัน
@@ -122,9 +121,9 @@ function GroupShopPanel({}: Props) {
                 height: "100%",
               }}
             >
-              <Typography variant="h5" gutterBottom>
+              {/* <Typography variant="h5" gutterBottom>
                 เลือกเมนูที่ต้องการ
-              </Typography>
+              </Typography> */}
 
               <Grid container spacing={2} columns={16}>
 

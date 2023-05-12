@@ -263,8 +263,11 @@ const center: LatLngExpression = [
 
     React.useEffect(() => {
       const fetchDistrict = async () => {
-        const districtData = await thaiAddressService.getDistricts(sakonNakhonProvinces[0].id);
-        setDistrict(districtData);
+        if(sakonNakhonProvinces){
+          const pid = sakonNakhonProvinces.id
+          const districtData = await thaiAddressService.getDistricts(pid.toString());
+          setDistrict(districtData);
+        }
       }
       fetchDistrict();
     }, [sakonNakhonProvinces]);
@@ -731,8 +734,9 @@ const center: LatLngExpression = [
             </Box>
 
             <Grid container spacing={2}>
-
-            <Grid item xs={12} md={6}>
+{
+  sakonNakhonProvinces && <>
+   <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="hno" style={{ fontWeight: "bold" }}>
                     จังหวัด <span style={{ color: "red" }}>*</span>
@@ -744,7 +748,7 @@ const center: LatLngExpression = [
                     readonly
                     disabled
                     inputProps={{ maxLength: 5 }}
-                    value={sakonNakhonProvinces[0].nameTH}
+                    value={sakonNakhonProvinces.nameTH}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       handleInputChange(e, 'province')
                     }}
@@ -755,7 +759,9 @@ const center: LatLngExpression = [
                   <ErrorMessage name="hno" />
                 </Box>
               </Grid>
-
+  </>
+}
+           
               {/* <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormControl fullWidth>
@@ -1183,7 +1189,7 @@ export const getServerSideProps: GetServerSideProps = async (
         groupData,
         accessToken,
         provinces,
-        sakonNakhonProvinces
+        sakonNakhonProvinces : sakonNakhonProvinces[0]
       },
     };
   } else {
