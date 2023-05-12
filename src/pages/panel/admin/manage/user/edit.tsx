@@ -77,11 +77,13 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
   
   const handleConfirmEdit = async () => {
   // Validate password field
+if(password) {
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
   if (!passwordRegex.test(password)) {
     toast.error('รหัสผ่านต้องประกอบด้วยตัวอักษรและตัวเลข อย่างน้อย 8 ตัว');
     return;
   }
+}
 
   const updateData = {...updateValue, role: userRole, activated, password};
   const updateStatus = await dispatch(updateUser(updateData));
@@ -209,7 +211,6 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
       label="รหัสผ่าน"
       value={password}
       onChange={(event:React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
-      required
     />
 
     <Field
@@ -221,7 +222,6 @@ const AdminPanelEditUser = ({ user, accessToken}: Props) => {
       label="ยืนยันรหัสผ่าน"
       value={passwordConfirmation}
       onChange={(event:React.ChangeEvent<HTMLInputElement>) => setPasswordConfirmation(event.target.value)}
-      required
     />
   
 

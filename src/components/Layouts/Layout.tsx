@@ -331,7 +331,7 @@ function Layout({ children }: LayoutProps) {
 
 
             <CustomMenuListItem
-                        href="/panel/user/manage-profile"
+                        href="/panel/profile"
                         icon={SettingsIcon}
                         useStartWithPath={false}
                         text="ตั้งค่าบัญชีผู้ใช้"

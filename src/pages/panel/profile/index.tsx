@@ -294,19 +294,6 @@ function UserPanelProfile({
     );
   };
 
-  // const handleEditConfirm = async () => {
-  //   if (id) {
-  //     const updateStatus = await dispatch(updateUserProfile({id:updateValue.id, body:updateValue, accessToken}))
-
-  //     if (updateStatus.meta.requestStatus === "fulfilled") {
-  //       toast.success("แก้ไขข้อมูลประเภทสินค้าสำเร็จ")
-  //       router.push("/panel/user/manage-category");
-  //     }else{
-  //       toast.error("แก้ไขข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง")
-  //     }
-  //     setOpenDialog(false);
-  //   }
-  // };
 
   return (
     <Layout>
@@ -353,50 +340,3 @@ function UserPanelProfile({
 
 
 export default UserPanelProfile
-
-// export const getStaticProps: GetStaticProps = async () => {
-//   try {
-//     const { data } = await httpClient.get('/users/me', {
-//       baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
-//     });
-//     const userData = data.payload;
-//     return {
-//       props: {
-//         userData,
-//       },
-//     };
-//   } catch (error) {
-//     console.error('Error fetching user data:', error);
-//     return {
-//       props: {
-//         userData: null,
-//       },
-//     };
-//   }
-// };
-
-// export async function getServerSideProps(context: any) {
-//   const accessToken = context.req.cookies["access_token"];
-//   const { sub } = await authService.getSessionServerSide(accessToken!);
-//   const userProfile = await authService.getProfile(accessToken);
-
-//   return {
-//     props: { id: sub!, accessToken,userProfile },
-//   };
-// }
-
-// export const getServerSideProps: GetServerSideProps = async (
-//   context: GetServerSidePropsContext
-// ) => {
-  
-//     const accessToken = context.req.cookies["access_token"];
-//     const { sub } = await authService.getSessionServerSide(accessToken!);
-//     const userProfile = await authService.getProfile(accessToken);
-  
-//     return {
-//       props: {
-//         id: sub, accessToken,userProfile
-//       },
-//     };
- 
-// };
