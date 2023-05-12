@@ -153,7 +153,7 @@ async function updateColorScheme(req: NextApiRequest, res: NextApiResponse<any>)
 		}
 		const updateBody = req.body
 
-		if (req.query) {
+		if (req.query && req.query['action'] && req.query['action'][0]) {
 			const { data } = await httpClient.patch(`/colorschemes/${req.query['action'][0]}`, updateBody, {
 				headers: {
 					'Authorization': `Bearer ${accessToken}`,

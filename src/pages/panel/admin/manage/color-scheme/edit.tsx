@@ -22,7 +22,7 @@ import httpClient from "@/common/utils/httpClient.util";
 import { Switch, FormControlLabel, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
 import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
-import {ColorSchemePayload} from "@/models/color-scheme.model"
+import { ColorSchemePayload } from "@/models/color-scheme.model"
 import ConfirmationDialog from "@/components/ConfirmationDialog"
 
 type Props = {
@@ -30,7 +30,7 @@ type Props = {
   accessToken?: string;
 };
 
-const AdminPanelEditColorScheme = ({ colorScheme, accessToken}: Props) => {
+const AdminPanelEditColorScheme = ({ colorScheme, accessToken }: Props) => {
   const router = useRouter();
   const [updateValue, setUpdateValue] = React.useState<ColorSchemePayload>(colorScheme!);
   const dispatch = useAppDispatch();
@@ -39,28 +39,28 @@ const AdminPanelEditColorScheme = ({ colorScheme, accessToken}: Props) => {
 
   const [showConfirmation, setShowConfirmation] = React.useState(false);
 
-  const handleEdit =() => {
+  const handleEdit = () => {
     setShowConfirmation(true);
   }
- 
-  const handleConfirmEdit = async () => {
-    if (updateValue) {
 
-    const response = await dispatch(updateColorScheme({colorSchemeId:colorScheme.id,updateValue, accessToken}))
+  const handleConfirmEdit = async () => {
+    if (updateValue && colorScheme?.id) {
+      const colorSchemeId = colorScheme.id
+      const response = await dispatch(updateColorScheme({ colorSchemeId, updateValue, accessToken }))
 
       if (response.meta.requestStatus === "fulfilled") {
         toast.success("แก้ไขข้อมูลสำเร็จ")
         router.push("/panel/admin/manage/color-scheme");        // router.push("/panel/user/manage-product");
-      }else{
+      } else {
         console.log(response)
-       toast.error("เพิ่มข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+        toast.error("เพิ่มข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
       }
     }
 
     setShowConfirmation(false);
   };
-  
-  const handleCancelEdit= () => {
+
+  const handleCancelEdit = () => {
     setShowConfirmation(false);
   };
 
@@ -74,7 +74,7 @@ const AdminPanelEditColorScheme = ({ colorScheme, accessToken}: Props) => {
         <Card>
           <CardContent sx={{ padding: 4 }}>
             <Typography gutterBottom variant="h3">
-             แก้ไขข้อมูลโทนสีครามธรรมชาติ
+              แก้ไขข้อมูลโทนสีครามธรรมชาติ
             </Typography>
 
             <Field
@@ -96,7 +96,7 @@ const AdminPanelEditColorScheme = ({ colorScheme, accessToken}: Props) => {
               label="ชื่อสีภาษาไทย"
             />
             <br />
-            
+
             <Field
               style={{ marginTop: 16 }}
               fullWidth
@@ -115,7 +115,7 @@ const AdminPanelEditColorScheme = ({ colorScheme, accessToken}: Props) => {
               label="HEX CODE"
             />
             <br />
-           
+
           </CardContent>
           <CardActions>
             <Button
@@ -182,7 +182,7 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const { id }: any = context.query;
-  
+
   if (id) {
     const accessToken = context.req.cookies['access_token']
     const { data: response } = await httpClient.get(`/colorschemes/${id}`, {
@@ -192,7 +192,7 @@ export const getServerSideProps: GetServerSideProps = async (
       baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
     });
 
-    
+
     const colorScheme = response.payload
     return {
       props: {
