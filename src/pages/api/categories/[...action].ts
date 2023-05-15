@@ -60,6 +60,7 @@ async function deleteCategory(req: NextApiRequest, res: NextApiResponse<any>) {
 			return res.status(401).json({ message: 'Unauthorized' });
 		}
 		if (req.query) {
+			// console.log("===============")
 			const { data } = await httpClient.delete(`/categories/delete/${req.query['id']}`, {
 				headers: {
 					'Authorization': `Bearer ${accessToken}`,
@@ -75,6 +76,7 @@ async function deleteCategory(req: NextApiRequest, res: NextApiResponse<any>) {
 		}
 
 	} catch (error) {
+		console.log("===============")
 		console.error(error);
 		return res.status(500).json({ message: 'Internal Server Error' });
 	}

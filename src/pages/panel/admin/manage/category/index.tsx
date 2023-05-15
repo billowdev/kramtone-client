@@ -54,10 +54,12 @@ import {
 } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CheckroomIcon from "@mui/icons-material/Checkroom";
-
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 // import EditDialog from "./components"
 import { makeStyles } from "@material-ui/core";
+import toast from "react-hot-toast";
+
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -213,6 +215,38 @@ function AdminPanelManageCategory({ accessToken}: Props) {
   };
 
 
+
+  
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const handleDelete =  () => {
+    setShowConfirmation(true);
+  }
+ 
+  const handleConfirmDelete = async () => {
+    if (selectedCategory) {
+      // console.log(selectedUser)
+      
+    const response = await dispatch(deleteCategoryAction({ id:selectedCategory.id}))
+      if (response.meta.requestStatus === "fulfilled") {
+        toast.success("ลบข้อมูลสำเร็จ")
+        setTimeout(() => {
+          window.location.reload(); // Reload the page after 2 seconds
+        }, 200);
+        // router.push("/panel/user/manage-product");
+      }else{
+       toast.error("ลบข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+      }
+    }
+
+    setShowConfirmation(false);
+  };
+  
+  const handleCancelDelete = () => {
+    setShowConfirmation(false);
+  };
+
+
   const handleDeleteClick = (e: React.ChangeEvent<HTMLInputElement>, row: CategoryPayload | null) => {
     setOpenDeleteDialog(true)
   }
@@ -274,7 +308,7 @@ function AdminPanelManageCategory({ accessToken}: Props) {
             size="large"
             onClick={() => {
               setSelectedCategory(row);
-              setOpenDeleteDialog(true);
+              handleDelete()
             }}
           >
             <DeleteIcon fontSize="inherit" />
@@ -367,7 +401,13 @@ function AdminPanelManageCategory({ accessToken}: Props) {
 
           <CategoryDialog category={selectedCategory} open={viewCategoryOpen} onClose={handleViewCategoryClose} />
 {showEditDialog()}
-
+<ConfirmationDialog
+                title="ลบข้อมูล"
+                message="ยืนยันการลบข้อมูล"
+                open={showConfirmation}
+                onClose={handleCancelDelete}
+                onConfirm={handleConfirmDelete}
+              />
   </Layout>
 
   )
