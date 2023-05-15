@@ -255,7 +255,7 @@ function Layout({ children }: LayoutProps) {
                       useStartWithPath={true}
                       startWithPath="/panel/user/manage-product"
                         icon={ShoppingBagIcon}
-                        text="จัดการสินค้า"
+                        text="จัดการข้อมูลสินค้า"
                         open={open}
 
                       />

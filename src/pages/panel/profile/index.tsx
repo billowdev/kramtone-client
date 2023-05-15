@@ -247,13 +247,13 @@ function UserPanelProfile({
         
       />
 
-  <Field
+    <Field
         style={{ marginTop: 16 }}
         fullWidth
         component={TextField}
         name="password"
         type="password"
-        label="รหัสผ่าน"
+        label="รหัสผ่านใหม่"
         value={password}
         onChange={(event:React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
         
@@ -265,7 +265,7 @@ function UserPanelProfile({
         component={TextField}
         name="passwordConfirmation"
         type="password"
-        label="ยืนยันรหัสผ่าน"
+        label="ยืนยันรหัสผ่านใหม่"
         value={passwordConfirmation}
         onChange={(event:React.ChangeEvent<HTMLInputElement>) => setPasswordConfirmation(event.target.value)}
         

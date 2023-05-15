@@ -417,7 +417,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
                   </Box>
 
                   <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>อีเมล :</Typography>
+                    <Typography sx={typeographyHeaderStyle}>อีเมล</Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupDataProp?.email}
                     </Typography>
@@ -467,7 +467,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
 
                 <Grid item xs={12} md={6}>
                   <Box sx={boxStyle}>
-                    <Typography sx={typeographyHeaderStyle}>ซอย :</Typography>
+                    <Typography sx={typeographyHeaderStyle}>ซอย</Typography>
                     <Typography sx={typeographyValueStyle}>
                       {groupDataProp?.lane}
                     </Typography>
@@ -528,7 +528,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
             maxWidth="lg"
             sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}
           >
-            <Link href={"/panel/admin/manage/group/edit?gid=" + groupDataProp?.id}>
+            <Link href={"/panel/admin/manage/group/edit?id=" + groupDataProp?.id}>
               <Button
                 color="primary"
                 variant="contained"

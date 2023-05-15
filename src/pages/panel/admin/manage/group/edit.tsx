@@ -36,8 +36,6 @@ import * as thaiAddressService from "@/services/thai-address.service";
 import { updateGroupDataAction } from "@/store/slices/group-data.slice"
 // import { TextField } from "formik-material-ui";
 import toast from "react-hot-toast";
-import ConfirmationDialog from "@/components/ConfirmationDialog";
-
 
 import TextField from "@material-ui/core/TextField";
 
@@ -170,7 +168,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   groupData,
   accessToken,
   provinces,
-  sakonNakhonProvinces,
+  sakonNakhonProvinces
 }) => {
   const theme = useTheme();
   const classes = useStyles();
@@ -183,17 +181,11 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   const [currentLng, setCurrentLng] = React.useState<number>(parseFloat(groupData?.lng!));
   const [currentLatLng, setCurrentLatLng] = React.useState<[number, number]>([parseFloat(groupData?.lat!), parseFloat(groupData?.lng!)]);
 
-const defaultLatitude = 17.16077251931186;
-const defaultLongitude = 104.14256629586718;
-
-const center: LatLngExpression = [
-	currentLatLng[0] || defaultLatitude,
-	currentLatLng[1] || defaultLongitude
-  ];
+  const center: LatLngExpression = [currentLatLng[0], currentLatLng[1]]; // Centered on Sakon Nakhon Province
 
   const position: LatLngExpression = [
-    parseFloat(groupData?.lat ?? defaultLatitude.toString()),
-    parseFloat(groupData?.lng ?? defaultLongitude.toString()),
+    parseFloat(groupData?.lat ?? "17.1634"),
+    parseFloat(groupData?.lng ?? "104.1476"),
   ]; // Centered on Sakon Nakhon Province
   const zoom: number = 12;
 
@@ -234,7 +226,7 @@ const center: LatLngExpression = [
   const [provinceState, setProvinceState] = React.useState<string>(
     groupData?.province ?? ""
   );
-
+    console.log()
   const [districtState, setDistrictState] = React.useState<string>(
     groupData?.district ?? ""
   );
@@ -257,20 +249,20 @@ const center: LatLngExpression = [
   const [districts, setDistrict] = React.useState<DistrictType[]>([]);
   const [subdistricts, setSubDistrict] = React.useState<SubdistrictType[]>([]);
 
+  React.useEffect(() => {
+    const fetchDistrict = async () => {
+      if(sakonNakhonProvinces){
+        const pid = sakonNakhonProvinces.id
+        const districtData = await thaiAddressService.getDistricts(pid.toString());
+        setDistrict(districtData);
+      }
+    }
+    fetchDistrict();
+  }, [sakonNakhonProvinces]);
+  
+  
   const [selectedProvince, setSelectedProvince] =
     React.useState<ProvinceType | null>(null);
-
-
-    React.useEffect(() => {
-      const fetchDistrict = async () => {
-        if(sakonNakhonProvinces){
-          const pid = sakonNakhonProvinces.id
-          const districtData = await thaiAddressService.getDistricts(pid.toString());
-          setDistrict(districtData);
-        }
-      }
-      fetchDistrict();
-    }, [sakonNakhonProvinces]);
 
   const handleProvinceChange = async (
     setFieldValue: any,
@@ -285,10 +277,10 @@ const center: LatLngExpression = [
     setProvinceState(provinceName);
     setSelectedProvince(selected!);
     setFieldValue("province", provinceName);
-    const districtData = await thaiAddressService.getDistricts(
-      provinceId.toString()
-    );
-    setDistrict(districtData);
+    // const districtData = await thaiAddressService.getDistricts(
+    //   sakonNakhonProvinces.id
+    // );
+    // setDistrict(districtData);
   };
 
   const [selectedDistrict, setSelectedDistrict] =
@@ -381,86 +373,35 @@ const center: LatLngExpression = [
   };
 
 
-//   const showDialog = () => {
-//     return (
-//       <Dialog
-//         open={openDialog}
-//         keepMounted
-//         aria-labelledby="alert-dialog-slide-title"
-//         aria-describedby="alert-dialog-slide-description"
-//       >
-//         <DialogTitle id="alert-dialog-slide-title">
-//           ยืนยันการแก้ไขข้อมูล
-//         </DialogTitle>
-//         <DialogContent>
-//           <DialogContentText id="alert-dialog-slide-description">
-//             คุณต้องการแก้ไขข้อมูลใช่หรือไม่
-//           </DialogContentText>
-//         </DialogContent>
-//         <DialogActions>
-//           <Button onClick={handleEditConfirm} color="primary">
-//             ยืนยัน
-//           </Button>
-//           <Button onClick={() => setOpenDialog(false)} color="info">
-//             ยกเลิก
-//           </Button>
-//         </DialogActions>
-//       </Dialog>
-//     );
-//   };
-
-
- 
-//   const handleEditConfirm = async () => {
-//     let formData: FormData = new FormData();
-    
-//     if (logoFile!="") {
-//       formData.append("logoFile", logoFile);
-//     }
-//     if (bannerFile!="") {
-//       formData.append("bannerFile", bannerFile);
-//     }
-//     formData.append('groupData', JSON.stringify({
-//       'groupName': updateGroupData.groupName,
-//       'groupType': groupTypeState,
-//       'agency': updateGroupData.agency,
-//       'phone': updateGroupData.phone,
-//       'email': updateGroupData.email,
-//       'hno': updateGroupData.hno,
-//       'village': updateGroupData.village,
-//       'lane': updateGroupData.lane,
-//       'road': updateGroupData.road,
-//       'subdistrict': updateGroupData.subdistrict,
-//       'district': updateGroupData.district,
-//       'province': updateGroupData.province,
-//       'zipCode': zipCodeState,
-//       'lat': currentLat,
-//       'lng': currentLng,
-//     }));
-
-
-//     const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }))
-
-// 		if (updateStatus.meta.requestStatus === "fulfilled") {
-// 		toast.success("แก้ไขข้อมูลสำเร็จ")
-// 		router.push("/panel/admin/manage/group")
-// 		} else {
-// 		toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
-// 		}
-//     setOpenDialog(false);
-  
-//   };
-
-
-  
-  const [showConfirmation, setShowConfirmation] = React.useState(false);
-
-  const handleEdit = () => {
-    setShowConfirmation(true);
+  const showDialog = () => {
+    return (
+      <Dialog
+        open={openDialog}
+        keepMounted
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">
+          ยืนยันการแก้ไขข้อมูล
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            คุณต้องการแก้ไขข้อมูลใช่หรือไม่
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleEditConfirm} variant="contained" color="primary">
+            ยืนยัน
+          </Button>
+          <Button onClick={() => setOpenDialog(false)}  variant="outlined" color="info">
+            ยกเลิก
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
   };
-
-  const handleConfirmEdit = async () => {
-	let formData: FormData = new FormData();
+  const handleEditConfirm = async () => {
+    let formData: FormData = new FormData();
     
     if (logoFile!="") {
       formData.append("logoFile", logoFile);
@@ -478,30 +419,30 @@ const center: LatLngExpression = [
       'village': updateGroupData.village,
       'lane': updateGroupData.lane,
       'road': updateGroupData.road,
-      'subdistrict': updateGroupData.subdistrict,
-      'district': updateGroupData.district,
+      'subdistrict': selectedSubdistrict.nameTH,
+      'district': selectedDistrict.nameTH,
       'province': updateGroupData.province,
       'zipCode': zipCodeState,
       'lat': currentLat,
       'lng': currentLng,
     }));
+// console.log('Form Data:');
+// 	for (const [key, value] of formData.entries()) {
+// 		console.log(key, value);
+// 	}
+
 
     const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }))
 
-		if (updateStatus.meta.requestStatus === "fulfilled") {
-		toast.success("แก้ไขข้อมูลสำเร็จ")
-		router.push("/panel/admin/manage/group")
-		} else {
-		toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
-		}
+    if (updateStatus.meta.requestStatus === "fulfilled") {
+      toast.success("แก้ไขข้อมูลสำเร็จ")
+      router.push("/panel/admin/manage/group")
+    } else {
+      toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+    }
     setOpenDialog(false);
-    setShowConfirmation(false);
+    // }
   };
-
-  const handleCancelEdit = () => {
-    setShowConfirmation(false);
-  };
-
 
   const showForm = ({
     values,
@@ -530,7 +471,7 @@ const center: LatLngExpression = [
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12} md={12} lg={6}>
                 <FormLabel htmlFor="logo" style={{ fontWeight: "bold" }}>
-                  ภาพโลโก้ ขนาดแนะนำ 250 x 250 px
+                  ภาพโลโก้ ขนาด 250 x 250 px
                 </FormLabel>
 
                 <Box style={{ padding: isSmallDevice ? 0 : 4 }}>
@@ -569,7 +510,7 @@ const center: LatLngExpression = [
                 </Box>
 
                 <FormLabel htmlFor="banner" style={{ fontWeight: "bold" }}>
-                  ภาพแบนเนอร์ ขนาดแนะนำ 1200 x 160 px
+                  ภาพแบนเนอร์ ขนาด 1200 x 160 px
                 </FormLabel>
                 <Box style={{ padding: isSmallDevice ? 0 : 4 }}>
                   <div>{showPreviewBanner(values)}</div>
@@ -587,7 +528,8 @@ const center: LatLngExpression = [
                       type="file"
                       onChange={(e: React.ChangeEvent<any>) => {
                         e.preventDefault();
-
+                        // setBannerFile(e.target.files[0])
+                        // setBannerObj(URL.createObjectURL(e.target.files[0]))
                         setFieldValue("bannerFile", e.target.files[0]); // for upload
                         setFieldValue(
                           "bannerObj",
@@ -606,7 +548,7 @@ const center: LatLngExpression = [
               </Grid>
               <Grid item xs={12} sm={12} md={6} lg={6}>
                 <Box style={{ marginTop: 3 }}>
-                  <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
+                  <FormLabel htmlFor="groupName" style={{ fontWeight: "bold" }}>
                     ชื่อกลุ่มผู้ผลิตหรือร้านค้า
                     <span style={{ color: "red" }}>*</span>
                   </FormLabel>
@@ -656,7 +598,7 @@ const center: LatLngExpression = [
 
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="agency" style={{ fontWeight: "bold" }}>
-                    ชื่อประธาน / เจ้าของร้าน{" "}
+                    ชื่อประธาน / เจ้าของร้าน
                     <span style={{ color: "red" }}>*</span>
                   </FormLabel>
                   <Field
@@ -701,7 +643,7 @@ const center: LatLngExpression = [
                   </FormLabel>
                   <Field
                     name="email"
-                    type="email"
+                    type="text"
                     inputProps={{ maxLength: 120 }}
                     defaultValue={groupData?.email}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -733,10 +675,12 @@ const center: LatLngExpression = [
               <Divider style={{ width: "50%", margin: 8 }} />
             </Box>
 
+
             <Grid container spacing={2}>
-{
-  sakonNakhonProvinces && <>
-   <Grid item xs={12} md={6}>
+    
+    {
+      sakonNakhonProvinces && <>
+        <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="hno" style={{ fontWeight: "bold" }}>
                     จังหวัด <span style={{ color: "red" }}>*</span>
@@ -759,9 +703,10 @@ const center: LatLngExpression = [
                   <ErrorMessage name="hno" />
                 </Box>
               </Grid>
-  </>
-}
-           
+      </>
+    }
+          
+
               {/* <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormControl fullWidth>
@@ -971,6 +916,7 @@ const center: LatLngExpression = [
                 </Box>
               </Grid>
 
+
               <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="lat" sx={{ fontWeight: "bold" }}>
@@ -1017,25 +963,24 @@ const center: LatLngExpression = [
                 </Box>
               </Grid>
 
-
             </Grid>
           </Grid>
         </Grid>
 
         <CardActions>
           <Button
-            type="submit"
+            type="button"
             variant="contained"
             fullWidth
-			onClick={()=>{
-				handleEdit()
-			}}
             // disabled={!isValid}
+            onClick={()=>{
+              setOpenDialog(true)
+            }}
             sx={{ marginRight: 1 }}
           >
             {isSmallDevice ? "บันทึก" : "บันทึกข้อมูล"}
           </Button>
-          <Link href="/panel/admin/manage/group" passHref>
+          <Link href="/panel/user/manage-group" passHref>
             <Button variant="outlined" fullWidth>
               ยกเลิก
             </Button>
@@ -1108,19 +1053,11 @@ const center: LatLngExpression = [
                 <Box sx={{ padding: 4 }}>
                   <Formik
                     initialValues={groupData!}
-					validate={(values) => {
-						// console.log(values)
-						let errors: any = {};
-						if (!values?.groupName) errors.groupName = "กรุณากรอกชื่อกลุ่ม";
-						if (!values?.phone) errors.phone = "กรุณากรอกเบอร์โทร";
-						return errors;
-					  }}
-					validationSchema={validationSchema}
-
+                    validationSchema={validationSchema}
                     onSubmit={async (values, { setSubmitting }) => {
-					  handleEdit()
                       setLogoFile(values?.logoFile)
                       setBannerFile(values?.bannerFile)
+                      setOpenDialog(true);
                       setSubmitting(false);
                     }}
                   >
@@ -1159,15 +1096,7 @@ const center: LatLngExpression = [
           </Grid>
         </Grid>
       </Container>
-      {/* {showDialog()} */}
-	  <ConfirmationDialog
-        title="ยืนยันการแก้ไขข้อมูลกลุ่ม"
-        message="คุณต้องการแก้ไขข้อมูลกลุ่มใช่หรือไม่ ?"
-        open={showConfirmation}
-        onClose={handleCancelEdit}
-        onConfirm={handleConfirmEdit}
-      />
-
+      {showDialog()}
     </Layout>
   );
 };
@@ -1183,7 +1112,7 @@ export const getServerSideProps: GetServerSideProps = async (
     const accessToken = context.req.cookies["access_token"];
     const provinces = await thaiAddressService.getProvinces();
     let sakonNakhonProvinces = provinces.filter(province => province.id === 35);
-
+    // console.log(provinces)
     return {
       props: {
         groupData,

@@ -419,20 +419,24 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
       'village': updateGroupData.village,
       'lane': updateGroupData.lane,
       'road': updateGroupData.road,
-      'subdistrict': updateGroupData.subdistrict,
-      'district': updateGroupData.district,
+      'subdistrict': selectedSubdistrict.nameTH,
+      'district': selectedDistrict.nameTH,
       'province': updateGroupData.province,
       'zipCode': zipCodeState,
       'lat': currentLat,
       'lng': currentLng,
     }));
+// console.log('Form Data:');
+// 	for (const [key, value] of formData.entries()) {
+// 		console.log(key, value);
+// 	}
 
 
     const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }))
 
     if (updateStatus.meta.requestStatus === "fulfilled") {
       toast.success("แก้ไขข้อมูลสำเร็จ")
-      router.push("/panel/user/manage-group")
+      router.push("/panel/admin/manage/group")
     } else {
       toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
     }
@@ -544,7 +548,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
               </Grid>
               <Grid item xs={12} sm={12} md={6} lg={6}>
                 <Box style={{ marginTop: 3 }}>
-                  <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
+                  <FormLabel htmlFor="groupName" style={{ fontWeight: "bold" }}>
                     ชื่อกลุ่มผู้ผลิตหรือร้านค้า
                     <span style={{ color: "red" }}>*</span>
                   </FormLabel>
@@ -594,7 +598,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="agency" style={{ fontWeight: "bold" }}>
-                    ชื่อประธาน / เจ้าของร้าน{" "}
+                    ชื่อประธาน / เจ้าของร้าน
                     <span style={{ color: "red" }}>*</span>
                   </FormLabel>
                   <Field
@@ -639,7 +643,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   </FormLabel>
                   <Field
                     name="email"
-                    type="email"
+                    type="text"
                     inputProps={{ maxLength: 120 }}
                     defaultValue={groupData?.email}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -965,10 +969,13 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
         <CardActions>
           <Button
-            type="submit"
+            type="button"
             variant="contained"
             fullWidth
-            disabled={!isValid}
+            // disabled={!isValid}
+            onClick={()=>{
+              setOpenDialog(true)
+            }}
             sx={{ marginRight: 1 }}
           >
             {isSmallDevice ? "บันทึก" : "บันทึกข้อมูล"}
