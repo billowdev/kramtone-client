@@ -136,6 +136,10 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
   const [deleteImage, setDeleteImage] = useState<any>({});
   const [openDeleteConfirmationDialog, setOpenDeleteConfirmationDialog] = useState(false)
 
+    const handleBackButtonClick = () => {
+    router.back();
+  };
+  
   const handleOpenDeleteConfirmationDialog = ()=>{
     setOpenDeleteConfirmationDialog(true)
     
@@ -566,11 +570,13 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
             >
               แก้ไข
             </Button>
-            <Link href="/panel/user/manage-product" passHref>
-              <Button variant="outlined" fullWidth>
+            {/* <Link href="/panel/user/manage-product" passHref> */}
+              <Button variant="outlined" fullWidth 
+               onClick={handleBackButtonClick}
+              >
                 ยกเลิก
               </Button>
-            </Link>
+            {/* </Link> */}
           </CardActions>
         </Card>
       </Form>
