@@ -27,7 +27,7 @@ import {
 	DialogTitle,
 	DialogContent,
 	DialogActions,
-	
+
 	List,
 	ListItem,
 	ListItemText,
@@ -55,25 +55,25 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 	const theme = useTheme();
 	const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 	const [categories, setCategories] = useState<CategoryPayload[]>([]);
-    const [colorSchemes, setColorSchemes] = useState<ColorSchemePayload[]>([]);
+	const [colorSchemes, setColorSchemes] = useState<ColorSchemePayload[]>([]);
 
 
 
 	useEffect(() => {
 		async function fetchData() {
-		  try {
-			const categoriesPayload = await categoryService.getAllCategory();
-			const colorSchemesPayload = await colorSchemeService.getAllColorScheme();
-			setCategories(categoriesPayload);
-			setColorSchemes(colorSchemesPayload);
-	
-			// setLoading(false);
-		  } catch (error) {
-			console.error(error);
-		  }
+			try {
+				const categoriesPayload = await categoryService.getAllCategory();
+				const colorSchemesPayload = await colorSchemeService.getAllColorScheme();
+				setCategories(categoriesPayload);
+				setColorSchemes(colorSchemesPayload);
+
+				// setLoading(false);
+			} catch (error) {
+				console.error(error);
+			}
 		}
 		fetchData();
-	  }, []);
+	}, []);
 
 	const [selectedCategory, setSelectedCategory] = useState<CategoryPayload>({
 		id: "",
@@ -97,63 +97,70 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 	const [addValue, setAddValue] = useState<Product>(initialValues);
 	const [images, setImages] = useState<File[]>([]);
 
-
-
 	const [previewImages, setPreviewImages] = useState<string[]>([]);
 
 	const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>, setFieldValue: any, values: Product) => {
 		if (event.target.files && event.target.files.length > 0) {
-			const files = event.target.files;
-			const urls: string[] = [];
-			for (let i = 0; i < files.length; i++) {
-				urls.push(URL.createObjectURL(files[i]));
-			}
-			setPreviewImages((prevPreviewImages) => [...prevPreviewImages, ...urls]);
-			const existingFiles = values.images || [];
-			// setFieldValue('images', [...existingFiles, ...files]);
-			setImages((prevImages) => [...prevImages, ...files]); // add new image files to state
+		  const files = event.target.files;
+		  const urls: string[] = [];
+		  
+		  // Check if adding the new images will exceed the limit of 3
+		  if (previewImages.length + files.length > 3) {
+			// Display an error message or take any desired action
+			console.log('Cannot add more than 3 images');
+			return;
+		  }
+		  
+		  for (let i = 0; i < files.length; i++) {
+			urls.push(URL.createObjectURL(files[i]));
+		  }
+		  
+		  setPreviewImages((prevPreviewImages) => [...prevPreviewImages, ...urls]);
+		  const existingFiles = values.images || [];
+		  setImages((prevImages) => [...prevImages, ...files]); // add new image files to state
 		}
-	};
+	  };
+	  
 
 
 	const colorSchemeModal = () => {
 		return (
-		  <Dialog open={colorShemeModalOpen} keepMounted>
-			<DialogTitle>กรุณาเลือกโทนสี</DialogTitle>
-			<DialogContent>
-			  <List>
-				{colorSchemes &&
-				  colorSchemes.map((colorScheme: ColorSchemePayload) => (
-					<ListItem
-					button
-					key={colorScheme.id}
-					onClick={() => handleSelectColorScheme(colorScheme)}
-				  >
-					<ListItemText
-					  primary={colorScheme.nameTH}
-					  secondary={colorScheme.hex}
-					/>
-					<Box
-					  sx={{
-						width: 50,
-						height: 50,
-						backgroundColor: colorScheme.hex,
-						borderRadius: "50%",
-						border: "1px solid black",
-						marginLeft: 2,
-					  }}
-					/>
-				  </ListItem>
-				  
-				  ))}
-			  </List>
-			</DialogContent>
-			<DialogActions>
-			  <Button onClick={handleCloseColorSchemeModal}>Cancel</Button>
-			</DialogActions>
-		  </Dialog>
+			<Dialog open={colorShemeModalOpen} keepMounted>
+				<DialogTitle>กรุณาเลือกโทนสี</DialogTitle>
+				<DialogContent>
+					<List>
+						{colorSchemes &&
+							colorSchemes.map((colorScheme: ColorSchemePayload) => (
+								<ListItem
+									button
+									key={colorScheme.id}
+									onClick={() => handleSelectColorScheme(colorScheme)}
+								>
+									<ListItemText
+										primary={colorScheme.nameTH}
+										secondary={colorScheme.hex}
+									/>
+									<Box
+										sx={{
+											width: 50,
+											height: 50,
+											backgroundColor: colorScheme.hex,
+											borderRadius: "50%",
+											border: "1px solid black",
+											marginLeft: 2,
+										}}
+									/>
+								</ListItem>
+
+							))}
+					</List>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCloseColorSchemeModal}>Cancel</Button>
+				</DialogActions>
+			</Dialog>
 		);
-	  };
+	};
 
 	const handleSelectCategory = (category: CategoryPayload) => {
 		setSelectedCategory(category);
@@ -174,20 +181,20 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 		nameTH: "กรุณาเลือกโทนสีสำหรับสินค้า",
 		hex: "",
 	});
-	  const [colorShemeModalOpen, setColorSchemeModalOpen] = useState(false);
+	const [colorShemeModalOpen, setColorSchemeModalOpen] = useState(false);
 
-	  
+
 	const handleSelectColorScheme = (colorScheme: ColorSchemePayload) => {
 		setSelectedColorScheme(colorScheme);
 		setColorSchemeModalOpen(false);
-	  };
-	  const handleOpenColorSchemeModal = () => {
+	};
+	const handleOpenColorSchemeModal = () => {
 		setColorSchemeModalOpen(true);
-	  };
-	
-	  const handleCloseColorSchemeModal = () => {
+	};
+
+	const handleCloseColorSchemeModal = () => {
 		setColorSchemeModalOpen(false);
-	  };
+	};
 
 
 	//   const handleSubmit = async (values: Product) => {
@@ -198,7 +205,7 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 	// 				formData.append("images", images[i]);
 	// 			}
 	// 		}
-		
+
 	// 		formData.append(
 	// 			"product",
 	// 			JSON.stringify({
@@ -257,7 +264,7 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 					formData.append("images", images[i]);
 				}
 			}
-		
+
 			formData.append(
 				"product",
 				JSON.stringify({
@@ -293,7 +300,7 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 	const handleCancelAddProduct = () => {
 		setShowConfirmation(false);
 	};
-	  
+
 	const categoryModal = () => {
 
 		return (
@@ -320,223 +327,230 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 
 	return (
 		<Layout>
-<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-     <Grid container spacing={3}>
-         <Grid item xs={12}>
-         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px'}}>
-         {isSmallDevice ? (
-             <ShoppingBagIcon sx={{fontSize:'1.5rem', marginLeft:'8px'}} />
-           ) : (
-             <ShoppingBagIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
-           )}
+			<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+				<Grid container spacing={3}>
+					<Grid item xs={12}>
+						<Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px' }}>
+							{isSmallDevice ? (
+								<ShoppingBagIcon sx={{ fontSize: '1.5rem', marginLeft: '8px' }} />
+							) : (
+								<ShoppingBagIcon sx={{ fontSize: '2.5rem', marginLeft: '16px' }} />
+							)}
 
-          
-         <React.Fragment> 
-           {isSmallDevice ? (
-             <Typography
-            sx={{
-               fontWeight: 'bold',  alignSelf:'center',
-           }}
-             > หน้าจัดการข้อมูลสินค้า</Typography>
-           ) : (
-             <Typography
-             variant='h5' sx={{
-               fontWeight: 'bold',  alignSelf:'center',
-           }}
-             > จัดการข้อมูลสินค้า</Typography>
-           )}
-         </React.Fragment>
-         </Paper>
-       </Grid> 
-       <Grid item xs={12} md={12} lg={12}>
-	   <Formik initialValues={initialValues}
-				validate={(values) => {
-					let errors: any = {};
-					if (!values.name) errors.name = "กรุณากรอกชื่อสินค้า";
-					if (!values.desc) errors.desc = "กรุณากรอกรายละเอียดสินค้า";
-					if (!values.price) errors.price = "กรุณากรอกราคาสินค้า";
-					return errors;
-				}}
-				onSubmit={(values, { setSubmitting }) => {
-					setAddValue(values)
-					handleAddProduct()
-					// handleSubmit(values); // call handleSubmit function here
-					setSubmitting(false);
-				}}
-			>
-				{({
-					values,
-					handleChange,
-					handleBlur,
-					isValid,
-					isSubmitting,
-					setFieldValue,
-				}) => (
-					<Form>
-						<Card>
-							<CardContent sx={{ padding: 4 }}>
-								{/* <Typography gutterBottom variant="h3">
+
+							<React.Fragment>
+								{isSmallDevice ? (
+									<Typography
+										sx={{
+											fontWeight: 'bold', alignSelf: 'center',
+										}}
+									> หน้าจัดการข้อมูลสินค้า</Typography>
+								) : (
+									<Typography
+										variant='h5' sx={{
+											fontWeight: 'bold', alignSelf: 'center',
+										}}
+									> จัดการข้อมูลสินค้า</Typography>
+								)}
+							</React.Fragment>
+						</Paper>
+					</Grid>
+					<Grid item xs={12} md={12} lg={12}>
+						<Formik initialValues={initialValues}
+							validate={(values) => {
+								let errors: any = {};
+								if (!values.name) errors.name = "กรุณากรอกชื่อสินค้า";
+								if (!values.desc) errors.desc = "กรุณากรอกรายละเอียดสินค้า";
+								if (!values.price) errors.price = "กรุณากรอกราคาสินค้า";
+								return errors;
+							}}
+							onSubmit={(values, { setSubmitting }) => {
+								setAddValue(values)
+								handleAddProduct()
+								// handleSubmit(values); // call handleSubmit function here
+								setSubmitting(false);
+							}}
+						>
+							{({
+								values,
+								handleChange,
+								handleBlur,
+								isValid,
+								isSubmitting,
+								setFieldValue,
+							}) => (
+								<Form>
+									<Card>
+										<CardContent sx={{ padding: 4 }}>
+											{/* <Typography gutterBottom variant="h3">
 									เพิ่มข้อมูลสินค้า
 								</Typography> */}
 
-								<Field
-									style={{ marginTop: 16 }}
-									fullWidth
-									as={TextField}
-									name="name"
-									type="text"
-									label="ชื่อสินค้า"
-									value={values.name}
-									onChange={handleChange}
-									onBlur={handleBlur}
-								/>
-								<br />
-								<Field
-									style={{ marginTop: 16 }}
-									fullWidth
-									as={TextField}
-									name="desc"
-									type="string"
-									label="รายละเอียดสินค้า"
-									value={values.desc}
-									onChange={handleChange}
-									onBlur={handleBlur}
-								/>
-								<br />
-								<Field
-									style={{ marginTop: 16 }}
-									fullWidth
-									as={TextField}
-									name="price"
-									type="number"
-									label="ราคาสินค้า"
-									value={values.price}
-									onChange={handleChange}
-									onBlur={handleBlur}
-								/>
-								<br />
+											<Field
+												style={{ marginTop: 16 }}
+												fullWidth
+												as={TextField}
+												name="name"
+												type="text"
+												label="ชื่อสินค้า"
+												value={values.name}
+												onChange={handleChange}
+												onBlur={handleBlur}
+											/>
+											<br />
+											<Field
+												style={{ marginTop: 16 }}
+												fullWidth
+												as={TextField}
+												name="desc"
+												type="string"
+												label="รายละเอียดสินค้า"
+												value={values.desc}
+												onChange={handleChange}
+												onBlur={handleBlur}
+											/>
+											<br />
+											<Field
+												style={{ marginTop: 16 }}
+												fullWidth
+												as={TextField}
+												name="price"
+												type="number"
+												label="ราคาสินค้า"
+												value={values.price}
+												onChange={handleChange}
+												onBlur={handleBlur}
+											/>
+											<br />
 
-								<div style={{ marginTop: 16 }}>
-									<Button variant="outlined" onClick={handleOpenModal}>
-										{selectedCategory && selectedCategory.name !== "" ? selectedCategory.name : 'เลือกประเภทสินค้า'}
-									</Button>
+											<div style={{ marginTop: 16 }}>
+												<Button variant="outlined" onClick={handleOpenModal}>
+													{selectedCategory && selectedCategory.name !== "" ? selectedCategory.name : 'เลือกประเภทสินค้า'}
+												</Button>
 
-								</div>
-								<br />
-                <div style={{ marginTop: 16 }}>
-  <Button variant="outlined" onClick={handleOpenColorSchemeModal}>
-    {selectedColorScheme ? (
-      <Box
-        sx={{
-          width: 50,
-          height: 50,
-          backgroundColor: selectedColorScheme.hex,
-          borderRadius: "50%",
-          border: "1px solid black",
-          marginRight: 2,
-        }}
+											</div>
+											<br />
+											<div style={{ marginTop: 16 }}>
+												<Button variant="outlined" onClick={handleOpenColorSchemeModal}>
+													{selectedColorScheme ? (
+														<Box
+															sx={{
+																width: 50,
+																height: 50,
+																backgroundColor: selectedColorScheme.hex,
+																borderRadius: "50%",
+																border: "1px solid black",
+																marginRight: 2,
+															}}
+														/>
+													) : null}
+													{selectedColorScheme
+														? `${selectedColorScheme.nameTH} / ${selectedColorScheme.nameEN} / ${selectedColorScheme.hex}  `
+														: "เลือกโทนสี"}
+												</Button>
+											</div>
+
+											<div style={{ marginTop: 16 }}>
+  {previewImages.length < 3 && (
+    <>
+      <input
+        type="file"
+        onChange={(event) => handleImageChange(event, setFieldValue, values)}
+        name="images"
+        multiple
+        accept="image/*"
+        id="files"
+        style={{ display: 'none' }}
       />
-    ) : null}
-    {selectedColorScheme
-      ? `${selectedColorScheme.nameTH} / ${selectedColorScheme.nameEN} / ${selectedColorScheme.hex}  `
-      : "เลือกโทนสี"}
-  </Button>
+
+      <label htmlFor="files" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+        <CloudUpload style={{ marginRight: 10 }} />
+        <span style={{ color: '#00B0CD' }}>เพิ่มรูปภาพ</span>
+      </label>
+    </>
+  )}
+
+  {previewImages.map((url, index) => (
+    <div key={index} style={{ position: 'relative', display: 'inline-block' }}>
+      <Image
+        src={url}
+        alt="preview"
+        width={150}
+        height={150}
+        objectFit="cover"
+        className="preview-image"
+      />
+      <button
+        onClick={() => {
+          const newImages = [...images];
+          newImages.splice(index, 1);
+          setImages(newImages);
+
+          const newPreviews = [...previewImages];
+          newPreviews.splice(index, 1);
+          setPreviewImages(newPreviews);
+        }}
+        style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          backgroundColor: 'transparent',
+          border: 'none',
+          color: 'red',
+          cursor: 'pointer',
+        }}
+      >
+        <Delete style={{ color: 'red' }} />
+      </button>
+    </div>
+  ))}
 </div>
 
-							<div style={{ marginTop: 16 }}>
-								<input
-									type="file"
-									onChange={(event) => handleImageChange(event, setFieldValue, values)}
-									name="images"
-									multiple
-									accept="image/*"
-									id="files"
-									style={{ display: 'none' }}
-								/>
 
-								<label htmlFor="files" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-									<CloudUpload style={{ marginRight: 10 }} />
-									<span style={{ color: '#00B0CD' }}>เพิ่มรูปภาพ</span>
-								</label>
 
-								{previewImages.map((url, index) => (
-									<div key={index} style={{ position: 'relative', display: 'inline-block' }}>
-									<Image
-									src={url}
-									alt="preview"
-									width={150}
-									height={150}
-									objectFit="cover"
-									className="preview-image"
-									/>
-										<button
-											onClick={() => {
-												const newImages = [...images];
-												newImages.splice(index, 1);
-												setImages(newImages);
+										</CardContent>
+										<CardActions>
+											<Button
+												disabled={isSubmitting || !isValid}
+												fullWidth
+												variant="contained"
+												color="primary"
+												// onClick={handleOpenQuestionConfirm}
+												type="submit"
+												sx={{ marginRight: 1 }}
+											>
+												เพิ่ม
+											</Button>
+											<Link href="/panel/user/manage-product" passHref>
+												<Button variant="outlined" fullWidth>
+													ยกเลิก
+												</Button>
+											</Link>
+										</CardActions>
+									</Card>
+								</Form>
+							)}
+						</Formik>
 
-												const newPreviews = [...previewImages];
-												newPreviews.splice(index, 1);
-												setPreviewImages(newPreviews);
-											}}
-											style={{
-												position: 'absolute',
-												top: 0,
-												right: 0,
-												backgroundColor: 'transparent',
-												border: 'none',
-												color: 'red',
-												cursor: 'pointer',
-											}}
-										>
-											<Delete style={{ color: 'red' }} />
-										</button>
-									</div>
-								))}
-							</div>
-							</CardContent>
-							<CardActions>
-								<Button
-									disabled={isSubmitting || !isValid}
-									fullWidth
-									variant="contained"
-									color="primary"
-									// onClick={handleOpenQuestionConfirm}
-									type="submit"
-									sx={{ marginRight: 1 }}
-								>
-									เพิ่ม
-								</Button>
-								<Link href="/panel/user/manage-product" passHref>
-									<Button variant="outlined" fullWidth>
-										ยกเลิก
-									</Button>
-								</Link>
-							</CardActions>
-						</Card>
-					</Form>
-				)}
-			</Formik>
-   
-       </Grid>
-   
-     </Grid>
-   
-   </Container>
+					</Grid>
 
-   <ConfirmationDialog
-        title="เพิ่มข้อมูล"
-        message="ยืนยันการเพิ่มข้อมูล?"
-        open={showConfirmation}
-        onClose={handleCancelAddProduct}
-        onConfirm={handleConfirmAddProduct}
-      />
+				</Grid>
+
+			</Container>
+
+			<ConfirmationDialog
+				title="เพิ่มข้อมูล"
+				message="ยืนยันการเพิ่มข้อมูล?"
+				open={showConfirmation}
+				onClose={handleCancelAddProduct}
+				onConfirm={handleConfirmAddProduct}
+			/>
 			{categoryModal()}
 			{colorSchemeModal()}
 
-</Layout>
+		</Layout>
 
-	
+
 	);
 };
 
