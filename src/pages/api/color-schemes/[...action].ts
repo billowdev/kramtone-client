@@ -125,12 +125,18 @@ async function deleteColorScheme(req: NextApiRequest, res: NextApiResponse<any>)
 			// console.log("=================")
 			// console.log(req.query['action'])
 			// console.log("=================")
+		
 			const { data: response } = await httpClient.delete(`/colorschemes/${req.query['action']}`, {
 				headers: {
 					'Authorization': `Bearer ${accessToken}`,
 				},
 			});
 			if (response) {
+				// console.log("==========response==========")
+				// console.log(response)
+				if(response.status === 'fail'){
+					res.status(400).json(response)
+				}
 				return res.status(200).json(response);
 			} else {
 				return res.status(400).json(response);
@@ -262,6 +268,7 @@ async function deleteGroupColorScheme(req: NextApiRequest, res: NextApiResponse<
 				},
 			});
 			if (response) {
+				
 				return res.status(200).json(response);
 			} else {
 				return res.status(400).json(response);

@@ -49,10 +49,6 @@ import ConfirmationDialog from "@/components/ConfirmationDialog";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import toast from "react-hot-toast";
 
-
-
-
-
 const CustomToolbar: FunctionComponent<{
   setFilterButtonEl: Dispatch<
     SetStateAction<HTMLButtonElement | null>
@@ -119,6 +115,7 @@ function AdminPanelManageColorScheme({}: Props) {
       // console.log(selectedUser)
       
     const response = await dispatch(deleteColorScheme({ id:selectedColorScheme.id}))
+  
       if (response.meta.requestStatus === "fulfilled") {
         toast.success("ลบข้อมูลสำเร็จ")
         setTimeout(() => {
@@ -126,7 +123,9 @@ function AdminPanelManageColorScheme({}: Props) {
         }, 200);
         // router.push("/panel/user/manage-product");
       }else{
-       toast.error("ลบข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+        // console.log("=============response============ color scheme")
+        // console.log(response)
+       toast.error("ลบข้อมูลไม่สำเร็จ โทนสีอาจถูกใช้อยู่จึงทำให้ไม่สามารถลบข้อมูลได้ โปรดลองอีกครั้ง")
       }
     }
 
