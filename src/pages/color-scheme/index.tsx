@@ -74,6 +74,7 @@ const NaturalColorTonesPage = () => {
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+
   useEffect(() => {
     setFilteredColorSchemes(
       colorSchemes.filter((scheme) =>
@@ -87,23 +88,166 @@ const NaturalColorTonesPage = () => {
 
 
 
+  // const schemesByPrefix: { [prefix: string]: ColorSchemePayload[] } = {};
+  // filteredColorSchemes.forEach((scheme: ColorSchemePayload) => {
+  //   const prefix = scheme.id.substr(0, 3);
+  //   if (!schemesByPrefix[prefix]) {
+  //     schemesByPrefix[prefix] = [];
+  //   }
+  //   schemesByPrefix[prefix].push(scheme);
+  // });
+
+  // const groups = (Object.entries(schemesByPrefix) as [string, ColorSchemePayload[]][]).reduce((acc, [prefix, schemes]) => {
+  
+  //   if (prefix === "SK1" || prefix === "SK2") {
+  //     acc.push({
+  //       prefix,
+  //       schemes,
+  //     });
+     
+  //   } else if (prefix === "SK5" || prefix === "SK6"){
+  //     acc.push({
+  //       prefix,
+  //       schemes,
+  //     });
+     
+  //   }else{
+  //     acc.push({
+  //       prefix,
+  //       schemes,
+  //     });
+     
+  //   }
+  //   return acc;
+  // }, [] as { prefix: string; schemes: ColorSchemePayload[] }[]);
+
+
   const schemesByPrefix: { [prefix: string]: ColorSchemePayload[] } = {};
-  filteredColorSchemes.forEach((scheme: ColorSchemePayload) => {
-    const prefix = scheme.id.substr(0, 3);
-    if (!schemesByPrefix[prefix]) {
-      schemesByPrefix[prefix] = [];
-    }
-    schemesByPrefix[prefix].push(scheme);
-  });
+filteredColorSchemes.forEach((scheme: ColorSchemePayload) => {
+  const prefix = scheme.id.substr(0, 3);
+  if (!schemesByPrefix[prefix]) {
+    schemesByPrefix[prefix] = [];
+  }
+  schemesByPrefix[prefix].push(scheme);
+});
+
+// const groups = Object.entries(schemesByPrefix).reduce(
+//   (acc, [prefix, schemes]) => {
+//     if (prefix === 'SK1' || prefix === 'SK2') {
+//       const existingGroup = acc.find(group => group.prefix === 'SK1/SK2');
+//       if (existingGroup) {
+//         existingGroup.schemes = existingGroup.schemes.concat(schemes);
+//       } else {
+//         acc.push({
+//           prefix: 'SK1/SK2',
+//           schemes,
+//         });
+//       }
+//     } else if (prefix === 'SK5') {
+//       const sk5Group = acc.find(group => group.prefix === 'SK5');
+//       if (sk5Group) {
+//         sk5Group.schemes = sk5Group.schemes.concat(schemes);
+//       } else {
+//         acc.push({
+//           prefix: 'SK5',
+//           schemes,
+//         });
+//       }
+//     } else if (prefix === 'SK6') {
+//       const sk6Group = acc.find(group => group.prefix === 'SK6');
+//       const sk5Schemes = schemesByPrefix['SK5'];
+//       if (sk6Group) {
+//         sk6Group.schemes = sk6Group.schemes.concat(schemes);
+//         if (sk5Schemes) {
+//           const sk5SchemesToInclude = sk5Schemes.filter(sk5Scheme =>
+//             ['SK5-15', 'SK5-16'].includes(sk5Scheme.id)
+//           );
+//           sk6Group.schemes = sk6Group.schemes.concat(sk5SchemesToInclude);
+//         }
+//       } else {
+//         const sk5SchemesToInclude = sk5Schemes
+//           ? sk5Schemes.filter(sk5Scheme =>
+//               ['SK5-15', 'SK5-16'].includes(sk5Scheme.id)
+//             )
+//           : [];
+//         acc.push({
+//           prefix: 'SK6',
+//           schemes: schemes.concat(sk5SchemesToInclude),
+//         });
+//       }
+//     } else {
+//       acc.push({
+//         prefix,
+//         schemes,
+//       });
+//     }
+//     return acc;
+//   },
+//   [] as { prefix: string; schemes: ColorSchemePayload[] }[]
+// );
+
+const groups = Object.entries(schemesByPrefix).reduce(
+  (acc, [prefix, schemes]) => {
+    if (prefix === 'SK1' || prefix === 'SK2') {
+      const existingGroup = acc.find(group => group.prefix === 'SK1/SK2');
+      if (existingGroup) {
+        existingGroup.schemes = existingGroup.schemes.concat(schemes);
+      } else {
+        acc.push({
+          prefix: 'SK1/SK2',
+          schemes,
+        });
+      }
+    } else if (prefix === 'SK5') {
+      const sk5Group = acc.find(group => group.prefix === 'SK5');
+      if (sk5Group) {
+        sk5Group.schemes = sk5Group.schemes.concat(
+          schemes.filter(
+            scheme => scheme.id !== 'SK5-15' && scheme.id !== 'SK5-16'
+          )
+        );
+      } else {
+        acc.push({
+          prefix: 'SK5',
+          schemes: schemes.filter(
+            scheme => scheme.id !== 'SK5-15' && scheme.id !== 'SK5-16'
+          ),
+        });
+      }
+    } else if (prefix === 'SK6') {
+      const sk6Group = acc.find(group => group.prefix === 'SK6');
+  const sk5Schemes = schemesByPrefix['SK5'];
   
-  const groups = (Object.entries(schemesByPrefix) as [string, ColorSchemePayload[]][]).reduce((acc, [prefix, schemes]) => {
+  if (sk6Group) {
+    const sk5SchemesToInclude = sk5Schemes.filter(
+      scheme => scheme.id === 'SK5-15' || scheme.id === 'SK5-16'
+    );
+    sk6Group.schemes = sk6Group.schemes.concat(sk5SchemesToInclude);
+  } else {
+    const sk5SchemesToInclude = sk5Schemes.filter(
+      scheme => scheme.id === 'SK5-15' || scheme.id === 'SK5-16'
+    );
     acc.push({
-      prefix,
-      schemes,
+      prefix: 'SK6',
+      schemes: schemes.concat(sk5SchemesToInclude),
     });
+  }
+      
+    }
+     else {
+      acc.push({
+        prefix,
+        schemes,
+      });
+    }
     return acc;
-  }, [] as { prefix: string; schemes: ColorSchemePayload[] }[]);
-  
+  },
+  [] as { prefix: string; schemes: ColorSchemePayload[] }[]
+);
+
+
+
+
 
 
   const renderColorSchemeTab = () => {
@@ -156,32 +300,18 @@ const NaturalColorTonesPage = () => {
                 style={{ height: '100%', marginTop: 16 }}
               />
             </Grid>
-            {/* {filteredColorSchemes
-              .slice((page - 1) * schemesPerPage, page * schemesPerPage)
-              .map((scheme: any) => (
-                <Grid key={scheme.id} item xs={12} sm={6}>
-                  <Card sx={{ display: 'flex' }}>
-                    <div
-                      style={{
-                        width: 50,
-                        backgroundColor: scheme.hex,
-                      }}
-                    />
-                    <CardContent>
-                      <Typography variant='h5'>{scheme.nameEN}</Typography>
-                      <Typography variant='subtitle1'>{scheme.nameTH}</Typography>
-                      <Typography variant='subtitle2'>{scheme.id}</Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))} */}
+ 
 
 <Grid container spacing={2}>
   {groups.map((group, i) => (
     <Grid key={i} item xs={12}>
-      <Typography variant='h5' gutterBottom>
-        {group.prefix} - {group.schemes[0].nameTH} ({group.schemes[0].nameEN})
+
+       <Typography variant='h5' gutterBottom>
+        {group.prefix === 'SK1/SK2'
+          ? `SK1 - ${group.schemes[0].nameTH} (${group.schemes[0].nameEN}) และ SK2 - ${group.schemes[1].nameTH} (${group.schemes[1].nameEN})`
+          : `${group.prefix} - ${group.schemes[0].nameTH} (${group.schemes[0].nameEN})`}
       </Typography>
+
       <Grid container spacing={2}>
         {group.schemes.map((scheme: ColorSchemePayload, j) => (
           <Grid key={j} item xs={12} sm={6} md={4} lg={2} xl={2}>
@@ -216,17 +346,8 @@ const NaturalColorTonesPage = () => {
 
 
 
-
-
-
           </Grid>
-          {/* <Pagination
-            count={Math.ceil(filteredColorSchemes.length / schemesPerPage)}
-            page={page}
-            onChange={handlePageChange}
-            color='primary'
-            style={{ marginTop: '16px' }}
-          /> */}
+     
         </React.Fragment>
       </Box>
     );
