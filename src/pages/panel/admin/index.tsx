@@ -17,7 +17,7 @@ import CheckroomIcon from "@mui/icons-material/Checkroom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import WidgetsIcon from '@mui/icons-material/Widgets';
-
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { useTheme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "next/link";
@@ -83,18 +83,35 @@ function AdminPanel({}: Props) {
               </Typography> */}
 
               <Grid container spacing={2} columns={16}>
+                
                 <Grid item xs={8}>
                   <CustomMenuListItem
-                    href="/panel/user/manage-group"
-                    icon={GroupsIcon}
-                    text="จัดการข้อมูลกลุ่ม"
+                    href="/panel/admin/manage/user"
+                    icon={AccountBoxIcon}
+                    text="จัดการบัญชีผู้ใช้"
                   />
-                 
+                  <CustomMenuListItem
+                    href="/panel/admin/manage/group"
+                    icon={GroupsIcon}
+                    text="จัดการกลุ่ม/ร้านค้า"
+                  />
                 </Grid>
                 <Grid item xs={8}>
-                 
-                 
+                  <CustomMenuListItem
+                    href="/panel/admin/manage/category"
+                    icon={CheckroomIcon}
+                    text="จัดการประเภทสินค้า"
+                  />
+                  <CustomMenuListItem   
+                            href="/panel/admin/manage/color-scheme"
+                            useStartWithPath={true}
+                            startWithPath="/panel/admin/manage/color-scheme"
+                              icon={ColorLensIcon}
+                              text="จัดการโทนสี"
+                              open={open}
+                            />
                 </Grid>
+
               </Grid>
 
               <Divider sx={{ my: 1 }} />

@@ -303,7 +303,7 @@ function Layout({ children }: LayoutProps) {
                     <CustomMenuListItem   
                             href="/panel/admin/manage/group"
                               icon={GroupsIcon}
-                              text="จัดการข้อมูลกลุ่ม"
+                              text="จัดการกลุ่ม/ร้านค้า"
                               open={open}
                               useStartWithPath={true}
                               startWithPath="/panel/admin/manage/group"

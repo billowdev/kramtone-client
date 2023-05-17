@@ -350,7 +350,6 @@ const handleBackButtonClick = () => {
         <>
           {groupData?.products
             .filter((product: any) => product.recommend === true)
-            .sort((a: any, b: any) => new Date(b.updatedAt) - new Date(a.updatedAt))
             .slice(0, 5)
             .map((product: any, index: number) => (
               <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>

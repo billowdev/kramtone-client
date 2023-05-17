@@ -43,6 +43,8 @@ import { CheckboxWithLabel } from 'formik-material-ui';
 interface Product {
 	name: string;
 	desc: string;
+	publish: boolean;
+	recommend: boolean;
 	price: string;
 	images?: FileList;
 }

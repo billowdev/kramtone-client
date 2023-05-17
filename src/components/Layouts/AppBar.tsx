@@ -44,6 +44,7 @@ type HeaderProp = {
 };
 
 export default function AppBarComponent({ open, onDrawerOpen }: HeaderProp) {
+	
 	// const [setShowProfileMenu] = React.useState(false);
 	// const dispatch = useAppDispatch();
 	return (

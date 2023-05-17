@@ -268,7 +268,7 @@ function UserPanelProductDetail({ product }: Props) {
               color="primary"
               aria-label="แก้ไขข้อมูล"
               onClick={() =>
-                router.push("/panel/user/manage-product/edit?id=" + product.id)
+                router.push("/panel/user/manage-product/edit?id=" + product?.id)
               }
             >
               แก้ไขข้อมูล
