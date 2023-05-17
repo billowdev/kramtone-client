@@ -561,7 +561,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       handleInputChange(e, 'groupName')
                     }}
-                    label="ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
+                    label="กรุณากรอก ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
                     component={TextField}
                     style={{ marginTop: 3 }}
                   />
@@ -607,7 +607,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     inputProps={{ maxLength: 160 }}
                     defaultValue={groupData?.agency}
                     fullWidth
-                    label="ชื่อประธาน / เจ้าของร้าน"
+                    label="กรุณากรอก ชื่อประธาน / เจ้าของร้าน"
                     component={TextField}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       handleInputChange(e, 'agency')
@@ -630,7 +630,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       handleInputChange(e, 'phone')
                     }}
                     fullWidth
-                    label="เบอร์โทร"
+                    label="กรุณากรอก เบอร์โทร"
                     component={TextField}
                     sx={{ marginTop: 3 }}
                   />
@@ -650,7 +650,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       handleInputChange(e, 'email')
                     }}
                     fullWidth
-                    label="อีเมล"
+                    label="กรุณากรอก อีเมล"
                     component={TextField}
                     sx={{ marginTop: 3 }}
                   />
@@ -696,7 +696,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       handleInputChange(e, 'province')
                     }}
-                    label="จังหวัด"
+                    label="กรุณากรอก จังหวัด"
                     component={TextField}
                     sx={{ marginTop: 3 }}
                   />
@@ -822,7 +822,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     onChange={(e: React.ChangeEvent<any>) => {
                       setZipCodeState(e.target.value);
                     }}
-                    label="รหัสไปรษณีย์"
+                    label="กรุณากรอก รหัสไปรษณีย์"
                     inputProps={{ maxLength: 10 }}
                     component={TextField}
                     sx={{ marginTop: 3 }}
@@ -845,7 +845,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       handleInputChange(e, 'hno')
                     }}
-                    label="บ้านเลขที่/หมู่"
+                    label="กรุณากรอก บ้านเลขที่/หมู่"
                     component={TextField}
                     sx={{ marginTop: 3 }}
                   />
@@ -867,7 +867,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       handleInputChange(e, 'lane')
                     }}
                     inputProps={{ maxLength: 50 }}
-                    label="ซอย"
+                    label="กรุณากรอก ซอย"
                     component={TextField}
                     sx={{ marginTop: 3 }}
                   />
@@ -888,7 +888,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     }}
                     inputProps={{ maxLength: 50 }}
                     fullWidth
-                    label="ถนน"
+                    label="กรุณากรอก ถนน"
                     component={TextField}
                     sx={{ marginTop: 3 }}
                   />
@@ -908,7 +908,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     }}
                     type="text"
                     fullWidth
-                    label="หมู่บ้าน"
+                    label="กรุณากรอก หมู่บ้าน"
                     component={TextField}
                     sx={{ marginTop: 3 }}
                   />
@@ -932,7 +932,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     }}
                     type="text"
                     fullWidth
-                    label="ละติจูด"
+                    label="กรุณากรอก ละติจูด"
                     component={TextField}
                     sx={{ marginTop: 3 }}
                   />
@@ -955,7 +955,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     }}
                     type="text"
                     fullWidth
-                    label="ลองจิจูด"
+                    label="กรุณากรอก ลองจิจูด"
                     component={TextField}
                     sx={{ marginTop: 3 }}
                   />

@@ -13,6 +13,8 @@ import {
   CardActions,
   Button,
   FormHelperText,
+  Box,
+  FormLabel
 } from "@mui/material";
 
 import PersonIcon from '@mui/icons-material/Person';
@@ -124,29 +126,49 @@ if(password) {
 				<Typography gutterBottom variant="h3">
 				  แก้ไขข้อมูลบัญชีผู้ใช้
 				</Typography>
-	  
-				<Field
-              style={{ marginTop: 16 }}
-              fullWidth
-              component={TextField}
-              name="username"
-              type="text"
-              label="ชื่อผู้ใช้"
-              required
-            />
-            <br />
-			<Field
-              style={{ marginTop: 16 }}
-              fullWidth
-              component={TextField}
-              name="email"
-              type="text"
-              label="อีเมล"
-            />
-            <br />
-			<br />
+
+        <Box style={{ marginTop: 3 }}>
+              <FormLabel htmlFor="username" style={{ fontWeight: "bold" }}>
+              ชื่อผู้ใช้
+                          <span style={{ color: "red" }}>*</span>
+                        </FormLabel>
+
+              <Field
+                    style={{ marginTop: 16 }}
+                    fullWidth
+                    component={TextField}
+                    name="username"
+                    type="text"
+                    label="กรุณากรอก ชื่อผู้ใช้"
+                    required
+                  />
+            </Box>
+               
+              <Box style={{ marginTop: 3 }}>
+              <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
+                    อีเมล
+                    <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+            <Field
+                    style={{ marginTop: 16 }}
+                    fullWidth
+                    component={TextField}
+                    name="email"
+                    type="text"
+                    label="กรุณากรอก อีเมล"
+                  />
+                </Box>
+		
 			<Grid item>
-		<InputLabel id="role-select-label">สถานะ</InputLabel>
+
+      <Box style={{ marginTop: 3 }}>
+
+      <FormLabel htmlFor="role" style={{ fontWeight: "bold" }}>
+      สถานะ
+                    <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+
+		
 		<div style={{ display: 'flex' }}>
 		  <div style={{ marginRight: '1rem' }}>
 			<input
@@ -169,8 +191,18 @@ if(password) {
 			<label htmlFor="admin">ผู้ดูแลระบบ</label>
 		  </div>
 		</div>
+    </Box>
 	  </Grid>
 	  <br />
+
+
+    <Box style={{ marginTop: 3 }}>
+
+<FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+ชื่อ
+              <span style={{ color: "red" }}>*</span>
+            </FormLabel>
+
 
 	  <Field
               style={{ marginTop: 16 }}
@@ -178,40 +210,74 @@ if(password) {
               component={TextField}
               name="name"
               type="text"
-              label="ชื่อ"
+              label="กรุณากรอก ชื่อ"
             />
+
+            </Box>
             <br />
+
+            
+    <Box style={{ marginTop: 3 }}>
+
+<FormLabel htmlFor="surname" style={{ fontWeight: "bold" }}>
+นามสกุล
+              <span style={{ color: "red" }}>*</span>
+            </FormLabel>
 			<Field
               style={{ marginTop: 16 }}
               fullWidth
               component={TextField}
               name="surname"
               type="text"
-              label="นามสกุล"
+              label="กรุณากรอก นามสกุล"
             />
+              </Box>
+
             <br />
+            <Box style={{ marginTop: 3 }}>
+
+<FormLabel htmlFor="phone" style={{ fontWeight: "bold" }}>
+เบอร์โทร
+              <span style={{ color: "red" }}>*</span>
+            </FormLabel>
+
 			<Field
               style={{ marginTop: 16 }}
               fullWidth
               component={TextField}
               name="phone"
               type="text"
-              label="เบอร์โทร"
+              label="กรุณากรอก เบอร์โทร"
               required
             />
+            </Box>
             <br />
 			<Grid item>
 
+      <Box style={{ marginTop: 3 }}>
+
+<FormLabel htmlFor="password" style={{ fontWeight: "bold" }}>
+รหัสผ่าน
+              <span style={{ color: "red" }}>*</span>
+            </FormLabel>
       <Field
       style={{ marginTop: 16 }}
       fullWidth
       component={TextField}
       name="password"
       type="password"
-      label="รหัสผ่าน"
+      label="กรุณากรอก รหัสผ่าน"
       value={password}
       onChange={(event:React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
     />
+    </Box>
+
+    <Box style={{ marginTop: 3 }}>
+
+<FormLabel htmlFor="passwordConfirmation" style={{ fontWeight: "bold" }}>
+ยืนยันรหัสผ่าน
+              <span style={{ color: "red" }}>*</span>
+            </FormLabel>
 
     <Field
       style={{ marginTop: 16 }}
@@ -219,12 +285,17 @@ if(password) {
       component={TextField}
       name="passwordConfirmation"
       type="password"
-      label="ยืนยันรหัสผ่าน"
+      label="กรุณากรอก รหัสผ่านอีกครั้ง"
       value={passwordConfirmation}
       onChange={(event:React.ChangeEvent<HTMLInputElement>) => setPasswordConfirmation(event.target.value)}
     />
-  
-
+     </Box>
+     <Box style={{ marginTop: 3 }}>
+     <FormLabel htmlFor="activated" style={{ fontWeight: "bold" }}>
+     สถานะการยืนยันตัวตน
+              <span style={{ color: "red" }}>*</span>
+            </FormLabel>
+<br />
 			<Field
 				component={CheckboxWithLabel}
 				name="activated"
@@ -237,6 +308,8 @@ if(password) {
 				label: 'สถานะการยืนยันตัวตน (Activate)',
 				}}
 			/>
+         </Box>
+
 			</Grid>
 
 			  </CardContent>
