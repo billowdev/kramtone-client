@@ -38,7 +38,7 @@ import { ColorSchemePayload } from '@/models/color-scheme.model';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-
+import { CheckboxWithLabel } from 'formik-material-ui';
 
 interface Product {
 	name: string;
@@ -51,11 +51,15 @@ interface AddProductFormProps {
 	gid?: string,
 }
 
+
 const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 	const theme = useTheme();
 	const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 	const [categories, setCategories] = useState<CategoryPayload[]>([]);
 	const [colorSchemes, setColorSchemes] = useState<ColorSchemePayload[]>([]);
+	const [publish, setPublish] = useState<boolean>(true)
+	const [recommend, setRecommend] = useState<boolean>(false)
+
 
 
 
@@ -89,6 +93,8 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 		name: '',
 		desc: '',
 		price: '',
+		publish: true,
+		recommend: false,
 		images: undefined,
 	};
 
@@ -257,6 +263,19 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 
 	const handleConfirmAddProduct = async () => {
 		try {
+			if(!selectedCategory.id){
+				setShowConfirmation(false);
+				return toast.error(
+					"กรุณาเลือกประเภทสินค้า"
+				);
+			}
+			if(!selectedColorScheme.id){
+				setShowConfirmation(false);
+				return toast.error(
+					"กรุณาเลือกโทนสีสำหรับสินค้า"
+				);
+			}
+
 			const values = addValue
 			const formData = new FormData();
 			if (images) {
@@ -271,6 +290,8 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 					name: values.name,
 					desc: values.desc,
 					price: values.price,
+					publish:publish,
+					recommend:recommend,
 					categoryId: selectedCategory && selectedCategory?.id,
 					groupId: gid,
 					colorSchemeId: selectedColorScheme && selectedColorScheme?.id
@@ -422,6 +443,48 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 												onBlur={handleBlur}
 											/>
 											<br />
+
+
+							<Grid container direction="row">
+								<Grid item>
+									<Field
+									component={CheckboxWithLabel}
+									name="publish"
+									id="publish-checkbox"
+									checked={publish}
+									onChange={() => {
+										setPublish(!publish);
+									}}
+									Label={{
+										label: 'แสดงสินค้า',
+									}}
+									/>
+								</Grid>
+
+								<Grid item>
+									<Field
+									component={CheckboxWithLabel}
+									name="recommend"
+									id="recommend-checkbox"
+									checked={recommend}
+									onChange={() => {
+										setRecommend(!recommend);
+									}}
+									Label={{
+										label: 'สินค้าแนะนำ',
+									}}
+									/>
+								</Grid>
+							</Grid>
+
+
+
+
+
+
+
+
+
 
 											<div style={{ marginTop: 16 }}>
 												<Button variant="outlined" onClick={handleOpenModal}>

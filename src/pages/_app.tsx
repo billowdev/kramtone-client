@@ -161,10 +161,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 				setShowPopup(true);
 			}
 			
-			const devAcceptance = await handleDevAcceptance();
-			if (!devAcceptance) {
-				setPopupDevOpen(true);
-			}
+			// const devAcceptance = await handleDevAcceptance();
+			// if (!devAcceptance) {
+			// 	setPopupDevOpen(true);
+			// }
 		})();
 	}, [router]);
 
@@ -175,7 +175,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<Toaster />
 			</ThemeProvider>
 			<CookieConsentPopup open={showPopup} onClose={handleClosePopup} />
-			<DevelopmentPopup open={popupDevOpen} onClose={handleCloseDevPopup} />
+			{/* <DevelopmentPopup open={popupDevOpen} onClose={handleCloseDevPopup} /> */}
 		</Provider>
 	);
 }

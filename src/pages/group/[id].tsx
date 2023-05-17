@@ -330,6 +330,43 @@ const handleBackButtonClick = () => {
     </Paper>
   </Grid>
 
+
+
+  <Grid item xs={12} md={12} lg={12}>
+  <Paper
+    sx={{
+      p: 2,
+      display: "flex",
+      gap: "4rem",
+      flexDirection: {
+        xs: "column",
+        md: "row",
+      },
+    }}
+  >
+    <Box>
+      <Typography style={typeographyHeaderStyle}>สินค้าแนะนำ</Typography>
+      {groupData?.products && (
+        <>
+          {groupData?.products
+            .filter((product: any) => product.recommend === true)
+            .sort((a: any, b: any) => new Date(b.updatedAt) - new Date(a.updatedAt))
+            .slice(0, 5)
+            .map((product: any, index: number) => (
+              <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+                <Typography variant="subtitle1">
+                  {product.name}
+                </Typography>
+              </div>
+            ))}
+        </>
+      )}
+    </Box>
+  </Paper>
+</Grid>
+
+
+
           <Grid item xs={12} md={12} lg={12}>
             <Paper
               sx={{
