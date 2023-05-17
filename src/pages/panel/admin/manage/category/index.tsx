@@ -1,7 +1,7 @@
-import React, {Dispatch, FunctionComponent, SetStateAction, useState} from 'react'
+import React, { Dispatch, FunctionComponent, SetStateAction, useState } from 'react'
 import Layout from '@/components/Layouts/Layout';
 import { useAppDispatch } from "@/store/store";
-import { getAllCategoryByGroupAction, categorySelector, deleteCategoryAction } from "@/store/slices/category.slice";
+import { getAllCategory, categorySelector, deleteCategoryAction } from "@/store/slices/category.slice";
 import router from "next/router";
 import { TransitionProps } from "@mui/material/transitions";
 import Link from "next/link";
@@ -14,7 +14,7 @@ import * as categoryService from "@/services/category.service"
 import * as authService from "@/services/auth.service"
 import { CategoryPayload } from "@/models/category.model"
 import { useSelector } from "react-redux";
-import {CategoryDialog} from "@/components/Panel/CategoryDialog"
+import { CategoryDialog } from "@/components/Panel/CategoryDialog"
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
@@ -70,7 +70,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-import {  Modal } from '@mui/material';
+import { Modal } from '@mui/material';
 
 const useStyles = makeStyles({
   customToolbar: {
@@ -128,14 +128,16 @@ const CustomToolbar: FunctionComponent<{
 
 type Props = {
   // gid?: string,
-  accessToken?: string,
+  // accessToken?: string,
   // productArray?: CategoryPayload[]
 }
 
-function AdminPanelManageCategory({ accessToken}: Props) {
+function AdminPanelManageCategory({
+  // accessToken
+}: Props) {
   const theme = useTheme();
   const classes = useStyles();
- 
+
   const dispatch = useAppDispatch();
   const categoryData = useSelector(categorySelector);
   const [openAddDialog, setOpenAddDialog] = React.useState<boolean>(false);
@@ -158,11 +160,11 @@ function AdminPanelManageCategory({ accessToken}: Props) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
- 
+
 
   const [viewCategoryOpen, setViewCategoryOpen] = useState(false);
 
-  const handleViewCategoryOpen = (row:any) => {
+  const handleViewCategoryOpen = (row: any) => {
     setSelectedCategory(row)
     setViewCategoryOpen(true);
   };
@@ -173,7 +175,7 @@ function AdminPanelManageCategory({ accessToken}: Props) {
 
 
   React.useEffect(() => {
-    dispatch(getAllCategoryByGroupAction());
+    dispatch(getAllCategory());
   }, [dispatch]);
 
   const [filterButtonEl, setFilterButtonEl] =
@@ -214,34 +216,30 @@ function AdminPanelManageCategory({ accessToken}: Props) {
     setOpenAddDialog(false);
   };
 
-
-
-  
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  const handleDelete =  () => {
+  const handleDelete = () => {
     setShowConfirmation(true);
   }
- 
+
   const handleConfirmDelete = async () => {
     if (selectedCategory) {
       // console.log(selectedUser)
-      
-    const response = await dispatch(deleteCategoryAction({ id:selectedCategory.id}))
+      const response = await dispatch(deleteCategoryAction({ id: selectedCategory.id }))
       if (response.meta.requestStatus === "fulfilled") {
         toast.success("ลบข้อมูลสำเร็จ")
         setTimeout(() => {
           window.location.reload(); // Reload the page after 2 seconds
         }, 200);
         // router.push("/panel/user/manage-product");
-      }else{
-       toast.error("ลบข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+      } else {
+        toast.error("ลบข้อมูลไม่สำเร็จ ประเภทสินค้าถูกใช้งานอยู่ไม่สามารถลบข้อมูลได้ โปรดลองอีกครั้ง")
       }
     }
 
     setShowConfirmation(false);
   };
-  
+
   const handleCancelDelete = () => {
     setShowConfirmation(false);
   };
@@ -269,7 +267,7 @@ function AdminPanelManageCategory({ accessToken}: Props) {
           Confirm to delete the product? : {selectedCategory.name}
         </DialogTitle>
         <DialogContent>
-        
+
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenEditDialog(false)} color="info">
@@ -316,127 +314,129 @@ function AdminPanelManageCategory({ accessToken}: Props) {
           <IconButton
             aria-label="edit"
             size="large"
-            onClick={() => 
-            router.push("/panel/admin/manage/category/edit?id=" + row.id)
+            onClick={() =>
+              router.push("/panel/admin/manage/category/edit?id=" + row.id)
             }
-            // onClick={() => {
-            //   setSelectedCategory(row);
-            //   // setOpenEditDialog(true);
-            // }}
+          // onClick={() => {
+          //   setSelectedCategory(row);
+          //   // setOpenEditDialog(true);
+          // }}
           >
             <EditIcon fontSize="inherit" />
           </IconButton>
           <IconButton
             aria-label="edit"
             size="large"
-            onClick={()=>{
+            onClick={() => {
               handleViewCategoryOpen(row)
             }}
           >
             <VisibilityIcon fontSize="inherit" />
           </IconButton>
 
-          
+
         </Stack>
       ),
     },
   ];
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 
+  // console.log("=======categoryData=======")
+  // console.log(categoryData)
 
   return (
-<Layout>
-     	<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px'}}>
+    <Layout>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px' }}>
+              {isSmallDevice ? (
+                <CheckroomIcon sx={{ fontSize: '1.5rem', marginLeft: '8px' }} />
+              ) : (
+                <CheckroomIcon sx={{ fontSize: '2.5rem', marginLeft: '16px' }} />
+              )}
+
+
+              <React.Fragment>
                 {isSmallDevice ? (
-                    <CheckroomIcon sx={{fontSize:'1.5rem', marginLeft:'8px'}} />
-                  ) : (
-                    <CheckroomIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
-                  )}
-
-                 
-                <React.Fragment> 
-                  {isSmallDevice ? (
-                    <Typography
-                   sx={{
-                      fontWeight: 'bold',  alignSelf:'center',
-                  }}
-                    > หน้าจัดการข้อมูลประเภทสินค้า</Typography>
-                  ) : (
-                    <Typography
+                  <Typography
+                    sx={{
+                      fontWeight: 'bold', alignSelf: 'center',
+                    }}
+                  > หน้าจัดการข้อมูลประเภทสินค้า</Typography>
+                ) : (
+                  <Typography
                     variant='h5' sx={{
-                      fontWeight: 'bold',  alignSelf:'center',
-                  }}
-                    > จัดการข้อมูลประเภทสินค้า</Typography>
-                  )}
-                </React.Fragment>
-                </Paper>
-              </Grid> 
+                      fontWeight: 'bold', alignSelf: 'center',
+                    }}
+                  > จัดการข้อมูลประเภทสินค้า</Typography>
+                )}
+              </React.Fragment>
+            </Paper>
+          </Grid>
 
-              <Grid item xs={12} md={12} lg={12}>
-                <DataGrid
-                  sx={{ backgroundColor: "white",  width: "100%", height: "100%", minHeight: "200px" }}
-                  rows={categoryData?.categoryArray ?? []}
-                  columns={columns}
-                  // pageSize={25}
-                  // rowsPerPageOptions={[25]}
-                  components={{
-                    Toolbar: CustomToolbar,
-                  }}
-                  componentsProps={{
-                    panel: {
-                      anchorEl: filterButtonEl,
-                    },
-                    toolbar: {
-                      setFilterButtonEl,
-                    },
-                  }}
-                />
-              </Grid>
-            </Grid>
-          
-          </Container>
+          <Grid item xs={12} md={12} lg={12}>
+            <DataGrid
+              sx={{ backgroundColor: "white", width: "100%", height: "100%", minHeight: "200px" }}
+              rows={categoryData?.categoryArray ?? []}
+              columns={columns}
+              // pageSize={25}
+              // rowsPerPageOptions={[25]}
+              components={{
+                Toolbar: CustomToolbar,
+              }}
+              componentsProps={{
+                panel: {
+                  anchorEl: filterButtonEl,
+                },
+                toolbar: {
+                  setFilterButtonEl,
+                },
+              }}
+            />
+          </Grid>
+        </Grid>
 
-          <CategoryDialog category={selectedCategory} open={viewCategoryOpen} onClose={handleViewCategoryClose} />
-{showEditDialog()}
-<ConfirmationDialog
-                title="ลบข้อมูล"
-                message="ยืนยันการลบข้อมูล"
-                open={showConfirmation}
-                onClose={handleCancelDelete}
-                onConfirm={handleConfirmDelete}
-              />
-  </Layout>
+      </Container>
+
+      <CategoryDialog category={selectedCategory} open={viewCategoryOpen} onClose={handleViewCategoryClose} />
+      {showEditDialog()}
+      <ConfirmationDialog
+        title="ลบข้อมูล"
+        message="ยืนยันการลบข้อมูล"
+        open={showConfirmation}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+      />
+    </Layout>
 
   )
 }
 
 export default withAuth(AdminPanelManageCategory)
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  try {
-    const accessToken = context.req.cookies['access_token']
-    const { gid } = await authService.getSessionServerSide(accessToken!)
+// export const getServerSideProps: GetServerSideProps = async (
+//   context: GetServerSidePropsContext
+// ) => {
+//   try {
+//     const accessToken = context.req.cookies['access_token']
+//     const { gid } = await authService.getSessionServerSide(accessToken!)
 
-    // const productArray = await categoryService.getAllProductByGroup(gid)
-    return {
-      props: {
-        gid,
-        accessToken,
-        // productArray
-      },
-    };
-  } catch (error) {
-    return {
-      props: {
+//     // const productArray = await categoryService.getAllProductByGroup(gid)
+//     return {
+//       props: {
+//         gid,
+//         accessToken,
+//         // productArray
+//       },
+//     };
+//   } catch (error) {
+//     return {
+//       props: {
 
-      },
-    };
-  }
-};
+//       },
+//     };
+//   }
+// };
 
 

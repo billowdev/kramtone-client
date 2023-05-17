@@ -125,7 +125,7 @@ function AdminPanelManageColorScheme({}: Props) {
       }else{
         // console.log("=============response============ color scheme")
         // console.log(response)
-       toast.error("ลบข้อมูลไม่สำเร็จ โทนสีอาจถูกใช้อยู่จึงทำให้ไม่สามารถลบข้อมูลได้ โปรดลองอีกครั้ง")
+       toast.error("ลบข้อมูลไม่สำเร็จ โทนสีถูกใช้งานอยู่ไม่สามารถลบข้อมูลได้ โปรดลองอีกครั้ง")
       }
     }
 

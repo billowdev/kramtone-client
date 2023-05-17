@@ -22,6 +22,7 @@ import httpClient from "@/common/utils/httpClient.util";
 import { Switch, FormControlLabel, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
 import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
+import ConfirmationDialog from "@/components/ConfirmationDialog"
 
 
 
@@ -35,8 +36,36 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
   const [updateValue, setUpdateValue] = React.useState<CategoryPayload>(category!);
   const dispatch = useAppDispatch();
-  const [imageFile, setImageFile] = React.useState<any | Blob>("")
-  const [imageObj, setImageObj] = React.useState<URL | string>("")
+  // const [imageFile, setImageFile] = React.useState<any | Blob>("")
+  // const [imageObj, setImageObj] = React.useState<URL | string>("")
+
+
+  // const [showConfirmation, setShowConfirmation] = React.useState(false);
+
+  // const handleEdit = () => {
+  //   setShowConfirmation(true);
+  // }
+
+  // const handleConfirmEdit = async () => {
+  //   if (updateValue && colorScheme?.id) {
+  //     const colorSchemeId = colorScheme.id
+  //     const response = await dispatch(updateColorScheme({ colorSchemeId, updateValue, accessToken }))
+
+  //     if (response.meta.requestStatus === "fulfilled") {
+  //       toast.success("แก้ไขข้อมูลสำเร็จ")
+  //       router.push("/panel/admin/manage/color-scheme");        // router.push("/panel/user/manage-product");
+  //     } else {
+  //       console.log(response)
+  //       toast.error("เพิ่มข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+  //     }
+  //   }
+
+  //   setShowConfirmation(false);
+  // };
+
+  // const handleCancelEdit = () => {
+  //   setShowConfirmation(false);
+  // };
 
   const showForm = ({
     values,
@@ -69,7 +98,7 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
               label="รายละเอียดประเภทสินค้า"
             />
 
-            <div style={{ margin: 16 }}>{showPreviewImage(values)}</div>
+            {/* <div style={{ margin: 16 }}>{showPreviewImage(values)}</div>
 
             <div>
               <Image
@@ -100,7 +129,7 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
                 id="files"
                 style={{ padding: "20px 0 0 20px" }}
               />
-            </div>
+            </div> */}
           </CardContent>
           <CardActions>
             <Button
@@ -129,9 +158,9 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
 
       let data = new FormData();
 
-      if (imageFile!="") {
-        data.append("image", imageFile);
-      }
+      // if (imageFile!="") {
+      //   data.append("image", imageFile);
+      // }
       // data.append("id", String(updateValue.id));
       data.append("name", String(updateValue.name));
       data.append("desc", String(updateValue.desc));
@@ -171,40 +200,40 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)} color="info">
-            ยกเลิก
-          </Button>
-          <Button onClick={handleEditConfirm} color="primary">
+          <Button variant="contained" onClick={handleEditConfirm} color="primary">
             แก้ไข
+          </Button>
+          <Button variant="outlined" onClick={() => setOpenDialog(false)} color="info">
+            ยกเลิก
           </Button>
         </DialogActions>
       </Dialog>
     );
   };
 
-  const showPreviewImage = (values: any) => {
-    if (values?.image_obj) {
-      return (
-        <Image
-          // objectFit="contain"
-          alt="รูปภาพประเภทสินค้า"
-          src={values?.image_obj}
-          width={250}
-          height={250}
-        />
-      );
-    } else if (values?.image) {
-      return (
-        <Image
-          // objectFit="contain"
-          alt="รูปภาพประเภทสินค้า"
-          src={categoryImageURL(values?.image)}
-          width={250}
-          height={250}
-        />
-      );
-    }
-  };
+  // const showPreviewImage = (values: any) => {
+  //   if (values?.image_obj) {
+  //     return (
+  //       <Image
+  //         // objectFit="contain"
+  //         alt="รูปภาพประเภทสินค้า"
+  //         src={values?.image_obj}
+  //         width={250}
+  //         height={250}
+  //       />
+  //     );
+  //   } else if (values?.image) {
+  //     return (
+  //       <Image
+  //         // objectFit="contain"
+  //         alt="รูปภาพประเภทสินค้า"
+  //         src={categoryImageURL(values?.image)}
+  //         width={250}
+  //         height={250}
+  //       />
+  //     );
+  //   }
+  // };
 
   return (
     <Layout>
@@ -217,7 +246,7 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
         initialValues={category!}
         onSubmit={async (values, { setSubmitting }) => {
           setUpdateValue(values)
-          setImageFile(values.image_file)
+          // setImageFile(values.image_file)
           setOpenDialog(true);
           setSubmitting(false);
         }}
@@ -225,6 +254,16 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
         {(props) => showForm(props)}
       </Formik>
       {showDialog()}
+
+      {/* <ConfirmationDialog
+        title="ยืนยันการเพิ่มข้อมูล"
+        message="คุณต้องการเพิ่มข้อมูลใช่หรือไม่ ?"
+        open={showConfirmation}
+        onClose={handleCancelEdit}
+        onConfirm={handleConfirmEdit}
+      />
+ */}
+
     </Layout>
   );
 };

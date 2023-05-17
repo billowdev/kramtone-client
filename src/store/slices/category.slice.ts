@@ -25,8 +25,8 @@ const initialState: CategoryState = {
 
 };
 
-export const getAllCategoryByGroupIdAction = createAsyncThunk("CATEGORY/GROUP_GET_ALL_BY_GROUP_ID", async (id: string): Promise<any> => {
-	const response = await categoryService.getAllCategoryByGroupId(id)
+export const getAllCategory = createAsyncThunk("CATEGORY/GET_ALL", async (): Promise<any> => {
+	const response = await categoryService.getAllCategory()
 	return response;
 });
 
@@ -78,21 +78,12 @@ export const categorySlice = createSlice({
 
 	},
 	extraReducers: (builder) => {
-		builder.addCase(getAllCategoryByGroupAction.fulfilled, (state, action) => {
+		builder.addCase(getAllCategory.fulfilled, (state, action) => {
 			state.categoryArray = action.payload
 		});
 
-		builder.addCase(getAllCategoryByGroupAction.rejected, (state, action) => {
+		builder.addCase(getAllCategory.rejected, (state, action) => {
 			state.categoryArray = [];
-		})
-
-		builder.addCase(getAllCategoryByGroupIdAction.fulfilled, (state, action) => {
-			state.categoryArray = action.payload
-		});
-
-		builder.addCase(getAllCategoryByGroupIdAction.rejected, (state, action) => {
-			state.categoryArray = [];
-
 		})
 
 		builder.addCase(getOneCategoryAction.fulfilled, (state, action) => {

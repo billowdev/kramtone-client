@@ -31,16 +31,16 @@ type Props = {
 const AdminPanelAddCategory = ({accessToken }: Props) => {
   const router = useRouter();
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
-  const [imageFile, setImageFile] = React.useState<any | Blob>("")
-  const [imageObj, setImageObj] = React.useState<URL | string>("")
+  // const [imageFile, setImageFile] = React.useState<any | Blob>("")
+  // const [imageObj, setImageObj] = React.useState<URL | string>("")
   const dispatch = useAppDispatch();
   const initialValues : CategoryPayload = {
     id:"",
     name: "",
     desc:"",
-    image: "default_image.png",
-    image_file: "",
-    image_obj : "",
+    // image: "default_image.png",
+    // image_file: "",
+    // image_obj : "",
   }
   const [addValue, setAddValue] = React.useState<CategoryPayload>(initialValues);
   const showForm = ({
@@ -74,7 +74,7 @@ const AdminPanelAddCategory = ({accessToken }: Props) => {
               label="รายละเอียดประเภทสินค้า"
             />
 
-            <div style={{ margin: 16 }}>{showPreviewImage(values)}</div>
+            {/* <div style={{ margin: 16 }}>{showPreviewImage(values)}</div>
 
             <div>
               <Image
@@ -105,7 +105,7 @@ const AdminPanelAddCategory = ({accessToken }: Props) => {
                 id="files"
                 style={{ padding: "20px 0 0 20px" }}
               />
-            </div>
+            </div> */}
           </CardContent>
           <CardActions>
             <Button
@@ -134,9 +134,9 @@ const AdminPanelAddCategory = ({accessToken }: Props) => {
 
       let data = new FormData();
 
-      if (imageFile!="") {
-        data.append("image", imageFile);
-      }
+      // if (imageFile!="") {
+      //   data.append("image", imageFile);
+      // }
       // data.append("id", String(addValue.id));
       data.append("name", String(addValue.name));
       data.append("desc", String(addValue.desc));
@@ -175,40 +175,40 @@ const AdminPanelAddCategory = ({accessToken }: Props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)} color="info">
-            ยกเลิก
-          </Button>
-          <Button onClick={handleEditConfirm} color="primary">
+          <Button variant="contained" onClick={handleEditConfirm} color="primary">
             เพิ่ม
+          </Button>
+          <Button variant="outlined" onClick={() => setOpenDialog(false)} color="info">
+            ยกเลิก
           </Button>
         </DialogActions>
       </Dialog>
     );
   };
 
-  const showPreviewImage = (values: any) => {
-    if (values.image_obj) {
-      return (
-        <Image
-          // objectFit="contain"
-          alt="รูปภาพประเภทสินค้า"
-          src={values.image_obj}
-          width={250}
-          height={250}
-        />
-      );
-    } else if (values.image) {
-      return (
-        <Image
-          // objectFit="contain"
-          alt="รูปภาพประเภทสินค้า"
-          src={categoryImageURL(values.image)}
-          width={250}
-          height={250}
-        />
-      );
-    }
-  };
+  // const showPreviewImage = (values: any) => {
+  //   if (values.image_obj) {
+  //     return (
+  //       <Image
+  //         // objectFit="contain"
+  //         alt="รูปภาพประเภทสินค้า"
+  //         src={values.image_obj}
+  //         width={250}
+  //         height={250}
+  //       />
+  //     );
+  //   } else if (values.image) {
+  //     return (
+  //       <Image
+  //         // objectFit="contain"
+  //         alt="รูปภาพประเภทสินค้า"
+  //         src={categoryImageURL(values.image)}
+  //         width={250}
+  //         height={250}
+  //       />
+  //     );
+  //   }
+  // };
 
   return (
     <Layout>
@@ -221,7 +221,7 @@ const AdminPanelAddCategory = ({accessToken }: Props) => {
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
           setAddValue(values)
-          setImageFile(values.image_file)
+          // setImageFile(values.image_file)
           setOpenDialog(true);
           setSubmitting(false);
         }}

@@ -59,24 +59,32 @@ async function deleteCategory(req: NextApiRequest, res: NextApiResponse<any>) {
 		if (!accessToken) {
 			return res.status(401).json({ message: 'Unauthorized' });
 		}
-		if (req.query) {
-			// console.log("===============")
-			const { data } = await httpClient.delete(`/categories/delete/${req.query['id']}`, {
-				headers: {
-					'Authorization': `Bearer ${accessToken}`,
-				},
+		
+		if (req.query && req.query.action?.[0]) {
+			const { data:response } = await httpClient.delete(`/categories/${req.query.action[0]}`, {
+			  headers: {
+				'Authorization': `Bearer ${accessToken}`,
+			  },
 			});
-			if (data) {
-				return res.status(200).json(data);
+			
+			if (response) {
+				// console.log("===============")
+				// console.log(response)
+				// console.log("===============")
+				if(response.status === "fail"){
+					return res.status(400).json(response);
+				}
+			  return res.status(200).json(response);
 			} else {
-				return res.status(400).json(data);
+			  return res.status(400).json(response);
 			}
-		} else {
+		  } else {
 			return res.status(400).json({ message: 'id required' });
-		}
+		  }
+		  
 
 	} catch (error) {
-		console.log("===============")
+		
 		console.error(error);
 		return res.status(500).json({ message: 'Internal Server Error' });
 	}
