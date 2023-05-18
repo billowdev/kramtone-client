@@ -10,6 +10,9 @@ import {
   Typography,
   CardActions,
   Button,
+  Grid,
+  Box,
+  FormLabel
 } from "@mui/material";
 import { Field, Form, Formik, FormikProps } from "formik";
 import { TextField } from "formik-material-ui";
@@ -80,23 +83,39 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
              แก้ไขข้อมูลประเภทสินค้า
             </Typography>
 
+         
+            <Grid item sm={6} md={6}>
+            <Box style={{ marginTop: 16 }}>
+              <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+              ชื่อประเภทสินค้า
+                <span style={{ color: "red" }}>*</span>
+              </FormLabel>
             <Field
-              style={{ marginTop: 16 }}
+           
               fullWidth
               component={TextField}
               name="name"
               type="text"
               label="ชื่อประเภทสินค้า"
             />
-            <br />
+                    </Box>
+</Grid>
+<Grid item md={6}>
+           <Box style={{ marginTop: 16 }}>
+              <FormLabel htmlFor="desc" style={{ fontWeight: "bold" }}>
+              รายละเอียดประเภทสินค้า
+             
+              </FormLabel>
             <Field
-              style={{ marginTop: 16 }}
+          
               fullWidth
               component={TextField}
               name="desc"
               type="string"
               label="รายละเอียดประเภทสินค้า"
             />
+      </Box>
+            </Grid>
 
             {/* <div style={{ margin: 16 }}>{showPreviewImage(values)}</div>
 
