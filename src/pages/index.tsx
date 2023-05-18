@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     padding: theme.spacing(4),
-    backgroundImage: "url('/static/img/sitebanner.jpg')",
+    backgroundImage: "url('/static/img/sitebanner.png')",
     backgroundSize: "cover",
     backgroundPosition: "center",
     color: theme.palette.common.white,
@@ -104,19 +104,53 @@ const MainPage = ({}: Props) => {
         // padding={4}
         bgcolor="primary.secondary"
         color="white"
-        style={{  backgroundImage: "url('/static/img/sitebanner.jpg')" } }
+        style={{  backgroundImage: "url('/static/img/sitebanner.png')" } }
         className={classes.container}
       >
-        <Typography variant="h5" component="h5" gutterBottom align="center" style={{
-         
 
-        }}>
-          ระบบบริหารจัดการการเชื่อมโยงแผนภาพโทนสีครามธรรมชาติกับแหล่งผลิตผ้าย้อมคราม
-        </Typography>
-        <Typography variant="h5" component="h5" gutterBottom align="center">
-          The Management system for connecting color scheme of
-          natural indigo dye with indigo textile production sites
-        </Typography>
+    <Box
+  style={{
+    position: 'relative',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    marginTop: 8,
+  }}
+>
+
+  <Typography
+    variant="h5"
+    component="h5"
+    gutterBottom
+    align="center"
+    style={{
+      color: '#FFF',
+      fontWeight: 'bold',
+      position: 'relative',
+      zIndex: 1,
+    }}
+  >
+    ระบบบริหารจัดการการเชื่อมโยงแผนภาพโทนสีครามธรรมชาติกับแหล่งผลิตผ้าย้อมคราม
+  </Typography>
+  <Typography
+    variant="h5"
+    component="h5"
+    gutterBottom
+    align="center"
+    style={{
+      color: '#FFF',
+      fontWeight: 'bold',
+      position: 'relative',
+      zIndex: 1,
+    }}
+  >
+    The Management system for connecting color scheme of natural indigo dye with indigo textile production sites
+  </Typography>
+
+</Box>
+
+
+
+    
+
 
         <Box
           style={{ marginTop: 16, marginBottom: 16}}

@@ -108,7 +108,6 @@ function AdminPanel({}: Props) {
                             startWithPath="/panel/admin/manage/color-scheme"
                               icon={ColorLensIcon}
                               text="จัดการโทนสี"
-                              open={open}
                             />
                 </Grid>
 
