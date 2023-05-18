@@ -10,6 +10,11 @@ import {
   Typography,
   CardActions,
   Button,
+  Grid,
+  Container,
+  Paper,
+  Box,
+  FormLabel,
 } from "@mui/material";
 import { Field, Form, Formik, FormikProps } from "formik";
 import { TextField } from "formik-material-ui";
@@ -19,30 +24,45 @@ import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import httpClient from "@/common/utils/httpClient.util";
-import { Switch, FormControlLabel, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import {
+  Switch,
+  FormControlLabel,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@material-ui/core";
 import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import CheckroomIcon from "@mui/icons-material/Checkroom";
 
 type Props = {
   // category?: CategoryPayload;
   accessToken?: string;
 };
 
-const AdminPanelAddCategory = ({accessToken }: Props) => {
+const AdminPanelAddCategory = ({ accessToken }: Props) => {
   const router = useRouter();
+  const theme = useTheme();
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
+
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
   // const [imageFile, setImageFile] = React.useState<any | Blob>("")
   // const [imageObj, setImageObj] = React.useState<URL | string>("")
   const dispatch = useAppDispatch();
-  const initialValues : CategoryPayload = {
-    id:"",
+  const initialValues: CategoryPayload = {
+    id: "",
     name: "",
-    desc:"",
+    desc: "",
     // image: "default_image.png",
     // image_file: "",
     // image_obj : "",
-  }
-  const [addValue, setAddValue] = React.useState<CategoryPayload>(initialValues);
+  };
+  const [addValue, setAddValue] =
+    React.useState<CategoryPayload>(initialValues);
   const showForm = ({
     values,
     setFieldValue,
@@ -52,28 +72,38 @@ const AdminPanelAddCategory = ({accessToken }: Props) => {
       <Form>
         <Card>
           <CardContent sx={{ padding: 4 }}>
-            <Typography gutterBottom variant="h3">
-             เพิ่มข้อมูลประเภทสินค้า
-            </Typography>
-
-            <Field
-              style={{ marginTop: 16 }}
-              fullWidth
-              component={TextField}
-              name="name"
-              type="text"
-              label="ชื่อประเภทสินค้า"
-            />
-            <br />
-            <Field
-              style={{ marginTop: 16 }}
-              fullWidth
-              component={TextField}
-              name="desc"
-              type="string"
-              label="รายละเอียดประเภทสินค้า"
-            />
-
+       
+            <Grid item md={6}>
+              <Box style={{ marginTop: 0 }}>
+                <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+                  ชื่อประเภทสินค้า
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
+                <Field
+                  style={{ marginTop: 8 }}
+                  fullWidth
+                  component={TextField}
+                  name="name"
+                  type="text"
+                  label="กรุณากรอก ชื่อประเภทสินค้า"
+                />
+              </Box>
+            </Grid>
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="desc" style={{ fontWeight: "bold" }}>
+                  รายละเอียดประเภทสินค้า
+                </FormLabel>
+                <Field
+                  style={{ marginTop: 8 }}
+                  fullWidth
+                  component={TextField}
+                  name="desc"
+                  type="string"
+                  label="กรุณากรอก รายละเอียดประเภทสินค้า"
+                />
+              </Box>
+            </Grid>
             {/* <div style={{ margin: 16 }}>{showPreviewImage(values)}</div>
 
             <div>
@@ -131,7 +161,6 @@ const AdminPanelAddCategory = ({accessToken }: Props) => {
 
   const handleEditConfirm = async () => {
     if (addValue) {
-
       let data = new FormData();
 
       // if (imageFile!="") {
@@ -140,14 +169,16 @@ const AdminPanelAddCategory = ({accessToken }: Props) => {
       // data.append("id", String(addValue.id));
       data.append("name", String(addValue.name));
       data.append("desc", String(addValue.desc));
-   
-      const createStatus = await dispatch(createCategoryAction({body:data, accessToken}))
+
+      const createStatus = await dispatch(
+        createCategoryAction({ body: data, accessToken })
+      );
 
       if (createStatus.meta.requestStatus === "fulfilled") {
-        toast.success("เพิ่มข้อมูลประเภทสินค้าสำเร็จ")
+        toast.success("เพิ่มข้อมูลประเภทสินค้าสำเร็จ");
         router.push("/panel/admin/manage/category");
-      }else{
-        toast.error("เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง")
+      } else {
+        toast.error("เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง");
       }
       setOpenDialog(false);
     }
@@ -171,14 +202,22 @@ const AdminPanelAddCategory = ({accessToken }: Props) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-          คุณต้องการเพิ่มข้อมูลใช่หรือไม่
+            คุณต้องการเพิ่มข้อมูลใช่หรือไม่
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" onClick={handleEditConfirm} color="primary">
+          <Button
+            variant="contained"
+            onClick={handleEditConfirm}
+            color="primary"
+          >
             เพิ่ม
           </Button>
-          <Button variant="outlined" onClick={() => setOpenDialog(false)} color="info">
+          <Button
+            variant="outlined"
+            onClick={() => setOpenDialog(false)}
+            color="info"
+          >
             ยกเลิก
           </Button>
         </DialogActions>
@@ -212,22 +251,68 @@ const AdminPanelAddCategory = ({accessToken }: Props) => {
 
   return (
     <Layout>
-      <Formik
-        validate={(values) => {
-          let errors: any = {};
-          if (!values.name) errors.name = "กรุณากรอกชื่อประเภทสินค้า";
-          return errors;
-        }}
-        initialValues={initialValues}
-        onSubmit={async (values, { setSubmitting }) => {
-          setAddValue(values)
-          // setImageFile(values.image_file)
-          setOpenDialog(true);
-          setSubmitting(false);
-        }}
-      >
-        {(props) => showForm(props)}
-      </Formik>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Paper
+              sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}
+            >
+              {isSmallDevice ? (
+                <CheckroomIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+              ) : (
+                <CheckroomIcon
+                  sx={{ fontSize: "2.5rem", marginLeft: "16px" }}
+                />
+              )}
+
+              <React.Fragment>
+                {isSmallDevice ? (
+                  <Typography
+                    sx={{
+                      fontWeight: "bold",
+                      alignSelf: "center",
+                    }}
+                  >
+                    {" "}
+                    เพิ่มข้อมูลประเภทสินค้า
+                  </Typography>
+                ) : (
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: "bold",
+                      alignSelf: "center",
+                    }}
+                  >
+                    {" "}
+                    เพิ่มข้อมูลประเภทสินค้า
+                  </Typography>
+                )}
+              </React.Fragment>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12} md={12} lg={12}>
+            <Formik
+              validate={(values) => {
+                let errors: any = {};
+                if (!values.name) errors.name = "กรุณากรอกชื่อประเภทสินค้า";
+                return errors;
+              }}
+              initialValues={initialValues}
+              onSubmit={async (values, { setSubmitting }) => {
+                setAddValue(values);
+                // setImageFile(values.image_file)
+                setOpenDialog(true);
+                setSubmitting(false);
+              }}
+            >
+              {(props) => showForm(props)}
+            </Formik>
+          </Grid>
+        </Grid>
+      </Container>
+
       {showDialog()}
     </Layout>
   );
@@ -238,11 +323,11 @@ export default withAuth(AdminPanelAddCategory);
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const accessToken = context.req.cookies['access_token']
+  const accessToken = context.req.cookies["access_token"];
   if (accessToken) {
     return {
       props: {
-        accessToken
+        accessToken,
       },
     };
   } else {

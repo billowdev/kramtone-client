@@ -12,7 +12,9 @@ import {
   Button,
   Grid,
   Box,
-  FormLabel
+  FormLabel,
+  Container,
+  Paper,
 } from "@mui/material";
 import { Field, Form, Formik, FormikProps } from "formik";
 import { TextField } from "formik-material-ui";
@@ -22,26 +24,40 @@ import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import httpClient from "@/common/utils/httpClient.util";
-import { Switch, FormControlLabel, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import {
+  Switch,
+  FormControlLabel,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@material-ui/core";
 import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
-import ConfirmationDialog from "@/components/ConfirmationDialog"
-
-
+import ConfirmationDialog from "@/components/ConfirmationDialog";
+import CheckroomIcon from "@mui/icons-material/Checkroom";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 
 type Props = {
   category?: CategoryPayload;
   accessToken?: string;
 };
 
-const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
+const AdminPanelEditCategory = ({ category, accessToken }: Props) => {
   const router = useRouter();
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
-  const [updateValue, setUpdateValue] = React.useState<CategoryPayload>(category!);
+  const theme = useTheme();
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
+
+  
+  const [updateValue, setUpdateValue] = React.useState<CategoryPayload>(
+    category!
+  );
   const dispatch = useAppDispatch();
   // const [imageFile, setImageFile] = React.useState<any | Blob>("")
   // const [imageObj, setImageObj] = React.useState<URL | string>("")
-
 
   // const [showConfirmation, setShowConfirmation] = React.useState(false);
 
@@ -79,42 +95,40 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
       <Form>
         <Card>
           <CardContent sx={{ padding: 4 }}>
-            <Typography gutterBottom variant="h3">
-             แก้ไขข้อมูลประเภทสินค้า
-            </Typography>
+            {/* <Typography gutterBottom variant="h3">
+              แก้ไขข้อมูลประเภทสินค้า
+            </Typography> */}
 
-         
-            <Grid item sm={6} md={6}>
-            <Box style={{ marginTop: 16 }}>
-              <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
-              ชื่อประเภทสินค้า
-                <span style={{ color: "red" }}>*</span>
-              </FormLabel>
-            <Field
-           
-              fullWidth
-              component={TextField}
-              name="name"
-              type="text"
-              label="ชื่อประเภทสินค้า"
-            />
-                    </Box>
-</Grid>
-<Grid item md={6}>
-           <Box style={{ marginTop: 16 }}>
-              <FormLabel htmlFor="desc" style={{ fontWeight: "bold" }}>
-              รายละเอียดประเภทสินค้า
-             
-              </FormLabel>
-            <Field
-          
-              fullWidth
-              component={TextField}
-              name="desc"
-              type="string"
-              label="รายละเอียดประเภทสินค้า"
-            />
-      </Box>
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+                  ชื่อประเภทสินค้า
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
+                <Field
+                  style={{ marginTop: 8 }}
+                  fullWidth
+                  component={TextField}
+                  name="name"
+                  type="text"
+                  label="กรุณากรอก ชื่อประเภทสินค้า"
+                />
+              </Box>
+            </Grid>
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="desc" style={{ fontWeight: "bold" }}>
+                  รายละเอียดประเภทสินค้า
+                </FormLabel>
+                <Field
+                  style={{ marginTop: 8 }}
+                  fullWidth
+                  component={TextField}
+                  name="desc"
+                  type="string"
+                  label="กรุณากรอก รายละเอียดประเภทสินค้า"
+                />
+              </Box>
             </Grid>
 
             {/* <div style={{ margin: 16 }}>{showPreviewImage(values)}</div>
@@ -174,7 +188,6 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
 
   const handleEditConfirm = async () => {
     if (category) {
-
       let data = new FormData();
 
       // if (imageFile!="") {
@@ -183,15 +196,16 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
       // data.append("id", String(updateValue.id));
       data.append("name", String(updateValue.name));
       data.append("desc", String(updateValue.desc));
-   
 
-      const updateStatus = await dispatch(updateCategoryAction({id:updateValue.id, body:data, accessToken}))
+      const updateStatus = await dispatch(
+        updateCategoryAction({ id: updateValue.id, body: data, accessToken })
+      );
 
       if (updateStatus.meta.requestStatus === "fulfilled") {
-        toast.success("แก้ไขข้อมูลประเภทสินค้าสำเร็จ")
+        toast.success("แก้ไขข้อมูลประเภทสินค้าสำเร็จ");
         router.push("/panel/admin/manage/category");
-      }else{
-        toast.error("แก้ไขข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง")
+      } else {
+        toast.error("แก้ไขข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง");
       }
       setOpenDialog(false);
     }
@@ -215,14 +229,22 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-          คุณต้องการแก้ไขข้อมูลใช่หรือไม่ ?
+            คุณต้องการแก้ไขข้อมูลใช่หรือไม่ ?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" onClick={handleEditConfirm} color="primary">
+          <Button
+            variant="contained"
+            onClick={handleEditConfirm}
+            color="primary"
+          >
             แก้ไข
           </Button>
-          <Button variant="outlined" onClick={() => setOpenDialog(false)} color="info">
+          <Button
+            variant="outlined"
+            onClick={() => setOpenDialog(false)}
+            color="info"
+          >
             ยกเลิก
           </Button>
         </DialogActions>
@@ -256,7 +278,51 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
 
   return (
     <Layout>
-      <Formik
+
+      
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Paper
+              sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}
+            >
+              {isSmallDevice ? (
+                <CheckroomIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+              ) : (
+                <CheckroomIcon
+                  sx={{ fontSize: "2.5rem", marginLeft: "16px" }}
+                />
+              )}
+
+              <React.Fragment>
+                {isSmallDevice ? (
+                  <Typography
+                    sx={{
+                      fontWeight: "bold",
+                      alignSelf: "center",
+                    }}
+                  >
+                    {" "}
+                    แก้ไขข้อมูลประเภทสินค้า
+                  </Typography>
+                ) : (
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: "bold",
+                      alignSelf: "center",
+                    }}
+                  >
+                    {" "}
+                    แก้ไขข้อมูลประเภทสินค้า
+                  </Typography>
+                )}
+              </React.Fragment>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12} md={12} lg={12}>
+          <Formik
         validate={(values) => {
           let errors: any = {};
           if (!values.name) errors.name = "กรุณากรอกชื่อประเภทสินค้า";
@@ -264,7 +330,7 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
         }}
         initialValues={category!}
         onSubmit={async (values, { setSubmitting }) => {
-          setUpdateValue(values)
+          setUpdateValue(values);
           // setImageFile(values.image_file)
           setOpenDialog(true);
           setSubmitting(false);
@@ -272,17 +338,14 @@ const AdminPanelEditCategory = ({ category, accessToken}: Props) => {
       >
         {(props) => showForm(props)}
       </Formik>
+          </Grid>
+        </Grid>
+      </Container>
+
+     
       {showDialog()}
 
-      {/* <ConfirmationDialog
-        title="ยืนยันการเพิ่มข้อมูล"
-        message="คุณต้องการเพิ่มข้อมูลใช่หรือไม่ ?"
-        open={showConfirmation}
-        onClose={handleCancelEdit}
-        onConfirm={handleConfirmEdit}
-      />
- */}
-
+    
     </Layout>
   );
 };
@@ -293,22 +356,21 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const { id }: any = context.query;
-  
+
   if (id) {
-    const accessToken = context.req.cookies['access_token']
+    const accessToken = context.req.cookies["access_token"];
     const { data: response } = await httpClient.get(`/categories/${id}`, {
-	headers: {
-			Authorization: `Bearer ${accessToken}`
-		},
-		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      baseURL: process.env.NEXT_PUBLIC_BASE_URL_API,
     });
 
-    
-    const category = response.payload
+    const category = response.payload;
     return {
       props: {
         category,
-        accessToken
+        accessToken,
       },
     };
   } else {
