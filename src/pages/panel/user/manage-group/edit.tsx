@@ -430,13 +430,15 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 // 	for (const [key, value] of formData.entries()) {
 // 		console.log(key, value);
 // 	}
+// console.log(logoFile)
+// console.log(bannerFile)
 
 
     const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }))
 
     if (updateStatus.meta.requestStatus === "fulfilled") {
       toast.success("แก้ไขข้อมูลสำเร็จ")
-      router.push("/panel/admin/manage/group")
+      router.push("/panel/user/manage-group")
     } else {
       toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
     }
@@ -491,8 +493,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       onChange={(e: React.ChangeEvent<any>) => {
                         e.preventDefault();
                         setFieldValue("logoFile", e.target.files[0]); // for upload
-                        // setLogoFile(e.target.files[0])
-                        // setLogoObj(URL.createObjectURL(e.target.files[0]))
+                        setLogoFile(e.target.files[0])
+                        setLogoObj(URL.createObjectURL(e.target.files[0]))
                         setFieldValue(
                           "logoObj",
                           URL.createObjectURL(e.target.files[0])
@@ -528,8 +530,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       type="file"
                       onChange={(e: React.ChangeEvent<any>) => {
                         e.preventDefault();
-                        // setBannerFile(e.target.files[0])
-                        // setBannerObj(URL.createObjectURL(e.target.files[0]))
+                        setBannerFile(e.target.files[0])
+                        setBannerObj(URL.createObjectURL(e.target.files[0]))
                         setFieldValue("bannerFile", e.target.files[0]); // for upload
                         setFieldValue(
                           "bannerObj",

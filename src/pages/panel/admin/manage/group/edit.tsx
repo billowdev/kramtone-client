@@ -402,8 +402,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   };
   const handleEditConfirm = async () => {
     let formData: FormData = new FormData();
-    
     if (logoFile!="") {
+     
       formData.append("logoFile", logoFile);
     }
     if (bannerFile!="") {
@@ -491,8 +491,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       onChange={(e: React.ChangeEvent<any>) => {
                         e.preventDefault();
                         setFieldValue("logoFile", e.target.files[0]); // for upload
-                        // setLogoFile(e.target.files[0])
-                        // setLogoObj(URL.createObjectURL(e.target.files[0]))
+                        setLogoFile(e.target.files[0])
+                        setLogoObj(URL.createObjectURL(e.target.files[0]))
                         setFieldValue(
                           "logoObj",
                           URL.createObjectURL(e.target.files[0])
@@ -528,8 +528,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       type="file"
                       onChange={(e: React.ChangeEvent<any>) => {
                         e.preventDefault();
-                        // setBannerFile(e.target.files[0])
-                        // setBannerObj(URL.createObjectURL(e.target.files[0]))
+                        setBannerFile(e.target.files[0])
+                        setBannerObj(URL.createObjectURL(e.target.files[0]))
                         setFieldValue("bannerFile", e.target.files[0]); // for upload
                         setFieldValue(
                           "bannerObj",
@@ -897,9 +897,11 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
               <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
-                  <FormLabel htmlFor="village" sx={{ fontWeight: "bold" }}>
-                    หมู่บ้าน <span style={{ color: "red" }}>*</span>
+             
+                  <FormLabel htmlFor="village" style={{ fontWeight: "bold" }}>
+                  หมู่บ้าน 
                   </FormLabel>
+
                   <Field
                     name="village"
                     defaultValue={updateGroupData?.village}
@@ -919,8 +921,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
               <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
-                  <FormLabel htmlFor="lat" sx={{ fontWeight: "bold" }}>
-                  ลองจิจูด <span style={{ color: "red" }}>*</span>
+                <FormLabel htmlFor="lat" style={{ fontWeight: "bold" }}>
+                    ละติจูด 
                   </FormLabel>
                   <Field
                     name="lat"
@@ -942,8 +944,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
               <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
-                  <FormLabel htmlFor="lng" sx={{ fontWeight: "bold" }}>
-                  ลองจิจูด <span style={{ color: "red" }}>*</span>
+                <FormLabel htmlFor="lng" style={{ fontWeight: "bold" }}>
+                    ลองจิจูด 
                   </FormLabel>
                   <Field
                     name="lng"
