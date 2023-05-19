@@ -21,7 +21,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { Formik, Form, Field } from 'formik';
 import { useAppDispatch } from "@/store/store";
 import { updateUserProfileAction } from "@/store/slices/auth.slice";
-import { Card, CardContent, CardActions, Typography, Button } from "@mui/material";
+import { Card, CardContent, CardActions, Typography, Button, FormLabel, Box } from "@mui/material";
 import Link from "next/link"
 import httpClient from '@/common/utils/httpClient.util';
 import { GetStaticProps } from 'next';
@@ -175,6 +175,12 @@ function UserPanelProfile({
              ตั้งค่าบัญชีผู้ใช้
             </Typography>
 
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="id" style={{ fontWeight: "bold" }}>
+                ชื่อ
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
             <Field
               style={{ marginTop: 16 }}
               fullWidth
@@ -189,11 +195,20 @@ function UserPanelProfile({
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('name', event.target.value)}
               name="name"
               type="text"
-              label="ชื่อ"
+              label="กรุณากรอก ชื่อ"
             />
-            <br />
+                   </Box>
+            </Grid>
+            
+
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="surname" style={{ fontWeight: "bold" }}>
+                นามสกุล
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
             <Field
-              style={{ marginTop: 16 }}
+              style={{ marginTop: 8 }}
               fullWidth
               component={TextField}
               defaultValue={userPayload.surname}
@@ -203,10 +218,17 @@ function UserPanelProfile({
               type="text"
               label="นามสกุล"
             />
-
-<br />
+        </Box>
+            </Grid>
+            
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="phone" style={{ fontWeight: "bold" }}>
+                เบอร์โทร
+                 
+                </FormLabel>
             <Field
-              style={{ marginTop: 16 }}
+              style={{ marginTop: 8 }}
               fullWidth
               component={TextField}
               defaultValue={userPayload.phone}
@@ -216,10 +238,17 @@ function UserPanelProfile({
               type="text"
               label="เบอร์โทร"
             />
+ </Box>
+            </Grid>
 
-<br />
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
+                อีเมล
+                 
+                </FormLabel>
             <Field
-              style={{ marginTop: 16 }}
+              style={{ marginTop: 8 }}
               fullWidth
               component={TextField}
               defaultValue={userPayload.email}
@@ -227,16 +256,22 @@ function UserPanelProfile({
               type="email"
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('email', event.target.value)}
               maxLength={120}
-              label="อีเมล"
+              label="กรุณากรอก อีเมล"
             />
-
+ </Box>
+            </Grid>
 
     
 <Typography style={{marginTop:24}}>หมายเหตุ : หากต้องการเปลี่ยนรหัสผ่าน ให้กรอกข้อมูลด้านล่าง หากไม่ต้องการสามารถเว้นว่างได้</Typography>
 
-
+<Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="oldPassword" style={{ fontWeight: "bold" }}>
+                รหัสผ่านเดิม
+                 
+                </FormLabel>
   <Field
-        style={{ marginTop: 16 }}
+        style={{ marginTop: 8 }}
         fullWidth
         component={TextField}
         name="oldPassword"
@@ -246,9 +281,16 @@ function UserPanelProfile({
         onChange={(event:React.ChangeEvent<HTMLInputElement>) => setOldPassword(event.target.value)}
         
       />
+ </Box>
+            </Grid>
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="password" style={{ fontWeight: "bold" }}>
+                รหัสผ่านใหม่
+                </FormLabel>
 
     <Field
-        style={{ marginTop: 16 }}
+        style={{ marginTop: 8 }}
         fullWidth
         component={TextField}
         name="password"
@@ -258,9 +300,17 @@ function UserPanelProfile({
         onChange={(event:React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
         
       />
+ </Box>
+            </Grid>
 
+
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="passwordConfirmation" style={{ fontWeight: "bold" }}>
+                ยืนยันรหัสผ่านใหม่
+                </FormLabel>
       <Field
-        style={{ marginTop: 16 }}
+        style={{ marginTop: 8 }}
         fullWidth
         component={TextField}
         name="passwordConfirmation"
@@ -270,6 +320,8 @@ function UserPanelProfile({
         onChange={(event:React.ChangeEvent<HTMLInputElement>) => setPasswordConfirmation(event.target.value)}
         
       />
+       </Box>
+            </Grid>
 
           </CardContent>
           <CardActions>
