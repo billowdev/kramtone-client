@@ -60,8 +60,7 @@ import router from "next/router";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 
 import { getAllUser, userSelector, deleteUser, updateUser } from '@/store/slices/user.slice';
-import Moment from 'react-moment';
-import 'moment/locale/th'; // import Thai locale
+
 import {  GridCellParams } from '@mui/x-data-grid';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -252,15 +251,7 @@ function AdminPanelManageUser({}: Props) {
     setShowConfirmation(false);
   };
 
-  function DateTimeCellRenderer(params: GridCellParams<any>) {
-    const { value } = params;
-  
-    return (
-      <Moment locale="th" format="lll">
-        {value as any}
-      </Moment>
-    );
-  }
+
   
   // function StatusCellRenderer(params: GridCellParams<UserPayload>) {
   //   const { value, row } = params;
