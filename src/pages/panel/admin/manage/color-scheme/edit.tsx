@@ -10,6 +10,9 @@ import {
   Typography,
   CardActions,
   Button,
+  Grid,
+  FormLabel,
+  Box,
 } from "@mui/material";
 import { Field, Form, Formik, FormikProps } from "formik";
 import { TextField } from "formik-material-ui";
@@ -77,44 +80,77 @@ const AdminPanelEditColorScheme = ({ colorScheme, accessToken }: Props) => {
               แก้ไขข้อมูลโทนสีครามธรรมชาติ
             </Typography>
 
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="id" style={{ fontWeight: "bold" }}>
+                รหัสประจำสี
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
+
             <Field
-              style={{ marginTop: 16 }}
+              style={{ marginTop: 8 }}
               fullWidth
               component={TextField}
               name="id"
               type="text"
-              label="รหัสประจำสี"
+              label="กรุณากรอก รหัสประจำสี"
             />
-            <br />
+             </Box>
+            </Grid>
 
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="nameTH" style={{ fontWeight: "bold" }}>
+                ชื่อสีภาษาไทย
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
             <Field
-              style={{ marginTop: 16 }}
+              style={{ marginTop: 8 }}
               fullWidth
               component={TextField}
               name="nameTH"
               type="text"
-              label="ชื่อสีภาษาไทย"
+              label="กรุณากรอก ชื่อสีภาษาไทย"
             />
-            <br />
+                  </Box>
+            </Grid>
 
+
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="nameEN" style={{ fontWeight: "bold" }}>
+                ชื่อสีภาษาอังกฤษ
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
             <Field
-              style={{ marginTop: 16 }}
+              style={{ marginTop: 8 }}
               fullWidth
               component={TextField}
               name="nameEN"
               type="text"
-              label="ชื่อสีภาษาอังกฤษ"
+              label="กรุณากรอก ชื่อสีภาษาอังกฤษ"
             />
-            <br />
+                      </Box>
+            </Grid>
+            
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="hex" style={{ fontWeight: "bold" }}>
+                HEX CODE
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
+
             <Field
-              style={{ marginTop: 16 }}
+              style={{ marginTop: 8 }}
               fullWidth
               component={TextField}
               name="hex"
               type="text"
-              label="HEX CODE"
+              label="กรุณากรอก HEX CODE"
             />
-            <br />
+                         </Box>
+            </Grid>
+            
 
           </CardContent>
           <CardActions>
