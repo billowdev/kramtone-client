@@ -33,7 +33,7 @@ import {
 	ListItemText,
 } from '@mui/material';
 import { CategoryPayload } from '@/models/category.model';
-import Swal from 'sweetalert2';
+
 import { ColorSchemePayload } from '@/models/color-scheme.model';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
