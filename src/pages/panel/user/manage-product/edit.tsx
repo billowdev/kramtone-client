@@ -25,7 +25,7 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 import { ColorSchemePayload } from "@/models/color-scheme.model"
 import {
- 
+  FormLabel,
   CardMedia,
   Container,
   Dialog,
@@ -364,42 +364,65 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
       <Form>
         <Card>
           <CardContent sx={{ padding: 4 }}>
+
+          <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+                ชื่อสินค้า
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
           <Field
-		  style={{ marginTop: 16 }}
+		  style={{ marginTop: 8 }}
 		  fullWidth
 		  as={TextField}
 		  name="name"
 		  type="text"
-		  label="ชื่อสินค้า"
+		  label="กรุณากรอก ชื่อสินค้า"
 		  value={values.name}
 		  onChange={handleChange}
 		  onBlur={handleBlur}
 		/>
-		<br />
+		</Box>
+</Grid>
+
+<Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="desc" style={{ fontWeight: "bold" }}>
+                รายละเอียดสินค้า
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
 		<Field
-		  style={{ marginTop: 16 }}
+		  style={{ marginTop: 8 }}
 		  fullWidth
 		  as={TextField}
 		  name="desc"
 		  type="string"
-		  label="รายละเอียดสินค้า"
+		  label="กรุณากรอก รายละเอียดสินค้า"
 		  value={values.desc}
 		  onChange={handleChange}
 		  onBlur={handleBlur}
 		/>
-		<br />
+		</Box>
+</Grid>
+<Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="price" style={{ fontWeight: "bold" }}>
+                ราคาสินค้า
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
 		<Field
-		  style={{ marginTop: 16 }}
+		  style={{ marginTop: 8 }}
 		  fullWidth
 		  as={TextField}
 		  name="price"
 		  type="number"
-		  label="ราคาสินค้า"
+		  label="กรุณากรอก ราคาสินค้า"
 		  value={values?.price}
 		  onChange={handleChange}
 		  onBlur={handleBlur}
 		/>
-		<br />
+			</Box>
+</Grid>
            
     <Grid container direction="row">
   <Grid item>

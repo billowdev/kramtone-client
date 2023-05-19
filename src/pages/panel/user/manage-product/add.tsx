@@ -27,7 +27,7 @@ import {
 	DialogTitle,
 	DialogContent,
 	DialogActions,
-
+	FormLabel,
 	List,
 	ListItem,
 	ListItemText,
@@ -409,43 +409,64 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 									เพิ่มข้อมูลสินค้า
 								</Typography> */}
 
-											<Field
-												style={{ marginTop: 16 }}
-												fullWidth
-												as={TextField}
-												name="name"
-												type="text"
-												label="ชื่อสินค้า"
-												value={values.name}
-												onChange={handleChange}
-												onBlur={handleBlur}
-											/>
-											<br />
-											<Field
-												style={{ marginTop: 16 }}
-												fullWidth
-												as={TextField}
-												name="desc"
-												type="string"
-												label="รายละเอียดสินค้า"
-												value={values.desc}
-												onChange={handleChange}
-												onBlur={handleBlur}
-											/>
-											<br />
-											<Field
-												style={{ marginTop: 16 }}
-												fullWidth
-												as={TextField}
-												name="price"
-												type="number"
-												label="ราคาสินค้า"
-												value={values.price}
-												onChange={handleChange}
-												onBlur={handleBlur}
-											/>
-											<br />
+<Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+                ชื่อสินค้า
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
+          <Field
+		  style={{ marginTop: 8 }}
+		  fullWidth
+		  as={TextField}
+		  name="name"
+		  type="text"
+		  label="กรุณากรอก ชื่อสินค้า"
+		  value={values.name}
+		  onChange={handleChange}
+		  onBlur={handleBlur}
+		/>
+		</Box>
+</Grid>
 
+<Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="desc" style={{ fontWeight: "bold" }}>
+                รายละเอียดสินค้า
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
+		<Field
+		  style={{ marginTop: 8 }}
+		  fullWidth
+		  as={TextField}
+		  name="desc"
+		  type="string"
+		  label="กรุณากรอก รายละเอียดสินค้า"
+		  value={values.desc}
+		  onChange={handleChange}
+		  onBlur={handleBlur}
+		/>
+		</Box>
+</Grid>
+<Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="price" style={{ fontWeight: "bold" }}>
+                ราคาสินค้า
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
+		<Field
+		  style={{ marginTop: 8 }}
+		  fullWidth
+		  as={TextField}
+		  name="price"
+		  type="number"
+		  label="กรุณากรอก ราคาสินค้า"
+		  value={values?.price}
+		  onChange={handleChange}
+		  onBlur={handleBlur}
+		/>
+			</Box>
+</Grid>
 
 							<Grid container direction="row">
 								<Grid item>
