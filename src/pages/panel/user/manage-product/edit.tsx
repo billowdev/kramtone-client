@@ -329,7 +329,7 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
               >
                 <ListItemText
                   primary={colorscheme.nameTH}
-                  secondary={colorscheme.hex}
+                  secondary={colorscheme.id}
                 />
                 <Box
                   sx={{
@@ -479,7 +479,7 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
             />
           ) : null}
           {selectedColorScheme
-            ? `${selectedColorScheme.nameTH} / ${selectedColorScheme.nameEN} / ${selectedColorScheme.hex}  `
+            ? `${selectedColorScheme.nameTH} / ${selectedColorScheme.nameEN} / ${selectedColorScheme.id}  `
             : "เลือกโทนสี"}
         </Button>
       </Box>

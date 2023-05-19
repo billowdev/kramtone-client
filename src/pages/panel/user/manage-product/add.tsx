@@ -146,7 +146,7 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 								>
 									<ListItemText
 										primary={colorScheme.nameTH}
-										secondary={colorScheme.hex}
+										secondary={colorScheme.id}
 									/>
 									<Box
 										sx={{
@@ -531,7 +531,7 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 														/>
 													) : null}
 													{selectedColorScheme
-														? `${selectedColorScheme.nameTH} / ${selectedColorScheme.nameEN} / ${selectedColorScheme.hex}  `
+														? `${selectedColorScheme.nameTH} / ${selectedColorScheme.nameEN} / ${selectedColorScheme.id}  `
 														: "เลือกโทนสี"}
 												</Button>
 											</div>

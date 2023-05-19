@@ -322,6 +322,7 @@ const RecommendCellRenderer: React.FC<RecommendCellRendererProps> = ({ value }) 
       renderCell: (params: GridCellParams<ColorSchemePayload>) => {
         // const hex = params?.value?.hex as string;
         const hex = (params?.value as { hex: string })?.hex;
+        const id = (params?.value as { id: string })?.id;
         return (
           <div style={{
             backgroundColor: hex,
@@ -332,7 +333,7 @@ const RecommendCellRenderer: React.FC<RecommendCellRendererProps> = ({ value }) 
             color:"white",
             alignItems: 'center',
           }}>
-            {hex}
+            { id}
           </div>
         );
       },
