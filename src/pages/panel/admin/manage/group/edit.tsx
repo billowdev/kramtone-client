@@ -179,7 +179,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
   const [currentLat, setCurrentLat] = React.useState<number>(parseFloat(groupData?.lat!));
   const [currentLng, setCurrentLng] = React.useState<number>(parseFloat(groupData?.lng!));
-  const [currentLatLng, setCurrentLatLng] = React.useState<[number, number]>([parseFloat(groupData?.lat!), parseFloat(groupData?.lng!)]);
+  const [currentLatLng, setCurrentLatLng] = React.useState<[number, number]>([
+    parseFloat(groupData?.lat ||"17.166984616793364"),
+    parseFloat(groupData?.lng || "104.14777780025517"),
+  ]);
 
   const center: LatLngExpression = [currentLatLng[0], currentLatLng[1]]; // Centered on Sakon Nakhon Province
 
@@ -1070,22 +1073,23 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
             </Paper>
           </Grid>
 
-          <Grid item xs={12} md={12} lg={12}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                gap: 16,
-              }}
-            >
-              <MapContainer
-                center={center}
-                zoom={zoom}
-                style={{ height: "500px", width: "100%" }}
-              >
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <Marker position={center} draggable={true} eventHandlers={{
+          {center[0] !== 17.166984616793364  && center[1] !== 104.14777780025517 ? (
+  <Grid item xs={12} md={12} lg={12}>
+    <Paper
+      sx={{
+        p: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+      }}
+    >
+      <MapContainer
+        center={center}
+        zoom={zoom}
+        style={{ height: '500px', width: '100%' }}
+      >
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <Marker position={center} draggable={true} eventHandlers={{
                   dragend: handleMarkerDragEnd
                 }}
                 >
@@ -1093,9 +1097,63 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     <span>หมุดของคุณ</span>
                   </Popup>
                 </Marker>
-              </MapContainer>
-            </Paper>
-          </Grid>
+
+      </MapContainer>
+    </Paper>
+  </Grid>
+) : (
+  <Grid item xs={12} md={12} lg={12}>
+    <Paper
+      sx={{
+        p: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '50px',
+      }}
+    >
+      <Typography variant="h5" color="error">
+        กรุณาปักหมุดแผนที่ ของกลุ่มผู้ผลิตหรือร้านค้าของคุณ
+      </Typography>
+    </Paper>
+
+    <Paper
+      sx={{
+        p: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+      }}
+    >
+      <MapContainer
+        center={[17.166984616793364, 104.14777780025517]}
+        zoom={zoom}
+        style={{ height: '500px', width: '100%' }}
+      >
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <Marker position={[17.166984616793364, 104.14777780025517]} draggable={true} eventHandlers={{
+                  dragend: handleMarkerDragEnd
+                }}
+                >
+                  <Popup autoClose={false}>
+                    <span>หมุดของคุณ</span>
+                  </Popup>
+                </Marker>
+
+        {/* <Marker position={[17.166984616793364, 104.14777780025517]}>
+          <Popup autoClose={false}>
+            <span>หมุดของคุณ</span>
+          </Popup>
+        </Marker> */}
+      </MapContainer>
+    </Paper>
+
+  </Grid>
+)}
+
+
+
         </Grid>
       </Container>
       {showDialog()}
