@@ -23,16 +23,7 @@ import {
   FormHelperText,
   Box,
   FormLabel,
-} from "@mui/material";
 
-import PersonIcon from "@mui/icons-material/Person";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import Link from "next/link";
-import React from "react";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import httpClient from "@/common/utils/httpClient.util";
-import {
   Switch,
   FormControlLabel,
   Dialog,
@@ -49,7 +40,16 @@ import {
   FormControl,
   Container,
   Paper 
-} from "@material-ui/core";
+} from "@mui/material";
+
+import PersonIcon from "@mui/icons-material/Person";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import Link from "next/link";
+import React from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import httpClient from "@/common/utils/httpClient.util";
+
 import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
@@ -67,14 +67,12 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
   const [updateValue, setUpdateValue] = React.useState<UserPayload>(user!);
   const dispatch = useAppDispatch();
-  const [userRole, setUserRole] = React.useState<String>(user?.role!);
+  const [userRole, setUserRole] = React.useState<String>(user?.role ??  "member");
   const sheets = new ServerStyleSheets();
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const [activated, setActivated] = React.useState<boolean>(user?.activated!);
-  const [roleState, setRoleState] = React.useState<string>(
-    user?.role ?? "member"
-  );
+
   const [showConfirmation, setShowConfirmation] = React.useState(false);
 
   const handleEdit = () => {
@@ -174,7 +172,7 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
               <FormLabel htmlFor="role" style={{ fontWeight: "bold" }}>
                   สถานะ <span style={{ color: "red" }}>*</span>
                   </FormLabel>
-                <div style={{ display: "flex" }}>
+                {/* <div style={{ display: "flex" }}>
                   <div style={{ marginRight: "1rem" }}>
                     <input
                       type="radio"
@@ -195,33 +193,29 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
                     />
                     <label htmlFor="admin">ผู้ดูแลระบบ</label>
                   </div>
-                </div>
+                </div> */}
 
-                 {/* <FormLabel htmlFor="role" style={{ fontWeight: "bold" }}>
-                  สถานะ <span style={{ color: "red" }}>*</span>
-                  </FormLabel>
-
-                  <RadioGroup
-                    row
-                    value={roleState}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                      setRoleState(event.target.value);
-                    }}
-                    aria-labelledby="group-type-row-radio-buttons-group-label"
-                    name="role"
-                  >
-                    <FormControlLabel
-                      value="member"
-                      control={<Radio />}
-                      label={"สมาชิก"}
-                    />
-                    <FormControlLabel
-                      value="admin"
-                      control={<Radio />}
-                      label={"ผู้ดูแลระบบ"}
-                    />
-                  </RadioGroup>
-                  <ErrorMessage name="role" /> */}
+                <RadioGroup
+                  row
+                  value={userRole}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setUserRole(event.target.value);
+                  }}
+                  aria-labelledby="group-type-row-radio-buttons-group-label"
+                  name="role"
+                >
+                  <FormControlLabel
+                    value="member"
+                    control={<Radio />}
+                    label="สมาชิก"
+                  />
+                  <FormControlLabel
+                    value="admin"
+                    control={<Radio />}
+                    label="ผู้ดูแลระบบ"
+                  />
+                </RadioGroup>
+                  <ErrorMessage name="role" />
 
               </Box>
             </Grid>
