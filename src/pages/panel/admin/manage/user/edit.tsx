@@ -10,6 +10,7 @@ import {
   FormikHelpers,
   FormikProps,
   useFormikContext,
+  ErrorMessage
 } from "formik";
 import { TextField, CheckboxWithLabel } from "formik-material-ui";
 
@@ -47,7 +48,7 @@ import {
   RadioGroup,
   FormControl,
   Container,
-  Paper,
+  Paper 
 } from "@material-ui/core";
 import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
@@ -71,7 +72,9 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const [activated, setActivated] = React.useState<boolean>(user?.activated!);
-
+  const [roleState, setRoleState] = React.useState<string>(
+    user?.role ?? "member"
+  );
   const [showConfirmation, setShowConfirmation] = React.useState(false);
 
   const handleEdit = () => {
@@ -167,11 +170,10 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
 </Grid>
             <Grid item>
               <Box style={{ marginTop: 3 }}>
-                <FormLabel htmlFor="role" style={{ fontWeight: "bold" }}>
-                  สถานะ
-                  <span style={{ color: "red" }}>*</span>
-                </FormLabel>
-
+            
+              <FormLabel htmlFor="role" style={{ fontWeight: "bold" }}>
+                  สถานะ <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
                 <div style={{ display: "flex" }}>
                   <div style={{ marginRight: "1rem" }}>
                     <input
@@ -194,6 +196,33 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
                     <label htmlFor="admin">ผู้ดูแลระบบ</label>
                   </div>
                 </div>
+
+                 {/* <FormLabel htmlFor="role" style={{ fontWeight: "bold" }}>
+                  สถานะ <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+
+                  <RadioGroup
+                    row
+                    value={roleState}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setRoleState(event.target.value);
+                    }}
+                    aria-labelledby="group-type-row-radio-buttons-group-label"
+                    name="role"
+                  >
+                    <FormControlLabel
+                      value="member"
+                      control={<Radio />}
+                      label={"สมาชิก"}
+                    />
+                    <FormControlLabel
+                      value="admin"
+                      control={<Radio />}
+                      label={"ผู้ดูแลระบบ"}
+                    />
+                  </RadioGroup>
+                  <ErrorMessage name="role" /> */}
+
               </Box>
             </Grid>
      

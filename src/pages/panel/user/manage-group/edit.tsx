@@ -689,7 +689,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="phone" style={{ fontWeight: "bold" }}>
-                    เบอร์โทร <span style={{ color: "red" }}>*</span>
+                    เบอร์โทร 
                   </FormLabel>
                   <Field
                     name="phone"
@@ -709,7 +709,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
-                    อีเมล <span style={{ color: "red" }}>*</span>
+                    อีเมล 
                   </FormLabel>
                   <Field
                     name="email"
