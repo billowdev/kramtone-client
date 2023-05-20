@@ -1140,12 +1140,6 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     <span>หมุดของคุณ</span>
                   </Popup>
                 </Marker>
-
-        {/* <Marker position={[17.166984616793364, 104.14777780025517]}>
-          <Popup autoClose={false}>
-            <span>หมุดของคุณ</span>
-          </Popup>
-        </Marker> */}
       </MapContainer>
     </Paper>
 

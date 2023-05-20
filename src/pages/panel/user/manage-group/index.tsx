@@ -627,7 +627,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
       }}
     >
       <MapContainer
-        center={center}
+         center={position}
         zoom={zoom}
         style={{ height: '500px', width: '100%' }}
       >

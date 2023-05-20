@@ -187,7 +187,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     parseFloat(groupData?.lat ?? "17.1634"),
     parseFloat(groupData?.lng ?? "104.1476"),
   ]; // Centered on Sakon Nakhon Province
-  const zoom: number = 12;
+  const zoom: number = 13;
 
   const [logoFile, setLogoFile] = React.useState<any | Blob>("")
   const [logoObj, setLogoObj] = React.useState<URL | string>("")
