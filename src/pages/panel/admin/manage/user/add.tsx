@@ -22,19 +22,12 @@ import {
   Button,
   FormHelperText,
   Box,
-  FormLabel
-} from "@mui/material";
-
-import PersonIcon from "@mui/icons-material/Person";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import Link from "next/link";
-import React from "react";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import httpClient from "@/common/utils/httpClient.util";
-import {
-  Switch,
+  FormLabel,
+  Paper,
   FormControlLabel,
+  Radio,
+
+  Switch,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -44,14 +37,21 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Radio,
   RadioGroup,
   FormControl,
   Container,
-  Paper,
   InputAdornment,
   IconButton,
-} from "@material-ui/core";
+} from "@mui/material";
+
+import PersonIcon from "@mui/icons-material/Person";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import Link from "next/link";
+import React from "react";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import httpClient from "@/common/utils/httpClient.util";
+
 import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
@@ -84,6 +84,8 @@ const AdminPanelEditUser = ({}: Props) => {
     password: "",
     passwordConfirmation: "",
   };
+
+
   const [addValues, setAddValues] = React.useState<UserType>(initialValue);
   const dispatch = useAppDispatch();
   const [userRole, setUserRole] = React.useState<String>("member");
@@ -143,9 +145,9 @@ const AdminPanelEditUser = ({}: Props) => {
       <Form>
         <Card>
           <CardContent sx={{ padding: 4 }}>
-            <Typography gutterBottom variant="h3">
+            {/* <Typography gutterBottom variant="h3">
               เพิ่มข้อมูลบัญชีผู้ใช้
-            </Typography>
+            </Typography> */}
 
 			<Grid container spacing={2} style={{ marginTop: 16 }}>
             <Grid item sm={6}>
@@ -258,11 +260,33 @@ const AdminPanelEditUser = ({}: Props) => {
 			</Grid> 
 			
             <Grid item>
-			<FormLabel htmlFor="role" style={{ fontWeight: "bold" }}>
+		          	<FormLabel htmlFor="role" style={{ fontWeight: "bold" }}>
                   สถานะ
                   <span style={{ color: "red" }}>*</span>
                 </FormLabel>
-              <div style={{ display: "flex" }}>
+                <RadioGroup
+                  row
+                  value={userRole}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setUserRole(event.target.value);
+                  }}
+                  aria-labelledby="group-type-row-radio-buttons-group-label"
+                  name="role"
+                >
+                  <FormControlLabel
+                    value="member"
+                    control={<Radio />}
+                    label="สมาชิก"
+                  />
+                  <FormControlLabel
+                    value="admin"
+                    control={<Radio />}
+                    label="ผู้ดูแลระบบ"
+                  />
+                </RadioGroup>
+                  <ErrorMessage name="role" />
+
+                {/* <div style={{ display: "flex" }}>
                 <div style={{ marginRight: "1rem" }}>
                   <input
                     type="radio"
@@ -283,7 +307,8 @@ const AdminPanelEditUser = ({}: Props) => {
                   />
                   <label htmlFor="admin">ผู้ดูแลระบบ</label>
                 </div>
-              </div>
+              </div> */}
+
             </Grid>
            
 			<Grid container spacing={2} style={{ marginTop: 16 }}>
@@ -379,27 +404,92 @@ const AdminPanelEditUser = ({}: Props) => {
       </Form>
     );
   };
-
+ 
   return (
     <Layout>
-      <Formik
-        validate={(values) => {
-          let errors: any = {};
-          if (!values.username) errors.username = "กรุณากรอกชื่อผู้ใช้";
-          if (!values.name) errors.name = "กรุณากรอกชื่อ";
-          if (!values.surname) errors.surname = "กรุณากรอกนามสกุล";
-          return errors;
-        }}
-        initialValues={initialValue}
-        onSubmit={async (values, { setSubmitting }) => {
-          setAddValues(values);
-          // setOpenDialog(true);
-          handleAdd();
-          setSubmitting(false);
-        }}
-      >
-        {(props) => showForm(props)}
-      </Formik>
+
+     <Container maxWidth="lg" style={{ marginTop: 16, marginBottom: 4 }}>
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                <Paper
+              sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}
+            >
+              {isSmallDevice ? (
+                <PersonIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+              ) : (
+                <PersonIcon
+                  sx={{ fontSize: "2.5rem", marginLeft: "16px" }}
+                />
+              )}
+
+              <React.Fragment>
+                {isSmallDevice ? (
+                  <Typography
+                    sx={{
+                      fontWeight: "bold",
+                      alignSelf: "center",
+                    }}
+                  >
+                    {" "}
+                    เพิ่มข้อมูลบัญชีผู้ใช้
+                  </Typography>
+                ) : (
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: "bold",
+                      alignSelf: "center",
+                    }}
+                  >
+                    {" "}
+                    เพิ่มข้อมูลบัญชีผู้ใช้
+                  </Typography>
+                )}
+              </React.Fragment>
+            </Paper>
+                </Grid>
+
+              <Grid item xs={12} md={12} lg={12}>
+              <Formik
+                validate={(values) => {
+                  let errors: any = {};
+                  if (!values.username) errors.username = "กรุณากรอกชื่อผู้ใช้";
+                  if (!values.name) errors.name = "กรุณากรอกชื่อ";
+                  if (!values.surname) errors.surname = "กรุณากรอกนามสกุล";
+                  return errors;
+                }}
+                initialValues={initialValue}
+                onSubmit={async (values, { setSubmitting }) => {
+                  setAddValues(values);
+                  // setOpenDialog(true);
+                  handleAdd();
+                  setSubmitting(false);
+                }}
+              >
+                {(props) => showForm(props)}
+              </Formik>
+              </Grid>
+            </Grid>
+          </Container>
+
+          {/* <Formik
+            validate={(values) => {
+              let errors: any = {};
+              if (!values.username) errors.username = "กรุณากรอกชื่อผู้ใช้";
+              if (!values.name) errors.name = "กรุณากรอกชื่อ";
+              if (!values.surname) errors.surname = "กรุณากรอกนามสกุล";
+              return errors;
+            }}
+            initialValues={initialValue}
+            onSubmit={async (values, { setSubmitting }) => {
+              setAddValues(values);
+              // setOpenDialog(true);
+              handleAdd();
+              setSubmitting(false);
+            }}
+          >
+            {(props) => showForm(props)}
+          </Formik> */}
       <ConfirmationDialog
         title="ยืนยันการเพิ่มบัญชีผู้ใช้"
         message="คุณต้องการเพิ่มบัญชีผู้ใช้ใช่หรือไม่ ?"
