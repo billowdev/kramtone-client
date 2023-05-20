@@ -252,17 +252,7 @@ function AdminPanelManageUser({}: Props) {
   };
 
 
-  
-  // function StatusCellRenderer(params: GridCellParams<UserPayload>) {
-  //   const { value, row } = params;
-  
-  //   const handleChange = async(event: React.ChangeEvent<HTMLInputElement>) => {
-  //     const updatedRow = { ...row, activated: event.target.checked };
-  //      await dispatch(updateUser(updatedRow))
-  //   };
-  
-  //   return <Switch checked={value as boolean} onChange={handleChange} />;
-  // }
+
 
   type StatusCellRendererProps = GridCellParams<UserPayload>;
 
@@ -275,29 +265,44 @@ const StatusCellRenderer: React.FC<StatusCellRendererProps> = ({ value }) => {
         color: isActive ? 'green' : 'orange', // Set the color based on the value of 'activated'
       }}
     >
-      {isActive ? 'Active' : 'Inactive'} {/* Show different text based on the value of 'activated' */}
+      {isActive ? 'ยืนยัน' : 'ยังไม่ยืนยัน'} {/* Show different text based on the value of 'activated' */}
     </Typography>
   );
 };
   const columns: GridColDef[] = [
     {
       field: "username",
-      editable: true,
+      editable: false,
       headerName: "ชื่อผู้ใช้",
       width: 120,
     },
     {
       field: "name",
-      editable: true,
+      editable: false,
       headerName: "ชื่อ",
       width: 100,
     },
     {
       field: "surname",
-      editable: true,
+      editable: false,
       headerName: "นามสกุล",
       width: 100,
     },
+    {
+      field: "group",
+      editable: false,
+      headerName: "ชื่อกลุ่มผู้ผลิต/ร้านค้า",
+      width: 160,
+      align: "center",
+      renderCell: (params) => {
+  
+        const groupName = (params?.value as { groupName: string })?.groupName;
+        return (
+          <span>{groupName}</span>
+        );
+      },
+    },
+    
     // {
     //   field: 'createdAt',
     //   headerName: 'สมัครสมาชิกเมื่อ',

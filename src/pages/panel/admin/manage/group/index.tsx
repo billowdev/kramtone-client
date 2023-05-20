@@ -246,7 +246,7 @@ function AdminPanelManageGroup({}: Props) {
       width: 240,
       renderCell: ({ row }: GridRenderCellParams<any>) => (
         <Stack direction="row">
-          <IconButton
+          {/* <IconButton
             aria-label="delete"
             size="large"
             onClick={() => {
@@ -255,7 +255,7 @@ function AdminPanelManageGroup({}: Props) {
             }}
           >
             <DeleteIcon fontSize="inherit" />
-          </IconButton>
+          </IconButton> */}
           <IconButton
             aria-label="edit"
             size="large"
