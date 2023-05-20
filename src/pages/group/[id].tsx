@@ -110,8 +110,8 @@ const handleBackButtonClick = () => {
 
   const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
   const position: LatLngExpression = [
-    parseFloat(groupData?.lat!),
-    parseFloat(groupData?.lng!),
+    parseFloat(groupData?.lat || "17.166984616793364"),
+    parseFloat(groupData?.lng || "104.14777780025517"),
   ]; // Centered on Sakon Nakhon Province
   const zoom: number = 12;
 
@@ -487,29 +487,76 @@ const handleBackButtonClick = () => {
           </Grid>
 
 
-          <Grid item xs={12} md={12} lg={12}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                gap: "16px",
-              }}
-            >
-              <MapContainer
-                center={center}
-                zoom={zoom}
-                style={{ height: "500px", width: "100%" }}
-              >
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <Marker position={position}>
+
+          {center[0] !== 17.166984616793364  && center[1] !== 104.14777780025517 ? (
+  <Grid item xs={12} md={12} lg={12}>
+    <Paper
+      sx={{
+        p: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+      }}
+    >
+      <MapContainer
+        center={position}
+        zoom={zoom}
+        style={{ height: '500px', width: '100%' }}
+      >
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <Marker position={position}>
                   <Popup autoClose={false}>
                     <span>หมุดของคุณ</span>
                   </Popup>
                 </Marker>
-              </MapContainer>
-            </Paper>
-          </Grid>
+
+      </MapContainer>
+    </Paper>
+  </Grid>
+) : (
+  <Grid item xs={12} md={12} lg={12}>
+    <Paper
+      sx={{
+        p: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '50px',
+      }}
+    >
+      <Typography variant="h5" color="error">
+      กลุ่มผู้ผลิตหรือร้านค้า ยังไม่ปักหมุดแผนที่ ที่ถูกต้อง
+      </Typography>
+    </Paper>
+
+    <Paper
+      sx={{
+        p: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+      }}
+    >
+      <MapContainer
+        center={[17.166984616793364, 104.14777780025517]}
+        zoom={zoom}
+        style={{ height: '500px', width: '100%' }}
+      >
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                <Marker position={[17.166984616793364, 104.14777780025517]}>
+                  <Popup autoClose={false}>
+                    <span>หมุดของคุณ</span>
+                  </Popup>
+                </Marker>
+
+      </MapContainer>
+    </Paper>
+
+  </Grid>
+)}
+
+
         </Grid>
 
 		<Box display="flex" justifyContent="space-between" padding={2}>

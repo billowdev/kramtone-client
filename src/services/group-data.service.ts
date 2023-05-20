@@ -11,6 +11,15 @@ export const getOneGroupData = async (id: string | undefined): Promise<GroupData
 	return response.payload
 };
 
+export const deleteGroupLogo = async (id: string | undefined): Promise<any> => {
+	const { data: response } = await httpClient.delete(`/groups/remove-logo/${id}`);
+	return response.payload
+};
+export const deleteGroupBanner = async (id: string | undefined): Promise<any> => {
+	const { data: response } = await httpClient.delete(`/groups/remove-banner/${id}`);
+	return response.payload
+};
+
 export const getAllGroupData = async (
 	// filters: Filters = {}
   ): Promise<GroupDataArrayResponse> => {
@@ -49,6 +58,8 @@ export const updateGroupData = async (id: string, data: FormData, accessToken: s
 	});
 
 };
+
+
 
 export const deleteGroupData = async (id: string): Promise<void> => {
 	await httpClient.delete(`/groups/${id}`, {

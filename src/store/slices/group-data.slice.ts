@@ -52,6 +52,18 @@ export const updateGroupDataAction = createAsyncThunk(
 	}
 );
 
+export const deleteGroupLogo = createAsyncThunk(
+	"GROUP_DATA/DELETE_LOGO",
+	async (data:any) => {
+		await groupDataService.deleteGroupLogo(data.id, data.accessToken);
+	}
+);
+export const deleteGroupBanner = createAsyncThunk(
+	"GROUP_DATA/DELETE_BANNER",
+	async (data:any) => {
+		await groupDataService.deleteGroupBanner(data.id, data.accessToken);
+	}
+);
 
 export const groupDataSlice = createSlice({
 	name: "groupData",

@@ -269,7 +269,7 @@ function AdminPanelManageGroup({}: Props) {
             aria-label="view"
             size="large"
             onClick={() => 
-				router.push("/panel/admin/manage/group/" + row.id)
+				    router.push("/panel/admin/manage/group/" + row.id)
 				}
           >
             <VisibilityIcon fontSize="inherit" />

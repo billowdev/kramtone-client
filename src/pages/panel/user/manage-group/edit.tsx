@@ -33,7 +33,7 @@ import * as groupDataService from "@/services/group-data.service";
 import { object as yupObject, string as yupString } from "yup";
 import { groupDataImageURL } from "@/common/utils/utils";
 import * as thaiAddressService from "@/services/thai-address.service";
-import { updateGroupDataAction } from "@/store/slices/group-data.slice"
+import { updateGroupDataAction, deleteGroupLogo, deleteGroupBanner } from "@/store/slices/group-data.slice"
 // import { TextField } from "formik-material-ui";
 import toast from "react-hot-toast";
 
@@ -226,7 +226,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   const [provinceState, setProvinceState] = React.useState<string>(
     groupData?.province ?? ""
   );
-    console.log()
+
+  
   const [districtState, setDistrictState] = React.useState<string>(
     groupData?.district ?? ""
   );
@@ -251,7 +252,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
   React.useEffect(() => {
     const fetchDistrict = async () => {
-      if(sakonNakhonProvinces){
+      if (sakonNakhonProvinces) {
         const pid = sakonNakhonProvinces.id
         const districtData = await thaiAddressService.getDistricts(pid.toString());
         setDistrict(districtData);
@@ -259,8 +260,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     }
     fetchDistrict();
   }, [sakonNakhonProvinces]);
-  
-  
+
+
   const [selectedProvince, setSelectedProvince] =
     React.useState<ProvinceType | null>(null);
 
@@ -326,7 +327,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   };
 
   const showPreviewLogo = (values: any) => {
-      if (values?.logoObj) {
+    if (values?.logoObj) {
       return (
         <Image
           alt="group logo image"
@@ -350,7 +351,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     }
   };
 
-  const showPreviewBanner = (values:any) => {
+  const showPreviewBanner = (values: any) => {
     if (values?.bannerObj) {
       return (
         <Image
@@ -393,20 +394,46 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
           <Button onClick={handleEditConfirm} variant="contained" color="primary">
             ยืนยัน
           </Button>
-          <Button onClick={() => setOpenDialog(false)}  variant="outlined" color="info">
+          <Button onClick={() => setOpenDialog(false)} variant="outlined" color="info">
             ยกเลิก
           </Button>
         </DialogActions>
       </Dialog>
     );
   };
+
+  const handleRollbackLogo = async () => {
+    if(logoFile !== ""){
+      setLogoFile("")
+    }else{
+      const updateStatus = await dispatch(deleteGroupLogo({ id: updateGroupData.id, accessToken }))
+      if (updateStatus.meta.requestStatus === "fulfilled") {
+        toast.success("ลบโลโก้สำเร็จ")
+      } else {
+        toast.error("ลบโลโก้ไม่สำเร็จ โปรดลองอีกครั้ง")
+      }
+    }
+  }
+
+  const handleRollbackBanner = async () => {
+    if(bannerFile !=="") {
+      setBannerFile("")
+    }else{
+      const updateStatus = await dispatch(deleteGroupBanner({ id: updateGroupData.id, accessToken }))
+      if (updateStatus.meta.requestStatus === "fulfilled") {
+        toast.success("ลบแบนเนอร์สำเร็จ")
+      } else {
+        toast.error("ลบแบนเนอร์ไม่สำเร็จ โปรดลองอีกครั้ง")
+      }
+    }
+  }
   const handleEditConfirm = async () => {
     let formData: FormData = new FormData();
-    
-    if (logoFile!="") {
+
+    if (logoFile != "") {
       formData.append("logoFile", logoFile);
     }
-    if (bannerFile!="") {
+    if (bannerFile != "") {
       formData.append("bannerFile", bannerFile);
     }
     formData.append('groupData', JSON.stringify({
@@ -426,12 +453,12 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
       'lat': currentLat,
       'lng': currentLng,
     }));
-// console.log('Form Data:');
-// 	for (const [key, value] of formData.entries()) {
-// 		console.log(key, value);
-// 	}
-// console.log(logoFile)
-// console.log(bannerFile)
+    // console.log('Form Data:');
+    // 	for (const [key, value] of formData.entries()) {
+    // 		console.log(key, value);
+    // 	}
+    // console.log(logoFile)
+    // console.log(bannerFile)
 
 
     const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }))
@@ -477,7 +504,23 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 </FormLabel>
 
                 <Box style={{ padding: isSmallDevice ? 0 : 4 }}>
-                  <div>{showPreviewLogo(values)}</div>
+                   {groupData?.logo === "logo.png" && logoFile==="" ?
+                  <Image
+                  alt="group logo image"
+                  src={"/static/img/logo.png"}
+                  width={isSmallDevice ? 150 : 250}
+                   height={isSmallDevice ? 150 : 250}
+                />
+                 :
+                 <>
+               <Button variant="contained" color="primary" onClick={handleRollbackLogo} style={{ marginBottom: 8 }}>
+                  ลบรูปภาพ
+                </Button>
+                <div>{showPreviewLogo(values)}</div>
+                 </>
+                 }
+
+                
                   <div>
                     <Image
                       alt="product image"
@@ -500,7 +543,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                           URL.createObjectURL(e.target.files[0])
                         ); // for preview image
                       }}
-  
+
                       name="logo"
                       click-type="type1"
                       multiple
@@ -515,7 +558,25 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   ภาพแบนเนอร์ ขนาด 1200 x 160 px
                 </FormLabel>
                 <Box style={{ padding: isSmallDevice ? 0 : 4 }}>
-                  <div>{showPreviewBanner(values)}</div>
+
+            
+
+                 {groupData?.banner === "banner.png"  && bannerFile===""  ?
+                  <Image
+                  alt="group banner image"
+                  src={"/static/img/banner.png"}
+                  width={isSmallDevice ? 200 : 400}
+                  height={isSmallDevice ? 30 : 60}
+                />
+                 :
+                 <>
+  <Button variant="contained" color="primary" onClick={handleRollbackBanner} style={{ marginBottom: 8 }}>
+                 ลบรูปภาพ
+               </Button>
+                 <div>{showPreviewBanner(values)}</div>
+                 </>
+                 }
+                
                   <div>
                     <Image
                       alt="product image"
@@ -679,35 +740,35 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
 
             <Grid container spacing={2}>
-    
-    {
-      sakonNakhonProvinces && <>
-        <Grid item xs={12} md={6}>
-                <Box sx={{ marginTop: 3 }}>
-                  <FormLabel htmlFor="hno" style={{ fontWeight: "bold" }}>
-                    จังหวัด <span style={{ color: "red" }}>*</span>
-                  </FormLabel>
-                  <Field
-                    name="hno"
-                    type="text"
-                    fullWidth
-                    readonly
-                    disabled
-                    inputProps={{ maxLength: 5 }}
-                    value={sakonNakhonProvinces.nameTH}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      handleInputChange(e, 'province')
-                    }}
-                    label="จังหวัด"
-                    component={TextField}
-                    sx={{ marginTop: 3 }}
-                  />
-                  <ErrorMessage name="hno" />
-                </Box>
-              </Grid>
-      </>
-    }
-          
+
+              {
+                sakonNakhonProvinces && <>
+                  <Grid item xs={12} md={6}>
+                    <Box sx={{ marginTop: 3 }}>
+                      <FormLabel htmlFor="hno" style={{ fontWeight: "bold" }}>
+                        จังหวัด <span style={{ color: "red" }}>*</span>
+                      </FormLabel>
+                      <Field
+                        name="hno"
+                        type="text"
+                        fullWidth
+                        readonly
+                        disabled
+                        inputProps={{ maxLength: 5 }}
+                        value={sakonNakhonProvinces.nameTH}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          handleInputChange(e, 'province')
+                        }}
+                        label="จังหวัด"
+                        component={TextField}
+                        sx={{ marginTop: 3 }}
+                      />
+                      <ErrorMessage name="hno" />
+                    </Box>
+                  </Grid>
+                </>
+              }
+
 
               {/* <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
@@ -922,7 +983,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
               <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="lat" sx={{ fontWeight: "bold" }}>
-                  ลองจิจูด <span style={{ color: "red" }}>*</span>
+                    ลองจิจูด <span style={{ color: "red" }}>*</span>
                   </FormLabel>
                   <Field
                     name="lat"
@@ -945,15 +1006,15 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
               <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="lng" sx={{ fontWeight: "bold" }}>
-                  ลองจิจูด <span style={{ color: "red" }}>*</span>
+                    ลองจิจูด <span style={{ color: "red" }}>*</span>
                   </FormLabel>
                   <Field
                     name="lng"
                     value={currentLng}
                     onChange={(e: React.ChangeEvent<any>) => {
                       const newLng = parseFloat(e.target.value);
-                    setCurrentLng(newLng);
-                    setFieldValue("lng", newLng);
+                      setCurrentLng(newLng);
+                      setFieldValue("lng", newLng);
                     }}
                     type="text"
                     fullWidth
@@ -975,7 +1036,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
             variant="contained"
             fullWidth
             // disabled={!isValid}
-            onClick={()=>{
+            onClick={() => {
               setOpenDialog(true)
             }}
             sx={{ marginRight: 1 }}
@@ -1120,7 +1181,7 @@ export const getServerSideProps: GetServerSideProps = async (
         groupData,
         accessToken,
         provinces,
-        sakonNakhonProvinces : sakonNakhonProvinces[0]
+        sakonNakhonProvinces: sakonNakhonProvinces[0]
       },
     };
   } else {
