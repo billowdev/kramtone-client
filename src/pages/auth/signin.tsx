@@ -1,16 +1,5 @@
 import React, { useState } from "react";
-import {
-  Grid,
-  Paper,
-  Avatar,
-  TextField,
-  Button,
-  Typography,
-  Link,
-  Box,
-  InputAdornment,
-  IconButton,
-} from "@material-ui/core";
+
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -36,7 +25,19 @@ import { useTheme } from "@material-ui/core/styles";
 
 import { getOneGroupDataAction } from "@/store/slices/group-data.slice";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { Card, CardContent, CardActions } from "@mui/material";
+import { 
+  Card, CardContent, CardActions,
+  Grid,
+  Paper,
+  Avatar,
+  TextField,
+  Button,
+  Typography,
+  Link,
+  Box,
+  InputAdornment,
+  IconButton, 
+} from "@mui/material";
 
 type Props = {};
 interface FormValues {

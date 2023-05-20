@@ -11,7 +11,7 @@ import {
   InputLabel,
   InputAdornment,
   IconButton,
-} from "@material-ui/core";
+} from "@mui/material";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
