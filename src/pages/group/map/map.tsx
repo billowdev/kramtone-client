@@ -1,9 +1,10 @@
 import type { LatLngExpression, LatLngBoundsExpression } from 'leaflet';
 
 import Image from 'next/image';
+import { useRouter } from "next/router";
 import dynamic from 'next/dynamic';
 import React from 'react';
-import { Typography } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import { GroupDataPayload } from '@/models/group-data.model';
 import {groupDataImageURL} from "@/common/utils/utils"
 
@@ -27,6 +28,7 @@ type MapProps = {
 };
 
 const GroupMap = ({ groupData }: MapProps) => {
+	const router = useRouter();
 	// fix it can't yean build 
 	// stackoverflow
 	// https://stackoverflow.com/questions/57704196/leaflet-with-next-js
@@ -87,6 +89,16 @@ const GroupMap = ({ groupData }: MapProps) => {
 								width={100}
 								height={100}
 							/>
+							   <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => {
+                                      router.push(`/group/${group.id}`);
+                                    }}
+                                    fullWidth
+                                  >
+                                    ดูข้อมูลเพิ่มเติม
+                                  </Button>
 						</div>
 					</Popup>
 				</Marker>
