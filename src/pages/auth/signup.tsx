@@ -11,6 +11,7 @@ import {
   InputLabel,
   InputAdornment,
   IconButton,
+  FormLabel,
 } from "@mui/material";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -173,30 +174,61 @@ function SignUpPage({ }: Props) {
                       <Typography variant="h5" style={{ fontWeight: 'bold', textAlign: 'center', marginTop: 3, marginBottom: 3 }}>
                         สมัครสมาชิก
                       </Typography>
-                      <Field
-                        as={TextField}
-                        label="ชื่อ"
-                        name="name"
-                        placeholder="กรุณากรอกชื่อ"
-                        fullWidth
-                        required
-                        maxLength={120}
-                        helperText={<ErrorMessage name="name" />}
-                      />
 
-                      <Field
+
+                      <Box style={{ marginTop: 16 }}>
+                        <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+                        ชื่อ
+                          <span style={{ color: "red" }}>*</span>
+                        </FormLabel>
+                      
+                        <Field
+                                style={{ marginTop: 8 }}
+                                as={TextField}
+                                label="กรุณากรอก ชื่อ"
+                                name="name"
+                                placeholder="กรุณากรอก ชื่อ"
+                                fullWidth
+                                required
+                                maxLength={120}
+                                helperText={<ErrorMessage name="name" />}
+                              />
+
+              </Box>
+
+
+                     
+
+              <Box style={{ marginTop: 16 }}>
+                        <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+                        นามสกุล
+                          <span style={{ color: "red" }}>*</span>
+                        </FormLabel>
+                      
+                      
+<Field
+   style={{ marginTop: 8 }}
                         as={TextField}
-                        label="นามสกุล"
+                        label="กรุณากรอก นามสกุล"
                         name="surname"
                         placeholder="กรุณากรอกนามสกุล"
                         fullWidth
                         required
                         helperText={<ErrorMessage name="surname" />}
                       />
-
-                      <Field
+              </Box>
+                      
+              <Box style={{ marginTop: 16 }}>
+                        <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+                        เบอร์โทร
+                          <span style={{ color: "red" }}>*</span>
+                        </FormLabel>
+                      
+                       
+                                <Field
+                                 style={{ marginTop: 8 }}
                         as={TextField}
-                        label="เบอร์โทร"
+                        label="กรุณากรอก เบอร์โทร"
                         name="phone"
                         placeholder="กรุณากรอกเบอร์โทร"
                         fullWidth
@@ -204,18 +236,36 @@ function SignUpPage({ }: Props) {
                         helperText={<ErrorMessage name="phone" />}
                       />
 
-                      <Field
+              </Box>
+
+              <Box style={{ marginTop: 16 }}>
+                        <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+                        ชื่อผู้ใช้
+                          <span style={{ color: "red" }}>*</span>
+                        </FormLabel>
+                      
+                      
+                        <Field
+                        style={{ marginTop: 8 }}
                         as={TextField}
-                        label="ชื่อผู้ใช้"
+                        label="กรุณากรอก ชื่อผู้ใช้"
                         name="username"
                         placeholder="กรอก ชื่อผู้ใช้"
                         fullWidth
                         required
                         helperText={<ErrorMessage name="username" />}
                       />
-                      <Field
+              </Box>
+              <Box style={{ marginTop: 16 }}>
+                        <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+                        รหัสผ่าน
+                          <span style={{ color: "red" }}>*</span>
+                        </FormLabel>
+                      
+                        <Field
+                        style={{ marginTop: 8 }}
                         as={TextField}
-                        label="รหัสผ่าน"
+                        label="กรุณากรอก รหัสผ่าน"
                         name="password"
                         placeholder="กรอก รหัสผ่าน"
                         type={passwordVisible ? 'text' : 'password'}
@@ -236,8 +286,16 @@ function SignUpPage({ }: Props) {
                           ),
                         }}
                       />
-
-                      <Field
+              </Box>
+                      
+              <Box style={{ marginTop: 16 }}>
+                        <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+                        ยืนยันรหัสผ่าน
+                          <span style={{ color: "red" }}>*</span>
+                        </FormLabel>
+                      
+                        <Field
+                        style={{ marginTop: 8 }}
                         as={TextField}
                         label="ยืนยันรหัสผ่าน"
                         name="passwordConfirmation"
@@ -260,6 +318,9 @@ function SignUpPage({ }: Props) {
                           ),
                         }}
                       />
+              </Box>
+
+                      
                     </CardContent>
                     <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   
