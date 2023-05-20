@@ -278,9 +278,9 @@ const GroupItem = () => {
 
   return (
     <MainLayout>
-      <Box sx={{ flexGrow: 1, p: isSmallDevice ? 0 : 4 }}>
+      <Box style={{ flexGrow: 1, padding: isSmallDevice ? 0 : 4, minHeight:"768px" }}>
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} sx={{mb:4}}>
             <Grid item xs={12} md={3}>
               <TextField
                 label="ค้นหากลุ่ม"
@@ -342,7 +342,7 @@ const GroupItem = () => {
           <CategoryFilterModal />
           <ColorSchemeFilterModal />
 
-          <Paper elevation={3} style={{ padding: 2 }}>
+          <Paper elevation={3} style={{ padding: 2, marginTop:16 }}>
             <Grid
               container
               spacing={3}
