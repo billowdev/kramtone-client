@@ -11,7 +11,9 @@ import {
   Button,
   Grid,
   Box,
-  FormLabel
+  FormLabel,
+  Container,
+  Paper
 } from "@mui/material";
 import { Field, Form, Formik, FormikProps } from "formik";
 import { TextField } from "formik-material-ui";
@@ -26,14 +28,18 @@ import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
 import {createColorScheme} from "@/store/slices/color-scheme.slice"
 import ConfirmationDialog from "@/components/ConfirmationDialog"
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+import ColorLensIcon from '@mui/icons-material/ColorLens';
 
 type Props = {
 
 };
 
 const AdminPanelAddColorScheme = ({ }: Props) => {
+  const theme = useTheme();
   const router = useRouter();
-
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down('xs'));
   const dispatch = useAppDispatch();
   const initialValues : ColorSchemePayload = {
     id:"",
@@ -79,10 +85,7 @@ const AdminPanelAddColorScheme = ({ }: Props) => {
       <Form>
         <Card>
           <CardContent sx={{ padding: 4 }}>
-            <Typography gutterBottom variant="h3">
-             เพิ่มข้อมูลโทนสีครามธรรมชาติ
-            </Typography>
-
+      
             <Grid item md={6}>
               <Box style={{ marginTop: 16 }}>
                 <FormLabel htmlFor="id" style={{ fontWeight: "bold" }}>
@@ -183,7 +186,51 @@ const AdminPanelAddColorScheme = ({ }: Props) => {
 
   return (
     <Layout>
-      <Formik
+
+      
+<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Paper
+              sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}
+            >
+              {isSmallDevice ? (
+                <ColorLensIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+              ) : (
+                <ColorLensIcon
+                  sx={{ fontSize: "2.5rem", marginLeft: "16px" }}
+                />
+              )}
+
+              <React.Fragment>
+                {isSmallDevice ? (
+                  <Typography
+                    sx={{
+                      fontWeight: "bold",
+                      alignSelf: "center",
+                    }}
+                  >
+                
+                   เพิ่มข้อมูลโทนสีครามธรรมชาติ
+                  </Typography>
+                ) : (
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: "bold",
+                      alignSelf: "center",
+                    }}
+                  >
+          
+                   เพิ่มข้อมูลโทนสีครามธรรมชาติ
+                  </Typography>
+                )}
+              </React.Fragment>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12} md={12} lg={12}>
+          <Formik
         validate={(values) => {
           let errors: any = {};
           if (!values.id) errors.id = "กรุณากรอกรหัสประจำสี";
@@ -201,6 +248,13 @@ const AdminPanelAddColorScheme = ({ }: Props) => {
       >
         {(props) => showForm(props)}
       </Formik>
+
+          </Grid>
+        </Grid>
+      </Container>
+
+
+   
       <ConfirmationDialog
         title="ยืนยันการเพิ่มข้อมูล"
         message="คุณต้องการเพิ่มข้อมูลใช่หรือไม่ ?"

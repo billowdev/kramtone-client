@@ -2,6 +2,7 @@ import Layout from "@/components/Layouts/Layout";
 import withAuth from "@/components/withAuth";
 import { CategoryPayload } from "@/models/category.model";
 // import { updateCategory } from "@/services/category.service";
+import ColorLensIcon from '@mui/icons-material/ColorLens';
 import { updateColorScheme } from "@/store/slices/color-scheme.slice";
 import { categoryImageURL } from "@/common/utils/utils";
 import {
@@ -13,6 +14,8 @@ import {
   Grid,
   FormLabel,
   Box,
+  Container,
+  Paper
 } from "@mui/material";
 import { Field, Form, Formik, FormikProps } from "formik";
 import { TextField } from "formik-material-ui";
@@ -27,6 +30,8 @@ import { useAppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
 import { ColorSchemePayload } from "@/models/color-scheme.model"
 import ConfirmationDialog from "@/components/ConfirmationDialog"
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 type Props = {
   colorScheme?: ColorSchemePayload;
@@ -35,9 +40,10 @@ type Props = {
 
 const AdminPanelEditColorScheme = ({ colorScheme, accessToken }: Props) => {
   const router = useRouter();
+  const theme = useTheme();
   const [updateValue, setUpdateValue] = React.useState<ColorSchemePayload>(colorScheme!);
   const dispatch = useAppDispatch();
-
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down('xs'));
 
 
   const [showConfirmation, setShowConfirmation] = React.useState(false);
@@ -76,9 +82,7 @@ const AdminPanelEditColorScheme = ({ colorScheme, accessToken }: Props) => {
       <Form>
         <Card>
           <CardContent sx={{ padding: 4 }}>
-            <Typography gutterBottom variant="h3">
-              แก้ไขข้อมูลโทนสีครามธรรมชาติ
-            </Typography>
+       
 
             <Grid item md={6}>
               <Box style={{ marginTop: 16 }}>
@@ -180,7 +184,50 @@ const AdminPanelEditColorScheme = ({ colorScheme, accessToken }: Props) => {
 
   return (
     <Layout>
-      <Formik
+
+<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Paper
+              sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}
+            >
+              {isSmallDevice ? (
+                <ColorLensIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+              ) : (
+                <ColorLensIcon
+                  sx={{ fontSize: "2.5rem", marginLeft: "16px" }}
+                />
+              )}
+
+              <React.Fragment>
+                {isSmallDevice ? (
+                  <Typography
+                    sx={{
+                      fontWeight: "bold",
+                      alignSelf: "center",
+                    }}
+                  >
+                
+                    แก้ไขข้อมูลโทนสีครามธรรมชาติ
+                  </Typography>
+                ) : (
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: "bold",
+                      alignSelf: "center",
+                    }}
+                  >
+          
+                    แก้ไขข้อมูลโทนสีครามธรรมชาติ
+                  </Typography>
+                )}
+              </React.Fragment>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12} md={12} lg={12}>
+          <Formik
         validate={(values) => {
           let errors: any = {};
           if (!values.nameTH) errors.nameTH = "กรุณากรอกชื่อโทนสีครามธรรมชาติ";
@@ -200,6 +247,11 @@ const AdminPanelEditColorScheme = ({ colorScheme, accessToken }: Props) => {
         {(props) => showForm(props)}
       </Formik>
 
+          </Grid>
+        </Grid>
+      </Container>
+
+    
       <ConfirmationDialog
         title="ยืนยันการแก้ไขข้อมูล"
         message="คุณต้องการแก้ไขข้อมูลใช่หรือไม่ ?"
