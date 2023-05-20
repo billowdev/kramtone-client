@@ -33,7 +33,7 @@ import * as groupDataService from "@/services/group-data.service";
 import { object as yupObject, string as yupString } from "yup";
 import { groupDataImageURL } from "@/common/utils/utils";
 import * as thaiAddressService from "@/services/thai-address.service";
-import { updateGroupDataAction } from "@/store/slices/group-data.slice"
+import { updateGroupDataAction, deleteGroupLogo, deleteGroupBanner } from "@/store/slices/group-data.slice"
 // import { TextField } from "formik-material-ui";
 import toast from "react-hot-toast";
 
@@ -403,6 +403,40 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
       </Dialog>
     );
   };
+  
+  const handleRollbackLogo = async () => {
+    if(logoFile !== ""){
+      setLogoFile("")
+    }else{
+      const updateStatus = await dispatch(deleteGroupLogo({ id: updateGroupData.id, accessToken }))
+      if (updateStatus.meta.requestStatus === "fulfilled") {
+        toast.success("ลบโลโก้สำเร็จ")
+        setTimeout(() => {
+          window.location.reload(); // Reload the page after 2 seconds
+        }, 200);
+      } else {
+        toast.error("ลบโลโก้ไม่สำเร็จ โปรดลองอีกครั้ง")
+      }
+    }
+  }
+
+  const handleRollbackBanner = async () => {
+    if(bannerFile !=="") {
+      setBannerFile("")
+    }else{
+      const updateStatus = await dispatch(deleteGroupBanner({ id: updateGroupData.id, accessToken }))
+      if (updateStatus.meta.requestStatus === "fulfilled") {
+        toast.success("ลบแบนเนอร์สำเร็จ")
+        setTimeout(() => {
+          window.location.reload(); // Reload the page after 2 seconds
+        }, 200);
+      } else {
+        toast.error("ลบแบนเนอร์ไม่สำเร็จ โปรดลองอีกครั้ง")
+      }
+    }
+  }
+
+
   const handleEditConfirm = async () => {
     let formData: FormData = new FormData();
     if (logoFile!="") {
@@ -433,7 +467,6 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 // 	for (const [key, value] of formData.entries()) {
 // 		console.log(key, value);
 // 	}
-
 
     const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }))
 
@@ -478,7 +511,22 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 </FormLabel>
 
                 <Box style={{ padding: isSmallDevice ? 0 : 4 }}>
-                  <div>{showPreviewLogo(values)}</div>
+             
+                   {groupData?.logo === "logo.png" && logoFile==="" ?
+                  <Image
+                  alt="group logo image"
+                  src={"/static/img/logo.png"}
+                  width={isSmallDevice ? 150 : 250}
+                   height={isSmallDevice ? 150 : 250}
+                />
+                 :
+                 <React.Fragment>
+               <Button variant="contained" color="primary" onClick={handleRollbackLogo} style={{ marginBottom: 8 }}>
+                  ลบรูปภาพ
+                </Button>
+                <div>{showPreviewLogo(values)}</div>
+                 </React.Fragment>
+                 }
                   <div>
                     <Image
                       alt="product image"
@@ -516,7 +564,23 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   ภาพแบนเนอร์ ขนาด 1200 x 160 px
                 </FormLabel>
                 <Box style={{ padding: isSmallDevice ? 0 : 4 }}>
-                  <div>{showPreviewBanner(values)}</div>
+                 
+                {groupData?.banner === "banner.png"  && bannerFile===""  ?
+                  <Image
+                  alt="group banner image"
+                  src={"/static/img/banner.png"}
+                  width={isSmallDevice ? 200 : 400}
+                  height={isSmallDevice ? 30 : 60}
+                />
+                 :
+                 <React.Fragment>
+                  <Button variant="contained" color="primary" onClick={handleRollbackBanner} style={{ marginBottom: 8 }}>
+                 ลบรูปภาพ
+               </Button>
+                 <div>{showPreviewBanner(values)}</div>
+                 </React.Fragment>
+                 }
+                
                   <div>
                     <Image
                       alt="product image"

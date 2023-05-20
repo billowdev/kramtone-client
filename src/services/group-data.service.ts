@@ -11,12 +11,22 @@ export const getOneGroupData = async (id: string | undefined): Promise<GroupData
 	return response.payload
 };
 
-export const deleteGroupLogo = async (id: string | undefined): Promise<any> => {
-	const { data: response } = await httpClient.delete(`/groups/remove-logo/${id}`);
+export const deleteGroupLogo = async (id: string | undefined, accessToken:  string | undefined): Promise<any> => {
+	const { data: response } = await httpClient.delete(`/groups/remove-logo/${id}`, {
+		headers: {
+			Authorization: `Bearer ${accessToken}`
+		},
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
+	});
 	return response.payload
 };
-export const deleteGroupBanner = async (id: string | undefined): Promise<any> => {
-	const { data: response } = await httpClient.delete(`/groups/remove-banner/${id}`);
+export const deleteGroupBanner = async (id: string | undefined, accessToken:  string | undefined): Promise<any> => {
+	const { data: response } = await httpClient.delete(`/groups/remove-banner/${id}`, {
+		headers: {
+			Authorization: `Bearer ${accessToken}`
+		},
+		baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
+	});
 	return response.payload
 };
 

@@ -409,6 +409,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
       const updateStatus = await dispatch(deleteGroupLogo({ id: updateGroupData.id, accessToken }))
       if (updateStatus.meta.requestStatus === "fulfilled") {
         toast.success("ลบโลโก้สำเร็จ")
+        setTimeout(() => {
+          window.location.reload(); // Reload the page after 2 seconds
+        }, 200);
       } else {
         toast.error("ลบโลโก้ไม่สำเร็จ โปรดลองอีกครั้ง")
       }
@@ -422,11 +425,15 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
       const updateStatus = await dispatch(deleteGroupBanner({ id: updateGroupData.id, accessToken }))
       if (updateStatus.meta.requestStatus === "fulfilled") {
         toast.success("ลบแบนเนอร์สำเร็จ")
+        setTimeout(() => {
+          window.location.reload(); // Reload the page after 2 seconds
+        }, 200);
       } else {
         toast.error("ลบแบนเนอร์ไม่สำเร็จ โปรดลองอีกครั้ง")
       }
     }
   }
+
   const handleEditConfirm = async () => {
     let formData: FormData = new FormData();
 
