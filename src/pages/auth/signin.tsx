@@ -37,6 +37,7 @@ import {
   Box,
   InputAdornment,
   IconButton, 
+  FormLabel
 } from "@mui/material";
 
 type Props = {};
@@ -171,7 +172,7 @@ function SignInPage({}: Props) {
     return (
                   <Form>
                     <Card style={{ background: 'none', boxShadow: 'none' }}>
-                      <CardContent style={{ padding: 4 }}>
+                      <CardContent style={{ padding: 16 }}>
                         <Typography
                           variant="h5"
                           style={{
@@ -185,16 +186,35 @@ function SignInPage({}: Props) {
                         >
                           ลงชื่อเข้าใช้
                         </Typography>
-                        <Field
+
+
+
+<Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+                ชื่อผู้ใช้
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
+              
+                <Field
+                 style={{ marginTop: 8 }}
                           as={TextField}
                           label="ชื่อผู้ใช้"
                           name="username"
-                          placeholder="กรอก ชื่อผู้ใช้"
+                          placeholder="กรุณากรอก ชื่อผู้ใช้"
                           fullWidth
                           required
                           helperText={<ErrorMessage name="username" />}
                         />
-                        <Field
+              </Box>
+
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+                รหัสผ่าน
+                  <span style={{ color: "red" }}>*</span>
+                </FormLabel>
+              
+                <Field
+                         style={{ marginTop: 8 }}
                           as={TextField}
                           label="รหัสผ่าน"
                           name="password"
@@ -223,6 +243,10 @@ function SignInPage({}: Props) {
                           }}
                         />
 
+              </Box>
+
+
+                      
           {/* <FormControlLabel
               control={
                 <Checkbox
