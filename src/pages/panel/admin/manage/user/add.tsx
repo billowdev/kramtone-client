@@ -472,24 +472,7 @@ const AdminPanelEditUser = ({}: Props) => {
             </Grid>
           </Container>
 
-          {/* <Formik
-            validate={(values) => {
-              let errors: any = {};
-              if (!values.username) errors.username = "กรุณากรอกชื่อผู้ใช้";
-              if (!values.name) errors.name = "กรุณากรอกชื่อ";
-              if (!values.surname) errors.surname = "กรุณากรอกนามสกุล";
-              return errors;
-            }}
-            initialValues={initialValue}
-            onSubmit={async (values, { setSubmitting }) => {
-              setAddValues(values);
-              // setOpenDialog(true);
-              handleAdd();
-              setSubmitting(false);
-            }}
-          >
-            {(props) => showForm(props)}
-          </Formik> */}
+      
       <ConfirmationDialog
         title="ยืนยันการเพิ่มบัญชีผู้ใช้"
         message="คุณต้องการเพิ่มบัญชีผู้ใช้ใช่หรือไม่ ?"

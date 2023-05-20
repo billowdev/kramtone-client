@@ -127,9 +127,7 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
       <Form>
         <Card>
           <CardContent sx={{ padding: 4 }}>
-            <Typography gutterBottom variant="h3">
-              แก้ไขข้อมูลบัญชีผู้ใช้
-            </Typography>
+       
             <Grid container spacing={2} style={{ marginTop: 16 }}>
             <Grid item sm={6}>
             <Box style={{ marginTop: 3 }}>
@@ -369,7 +367,50 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
 
   return (
     <Layout>
-      <Formik
+
+<Container maxWidth="lg" style={{ marginTop: 16, marginBottom: 4 }}>
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                <Paper
+              sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}
+            >
+              {isSmallDevice ? (
+                <PersonIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+              ) : (
+                <PersonIcon
+                  sx={{ fontSize: "2.5rem", marginLeft: "16px" }}
+                />
+              )}
+
+              <React.Fragment>
+                {isSmallDevice ? (
+                  <Typography
+                    sx={{
+                      fontWeight: "bold",
+                      alignSelf: "center",
+                    }}
+                  >
+                    {" "}
+                 แก้ไขข้อมูลบัญชีผู้ใช้
+                  </Typography>
+                ) : (
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: "bold",
+                      alignSelf: "center",
+                    }}
+                  >
+                    {" "}
+                 แก้ไขข้อมูลบัญชีผู้ใช้
+                  </Typography>
+                )}
+              </React.Fragment>
+            </Paper>
+                </Grid>
+
+              <Grid item xs={12} md={12} lg={12}>
+              <Formik
         validate={(values) => {
           let errors: any = {};
           if (!values.username) errors.username = "กรุณากรอกชื่อผู้ใช้";
@@ -387,6 +428,11 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
       >
         {(props) => showForm(props)}
       </Formik>
+              </Grid>
+            </Grid>
+          </Container>
+
+    
       <ConfirmationDialog
         title="ยืนยันการแก้ไขบัญชีผู้ใช้"
         message="คุณต้องการแก้ไขบัญชีผู้ใช้ใช่หรือไม่ ?"
