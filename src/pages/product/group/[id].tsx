@@ -111,7 +111,7 @@ const ColorSchemeFilterModal = () => {
                     marginRight: 4,
                   }}
                 />
-                {colorScheme.id} - {colorScheme.hex} - {colorScheme.nameTH} ({colorScheme.nameEN})
+                {colorScheme.id} - {colorScheme.nameTH} ({colorScheme.nameEN})
               </Button>
             </Grid>
           ))}
@@ -279,7 +279,16 @@ const ColorSchemeFilterModal = () => {
       </Button>
     </Grid>
     <Grid item xs={12} md={2}>
-      <Button
+      {
+        selectedColorScheme || selectedCategory ?   <Button
+        variant="outlined"
+        // color="secondary"
+        onClick={handleClearFilters}
+        fullWidth
+        style={{ height: '100%' }}
+      >
+        ล้างตัวเลือก
+      </Button> :   <Button
         variant="outlined"
         color="secondary"
         onClick={handleClearFilters}
@@ -288,6 +297,8 @@ const ColorSchemeFilterModal = () => {
       >
         ล้างตัวเลือก
       </Button>
+      }
+    
     </Grid>
   </Grid>
 </Box>
