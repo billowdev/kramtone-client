@@ -58,8 +58,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import router from "next/router";
 
 import { getAllGroupDataAction, groupDataSelector } from '@/store/slices/group-data.slice';
-import Moment from 'react-moment';
-import 'moment/locale/th'; // import Thai locale
 import {  GridCellParams } from '@mui/x-data-grid';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -173,21 +171,10 @@ function AdminPanelManageGroup({}: Props) {
   };
 
 
-
   const handleDeleteClick = (e: React.ChangeEvent<HTMLInputElement>, row: UserPayload | null) => {
     setOpenDeleteDialog(true)
   }
 
-
-  function DateTimeCellRenderer(params: GridCellParams<any>) {
-    const { value } = params;
-  
-    return (
-      <Moment locale="th" format="lll">
-        {value as any}
-      </Moment>
-    );
-  }
   
   // function StatusCellRenderer(params: GridCellParams<UserPayload>) {
   //   const { value, row } = params;
@@ -238,18 +225,7 @@ function AdminPanelManageGroup({}: Props) {
       headerName: "ประธานกลุ่ม",
       width: 180,
     },
-    // {
-    //   field: 'createdAt',
-    //   headerName: 'สมัครสมาชิกเมื่อ',
-    //   width: 160,
-    //   renderCell: (params: GridCellParams<UserPayload>) => <DateTimeCellRenderer {...params} />,
-    // },
-    // {
-    //   field: 'updatedAt',
-    //   headerName: 'แก้ไขเมื่อ',
-    //   width: 160,
-    //   renderCell: (params: GridCellParams<UserPayload>) => <DateTimeCellRenderer {...params} />,
-    // },
+
     // {
     //   field: "activated",
     //   editable: true,
