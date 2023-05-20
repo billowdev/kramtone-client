@@ -19,26 +19,31 @@ import { useTheme } from "@material-ui/core/styles";
 import * as groupDataService from "@/services/group-data.service";
 import * as categoryService from "@/services/category.service";
 import * as colorSchemeService from "@/services/color-scheme.service";
-import { CategoryPayload } from "@/models/category.model"
+import { CategoryPayload } from "@/models/category.model";
 import { groupDataImageURL } from "@/common/utils/utils";
 import GroupsIcon from "@mui/icons-material/Groups";
 import { useRouter } from "next/router";
 import {
-  Container, TextField, Dialog,
+  Container,
+  TextField,
+  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Pagination
+  Pagination,
 } from "@mui/material";
-import { FormControl, MenuItem, Select, InputLabel, ListSubheader } from "@mui/material";
-
+import {
+  FormControl,
+  MenuItem,
+  Select,
+  InputLabel,
+  ListSubheader,
+} from "@mui/material";
 
 const GroupItem = () => {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const router = useRouter();
-
-
 
   const [categories, setCategories] = useState<any>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,12 +57,10 @@ const GroupItem = () => {
     setIsModalOpen(false);
   };
 
-
   const handleCategorySelect = (category: CategoryPayload) => {
     setSelectedCategory(category);
     setIsModalOpen(false);
   };
-
 
   const [colorSchemes, setColorSchemes] = React.useState<any>([]);
   const [selectedColorScheme, setSelectedColorScheme] =
@@ -72,7 +75,6 @@ const GroupItem = () => {
     setIsColorSchemeModalOpen(false);
   };
 
-
   const handleColorSchemeSelect = (colorScheme: ColorSchemePayload) => {
     setSelectedColorScheme(colorScheme);
     setIsColorSchemeModalOpen(false);
@@ -85,7 +87,8 @@ const GroupItem = () => {
     async function fetchData() {
       try {
         const categoriesPayload = await categoryService.getAllCategory();
-        const colorSchemesPayload = await colorSchemeService.getAllColorScheme();
+        const colorSchemesPayload =
+          await colorSchemeService.getAllColorScheme();
         setCategories(categoriesPayload);
         setColorSchemes(colorSchemesPayload);
 
@@ -108,15 +111,12 @@ const GroupItem = () => {
     fetchData();
   }, []);
 
-
-
   const [searchTerm, setSearchTerm] = useState("");
   const handleSearchInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setSearchTerm(event.target.value);
   };
-
 
   // const filteredGroups = useMemo(() => {
   //   let filtered = groups;
@@ -135,32 +135,43 @@ const GroupItem = () => {
     let filtered = groups;
 
     if (selectedColorScheme) {
-      filtered = filtered.filter((group: GroupDataPayload) =>
-        group.products && group.products.some(product => product.colorSchemeId === selectedColorScheme.id)
+      filtered = filtered.filter(
+        (group: GroupDataPayload) =>
+          group.products &&
+          group.products.some(
+            (product) => product.colorSchemeId === selectedColorScheme.id
+          )
       );
     }
 
     if (searchTerm) {
-      filtered = filtered.filter((group: GroupDataPayload) =>
-        group.groupName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.groupType.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.agency.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.phone.includes(searchTerm) ||
-        group.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.hno.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.village.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.lane.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.road.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.subdistrict.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.district.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.province.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.zipCode.includes(searchTerm) ||
-        group.lat.includes(searchTerm) ||
-        group.lng.includes(searchTerm) ||
-        (group.products && group.products.some(product =>
-          (product.name?.toLowerCase() ?? '').includes(searchTerm.toLowerCase()) ||
-          (product.colorSchemeId?.toLowerCase() ?? '').includes(searchTerm.toLowerCase())
-        ))
+      filtered = filtered.filter(
+        (group: GroupDataPayload) =>
+          group.groupName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          group.groupType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          group.agency.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          group.phone.includes(searchTerm) ||
+          group.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          group.hno.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          group.village.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          group.lane.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          group.road.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          group.subdistrict.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          group.district.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          group.province.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          group.zipCode.includes(searchTerm) ||
+          group.lat.includes(searchTerm) ||
+          group.lng.includes(searchTerm) ||
+          (group.products &&
+            group.products.some(
+              (product) =>
+                (product.name?.toLowerCase() ?? "").includes(
+                  searchTerm.toLowerCase()
+                ) ||
+                (product.colorSchemeId?.toLowerCase() ?? "").includes(
+                  searchTerm.toLowerCase()
+                )
+            ))
       );
     }
 
@@ -173,7 +184,6 @@ const GroupItem = () => {
     return filtered;
   }, [groups, searchTerm, selectedColorScheme]);
 
-
   const handleClearFilters = () => {
     setSelectedCategory(null);
     setSelectedColorScheme(null);
@@ -184,10 +194,12 @@ const GroupItem = () => {
 
   const [groupsPerPage, setGroupsPerPage] = useState(5);
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
     setPage(value);
   };
-
 
   // const handleGroupsPerPageChange = (
   //   event: any
@@ -223,28 +235,32 @@ const GroupItem = () => {
 
   const ColorSchemeFilterModal = () => {
     return (
-      <Dialog open={isColorSchemeModalOpen} onClose={handleCloseColorSchemeModal}>
+      <Dialog
+        open={isColorSchemeModalOpen}
+        onClose={handleCloseColorSchemeModal}
+      >
         <DialogTitle>เลือกโทนสี</DialogTitle>
         <DialogContent>
           <Grid container spacing={1} direction="column">
-            {colorSchemes.map((colorScheme: ColorSchemePayload, index: number) => (
-              <Grid item key={index}>
-
-                <Button onClick={() => handleColorSchemeSelect(colorScheme)}>
-                  <Box
-                    style={{
-                      display: "inline-block",
-                      width: 50,
-                      height: 50,
-                      backgroundColor: colorScheme.hex,
-                      border: "1px solid black",
-                      marginRight: 4,
-                    }}
-                  />
-                  {colorScheme.id}  {colorScheme.nameTH} ({colorScheme.nameEN})
-                </Button>
-              </Grid>
-            ))}
+            {colorSchemes.map(
+              (colorScheme: ColorSchemePayload, index: number) => (
+                <Grid item key={index}>
+                  <Button onClick={() => handleColorSchemeSelect(colorScheme)}>
+                    <Box
+                      style={{
+                        display: "inline-block",
+                        width: 50,
+                        height: 50,
+                        backgroundColor: colorScheme.hex,
+                        border: "1px solid black",
+                        marginRight: 4,
+                      }}
+                    />
+                    {colorScheme.id} {colorScheme.nameTH} ({colorScheme.nameEN})
+                  </Button>
+                </Grid>
+              )
+            )}
           </Grid>
         </DialogContent>
         <DialogActions>
@@ -256,7 +272,6 @@ const GroupItem = () => {
     );
   };
 
-
   const handleNavigation = () => {
     router.push(`/group/map`);
   };
@@ -264,9 +279,7 @@ const GroupItem = () => {
   return (
     <MainLayout>
       <Box sx={{ flexGrow: 1, p: isSmallDevice ? 0 : 4 }}>
-
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-
           <Grid container spacing={2}>
             <Grid item xs={12} md={3}>
               <TextField
@@ -275,7 +288,7 @@ const GroupItem = () => {
                 value={searchTerm}
                 onChange={handleSearchInputChange}
                 fullWidth
-                style={{ height: '100%' }}
+                style={{ height: "100%" }}
               />
             </Grid>
             {/* <Grid item xs={12} md={2}>
@@ -295,7 +308,7 @@ const GroupItem = () => {
                 variant="outlined"
                 onClick={handleOpenColorSchemeModal}
                 fullWidth
-                style={{ height: '100%' }}
+                style={{ height: "100%" }}
               >
                 {selectedColorScheme && selectedColorScheme.nameTH !== ""
                   ? selectedColorScheme.nameTH
@@ -303,20 +316,31 @@ const GroupItem = () => {
               </Button>
             </Grid>
             <Grid item xs={12} md={2}>
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={handleClearFilters}
-                fullWidth
-                style={{ height: '100%' }}
-              >
-                ล้างตัวเลือก
-              </Button>
+              {selectedColorScheme ? (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleClearFilters}
+                  fullWidth
+                  style={{ height: "100%" }}
+                >
+                  ล้างตัวเลือก
+                </Button>
+              ) : (
+                <Button
+                  variant="outlined"
+                  // color="secondary"
+                  onClick={handleClearFilters}
+                  fullWidth
+                  style={{ height: "100%" }}
+                >
+                  ล้างตัวเลือก
+                </Button>
+              )}
             </Grid>
           </Grid>
           <CategoryFilterModal />
           <ColorSchemeFilterModal />
-
 
           <Paper elevation={3} style={{ padding: 2 }}>
             <Grid
@@ -332,9 +356,13 @@ const GroupItem = () => {
                 alignItems="center"
               >
                 {isSmallDevice ? (
-                  <GroupsIcon style={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+                  <GroupsIcon
+                    style={{ fontSize: "1.5rem", marginLeft: "8px" }}
+                  />
                 ) : (
-                  <GroupsIcon style={{ fontSize: "2.5rem", marginLeft: "16px" }} />
+                  <GroupsIcon
+                    style={{ fontSize: "2.5rem", marginLeft: "16px" }}
+                  />
                 )}
                 <Typography variant="h5" style={{ marginLeft: "16px" }}>
                   ข้อมูลกลุ่มผู้ผลิตหรือร้านค้า
@@ -348,7 +376,6 @@ const GroupItem = () => {
                 justifyContent="flex-end"
               >
                 <Button
-
                   variant="contained"
                   color="primary"
                   onClick={handleNavigation}
@@ -356,7 +383,6 @@ const GroupItem = () => {
                   ดูข้อมูลในมุมมองแผนที่
                 </Button>
               </Grid>
-
             </Grid>
             <Divider />
             <Box p={4}>
@@ -365,7 +391,13 @@ const GroupItem = () => {
                   .slice((page - 1) * groupsPerPage, page * groupsPerPage)
                   .map((group: any, index: any) => (
                     <Box key={group?.id}>
-                      <Card style={{ marginBottom: 2, background: 'none', boxShadow: 'none' }}>
+                      <Card
+                        style={{
+                          marginBottom: 2,
+                          background: "none",
+                          boxShadow: "none",
+                        }}
+                      >
                         <CardContent>
                           <Grid container spacing={2}>
                             <Grid item xs={12} sm={2}>
@@ -377,9 +409,11 @@ const GroupItem = () => {
                               />
                             </Grid>
                             <Grid item xs={12} sm={5}>
-
-
-                              <Typography component="span" variant="subtitle1" style={{ fontWeight: 'bold', marginRight: 8 }}>
+                              <Typography
+                                component="span"
+                                variant="subtitle1"
+                                style={{ fontWeight: "bold", marginRight: 8 }}
+                              >
                                 ชื่อกลุ่มผู้ผลิตหรือร้านค้า :
                               </Typography>
                               <Typography component="span" variant="subtitle1">
@@ -387,7 +421,11 @@ const GroupItem = () => {
                               </Typography>
                               <br />
 
-                              <Typography component="span" variant="subtitle1" style={{ fontWeight: 'bold', marginRight: 8 }}>
+                              <Typography
+                                component="span"
+                                variant="subtitle1"
+                                style={{ fontWeight: "bold", marginRight: 8 }}
+                              >
                                 ประเภทกลุ่ม :
                               </Typography>
                               <Typography component="span" variant="subtitle1">
@@ -398,7 +436,11 @@ const GroupItem = () => {
 
                               <br />
 
-                              <Typography component="span" variant="subtitle1" style={{ fontWeight: 'bold', marginRight: 8 }}>
+                              <Typography
+                                component="span"
+                                variant="subtitle1"
+                                style={{ fontWeight: "bold", marginRight: 8 }}
+                              >
                                 โทร :
                               </Typography>
                               <Typography component="span" variant="subtitle1">
@@ -406,7 +448,11 @@ const GroupItem = () => {
                               </Typography>
                               <br />
 
-                              <Typography component="span" variant="subtitle1" style={{ fontWeight: 'bold', marginRight: 8 }}>
+                              <Typography
+                                component="span"
+                                variant="subtitle1"
+                                style={{ fontWeight: "bold", marginRight: 8 }}
+                              >
                                 ชื่อประธานกลุ่ม :
                               </Typography>
                               <Typography component="span" variant="subtitle1">
@@ -414,20 +460,37 @@ const GroupItem = () => {
                               </Typography>
                               <br />
 
-                              <Typography component="span" variant="subtitle1" style={{ fontWeight: 'bold', marginRight: 8 }}>
+                              <Typography
+                                component="span"
+                                variant="subtitle1"
+                                style={{ fontWeight: "bold", marginRight: 8 }}
+                              >
                                 สินค้าแนะนำ :
                               </Typography>
 
-                              {group?.products.slice(0, 3).map((product: any, index: any) => (
-                                <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
-                                  <Typography variant="subtitle1">
-                                    {product.recommend ?
-                                      <Typography> {product.name} </Typography> : <React.Fragment></React.Fragment>
-                                    }
-                                  </Typography>
-                                </div>
-                              ))}
-
+                              {group?.products
+                                .slice(0, 3)
+                                .map((product: any, index: any) => (
+                                  <div
+                                    key={index}
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      marginBottom: "4px",
+                                    }}
+                                  >
+                                    <Typography variant="subtitle1">
+                                      {product.recommend ? (
+                                        <Typography>
+                                          {" "}
+                                          {product.name}{" "}
+                                        </Typography>
+                                      ) : (
+                                        <React.Fragment></React.Fragment>
+                                      )}
+                                    </Typography>
+                                  </div>
+                                ))}
                             </Grid>
 
                             <Grid item xs={12} sm={3}>
@@ -470,30 +533,54 @@ const GroupItem = () => {
                                   </Typography>
                                   {group?.products && (
                                     <>
-                                      {[...new Set<string>(group.products.map((product: any) => product.colorSchemeId))]
+                                      {[
+                                        ...new Set<string>(
+                                          group.products.map(
+                                            (product: any) =>
+                                              product.colorSchemeId
+                                          )
+                                        ),
+                                      ]
                                         .slice(0, 3)
-                                        .map((colorSchemeId: string, index: number) => {
-                                          const product = group.products.find((product: any) => product.colorSchemeId === colorSchemeId);
-                                          return (
-                                            <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+                                        .map(
+                                          (
+                                            colorSchemeId: string,
+                                            index: number
+                                          ) => {
+                                            const product = group.products.find(
+                                              (product: any) =>
+                                                product.colorSchemeId ===
+                                                colorSchemeId
+                                            );
+                                            return (
                                               <div
+                                                key={index}
                                                 style={{
-                                                  backgroundColor: product.colorScheme.hex,
-                                                  width: '25px',
-                                                  height: '25px',
-                                                  marginRight: '4px',
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                  marginBottom: "4px",
                                                 }}
-                                              ></div>
-                                              <Typography variant="subtitle1">
-                                                รหัสสี {product.colorScheme.id}
-                                              </Typography>
-                                            </div>
-                                          ) as JSX.Element; // Cast the return value to JSX.Element to satisfy TypeScript
-                                        })}
+                                              >
+                                                <div
+                                                  style={{
+                                                    backgroundColor:
+                                                      product.colorScheme.hex,
+                                                    width: "25px",
+                                                    height: "25px",
+                                                    marginRight: "4px",
+                                                  }}
+                                                ></div>
+                                                <Typography variant="subtitle1">
+                                                  รหัสสี{" "}
+                                                  {product.colorScheme.id}
+                                                </Typography>
+                                              </div>
+                                            ) as JSX.Element; // Cast the return value to JSX.Element to satisfy TypeScript
+                                          }
+                                        )}
                                     </>
                                   )}
                                 </Grid>
-
                               </Grid>
                             </Grid>
 
@@ -526,15 +613,12 @@ const GroupItem = () => {
                                 </Grid>
                               </Grid>
                             </Grid>
-
                           </Grid>
-
                         </CardContent>
                       </Card>
                       {index < filteredGroups.length - 1 && <Divider />}
                     </Box>
                   ))}
-
 
               {/* 
           {filteredGroups &&
@@ -543,7 +627,6 @@ const GroupItem = () => {
       .map((group: any, index: any) => (
        
       ))} */}
-
 
               <Pagination
                 count={Math.ceil(filteredGroups.length / groupsPerPage)}

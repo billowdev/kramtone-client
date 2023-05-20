@@ -262,7 +262,16 @@ const ProductTest = ({}: Props) => {
       </Button>
     </Grid>
     <Grid item xs={12} md={2}>
-      <Button
+    {
+        selectedColorScheme || selectedCategory ?   <Button
+        variant="outlined"
+        // color="secondary"
+        onClick={handleClearFilters}
+        fullWidth
+        style={{ height: '100%' }}
+      >
+        ล้างตัวเลือก
+      </Button> :   <Button
         variant="outlined"
         color="secondary"
         onClick={handleClearFilters}
@@ -271,6 +280,7 @@ const ProductTest = ({}: Props) => {
       >
         ล้างตัวเลือก
       </Button>
+      }
     </Grid>
   </Grid>
 </Box>
