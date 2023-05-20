@@ -9,7 +9,7 @@ import { UserPayload } from '@/models/auth.model';
 import TextField from '@material-ui/core/TextField';
 import toast from "react-hot-toast";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
-
+import SettingsIcon from '@mui/icons-material/Settings';
 
 
 import { Container, Grid, Paper } from '@mui/material';
@@ -171,9 +171,9 @@ function UserPanelProfile({
       >
         <Card>
           <CardContent sx={{ padding: 4 }}>
-            <Typography gutterBottom variant="h3">
+            {/* <Typography gutterBottom variant="h3">
              ตั้งค่าบัญชีผู้ใช้
-            </Typography>
+            </Typography> */}
 
             <Grid item md={6}>
               <Box style={{ marginTop: 16 }}>
@@ -346,10 +346,53 @@ function UserPanelProfile({
     );
   };
 
-
+  
   return (
     <Layout>
-    {loading ? (
+
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Paper
+              sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}
+            >
+              {isSmallDevice ? (
+                <SettingsIcon sx={{ fontSize: "1.5rem", marginLeft: "8px" }} />
+              ) : (
+                <SettingsIcon
+                  sx={{ fontSize: "2.5rem", marginLeft: "16px" }}
+                />
+              )}
+
+              <React.Fragment>
+                {isSmallDevice ? (
+                  <Typography
+                    sx={{
+                      fontWeight: "bold",
+                      alignSelf: "center",
+                    }}
+                  >
+                
+                  ตั้งค่าบัญชีผู้ใช้
+                  </Typography>
+                ) : (
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: "bold",
+                      alignSelf: "center",
+                    }}
+                  >
+          
+                  ตั้งค่าบัญชีผู้ใช้
+                  </Typography>
+                )}
+              </React.Fragment>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12} md={12} lg={12}>
+          {loading ? (
       <CircularProgress /> // Show loading indicator while waiting for API call
     ) : (
       <Formik
@@ -384,6 +427,12 @@ function UserPanelProfile({
         onClose={handleCancelEdit}
         onConfirm={handleConfirmEdit}
       />
+
+          </Grid>
+        </Grid>
+      </Container>
+
+   
 
   </Layout>
   )
