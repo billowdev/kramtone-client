@@ -407,6 +407,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     );
   };
 
+
+
   const handleRollbackLogo = async () => {
     if (logoFile !== "") {
       setLogoFile("")
@@ -438,6 +440,47 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
       }
     }
   }
+
+  const [openDeleteLogoDialog, setOpenDeleteLogoDialog] =React. useState(false);
+  const DeleteLogoConfirmationDialog = () => {
+   return (
+     <Dialog open={openDeleteLogoDialog}>
+       <DialogTitle>ลบภาพโลโก้</DialogTitle>
+       <DialogContent>
+         <Typography>ยืนยันเพื่อลบภาพโลโก้</Typography>
+       </DialogContent>
+       <DialogActions>
+         <Button variant="contained" onClick={handleRollbackLogo} autoFocus>
+           ยืนยัน
+         </Button>
+         <Button variant="outlined" onClick={()=>{setOpenDeleteLogoDialog(false)}}>
+           ยกเลิก
+         </Button>
+       </DialogActions>
+     </Dialog>
+   );
+ }
+
+ const [openDeleteBannerDialog, setOpenDeleteBannerDialog] =React. useState(false);
+ const DeleteBannerConfirmationDialog = () => {
+  return (
+    <Dialog open={openDeleteBannerDialog}>
+      <DialogTitle>ลบภาพแบนเนอร์</DialogTitle>
+      <DialogContent>
+        <Typography>ยืนยันเพื่อลบภาพแบนเนอร์</Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="contained" onClick={handleRollbackBanner} autoFocus>
+          ยืนยัน
+        </Button>
+        <Button variant="outlined" onClick={()=>{setOpenDeleteBannerDialog(false)}}>
+          ยกเลิก
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+ 
   const [isLoading, setIsLoading] = React.useState(false);
 
   // const handleEditConfirm = async () => {
@@ -486,6 +529,15 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
 
   // };
+
+
+  const handleDeleteLogo = () => {
+
+  }
+  const handleDeleteLogoConfirm = () => {
+    handleRollbackLogo()
+  }
+
 
   const handleEditConfirm = async () => {
     setOpenDialog(false);
@@ -578,7 +630,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     />
                     :
                     <>
-                      <Button variant="contained" color="primary" onClick={handleRollbackLogo} style={{ marginBottom: 8 }}>
+                      <Button variant="contained" color="primary" onClick={()=>{setOpenDeleteLogoDialog(true)}} style={{ marginBottom: 8 }}>
                         ลบรูปภาพ
                       </Button>
                       <div>{showPreviewLogo(values)}</div>
@@ -635,7 +687,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     />
                     :
                     <>
-                      <Button variant="contained" color="primary" onClick={handleRollbackBanner} style={{ marginBottom: 8 }}>
+                      <Button variant="contained" color="primary" onClick={()=>{setOpenDeleteBannerDialog(true)}} style={{ marginBottom: 8 }}>
                         ลบรูปภาพ
                       </Button>
                       <div>{showPreviewBanner(values)}</div>
@@ -1281,7 +1333,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
         </Grid>
       </Container>
 
-
+{DeleteLogoConfirmationDialog()}
+{DeleteBannerConfirmationDialog()}
       {showDialog()}
     </Layout>
   );
