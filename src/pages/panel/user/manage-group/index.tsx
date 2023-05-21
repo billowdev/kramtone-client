@@ -106,7 +106,6 @@ function UserPanelManageGroup({   }: Props) {
     //  if(userData){
     //    fethData()
     //  }
-    console.log(userData)
     if (userData) {
       dispatch(getOneGroupDataAction(userData.gid));
     }

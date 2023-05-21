@@ -759,7 +759,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                         name="hno"
                         type="text"
                         fullWidth
-                        readonly
+                        readOnly
                         disabled
                         inputProps={{ maxLength: 5 }}
                         value={sakonNakhonProvinces.nameTH}
@@ -1182,7 +1182,7 @@ export const getServerSideProps: GetServerSideProps = async (
     const accessToken = context.req.cookies["access_token"];
     const provinces = await thaiAddressService.getProvinces();
     let sakonNakhonProvinces = provinces.filter(province => province.id === 35);
-    // console.log(provinces)
+  
     return {
       props: {
         groupData,

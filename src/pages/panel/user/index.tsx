@@ -53,11 +53,11 @@ function GroupShopPanel({}: Props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)} color="info">
-            ยกเลิก
-          </Button>
-          <Button onClick={handleLogout} color="primary">
+          <Button variant="contained" onClick={handleLogout} color="primary">
             ออกจากระบบ
+          </Button>
+          <Button variant="outlined" onClick={() => setOpenDialog(false)} color="info">
+            ยกเลิก
           </Button>
         </DialogActions>
       </Dialog>
@@ -205,7 +205,7 @@ function GroupShopPanel({}: Props) {
                <Grid item xs={12} sm={12} md={6}>
                
 
-<Box
+        <Box
               boxShadow={2}
               style={{ borderRadius: "50px", margin: "20px 10px" }}
               onClick={() => {
@@ -226,6 +226,7 @@ function GroupShopPanel({}: Props) {
                   />
                 </ListItemIcon>
                 <ListItemText
+                
                   primary={"ออกจากระบบ"}
                   style={{ color: theme.palette.grey[900] }}
                 />
@@ -245,6 +246,7 @@ function GroupShopPanel({}: Props) {
           </Grid>
         </Grid>
       </Container>
+      {showSignOutDialog()}
     </Layout>
   );
 }

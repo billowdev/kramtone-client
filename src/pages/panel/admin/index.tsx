@@ -1,8 +1,21 @@
 import React from "react";
 import withAuth from "@/components/withAuth";
 import Layout from "@/components/Layouts/Layout";
-import { Grid, Paper, Typography, Container, Box, Divider } from "@mui/material";
-import { ListItem,  } from "@mui/material";
+import { 
+  Grid,
+   Paper, 
+   Typography, 
+   Container, 
+   Box, 
+   Divider,
+  Dialog,
+   DialogTitle,
+    DialogContent,
+     ListItem, 
+     DialogContentText, 
+     Button, 
+     DialogActions,
+ } from "@mui/material";
 
 import CustomMenuListItem from "@/components/Layouts/CustomMenuListItem";
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -15,18 +28,51 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { useTheme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
-import Link from "next/link";
 
+import { useAppDispatch } from "@/store/store";
+import {  signOut, authSelector } from "@/store/slices/auth.slice";
 type Props = {};
 
 function AdminPanel({}: Props) {
   const theme = useTheme();
+  const dispatch:any = useAppDispatch();
+  
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
+  const handleLogout = async () => {
+    dispatch(signOut());
+    setOpenDialog(false);
+  };
+  const [openDialog, setOpenDialog] = React.useState<boolean>(false);
+  const showSignOutDialog = () => {
+    return (
+      <Dialog
+        open={openDialog}
+        keepMounted
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">ออกจากระบบ?</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            คุณต้องการออกจากระบบใช่หรือไม่?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" onClick={handleLogout} color="primary">
+            ออกจากระบบ
+          </Button>
+          <Button variant="outlined" onClick={() => setOpenDialog(false)} color="info">
+            ยกเลิก
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
 
   return (
     <Layout>
@@ -135,9 +181,9 @@ function AdminPanel({}: Props) {
 <Box
               boxShadow={2}
               style={{ borderRadius: "50px", margin: "20px 10px" }}
-              // onClick={() => {
-              //   setOpenDialog(true);
-              // }}
+              onClick={() => {
+                setOpenDialog(true);
+              }}
             >
               <ListItem
                 button
@@ -165,6 +211,7 @@ function AdminPanel({}: Props) {
           </Grid>
         </Grid>
       </Container>
+      {showSignOutDialog()}
     </Layout>
   );
 }
