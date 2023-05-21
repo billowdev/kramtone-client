@@ -149,8 +149,8 @@ function SignInPage({}: Props) {
           width: "auto",
            marginBottom: 64,
            marginTop: 32,
-           overflow: 'hidden'
-        }}>
+           overflow: 'inherit'
+          }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
               <div style={{ display: "flex", justifyContent: "center" }}>

@@ -153,8 +153,7 @@ function SignUpPage({}: Props) {
              marginTop: 32,
              height: isSmallDevice ? "" : "100vh",
              width: "auto",
-            //  margin: "0 auto",
-            overflow: 'hidden'
+            overflow: 'inherit'
           }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>
