@@ -10,7 +10,6 @@ import CookieConsentPopup from '@/components/CookieConsentPopup';
 import { useRouter } from 'next/router';
 import DevelopmentPopup from '@/components/DevelopmentPopup';
 
-
 function MyApp({ Component, pageProps }: AppProps) {
 	const drawerWidth = 240;
 
@@ -93,6 +92,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 			}
 		},
 	});
+
+	// React.useEffect(() => {
+	// 	store.dispatch(fetchSession());
+	// }, [store.dispatch]);
 
 	React.useEffect(() => {
 		store.dispatch(fetchSession());

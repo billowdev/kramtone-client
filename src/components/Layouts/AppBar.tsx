@@ -5,14 +5,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { AccountCircle } from "@mui/icons-material";
-import { signOut, authSelector } from "@/store/slices/auth.slice";
-import { Badge, Box, Menu, MenuItem, Button } from "@mui/material";
+import { authSelector } from "@/store/slices/auth.slice";
 import { useSelector } from "react-redux";
-import LogoutIcon from '@mui/icons-material/Logout';
-import { useAppDispatch } from "@/store/store";
-import NotificationsIcon from '@mui/icons-material/Notifications';
-
 const drawerWidth = 240;
 
 interface AppBarProps extends MuiAppBarProps {
@@ -42,11 +36,12 @@ type HeaderProp = {
 	open: boolean;
 	onDrawerOpen: () => void;
 };
-
-export default function AppBarComponent({ open, onDrawerOpen }: HeaderProp) {
 	
+export default function AppBarComponent({ open, onDrawerOpen }: HeaderProp) {
+	const userData = useSelector(authSelector);
 	// const [setShowProfileMenu] = React.useState(false);
 	// const dispatch = useAppDispatch();
+
 	return (
 		<AppBar position="absolute" open={open}>
 			<Toolbar
@@ -73,7 +68,7 @@ export default function AppBarComponent({ open, onDrawerOpen }: HeaderProp) {
 					noWrap
 					sx={{ flexGrow: 1 }}
 				>
-					ระบบบริหารจัดการการเชื่อมโยงแผนภาพโทนสีครามธรรมชาติกับแหล่งผลิตผ้าย้อมคราม
+					{userData.groupName ? userData.groupName: "" } &nbsp;&nbsp;{userData.role === "admin" ? "สถานะ : ผู้ดูแลระบบ": userData.groupType === "producer" ? "ประเภทกลุ่ม : กลุ่มผู้ผลิต": "ประเภทกลุ่ม : ร้านค้า"}
 				</Typography>
 				<IconButton color="inherit">
 					<Typography

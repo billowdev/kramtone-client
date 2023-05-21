@@ -31,6 +31,8 @@ export type UserState = {
 	sub: string;
 	role: string;
 	gid: string;
+	groupName: string,
+	groupType: string,
 	activated: boolean;
 	username: string;
 	isAuthenticated: boolean;
@@ -53,8 +55,10 @@ export interface SignUpAction {
 
 export type SessionResponseType = {
 	sub: string,
+	groupName: string,
 	gid: string,
 	role: string,
+	groupType: string,
 	accessToken: string;
 	activated: boolean;
 	iat: string,
@@ -69,7 +73,6 @@ export interface AuthModel {
 	phone: string
 	accessToken: string
 }
-
 
 export interface UserResponse {
 	status: string

@@ -17,6 +17,8 @@ const initialState: UserState = {
 	isAuthenticated: false,
 	isAuthenticating: true,
 	sub: "",
+	groupName: "",
+	groupType: "",
 	role: "",
 	activated: false,
 	gid: "",
@@ -50,7 +52,7 @@ export const signUp = createAsyncThunk(
 	}
 );
 
-export const signOut = createAsyncThunk("user/signout", async () => {
+export const signOut = createAsyncThunk("USER/SIGNOUT", async () => {
 	await authService.signOut();
 	Router.push("/auth/signin");
 });
@@ -62,7 +64,7 @@ export const updateUserProfileAction = createAsyncThunk("USER/UPDATE", async () 
 
 
 
-export const fetchSession = createAsyncThunk("user/fetchSession", async () => {
+export const fetchSession = createAsyncThunk("USER/FETCH_SESSION", async () => {
 	const response = await authService.getSession();
 	// set access token
 	if (response) {
@@ -91,6 +93,8 @@ export const authSlice = createSlice({
 				state.sub = action.payload.sub;
 				state.role = action.payload.role;
 				state.gid = action.payload.gid;
+				state.groupName = action.payload.groupName;
+				state.groupType = action.payload.groupType;
 				state.activated = action.payload.activated;
 			}
 
@@ -101,6 +105,8 @@ export const authSlice = createSlice({
 			state.isAuthenticating = false;
 			state.sub = "";
 			state.gid ="";
+			state.groupName ="";
+			state.groupType ="";
 			state.activated = false
 
 		})
@@ -124,6 +130,7 @@ export const authSlice = createSlice({
 			state.isAuthenticated = false;
 			state.isAuthenticating = false;
 			state.sub = "";
+			state.groupName = "";
 			state.gid = "";
 
 		});

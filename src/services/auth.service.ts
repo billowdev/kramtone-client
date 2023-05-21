@@ -40,6 +40,7 @@ export const getSession = async (): Promise<SessionResponseType> => {
 	const { data: response } = await httpClient.get(`/auth/session`, {
 		baseURL: process.env.NEXT_PUBLIC_BASE_URL_LOCAL_API,
 	})
+	// console.log(response)
 	const { session, accessToken } = response
 
 	return { ...session, accessToken }
