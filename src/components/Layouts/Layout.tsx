@@ -292,6 +292,15 @@ function Layout({ children }: LayoutProps) {
             {userData && userData.role === "admin" && (
                      
                      <React.Fragment>
+
+                  <CustomMenuListItem
+                  href="/panel/admin"
+                  useStartWithPath={false}
+                  icon={WidgetsIcon}
+                  text="เมนูหลัก"
+                  open={open}
+                  />
+
                         <CustomMenuListItem   
                             href="/panel/admin/manage/user"
                             icon={AccountBoxIcon}

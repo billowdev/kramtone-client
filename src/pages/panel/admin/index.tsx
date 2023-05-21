@@ -1,25 +1,25 @@
 import React from "react";
 import withAuth from "@/components/withAuth";
 import Layout from "@/components/Layouts/Layout";
-import { 
+import {
   Grid,
-   Paper, 
-   Typography, 
-   Container, 
-   Box, 
-   Divider,
+  Paper,
+  Typography,
+  Container,
+  Box,
+  Divider,
   Dialog,
-   DialogTitle,
-    DialogContent,
-     ListItem, 
-     DialogContentText, 
-     Button, 
-     DialogActions,
- } from "@mui/material";
+  DialogTitle,
+  DialogContent,
+  ListItem,
+  DialogContentText,
+  Button,
+  DialogActions,
+} from "@mui/material";
 
 import CustomMenuListItem from "@/components/Layouts/CustomMenuListItem";
 import GroupsIcon from "@mui/icons-material/Groups";
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+
 import SettingsIcon from "@mui/icons-material/Settings";
 import InfoIcon from "@mui/icons-material/Info";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -27,26 +27,26 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import CheckroomIcon from "@mui/icons-material/Checkroom";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-
+// import useMediaQuery from "@material-ui/core/useMediaQuery";
+// import { useTheme } from "@material-ui/core/styles";
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import { useTheme } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/core/styles";
 
+import { useMediaQuery, useTheme } from "@mui/material";
 import { useAppDispatch } from "@/store/store";
-import {  signOut, authSelector } from "@/store/slices/auth.slice";
+import { signOut, authSelector } from "@/store/slices/auth.slice";
 type Props = {};
 
-function AdminPanel({}: Props) {
+function AdminPanel({ }: Props) {
   const theme = useTheme();
-  const dispatch:any = useAppDispatch();
-  
+  const dispatch: any = useAppDispatch();
+
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const handleLogout = async () => {
     dispatch(signOut());
     setOpenDialog(false);
   };
+  
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
   const showSignOutDialog = () => {
     return (
@@ -98,7 +98,7 @@ function AdminPanel({}: Props) {
                       alignSelf: "center",
                     }}
                   >
-                   เมนู
+                    เมนู
                   </Typography>
                 ) : (
                   <Typography
@@ -108,7 +108,7 @@ function AdminPanel({}: Props) {
                       alignSelf: "center",
                     }}
                   >
-                   เมนู
+                    เมนู
                   </Typography>
                 )}
               </React.Fragment>
@@ -124,12 +124,9 @@ function AdminPanel({}: Props) {
                 height: "100vh",
               }}
             >
-              {/* <Typography variant="h5" gutterBottom>
-                เลือกเมนูที่ต้องการ
-              </Typography> */}
 
               <Grid container spacing={2} columns={16}>
-                
+
                 <Grid item xs={8}>
                   <CustomMenuListItem
                     href="/panel/admin/manage/user"
@@ -148,63 +145,62 @@ function AdminPanel({}: Props) {
                     icon={CheckroomIcon}
                     text="จัดการประเภทสินค้า"
                   />
-                  <CustomMenuListItem   
-                            href="/panel/admin/manage/color-scheme"
-                            useStartWithPath={true}
-                            startWithPath="/panel/admin/manage/color-scheme"
-                              icon={ColorLensIcon}
-                              text="จัดการโทนสี"
-                            />
+                  <CustomMenuListItem
+                    href="/panel/admin/manage/color-scheme"
+                    useStartWithPath={true}
+                    startWithPath="/panel/admin/manage/color-scheme"
+                    icon={ColorLensIcon}
+                    text="จัดการโทนสี"
+                  />
                 </Grid>
-
               </Grid>
 
               <Divider sx={{ my: 1 }} />
 
               <Grid container spacing={2} columns={16}>
                 <Grid item xs={8}>
-             
-        <CustomMenuListItem   
-          href="/manage-profile"
-            icon={SettingsIcon}
-            text="ตั้งค่าบัญชีผู้ใช้"
-          />
+
+                  <CustomMenuListItem
+                    href="/manage-profile"
+                    icon={SettingsIcon}
+                    text="ตั้งค่าบัญชีผู้ใช้"
+                  />
 
                 </Grid>
                 <Grid item xs={8}>
-                <CustomMenuListItem   
-          href="/aboutus"
-            icon={InfoIcon}
-            text="เกี่ยวกับผู้พัฒนาระบบ"
-          />
-
-<Box
-              boxShadow={2}
-              style={{ borderRadius: "50px", margin: "20px 10px" }}
-              onClick={() => {
-                setOpenDialog(true);
-              }}
-            >
-              <ListItem
-                button
-                classes={{ selected: "Mui-selected" }}
-                style={{
-                  backgroundColor: "#FFF",
-                  borderRadius: "50px",
-                }}
-              >
-                <ListItemIcon>
-                  <LogoutIcon
-                    style={{ color: theme.palette.grey[900] }}
+                  <CustomMenuListItem
+                    href="/aboutus"
+                    icon={InfoIcon}
+                    text="เกี่ยวกับผู้พัฒนาระบบ"
                   />
-                </ListItemIcon>
-                <ListItemText
-                  primary={"ออกจากระบบ"}
-                  style={{ color: theme.palette.grey[900] }}
-                />
-              </ListItem>
-            </Box>
-            
+
+                  <Box
+                    boxShadow={2}
+                    style={{ borderRadius: "50px", margin: "20px 10px" }}
+                    onClick={() => {
+                      setOpenDialog(true);
+                    }}
+                  >
+                    <ListItem
+                      button
+                      classes={{ selected: "Mui-selected" }}
+                      style={{
+                        backgroundColor: "#FFF",
+                        borderRadius: "50px",
+                      }}
+                    >
+                      <ListItemIcon>
+                        <LogoutIcon
+                          style={{ color: theme.palette.grey[900] }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={"ออกจากระบบ"}
+                        style={{ color: theme.palette.grey[900] }}
+                      />
+                    </ListItem>
+                  </Box>
+
                 </Grid>
               </Grid>
             </Paper>
