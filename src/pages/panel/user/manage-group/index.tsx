@@ -262,12 +262,6 @@ function UserPanelManageGroup({   }: Props) {
 
   const handleOnEditClick = () => {
     router.push('/panel/user/manage-group/edit?gid=' + userData.gid)
-    const editUrl = '/panel/user/manage-group/edit?gid=' + userData.gid;
-    return (
-      <Link href={editUrl}>
-        <a>Edit Group</a>
-      </Link>
-    );
   };
   return (
     <Layout>
