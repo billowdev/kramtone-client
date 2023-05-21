@@ -4,6 +4,8 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import {Button} from "@mui/material";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import { authSelector } from "@/store/slices/auth.slice";
 import { useSelector } from "react-redux";
@@ -49,7 +51,7 @@ export default function AppBarComponent({ open, onDrawerOpen }: HeaderProp) {
 					pr: '24px', // keep right padding when drawer closed
 				}}
 			>
-				<IconButton
+				{/* <IconButton
 					edge="start"
 					color="inherit"
 					aria-label="open drawer"
@@ -60,17 +62,25 @@ export default function AppBarComponent({ open, onDrawerOpen }: HeaderProp) {
 					}}
 				>
 					<MenuIcon />
-				</IconButton>
-				<Typography
-					component="h1"
-					variant="h6"
-					color="inherit"
-					noWrap
-					sx={{ flexGrow: 1 }}
-				>
-					{userData.groupName ? userData.groupName: "" } &nbsp;&nbsp;{userData.role === "admin" ? "สถานะ : ผู้ดูแลระบบ": userData.groupType === "producer" ? "ประเภทกลุ่ม : กลุ่มผู้ผลิต": "ประเภทกลุ่ม : ร้านค้า"}
-				</Typography>
-				<IconButton color="inherit">
+				</IconButton> */}
+				<button
+  type="button"
+  aria-label="open drawer"
+  onClick={onDrawerOpen}
+  style={{
+    display: open ? 'none' : 'inline-flex',
+    marginRight: '36px',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: 0,
+  }}
+>
+  <MenuIcon />
+</button>
+
+
+				{/* <IconButton color="inherit">
 					<Typography
 						component="h1"
 						variant="h6"
@@ -80,7 +90,18 @@ export default function AppBarComponent({ open, onDrawerOpen }: HeaderProp) {
 					>
 						version {process.env.NEXT_PUBLIC_VERSION}
 					</Typography>
-				</IconButton>
+				</IconButton> */}
+
+				<Typography
+					component="h1"
+					variant="h6"
+					color="inherit"
+					noWrap
+					sx={{ flexGrow: 1 ,textAlign: 'end' }}
+				>
+					{userData.groupName ? userData.groupName: "" } &nbsp;&nbsp;{userData.role === "admin" ? "สถานะ : ผู้ดูแลระบบ": userData.groupType === "producer" ? "ประเภทกลุ่ม : กลุ่มผู้ผลิต": "ประเภทกลุ่ม : ร้านค้า"}
+				</Typography>
+				
 			</Toolbar>
 		</AppBar>
 	);
