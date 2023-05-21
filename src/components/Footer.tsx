@@ -77,7 +77,7 @@ export default function Footer({}: Props) {
                 </Box>
                 <Box sx={{ marginRight: "16px" }}>
                   <Link href="/product" style={footerLinkStyle}>
-                    <Typography align="center">สินค้า</Typography>
+                    <Typography align="center">ข้อมูลสินค้า</Typography>
                   </Link>
                 </Box>
                 <Box sx={{ marginRight: "16px" }}>
