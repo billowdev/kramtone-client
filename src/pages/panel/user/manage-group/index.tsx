@@ -58,7 +58,7 @@ import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 
 type Props = {
-  groupDataProp?: GroupDataPayload;
+  // groupDataProp?: GroupDataPayload;
 };
 
 const MapContainer = dynamic(
@@ -85,7 +85,7 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
   ssr: false, // disable server-side rendering
 });
 
-function UserPanelManageGroup({ groupDataProp }: Props) {
+function UserPanelManageGroup({  }: Props) {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const dispatch: any = useAppDispatch();
@@ -113,8 +113,8 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
 
   const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
   const position: LatLngExpression = [
-    parseFloat(groupDataProp?.lat!),
-    parseFloat(groupDataProp?.lng!),
+    parseFloat(groupData?.lat!),
+    parseFloat(groupData?.lng!),
   ]; // Centered on Sakon Nakhon Province
   const zoom: number = 12;
 
@@ -261,13 +261,13 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
   };
 
   const handleOnEditClick = () => {
-    // router.push('/panel/user/manage-group/edit?gid=' + userData.gid)
-    // const editUrl = '/panel/user/manage-group/edit?gid=' + userData.gid;
-    // return (
-    //   <Link href={editUrl}>
-    //     <a>Edit Group</a>
-    //   </Link>
-    // );
+    router.push('/panel/user/manage-group/edit?gid=' + userData.gid)
+    const editUrl = '/panel/user/manage-group/edit?gid=' + userData.gid;
+    return (
+      <Link href={editUrl}>
+        <a>Edit Group</a>
+      </Link>
+    );
   };
   return (
     <Layout>
@@ -595,7 +595,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
             maxWidth="lg"
             sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}
           >
-            <Link href={"/panel/user/manage-group/edit?gid=" + userData.gid}>
+            <Link href={"/panel/user/manage-group/edit?gid=" + groupData.id}>
               <Button
                 color="primary"
                 variant="contained"
@@ -671,22 +671,22 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
 
 export default withAuth(UserPanelManageGroup);
 
-export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  try {
-    const accessToken = context.req.cookies["access_token"];
-    const { gid } = await authService.getSessionServerSide(accessToken!);
-    const groupDataProp = await groupDataService.getOneGroupData(gid);
+// export const getServerSideProps: GetServerSideProps = async (
+//   context: GetServerSidePropsContext
+// ) => {
+//   try {
+//     const accessToken = context.req.cookies["access_token"];
+//     const { gid } = await authService.getSessionServerSide(accessToken!);
+//     const groupDataProp = await groupDataService.getOneGroupData(gid);
 
-    return {
-      props: {
-        groupDataProp,
-      },
-    };
-  } catch (error) {
-    return {
-      props: {},
-    };
-  }
-};
+//     return {
+//       props: {
+//         groupDataProp,
+//       },
+//     };
+//   } catch (error) {
+//     return {
+//       props: {},
+//     };
+//   }
+// };

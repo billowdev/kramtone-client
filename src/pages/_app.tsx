@@ -149,24 +149,24 @@ function MyApp({ Component, pageProps }: AppProps) {
 	};
 
 
-	React.useEffect(() => {
-		(async () => {
-			// Check if the current route is /privacy-policy, and if so, skip showing the popup.
-			if (router.pathname === '/privacy-policy' || router.pathname === '/terms-and-conditions') {
-				return;
-			}
+	// React.useEffect(() => {
+	// 	(async () => {
+	// 		// Check if the current route is /privacy-policy, and if so, skip showing the popup.
+	// 		if (router.pathname === '/privacy-policy' || router.pathname === '/terms-and-conditions') {
+	// 			return;
+	// 		}
 
-			const cookieAcceptance = await handleGetCookieAcceptance();
-			if (!cookieAcceptance) {
-				setShowPopup(true);
-			}
+	// 		const cookieAcceptance = await handleGetCookieAcceptance();
+	// 		if (!cookieAcceptance) {
+	// 			setShowPopup(true);
+	// 		}
 			
-			// const devAcceptance = await handleDevAcceptance();
-			// if (!devAcceptance) {
-			// 	setPopupDevOpen(true);
-			// }
-		})();
-	}, [router]);
+	// 		// const devAcceptance = await handleDevAcceptance();
+	// 		// if (!devAcceptance) {
+	// 		// 	setPopupDevOpen(true);
+	// 		// }
+	// 	})();
+	// }, [router]);
 
 	return (
 		<Provider store={store}>

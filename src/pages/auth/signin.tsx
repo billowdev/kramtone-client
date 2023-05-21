@@ -25,8 +25,10 @@ import { useTheme } from "@material-ui/core/styles";
 
 import { getOneGroupDataAction } from "@/store/slices/group-data.slice";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { 
-  Card, CardContent, CardActions,
+import {
+  Card,
+  CardContent,
+  CardActions,
   Grid,
   Paper,
   Avatar,
@@ -36,8 +38,8 @@ import {
   Link,
   Box,
   InputAdornment,
-  IconButton, 
-  FormLabel
+  IconButton,
+  FormLabel,
 } from "@mui/material";
 
 type Props = {};
@@ -105,7 +107,7 @@ function SignInPage({}: Props) {
     } else {
       // router.push("/panel");
       if (response.payload.user.role === "admin") {
-        router.push("/panel/admin", undefined, { shallow: false });       
+        router.push("/panel/admin", undefined, { shallow: false });
       } else {
         dispatch(getOneGroupDataAction(response.payload.user.groupId));
         router.push("/panel/user/manage-group", undefined, { shallow: false });
@@ -121,39 +123,39 @@ function SignInPage({}: Props) {
     setPasswordVisible(!passwordVisible);
   };
 
-// Save the user's username and password in local storage
-// function rememberPassword(values: FormValues) {
-//   localStorage.setItem('username', values.username);
-//   localStorage.setItem('password', values.password);
-// }
+  // Save the user's username and password in local storage
+  // function rememberPassword(values: FormValues) {
+  //   localStorage.setItem('username', values.username);
+  //   localStorage.setItem('password', values.password);
+  // }
 
-// // Check if the user's username and password are stored in local storage
-// function checkRememberedPassword(setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void) {
-//   const username = localStorage.getItem('username');
-//   const password = localStorage.getItem('password');
-//   if (username && password) {
-//     // Set the field values with the saved information
-//     setFieldValue('username', username);
-//     setFieldValue('password', password);
-//   }
-// }
+  // // Check if the user's username and password are stored in local storage
+  // function checkRememberedPassword(setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void) {
+  //   const username = localStorage.getItem('username');
+  //   const password = localStorage.getItem('password');
+  //   if (username && password) {
+  //     // Set the field values with the saved information
+  //     setFieldValue('username', username);
+  //     setFieldValue('password', password);
+  //   }
+  // }
 
   return (
     <MainLayout>
       <Grid container>
         <Paper style={paperStyle}>
           <Grid container spacing={2}>
-          <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Image
-              src={`/static/img/logo-white.png`}
-              alt={`logo image`}
-              width={isSmallDevice ? 250 : 350}
-              height={isSmallDevice ? 250 : 350}
-              loading="lazy"
-            />
-          </div>
-        </Grid>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Image
+                  src={`/static/img/logo-white.png`}
+                  alt={`logo image`}
+                  width={isSmallDevice ? 250 : 350}
+                  height={isSmallDevice ? 250 : 350}
+                  loading="lazy"
+                />
+              </div>
+            </Grid>
 
             <Grid item xs={12} sm={8} md={8} lg={8} xl={8}>
               <Formik
@@ -162,92 +164,93 @@ function SignInPage({}: Props) {
                 validationSchema={validationSchema}
               >
                 {(props: FormikProps<FormValues>) => {
-    const { setFieldValue } = props;
+                  const { setFieldValue } = props;
 
-    // Call the checkRememberedPassword function when the component mounts
-    // React.useEffect(() => {
-    //   checkRememberedPassword(setFieldValue);
-    // }, []);
+                  // Call the checkRememberedPassword function when the component mounts
+                  // React.useEffect(() => {
+                  //   checkRememberedPassword(setFieldValue);
+                  // }, []);
 
-    return (
-                  <Form>
-                    <Card style={{ background: 'none', boxShadow: 'none' }}>
-                      <CardContent style={{ padding: 16 }}>
-                        <Typography
-                          variant="h5"
-                          style={{
-                            fontWeight: "bold",
-                            textAlign: "center",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            marginTop: 30,
-                          }}
-                        >
-                          ลงชื่อเข้าใช้
-                        </Typography>
+                  return (
+                    <Form>
+                      <Card style={{ background: "none", boxShadow: "none" }}>
+                        <CardContent style={{ padding: 16 }}>
+                          <Typography
+                            variant="h5"
+                            style={{
+                              fontWeight: "bold",
+                              textAlign: "center",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              marginTop: 30,
+                            }}
+                          >
+                            ลงชื่อเข้าใช้
+                          </Typography>
 
+                          <Box style={{ marginTop: 16 }}>
+                            <FormLabel
+                              htmlFor="name"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              ชื่อผู้ใช้
+                              <span style={{ color: "red" }}>*</span>
+                            </FormLabel>
 
+                            <Field
+                              style={{ marginTop: 8 }}
+                              as={TextField}
+                              label="ชื่อผู้ใช้"
+                              name="username"
+                              placeholder="กรุณากรอก ชื่อผู้ใช้"
+                              fullWidth
+                              required
+                              helperText={<ErrorMessage name="username" />}
+                            />
+                          </Box>
 
-<Box style={{ marginTop: 16 }}>
-                <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
-                ชื่อผู้ใช้
-                  <span style={{ color: "red" }}>*</span>
-                </FormLabel>
-              
-                <Field
-                 style={{ marginTop: 8 }}
-                          as={TextField}
-                          label="ชื่อผู้ใช้"
-                          name="username"
-                          placeholder="กรุณากรอก ชื่อผู้ใช้"
-                          fullWidth
-                          required
-                          helperText={<ErrorMessage name="username" />}
-                        />
-              </Box>
+                          <Box style={{ marginTop: 16 }}>
+                            <FormLabel
+                              htmlFor="name"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              รหัสผ่าน
+                              <span style={{ color: "red" }}>*</span>
+                            </FormLabel>
 
-              <Box style={{ marginTop: 16 }}>
-                <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
-                รหัสผ่าน
-                  <span style={{ color: "red" }}>*</span>
-                </FormLabel>
-              
-                <Field
-                         style={{ marginTop: 8 }}
-                          as={TextField}
-                          label="รหัสผ่าน"
-                          name="password"
-                          placeholder="กรอก รหัสผ่าน"
-                          type={passwordVisible ? "text" : "password"}
-                          fullWidth
-                          required
-                          helperText={<ErrorMessage name="password" />}
-                          InputProps={{
-                            // <-- This is where the toggle button is added.
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton
-                                  aria-label="toggle password visibility"
-                                  onClick={handlePasswordVisible}
-                                  onMouseDown={handleMouseDownPassword}
-                                >
-                                  {passwordVisible ? (
-                                    <VisibilityOffIcon />
-                                  ) : (
-                                    <VisibilityIcon />
-                                  )}
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
+                            <Field
+                              style={{ marginTop: 8 }}
+                              as={TextField}
+                              label="รหัสผ่าน"
+                              name="password"
+                              placeholder="กรอก รหัสผ่าน"
+                              type={passwordVisible ? "text" : "password"}
+                              fullWidth
+                              required
+                              helperText={<ErrorMessage name="password" />}
+                              InputProps={{
+                                // <-- This is where the toggle button is added.
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton
+                                      aria-label="toggle password visibility"
+                                      onClick={handlePasswordVisible}
+                                      onMouseDown={handleMouseDownPassword}
+                                    >
+                                      {passwordVisible ? (
+                                        <VisibilityOffIcon />
+                                      ) : (
+                                        <VisibilityIcon />
+                                      )}
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                          </Box>
 
-              </Box>
-
-
-                      
-          {/* <FormControlLabel
+                          {/* <FormControlLabel
               control={
                 <Checkbox
                   name="remember"
@@ -265,41 +268,42 @@ function SignInPage({}: Props) {
               label="จดจำรหัสผ่าน"
             /> */}
 
-                        {/* <Typography>
+                          {/* <Typography>
                           <Link href="#">ลืมรหัสผ่าน ?</Link>
                         </Typography> */}
-
-
-
-                      </CardContent>
-                      <CardActions>
-                       <Link href="/auth/signup" style={{display: 'contents'}}>
-                       <Button
-                          type="button"
-                          color="secondary"
-                          variant="contained"
-                          style={secondBtnstyle}
-                          fullWidth
+                        </CardContent>
+                        <CardActions>
+                          <Link
+                            href="/auth/signup"
+                            style={{ display: "contents" }}
                           >
-                          {"สมัครสมาชิก"}
-                        </Button> 
-                       </Link>
-                        <Button
-                          type="submit"
-                          color="primary"
-                          variant="contained"
-                          disabled={props.isSubmitting}
-                          style={btnStyle}
-                          fullWidth
-                        >
-                          {props.isSubmitting
-                            ? "กำลังเข้าสู่ระบบ..."
-                            : "เข้าสู่ระบบ"}
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </Form>
-                )}}
+                            <Button
+                              type="button"
+                              color="secondary"
+                              variant="contained"
+                              style={secondBtnstyle}
+                              fullWidth
+                            >
+                              {"สมัครสมาชิก"}
+                            </Button>
+                          </Link>
+                          <Button
+                            type="submit"
+                            color="primary"
+                            variant="contained"
+                            disabled={props.isSubmitting}
+                            style={btnStyle}
+                            fullWidth
+                          >
+                            {props.isSubmitting
+                              ? "กำลังเข้าสู่ระบบ..."
+                              : "เข้าสู่ระบบ"}
+                          </Button>
+                        </CardActions>
+                      </Card>
+                    </Form>
+                  );
+                }}
               </Formik>
             </Grid>
           </Grid>

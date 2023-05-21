@@ -180,7 +180,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   const [currentLat, setCurrentLat] = React.useState<number>(parseFloat(groupData?.lat!));
   const [currentLng, setCurrentLng] = React.useState<number>(parseFloat(groupData?.lng!));
   const [currentLatLng, setCurrentLatLng] = React.useState<[number, number]>([
-    parseFloat(groupData?.lat ||"17.166984616793364"),
+    parseFloat(groupData?.lat || "17.166984616793364"),
     parseFloat(groupData?.lng || "104.14777780025517"),
   ]);
 
@@ -229,7 +229,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   const [provinceState, setProvinceState] = React.useState<string>(
     groupData?.province ?? ""
   );
-    console.log()
+  console.log()
   const [districtState, setDistrictState] = React.useState<string>(
     groupData?.district ?? ""
   );
@@ -238,7 +238,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     groupData?.subdistrict ?? ""
   );
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, name: string) => {
+  const handleInputChange = (event: any, name: string) => {
     const { value } = event.target;
     setUpdateGroupData(prevState => ({ ...prevState, [name]: value }));
   };
@@ -254,7 +254,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
   React.useEffect(() => {
     const fetchDistrict = async () => {
-      if(sakonNakhonProvinces){
+      if (sakonNakhonProvinces) {
         const pid = sakonNakhonProvinces.id
         const districtData = await thaiAddressService.getDistricts(pid.toString());
         setDistrict(districtData);
@@ -262,8 +262,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     }
     fetchDistrict();
   }, [sakonNakhonProvinces]);
-  
-  
+
+
   const [selectedProvince, setSelectedProvince] =
     React.useState<ProvinceType | null>(null);
 
@@ -329,7 +329,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   };
 
   const showPreviewLogo = (values: any) => {
-      if (values?.logoObj) {
+    if (values?.logoObj) {
       return (
         <Image
           alt="group logo image"
@@ -353,7 +353,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     }
   };
 
-  const showPreviewBanner = (values:any) => {
+  const showPreviewBanner = (values: any) => {
     if (values?.bannerObj) {
       return (
         <Image
@@ -396,18 +396,18 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
           <Button onClick={handleEditConfirm} variant="contained" color="primary">
             ยืนยัน
           </Button>
-          <Button onClick={() => setOpenDialog(false)}  variant="outlined" color="info">
+          <Button onClick={() => setOpenDialog(false)} variant="outlined" color="info">
             ยกเลิก
           </Button>
         </DialogActions>
       </Dialog>
     );
   };
-  
+
   const handleRollbackLogo = async () => {
-    if(logoFile !== ""){
+    if (logoFile !== "") {
       setLogoFile("")
-    }else{
+    } else {
       const updateStatus = await dispatch(deleteGroupLogo({ id: updateGroupData.id, accessToken }))
       if (updateStatus.meta.requestStatus === "fulfilled") {
         toast.success("ลบโลโก้สำเร็จ")
@@ -421,9 +421,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   }
 
   const handleRollbackBanner = async () => {
-    if(bannerFile !=="") {
+    if (bannerFile !== "") {
       setBannerFile("")
-    }else{
+    } else {
       const updateStatus = await dispatch(deleteGroupBanner({ id: updateGroupData.id, accessToken }))
       if (updateStatus.meta.requestStatus === "fulfilled") {
         toast.success("ลบแบนเนอร์สำเร็จ")
@@ -439,11 +439,11 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
   const handleEditConfirm = async () => {
     let formData: FormData = new FormData();
-    if (logoFile!="") {
-     
+    if (logoFile != "") {
+
       formData.append("logoFile", logoFile);
     }
-    if (bannerFile!="") {
+    if (bannerFile != "") {
       formData.append("bannerFile", bannerFile);
     }
     formData.append('groupData', JSON.stringify({
@@ -463,10 +463,10 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
       'lat': currentLat,
       'lng': currentLng,
     }));
-// console.log('Form Data:');
-// 	for (const [key, value] of formData.entries()) {
-// 		console.log(key, value);
-// 	}
+    // console.log('Form Data:');
+    // 	for (const [key, value] of formData.entries()) {
+    // 		console.log(key, value);
+    // 	}
 
     const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }))
 
@@ -511,22 +511,22 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 </FormLabel>
 
                 <Box style={{ padding: isSmallDevice ? 0 : 4 }}>
-             
-                   {groupData?.logo === "logo.png" && logoFile==="" ?
-                  <Image
-                  alt="group logo image"
-                  src={"/static/img/logo.png"}
-                  width={isSmallDevice ? 150 : 250}
-                   height={isSmallDevice ? 150 : 250}
-                />
-                 :
-                 <React.Fragment>
-               <Button variant="contained" color="primary" onClick={handleRollbackLogo} style={{ marginBottom: 8 }}>
-                  ลบรูปภาพ
-                </Button>
-                <div>{showPreviewLogo(values)}</div>
-                 </React.Fragment>
-                 }
+
+                  {groupData?.logo === "logo.png" && logoFile === "" ?
+                    <Image
+                      alt="group logo image"
+                      src={"/static/img/logo.png"}
+                      width={isSmallDevice ? 150 : 250}
+                      height={isSmallDevice ? 150 : 250}
+                    />
+                    :
+                    <React.Fragment>
+                      <Button variant="contained" color="primary" onClick={handleRollbackLogo} style={{ marginBottom: 8 }}>
+                        ลบรูปภาพ
+                      </Button>
+                      <div>{showPreviewLogo(values)}</div>
+                    </React.Fragment>
+                  }
                   <div>
                     <Image
                       alt="product image"
@@ -549,7 +549,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                           URL.createObjectURL(e.target.files[0])
                         ); // for preview image
                       }}
-  
+
                       name="logo"
                       click-type="type1"
                       multiple
@@ -564,23 +564,23 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   ภาพแบนเนอร์ ขนาด 1200 x 160 px
                 </FormLabel>
                 <Box style={{ padding: isSmallDevice ? 0 : 4 }}>
-                 
-                {groupData?.banner === "banner.png"  && bannerFile===""  ?
-                  <Image
-                  alt="group banner image"
-                  src={"/static/img/banner.png"}
-                  width={isSmallDevice ? 200 : 400}
-                  height={isSmallDevice ? 30 : 60}
-                />
-                 :
-                 <React.Fragment>
-                  <Button variant="contained" color="primary" onClick={handleRollbackBanner} style={{ marginBottom: 8 }}>
-                 ลบรูปภาพ
-               </Button>
-                 <div>{showPreviewBanner(values)}</div>
-                 </React.Fragment>
-                 }
-                
+
+                  {groupData?.banner === "banner.png" && bannerFile === "" ?
+                    <Image
+                      alt="group banner image"
+                      src={"/static/img/banner.png"}
+                      width={isSmallDevice ? 200 : 400}
+                      height={isSmallDevice ? 30 : 60}
+                    />
+                    :
+                    <React.Fragment>
+                      <Button variant="contained" color="primary" onClick={handleRollbackBanner} style={{ marginBottom: 8 }}>
+                        ลบรูปภาพ
+                      </Button>
+                      <div>{showPreviewBanner(values)}</div>
+                    </React.Fragment>
+                  }
+
                   <div>
                     <Image
                       alt="product image"
@@ -625,7 +625,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     fullWidth
                     type="text"
                     defaultValue={updateGroupData.groupName}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(e: any) => {
                       handleInputChange(e, 'groupName')
                     }}
                     label="กรุณากรอก ชื่อกลุ่มผู้ผลิตหรือร้านค้า"
@@ -643,7 +643,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   <RadioGroup
                     row
                     value={groupTypeState}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(event: any) => {
                       setGroupTypeState(event.target.value);
                     }}
                     aria-labelledby="group-type-row-radio-buttons-group-label"
@@ -676,7 +676,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     fullWidth
                     label="กรุณากรอก ชื่อประธาน / เจ้าของร้าน"
                     component={TextField}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(e: any) => {
                       handleInputChange(e, 'agency')
                     }}
                     sx={{ marginTop: 3 }}
@@ -686,14 +686,14 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="phone" style={{ fontWeight: "bold" }}>
-                    เบอร์โทร 
+                    เบอร์โทร
                   </FormLabel>
                   <Field
                     name="phone"
                     type="text"
                     inputProps={{ maxLength: 10 }}
                     defaultValue={groupData?.phone}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(e: any) => {
                       handleInputChange(e, 'phone')
                     }}
                     fullWidth
@@ -706,14 +706,14 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
-                    อีเมล 
+                    อีเมล
                   </FormLabel>
                   <Field
                     name="email"
                     type="text"
                     inputProps={{ maxLength: 120 }}
                     defaultValue={groupData?.email}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(e: any) => {
                       handleInputChange(e, 'email')
                     }}
                     fullWidth
@@ -744,35 +744,35 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
 
             <Grid container spacing={2}>
-    
-    {
-      sakonNakhonProvinces && <>
-        <Grid item xs={12} md={6}>
-                <Box sx={{ marginTop: 3 }}>
-                  <FormLabel htmlFor="hno" style={{ fontWeight: "bold" }}>
-                    จังหวัด <span style={{ color: "red" }}>*</span>
-                  </FormLabel>
-                  <Field
-                    name="hno"
-                    type="text"
-                    fullWidth
-                    readonly
-                    disabled
-                    inputProps={{ maxLength: 5 }}
-                    value={sakonNakhonProvinces.nameTH}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      handleInputChange(e, 'province')
-                    }}
-                    label="กรุณากรอก จังหวัด"
-                    component={TextField}
-                    sx={{ marginTop: 3 }}
-                  />
-                  <ErrorMessage name="hno" />
-                </Box>
-              </Grid>
-      </>
-    }
-          
+
+              {
+                sakonNakhonProvinces && <>
+                  <Grid item xs={12} md={6}>
+                    <Box sx={{ marginTop: 3 }}>
+                      <FormLabel htmlFor="hno" style={{ fontWeight: "bold" }}>
+                        จังหวัด <span style={{ color: "red" }}>*</span>
+                      </FormLabel>
+                      <Field
+                        name="hno"
+                        type="text"
+                        fullWidth
+                        readonly
+                        disabled
+                        inputProps={{ maxLength: 5 }}
+                        value={sakonNakhonProvinces.nameTH}
+                        onChange={(e: any) => {
+                          handleInputChange(e, 'province')
+                        }}
+                        label="กรุณากรอก จังหวัด"
+                        component={TextField}
+                        sx={{ marginTop: 3 }}
+                      />
+                      <ErrorMessage name="hno" />
+                    </Box>
+                  </Grid>
+                </>
+              }
+
 
               {/* <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
@@ -819,7 +819,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       labelId="district-label"
                       displayEmpty
                       value={selectedDistrict?.id || ""}
-                      onChange={(e) => handleDistrictChange(setFieldValue, e)}
+                      onChange={(e: any) => handleDistrictChange(setFieldValue, e)}
                       style={{ marginTop: "16px" }}
                     >
                       <MenuItem value="">
@@ -853,7 +853,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                       labelId="subdistrict-label"
                       displayEmpty
                       value={selectedSubdistrict?.id || ""}
-                      onChange={(e) =>
+                      onChange={(e: any) =>
                         handleSubdistrictChange(setFieldValue, e)
                       }
                       style={{ marginTop: "16px" }}
@@ -877,7 +877,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <Box sx={{ marginTop: 3 }}>
+                <Box style={{ marginTop: 3 }}>
                   <FormLabel htmlFor="zipCode" style={{ fontWeight: "bold" }}>
                     รหัสไปรษณีย์ <span style={{ color: "red" }}>*</span>
                   </FormLabel>
@@ -886,13 +886,13 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     type="text"
                     fullWidth
                     value={zipCodeState}
-                    onChange={(e: React.ChangeEvent<any>) => {
-                      setZipCodeState(e.target.value);
+                    onChange={(e: any) => {
+                    setZipCodeState(e.target.value)
                     }}
-                    label="กรุณากรอก รหัสไปรษณีย์"
-                    inputProps={{ maxLength: 10 }}
-                    component={TextField}
-                    sx={{ marginTop: 3 }}
+                  label="กรุณากรอก รหัสไปรษณีย์"
+                  inputProps={{ maxLength: 10 }}
+                  component={TextField}
+                  sx={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="zipCode" />
                 </Box>
@@ -909,7 +909,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     fullWidth
                     inputProps={{ maxLength: 5 }}
                     defaultValue={updateGroupData?.hno}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(e: any) => {
                       handleInputChange(e, 'hno')
                     }}
                     label="กรุณากรอก บ้านเลขที่/หมู่"
@@ -930,7 +930,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     type="text"
                     fullWidth
                     defaultValue={updateGroupData?.lane}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(e: any) => {
                       handleInputChange(e, 'lane')
                     }}
                     inputProps={{ maxLength: 50 }}
@@ -950,7 +950,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                     name="road"
                     type="text"
                     defaultValue={updateGroupData?.road}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(e: any) => {
                       handleInputChange(e, 'road')
                     }}
                     inputProps={{ maxLength: 50 }}
@@ -964,15 +964,15 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
               <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
-             
+
                   <FormLabel htmlFor="village" style={{ fontWeight: "bold" }}>
-                  หมู่บ้าน 
+                    หมู่บ้าน
                   </FormLabel>
 
                   <Field
                     name="village"
                     defaultValue={updateGroupData?.village}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    onChange={(e: any) => {
                       handleInputChange(e, 'village')
                     }}
                     type="text"
@@ -988,13 +988,13 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
               <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
-                <FormLabel htmlFor="lat" style={{ fontWeight: "bold" }}>
-                    ละติจูด 
+                  <FormLabel htmlFor="lat" style={{ fontWeight: "bold" }}>
+                    ละติจูด
                   </FormLabel>
                   <Field
                     name="lat"
                     value={currentLat}
-                    onChange={(e: React.ChangeEvent<any>) => {
+                    onChange={(e: any) => {
                       const newLat = parseFloat(e.target.value);
                       setCurrentLat(newLat);
                       setFieldValue("lat", newLat);
@@ -1011,16 +1011,16 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
               <Grid item xs={12} md={6}>
                 <Box sx={{ marginTop: 3 }}>
-                <FormLabel htmlFor="lng" style={{ fontWeight: "bold" }}>
-                    ลองจิจูด 
+                  <FormLabel htmlFor="lng" style={{ fontWeight: "bold" }}>
+                    ลองจิจูด
                   </FormLabel>
                   <Field
                     name="lng"
                     value={currentLng}
-                    onChange={(e: React.ChangeEvent<any>) => {
+                    onChange={(e: any) => {
                       const newLng = parseFloat(e.target.value);
-                    setCurrentLng(newLng);
-                    setFieldValue("lng", newLng);
+                      setCurrentLng(newLng);
+                      setFieldValue("lng", newLng);
                     }}
                     type="text"
                     fullWidth
@@ -1042,7 +1042,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
             variant="contained"
             fullWidth
             // disabled={!isValid}
-            onClick={()=>{
+            onClick={() => {
               setOpenDialog(true)
             }}
             sx={{ marginRight: 1 }}
@@ -1137,78 +1137,78 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
             </Paper>
           </Grid>
 
-          {center[0] !== 17.166984616793364  && center[1] !== 104.14777780025517 ? (
-  <Grid item xs={12} md={12} lg={12}>
-    <Paper
-      sx={{
-        p: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
-      }}
-    >
-      <MapContainer
-        center={center}
-        zoom={zoom}
-        style={{ height: '500px', width: '100%' }}
-      >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <Marker position={center} draggable={true} eventHandlers={{
-                  dragend: handleMarkerDragEnd
+          {center[0] !== 17.166984616793364 && center[1] !== 104.14777780025517 ? (
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
                 }}
+              >
+                <MapContainer
+                  center={center}
+                  zoom={zoom}
+                  style={{ height: '500px', width: '100%' }}
                 >
-                  <Popup autoClose={false}>
-                    <span>หมุดของคุณ</span>
-                  </Popup>
-                </Marker>
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                  <Marker position={center} draggable={true} eventHandlers={{
+                    dragend: handleMarkerDragEnd
+                  }}
+                  >
+                    <Popup autoClose={false}>
+                      <span>หมุดของคุณ</span>
+                    </Popup>
+                  </Marker>
 
-      </MapContainer>
-    </Paper>
-  </Grid>
-) : (
-  <Grid item xs={12} md={12} lg={12}>
-    <Paper
-      sx={{
-        p: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '50px',
-      }}
-    >
-      <Typography variant="h5" color="error">
-        กรุณาปักหมุดแผนที่ ของกลุ่มผู้ผลิตหรือร้านค้าของคุณ
-      </Typography>
-    </Paper>
-
-    <Paper
-      sx={{
-        p: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
-      }}
-    >
-      <MapContainer
-        center={[17.166984616793364, 104.14777780025517]}
-        zoom={zoom}
-        style={{ height: '500px', width: '100%' }}
-      >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <Marker position={[17.166984616793364, 104.14777780025517]} draggable={true} eventHandlers={{
-                  dragend: handleMarkerDragEnd
+                </MapContainer>
+              </Paper>
+            </Grid>
+          ) : (
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  minHeight: '50px',
                 }}
-                >
-                  <Popup autoClose={false}>
-                    <span>หมุดของคุณ</span>
-                  </Popup>
-                </Marker>
-      </MapContainer>
-    </Paper>
+              >
+                <Typography variant="h5" color="error">
+                  กรุณาปักหมุดแผนที่ ของกลุ่มผู้ผลิตหรือร้านค้าของคุณ
+                </Typography>
+              </Paper>
 
-  </Grid>
-)}
+              <Paper
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
+                }}
+              >
+                <MapContainer
+                  center={[17.166984616793364, 104.14777780025517]}
+                  zoom={zoom}
+                  style={{ height: '500px', width: '100%' }}
+                >
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                  <Marker position={[17.166984616793364, 104.14777780025517]} draggable={true} eventHandlers={{
+                    dragend: handleMarkerDragEnd
+                  }}
+                  >
+                    <Popup autoClose={false}>
+                      <span>หมุดของคุณ</span>
+                    </Popup>
+                  </Marker>
+                </MapContainer>
+              </Paper>
+
+            </Grid>
+          )}
 
 
 
@@ -1236,7 +1236,7 @@ export const getServerSideProps: GetServerSideProps = async (
         groupData,
         accessToken,
         provinces,
-        sakonNakhonProvinces : sakonNakhonProvinces[0]
+        sakonNakhonProvinces: sakonNakhonProvinces[0]
       },
     };
   } else {

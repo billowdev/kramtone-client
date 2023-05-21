@@ -42,9 +42,7 @@ import { Card, CardContent, CardActions } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import ReactDOMServer from "react-dom/server";
 
-
 type Props = {};
-
 
 interface FormValues {
   name: string;
@@ -56,44 +54,46 @@ interface FormValues {
 }
 
 const initialValues: FormValues = {
-  name: '',
-  surname: '',
-  phone: '',
-  username: '',
-  password: '',
-  passwordConfirmation: '',
+  name: "",
+  surname: "",
+  phone: "",
+  username: "",
+  password: "",
+  passwordConfirmation: "",
 };
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('กรุณากรอกชื่อ'),
-  surname: Yup.string().required('กรุณากรอกนามสกุล'),
-  phone: Yup.string().required('กรุณากรอกเบอร์โทร'),
-  username: Yup.string().required('กรุณากรอกชื่อผู้ใช้'),
-  password: Yup.string().required('กรุณากรอกรหัสผ่าน'),
+  name: Yup.string().required("กรุณากรอกชื่อ"),
+  surname: Yup.string().required("กรุณากรอกนามสกุล"),
+  phone: Yup.string().required("กรุณากรอกเบอร์โทร"),
+  username: Yup.string().required("กรุณากรอกชื่อผู้ใช้"),
+  password: Yup.string().required("กรุณากรอกรหัสผ่าน"),
   passwordConfirmation: Yup.string()
-    .required('กรุณากรอกรหัสผ่านอีกครั้ง')
-    .oneOf([Yup.ref('password')], 'รหัสผ่านไม่ตรงกัน'),
+    .required("กรุณากรอกรหัสผ่านอีกครั้ง")
+    .oneOf([Yup.ref("password")], "รหัสผ่านไม่ตรงกัน"),
 });
 
-
-function SignUpPage({ }: Props) {
+function SignUpPage({}: Props) {
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  
-  const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 
   const handlePasswordVisible = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.preventDefault();
   };
-  const onSubmit = async (values: FormValues, helpers: FormikHelpers<FormValues>) => {
+  const onSubmit = async (
+    values: FormValues,
+    helpers: FormikHelpers<FormValues>
+  ) => {
     // Handle form submission
     const response = await dispatch(signUp(values));
 
@@ -104,28 +104,28 @@ function SignUpPage({ }: Props) {
       const { username, password } = values;
       const response = await dispatch(signIn({ username, password }));
 
-    if (response.meta.requestStatus === "rejected") {
-      toast.error("เข้าสู่ระบบไม่สำเร็จ");
-    } else {
-      // router.push("/panel");
-      if (response.payload.user.role === "admin") {
-          router.push("/panel/admin", undefined, { shallow: false });       
+      if (response.meta.requestStatus === "rejected") {
+        toast.error("เข้าสู่ระบบไม่สำเร็จ");
       } else {
-        dispatch(getOneGroupDataAction(response.payload.user.groupId));
-        router.push("/panel/user/manage-group", undefined, { shallow: false });
+        // router.push("/panel");
+        if (response.payload.user.role === "admin") {
+          router.push("/panel/admin", undefined, { shallow: false });
+        } else {
+          dispatch(getOneGroupDataAction(response.payload.user.groupId));
+          router.push("/panel/user/manage-group", undefined, {
+            shallow: false,
+          });
+        }
       }
+      setTimeout(() => {
+        helpers.resetForm();
+        helpers.setSubmitting(false);
+      }, 2000);
     }
-    setTimeout(() => {
-      helpers.resetForm();
-      helpers.setSubmitting(false);
-    }, 2000);
-
-    }
-   
   };
   const paperStyle = {
     padding: isSmallDevice ? 0 : 16,
-    height: isSmallDevice ? "":"100vh",
+    height: isSmallDevice ? "" : "100vh",
     width: "auto",
     margin: "0 auto",
   };
@@ -150,217 +150,275 @@ function SignUpPage({ }: Props) {
   };
   return (
     <MainLayout>
-   <Box style={{padding:4}}>
-   <Grid container justifyContent="center">
-      <Paper elevation={6} style={paperStyle}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={4}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Image
-                src="/static/img/logo-white.png"
-                alt="logo image"
-                width={250}
-                height={250}
-                loading="lazy"
-              />
-            </div>
-          </Grid>
-          <Grid item xs={12} sm={8}>
-            <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
-              {({ isSubmitting }) => (
-                <Form>
-                 <Card style={{ background: 'none', boxShadow: 'none', marginRight: isSmallDevice ? 0:24 }}>
-                    <CardContent sx={{ padding: 1 }}>
-                      <Typography variant="h5" style={{ fontWeight: 'bold', textAlign: 'center', marginTop: 3, marginBottom: 3 }}>
-                        สมัครสมาชิก
-                      </Typography>
-
-
-                      <Box style={{ marginTop: 16 }}>
-                        <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
-                        ชื่อ
-                          <span style={{ color: "red" }}>*</span>
-                        </FormLabel>
-                      
-                        <Field
-                                style={{ marginTop: 8 }}
-                                as={TextField}
-                                label="กรุณากรอก ชื่อ"
-                                name="name"
-                                placeholder="กรุณากรอก ชื่อ"
-                                fullWidth
-                                required
-                                maxLength={120}
-                                helperText={<ErrorMessage name="name" />}
-                              />
-
-              </Box>
-
-
-                     
-
-              <Box style={{ marginTop: 16 }}>
-                        <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
-                        นามสกุล
-                          <span style={{ color: "red" }}>*</span>
-                        </FormLabel>
-                      
-                      
-<Field
-   style={{ marginTop: 8 }}
-                        as={TextField}
-                        label="กรุณากรอก นามสกุล"
-                        name="surname"
-                        placeholder="กรุณากรอกนามสกุล"
-                        fullWidth
-                        required
-                        helperText={<ErrorMessage name="surname" />}
-                      />
-              </Box>
-                      
-              <Box style={{ marginTop: 16 }}>
-                        <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
-                        เบอร์โทร
-                          <span style={{ color: "red" }}>*</span>
-                        </FormLabel>
-                      
-                       
-                                <Field
-                                 style={{ marginTop: 8 }}
-                        as={TextField}
-                        label="กรุณากรอก เบอร์โทร"
-                        name="phone"
-                        placeholder="กรุณากรอกเบอร์โทร"
-                        fullWidth
-                        required
-                        helperText={<ErrorMessage name="phone" />}
-                      />
-
-              </Box>
-
-              <Box style={{ marginTop: 16 }}>
-                        <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
-                        ชื่อผู้ใช้
-                          <span style={{ color: "red" }}>*</span>
-                        </FormLabel>
-                      
-                      
-                        <Field
-                        style={{ marginTop: 8 }}
-                        as={TextField}
-                        label="กรุณากรอก ชื่อผู้ใช้"
-                        name="username"
-                        placeholder="กรอก ชื่อผู้ใช้"
-                        fullWidth
-                        required
-                        helperText={<ErrorMessage name="username" />}
-                      />
-              </Box>
-              <Box style={{ marginTop: 16 }}>
-                        <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
-                        รหัสผ่าน
-                          <span style={{ color: "red" }}>*</span>
-                        </FormLabel>
-                      
-                        <Field
-                        style={{ marginTop: 8 }}
-                        as={TextField}
-                        label="กรุณากรอก รหัสผ่าน"
-                        name="password"
-                        placeholder="กรอก รหัสผ่าน"
-                        type={passwordVisible ? 'text' : 'password'}
-                        fullWidth
-                        required
-                        helperText={<ErrorMessage name="password" />}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handlePasswordVisible}
-                                onMouseDown={handleMouseDownPassword}
-                              >
-                                {passwordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                              </IconButton>
-                            </InputAdornment>
-                          ),
+      <Box style={{ padding: 4 }}>
+        <Grid container justifyContent="center">
+          <Paper elevation={6} style={paperStyle}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={4}>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <Image
+                    src="/static/img/logo-white.png"
+                    alt="logo image"
+                    width={250}
+                    height={250}
+                    loading="lazy"
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={12} sm={8}>
+                <Formik
+                  initialValues={initialValues}
+                  onSubmit={onSubmit}
+                  validationSchema={validationSchema}
+                >
+                  {({ isSubmitting }) => (
+                    <Form>
+                      <Card
+                        style={{
+                          background: "none",
+                          boxShadow: "none",
+                          marginRight: isSmallDevice ? 0 : 24,
                         }}
-                      />
-              </Box>
-                      
-              <Box style={{ marginTop: 16 }}>
-                        <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
-                        ยืนยันรหัสผ่าน
-                          <span style={{ color: "red" }}>*</span>
-                        </FormLabel>
-                      
-                        <Field
-                        style={{ marginTop: 8 }}
-                        as={TextField}
-                        label="ยืนยันรหัสผ่าน"
-                        name="passwordConfirmation"
-                        placeholder="กรอกรหัสผ่านอีกครั้ง"
-                        type={passwordVisible ? 'text' : 'password'}
-                        fullWidth
-                        required
-                        helperText={<ErrorMessage name="passwordConfirmation" />}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handlePasswordVisible}
-                                onMouseDown={handleMouseDownPassword}
-                              >
-                                {passwordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                              </IconButton>
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
-              </Box>
-
-                      
-                    </CardContent>
-                    <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  
-
-
-                    <Link href="/auth/signin" style={{display: 'contents'}}>
-                       <Button
-                          type="button"
-                          color="secondary"
-                          variant="contained"
-                          style={secondBtnstyle}
-                          fullWidth
+                      >
+                        <CardContent sx={{ padding: 1 }}>
+                          <Typography
+                            variant="h5"
+                            style={{
+                              fontWeight: "bold",
+                              textAlign: "center",
+                              marginTop: 3,
+                              marginBottom: 3,
+                            }}
                           >
-                          {"เข้าสู่ระบบ"}
-                        </Button> 
-                       </Link>
-                        <Button
-                          type="submit"
-                          color="primary"
-                          variant="contained"
-                          disabled={isSubmitting}
-                          style={btnStyle}
-                          fullWidth
-                        >
-                          {isSubmitting
-                            ? "กำลังสมัครสมาชิก..."
-                            : "สมัครสมาชิก"}
-                        </Button>
+                            สมัครสมาชิก
+                          </Typography>
 
-                    </CardActions>
-                  </Card>
-                </Form>
-              )}
-            </Formik>
-          </Grid>
+                          <Box style={{ marginTop: 16 }}>
+                            <FormLabel
+                              htmlFor="name"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              ชื่อ
+                              <span style={{ color: "red" }}>*</span>
+                            </FormLabel>
+
+                            <Field
+                              style={{ marginTop: 8 }}
+                              as={TextField}
+                              label="กรุณากรอก ชื่อ"
+                              name="name"
+                              placeholder="กรุณากรอก ชื่อ"
+                              fullWidth
+                              required
+                              maxLength={120}
+                              helperText={<ErrorMessage name="name" />}
+                            />
+                          </Box>
+
+                          <Box style={{ marginTop: 16 }}>
+                            <FormLabel
+                              htmlFor="name"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              นามสกุล
+                              <span style={{ color: "red" }}>*</span>
+                            </FormLabel>
+
+                            <Field
+                              style={{ marginTop: 8 }}
+                              as={TextField}
+                              label="กรุณากรอก นามสกุล"
+                              name="surname"
+                              placeholder="กรุณากรอกนามสกุล"
+                              fullWidth
+                              required
+                              helperText={<ErrorMessage name="surname" />}
+                            />
+                          </Box>
+
+                          <Box style={{ marginTop: 16 }}>
+                            <FormLabel
+                              htmlFor="name"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              เบอร์โทร
+                              <span style={{ color: "red" }}>*</span>
+                            </FormLabel>
+
+                            <Field
+                              style={{ marginTop: 8 }}
+                              as={TextField}
+                              label="กรุณากรอก เบอร์โทร"
+                              name="phone"
+                              placeholder="กรุณากรอกเบอร์โทร"
+                              fullWidth
+                              required
+                              helperText={<ErrorMessage name="phone" />}
+                            />
+                          </Box>
+
+                          <Box style={{ marginTop: 16 }}>
+                            <FormLabel
+                              htmlFor="email"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              อีเมล
+                            </FormLabel>
+
+                            <Field
+                              style={{ marginTop: 8 }}
+                              as={TextField}
+                              label="กรุณากรอก อีเมล"
+                              name="username"
+                              placeholder="กรอก อีเมล"
+                              fullWidth
+                              helperText={<ErrorMessage name="username" />}
+                            />
+                          </Box>
+
+                          <Box style={{ marginTop: 16 }}>
+                            <FormLabel
+                              htmlFor="name"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              ชื่อผู้ใช้
+                              <span style={{ color: "red" }}>*</span>
+                            </FormLabel>
+
+                            <Field
+                              style={{ marginTop: 8 }}
+                              as={TextField}
+                              label="กรุณากรอก ชื่อผู้ใช้"
+                              name="username"
+                              placeholder="กรอก ชื่อผู้ใช้"
+                              fullWidth
+                              required
+                              helperText={<ErrorMessage name="username" />}
+                            />
+                          </Box>
+                          <Box style={{ marginTop: 16 }}>
+                            <FormLabel
+                              htmlFor="name"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              รหัสผ่าน
+                              <span style={{ color: "red" }}>*</span>
+                            </FormLabel>
+
+                            <Field
+                              style={{ marginTop: 8 }}
+                              as={TextField}
+                              label="กรุณากรอก รหัสผ่าน"
+                              name="password"
+                              placeholder="กรอก รหัสผ่าน"
+                              type={passwordVisible ? "text" : "password"}
+                              fullWidth
+                              required
+                              helperText={<ErrorMessage name="password" />}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton
+                                      aria-label="toggle password visibility"
+                                      onClick={handlePasswordVisible}
+                                      onMouseDown={handleMouseDownPassword}
+                                    >
+                                      {passwordVisible ? (
+                                        <VisibilityOffIcon />
+                                      ) : (
+                                        <VisibilityIcon />
+                                      )}
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                          </Box>
+
+                          <Box style={{ marginTop: 16 }}>
+                            <FormLabel
+                              htmlFor="name"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              ยืนยันรหัสผ่าน
+                              <span style={{ color: "red" }}>*</span>
+                            </FormLabel>
+
+                            <Field
+                              style={{ marginTop: 8 }}
+                              as={TextField}
+                              label="ยืนยันรหัสผ่าน"
+                              name="passwordConfirmation"
+                              placeholder="กรอกรหัสผ่านอีกครั้ง"
+                              type={passwordVisible ? "text" : "password"}
+                              fullWidth
+                              required
+                              helperText={
+                                <ErrorMessage name="passwordConfirmation" />
+                              }
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton
+                                      aria-label="toggle password visibility"
+                                      onClick={handlePasswordVisible}
+                                      onMouseDown={handleMouseDownPassword}
+                                    >
+                                      {passwordVisible ? (
+                                        <VisibilityOffIcon />
+                                      ) : (
+                                        <VisibilityIcon />
+                                      )}
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                          </Box>
+                        </CardContent>
+                        <CardActions
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Link
+                            href="/auth/signin"
+                            style={{ display: "contents" }}
+                          >
+                            <Button
+                              type="button"
+                              color="secondary"
+                              variant="contained"
+                              style={secondBtnstyle}
+                              fullWidth
+                            >
+                              {"เข้าสู่ระบบ"}
+                            </Button>
+                          </Link>
+                          <Button
+                            type="submit"
+                            color="primary"
+                            variant="contained"
+                            disabled={isSubmitting}
+                            style={btnStyle}
+                            fullWidth
+                          >
+                            {isSubmitting
+                              ? "กำลังสมัครสมาชิก..."
+                              : "สมัครสมาชิก"}
+                          </Button>
+                        </CardActions>
+                      </Card>
+                    </Form>
+                  )}
+                </Formik>
+              </Grid>
+            </Grid>
+          </Paper>
         </Grid>
-      </Paper>
-    </Grid>
-    </Box>
-  </MainLayout>
+      </Box>
+    </MainLayout>
   );
 }
 
