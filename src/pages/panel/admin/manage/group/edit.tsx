@@ -191,7 +191,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     parseFloat(groupData?.lat ?? "17.1634"),
     parseFloat(groupData?.lng ?? "104.1476"),
   ]; // Centered on Sakon Nakhon Province
-  
+
   const zoom: number = 12;
 
   const [logoFile, setLogoFile] = React.useState<any | Blob>("")
@@ -439,7 +439,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   }
 
   const [isLoading, setIsLoading] = React.useState(false);
-const handleEditConfirm = async () => {
+  const handleEditConfirm = async () => {
     setOpenDialog(false);
     let formData = new FormData();
     let isLoading = true;
@@ -478,7 +478,7 @@ const handleEditConfirm = async () => {
 
       if (updateStatus.meta.requestStatus === 'fulfilled') {
         toast.success('แก้ไขข้อมูลสำเร็จ');
-        router.push("/panel/admin/manage/group")
+        router.push("/panel/admin/manage/group/" + updateGroupData.id)
       } else {
         toast.error('แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง');
       }
@@ -897,12 +897,12 @@ const handleEditConfirm = async () => {
                     fullWidth
                     value={zipCodeState}
                     onChange={(e: any) => {
-                    setZipCodeState(e.target.value)
+                      setZipCodeState(e.target.value)
                     }}
-                  label="กรุณากรอก รหัสไปรษณีย์"
-                  inputProps={{ maxLength: 10 }}
-                  component={TextField}
-                  sx={{ marginTop: 3 }}
+                    label="กรุณากรอก รหัสไปรษณีย์"
+                    inputProps={{ maxLength: 10 }}
+                    component={TextField}
+                    sx={{ marginTop: 3 }}
                   />
                   <ErrorMessage name="zipCode" />
                 </Box>
@@ -1130,24 +1130,24 @@ const handleEditConfirm = async () => {
             >
               <Grid item xs={12} md={12} lg={12}>
                 <Box sx={{ padding: 4 }}>
-                 
+
 
                   {isLoading ? (
-            <CircularProgress /> // Render the circular progress indicator while loading is true
-          ) : (
-            <Formik
-                    initialValues={groupData!}
-                    validationSchema={validationSchema}
-                    onSubmit={async (values, { setSubmitting }) => {
-                      setLogoFile(values?.logoFile)
-                      setBannerFile(values?.bannerFile)
-                      setOpenDialog(true);
-                      setSubmitting(false);
-                    }}
-                  >
-                    {(props) => showForm(props)}
-                  </Formik>
-          )}
+                    <CircularProgress /> // Render the circular progress indicator while loading is true
+                  ) : (
+                    <Formik
+                      initialValues={groupData!}
+                      validationSchema={validationSchema}
+                      onSubmit={async (values, { setSubmitting }) => {
+                        setLogoFile(values?.logoFile)
+                        setBannerFile(values?.bannerFile)
+                        setOpenDialog(true);
+                        setSubmitting(false);
+                      }}
+                    >
+                      {(props) => showForm(props)}
+                    </Formik>
+                  )}
 
                 </Box>
               </Grid>
