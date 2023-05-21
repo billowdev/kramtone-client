@@ -37,7 +37,7 @@ import * as thaiAddressService from "@/services/thai-address.service";
 import { updateGroupDataAction, deleteGroupLogo, deleteGroupBanner } from "@/store/slices/group-data.slice"
 
 import toast from "react-hot-toast";
-
+import { resizeImage } from '@/common/utils/imageResizeUtils';
 
 import {
   Dialog,
@@ -177,8 +177,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   const isMediumDevice = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch: any = useAppDispatch();
 
-  const [currentLat, setCurrentLat] = React.useState<number>(parseFloat(groupData?.lat!));
-  const [currentLng, setCurrentLng] = React.useState<number>(parseFloat(groupData?.lng!));
+  const [currentLat, setCurrentLat] = React.useState<number>(parseFloat(groupData?.lat || "17.166984616793364"));
+  const [currentLng, setCurrentLng] = React.useState<number>(parseFloat(groupData?.lng || "104.14777780025517"));
   const [currentLatLng, setCurrentLatLng] = React.useState<[number, number]>([
     parseFloat(groupData?.lat || "17.166984616793364"),
     parseFloat(groupData?.lng || "104.14777780025517"),
@@ -190,6 +190,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     parseFloat(groupData?.lat ?? "17.1634"),
     parseFloat(groupData?.lng ?? "104.1476"),
   ]; // Centered on Sakon Nakhon Province
+  
   const zoom: number = 12;
 
   const [logoFile, setLogoFile] = React.useState<any | Blob>("")
@@ -439,13 +440,25 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
   const handleEditConfirm = async () => {
     let formData: FormData = new FormData();
-    if (logoFile != "") {
+    // if (logoFile != "") {
 
-      formData.append("logoFile", logoFile);
+    //   formData.append("logoFile", logoFile);
+    // }
+    // if (bannerFile != "") {
+    //   formData.append("bannerFile", bannerFile);
+    // }
+    if (logoFile != "") {
+      const resizedImage = await resizeImage(logoFile, 1000, 1000);
+     
+      formData.append("logoFile", resizedImage.file);
     }
+    
     if (bannerFile != "") {
-      formData.append("bannerFile", bannerFile);
+      const resizedImage = await resizeImage(bannerFile, 1000, 1000);
+      formData.append("bannerFile", resizedImage.file);
     }
+  
+
     formData.append('groupData', JSON.stringify({
       'groupName': updateGroupData.groupName,
       'groupType': groupTypeState,

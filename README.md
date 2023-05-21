@@ -1,3 +1,6 @@
+# command
+- rm -rf ./.next.zip && rm -rf ./.next && mv /home/admin/.next.zip ./ && unzip .next.zip && pm2 restart all
+
 ## package
 
  leaflet react-leaflet @types/react-leaflet

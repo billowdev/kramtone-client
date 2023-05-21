@@ -54,7 +54,6 @@ import * as groupDataService from "@/services/group-data.service";
 import * as authService from "@/services/auth.service";
 import { GroupDataPayload } from "@/models/group-data.model";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
-import LoadingProgress from '@/components/LoadingProgress';
 
 import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 
@@ -540,7 +539,7 @@ function UserPanelManageGroup({   }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>จังหวัด</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupDataSlice?.groupData?.province}
+                      {groupDataSlice?.groupData?.province ?? "สกลนคร"} 
                     </Typography>
                   </Box>
                 </Grid>

@@ -233,7 +233,7 @@ function UserPanelProfile({
               component={TextField}
               defaultValue={userPayload.phone}
               name="phone"
-              maxLength={10}
+              maxLength="10"
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('phone', event.target.value)}
               type="text"
               label="เบอร์โทร"
@@ -255,7 +255,7 @@ function UserPanelProfile({
               name="email"
               type="email"
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('email', event.target.value)}
-              maxLength={120}
+              maxLength="120"
               label="กรุณากรอก อีเมล"
             />
  </Box>

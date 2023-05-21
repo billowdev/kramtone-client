@@ -73,7 +73,7 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref("password")], "รหัสผ่านไม่ตรงกัน"),
 });
 
-function SignUpPage({}: Props) {
+function SignUpPage({ }: Props) {
   const router = useRouter();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const theme = useTheme();
@@ -148,11 +148,11 @@ function SignUpPage({}: Props) {
       <Box style={{ padding: 4 }}>
         <Grid container justifyContent="center">
           <Paper elevation={6} style={{
-             padding: isSmallDevice ? 0 : 16,
-             marginBottom: 64,
-             marginTop: 32,
-             height: isSmallDevice ? "" : "100vh",
-             width: "auto",
+            padding: isSmallDevice ? 0 : 16,
+            marginBottom: 64,
+            marginTop: 32,
+            height: isSmallDevice ? "" : "100vh",
+            width: "auto",
             overflow: 'inherit'
           }}>
             <Grid container spacing={2}>
@@ -212,7 +212,7 @@ function SignUpPage({}: Props) {
                               placeholder="กรุณากรอก ชื่อ"
                               fullWidth
                               required
-                              maxLength={120}
+                              maxLength="80"
                               helperText={<ErrorMessage name="name" />}
                             />
                           </Box>
@@ -233,6 +233,7 @@ function SignUpPage({}: Props) {
                               name="surname"
                               placeholder="กรุณากรอกนามสกุล"
                               fullWidth
+                              maxLength="80"
                               required
                               helperText={<ErrorMessage name="surname" />}
                             />
@@ -252,6 +253,7 @@ function SignUpPage({}: Props) {
                               as={TextField}
                               label="กรุณากรอก เบอร์โทร"
                               name="phone"
+                              maxLength="10"
                               placeholder="กรุณากรอกเบอร์โทร"
                               fullWidth
                               required
@@ -272,6 +274,7 @@ function SignUpPage({}: Props) {
                               as={TextField}
                               label="กรุณากรอก อีเมล"
                               name="email"
+                              maxLength="120"
                               placeholder="กรอก อีเมล"
                               fullWidth
                               helperText={<ErrorMessage name="email" />}
@@ -290,6 +293,7 @@ function SignUpPage({}: Props) {
                             <Field
                               style={{ marginTop: 8 }}
                               as={TextField}
+                              maxLength={64}
                               label="กรุณากรอก ชื่อผู้ใช้"
                               name="username"
                               placeholder="กรอก ชื่อผู้ใช้"
@@ -310,6 +314,7 @@ function SignUpPage({}: Props) {
                             <Field
                               style={{ marginTop: 8 }}
                               as={TextField}
+                              maxLength="64"
                               label="กรุณากรอก รหัสผ่าน"
                               name="password"
                               placeholder="กรอก รหัสผ่าน"
@@ -349,6 +354,7 @@ function SignUpPage({}: Props) {
                             <Field
                               style={{ marginTop: 8 }}
                               as={TextField}
+                              maxLength={64}
                               label="ยืนยันรหัสผ่าน"
                               name="passwordConfirmation"
                               placeholder="กรอกรหัสผ่านอีกครั้ง"

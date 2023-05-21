@@ -4,6 +4,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import router from "next/router";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { resizeImage } from '@/common/utils/imageResizeUtils';
 import {
   Container,
   Grid,
@@ -177,10 +178,12 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   const isMediumDevice = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch: any = useAppDispatch();
 
-  const [currentLat, setCurrentLat] = React.useState<number>(parseFloat(groupData?.lat!));
-  const [currentLng, setCurrentLng] = React.useState<number>(parseFloat(groupData?.lng!));
-  const [currentLatLng, setCurrentLatLng] = React.useState<[number, number]>([parseFloat(groupData?.lat!), parseFloat(groupData?.lng!)]);
-
+  const [currentLat, setCurrentLat] = React.useState<number>(parseFloat(groupData?.lat! ?? "17.166984616793364"));
+  const [currentLng, setCurrentLng] = React.useState<number>(parseFloat(groupData?.lng! ?? "104.14777780025517"));
+  const [currentLatLng, setCurrentLatLng] = React.useState<[number, number]>([
+    parseFloat(groupData?.lat || "17.166984616793364"),
+    parseFloat(groupData?.lng || "104.14777780025517"),
+  ]);
   const center: LatLngExpression = [currentLatLng[0], currentLatLng[1]]; // Centered on Sakon Nakhon Province
 
   const position: LatLngExpression = [
@@ -227,7 +230,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     groupData?.province ?? ""
   );
 
-  
+
   const [districtState, setDistrictState] = React.useState<string>(
     groupData?.district ?? ""
   );
@@ -403,9 +406,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   };
 
   const handleRollbackLogo = async () => {
-    if(logoFile !== ""){
+    if (logoFile !== "") {
       setLogoFile("")
-    }else{
+    } else {
       const updateStatus = await dispatch(deleteGroupLogo({ id: updateGroupData.id, accessToken }))
       if (updateStatus.meta.requestStatus === "fulfilled") {
         toast.success("ลบโลโก้สำเร็จ")
@@ -419,9 +422,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
   }
 
   const handleRollbackBanner = async () => {
-    if(bannerFile !=="") {
+    if (bannerFile !== "") {
       setBannerFile("")
-    }else{
+    } else {
       const updateStatus = await dispatch(deleteGroupBanner({ id: updateGroupData.id, accessToken }))
       if (updateStatus.meta.requestStatus === "fulfilled") {
         toast.success("ลบแบนเนอร์สำเร็จ")
@@ -434,15 +437,23 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     }
   }
 
+
   const handleEditConfirm = async () => {
     let formData: FormData = new FormData();
 
     if (logoFile != "") {
-      formData.append("logoFile", logoFile);
+      const resizedImage = await resizeImage(logoFile, 1000, 1000);
+     
+      formData.append("logoFile", resizedImage.file);
     }
+    
     if (bannerFile != "") {
-      formData.append("bannerFile", bannerFile);
+      const resizedImage = await resizeImage(bannerFile, 1000, 1000);
+      formData.append("bannerFile", resizedImage.file);
     }
+  
+
+
     formData.append('groupData', JSON.stringify({
       'groupName': updateGroupData.groupName,
       'groupType': groupTypeState,
@@ -472,7 +483,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
     if (updateStatus.meta.requestStatus === "fulfilled") {
       toast.success("แก้ไขข้อมูลสำเร็จ")
-      router.push("/panel/user/manage-group")
+      // router.push("/panel/user/manage-group")
     } else {
       toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
     }
@@ -511,23 +522,23 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 </FormLabel>
 
                 <Box style={{ padding: isSmallDevice ? 0 : 4 }}>
-                   {groupData?.logo === "logo.png" && logoFile==="" ?
-                  <Image
-                  alt="group logo image"
-                  src={"/static/img/logo.png"}
-                  width={isSmallDevice ? 150 : 250}
-                   height={isSmallDevice ? 150 : 250}
-                />
-                 :
-                 <>
-               <Button variant="contained" color="primary" onClick={handleRollbackLogo} style={{ marginBottom: 8 }}>
-                  ลบรูปภาพ
-                </Button>
-                <div>{showPreviewLogo(values)}</div>
-                 </>
-                 }
+                  {groupData?.logo === "logo.png" && logoFile === "" ?
+                    <Image
+                      alt="group logo image"
+                      src={"/static/img/logo.png"}
+                      width={isSmallDevice ? 150 : 250}
+                      height={isSmallDevice ? 150 : 250}
+                    />
+                    :
+                    <>
+                      <Button variant="contained" color="primary" onClick={handleRollbackLogo} style={{ marginBottom: 8 }}>
+                        ลบรูปภาพ
+                      </Button>
+                      <div>{showPreviewLogo(values)}</div>
+                    </>
+                  }
 
-                
+
                   <div>
                     <Image
                       alt="product image"
@@ -566,24 +577,24 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                 </FormLabel>
                 <Box style={{ padding: isSmallDevice ? 0 : 4 }}>
 
-            
 
-                 {groupData?.banner === "banner.png"  && bannerFile===""  ?
-                  <Image
-                  alt="group banner image"
-                  src={"/static/img/banner.png"}
-                  width={isSmallDevice ? 200 : 400}
-                  height={isSmallDevice ? 30 : 60}
-                />
-                 :
-                 <>
-  <Button variant="contained" color="primary" onClick={handleRollbackBanner} style={{ marginBottom: 8 }}>
-                 ลบรูปภาพ
-               </Button>
-                 <div>{showPreviewBanner(values)}</div>
-                 </>
-                 }
-                
+
+                  {groupData?.banner === "banner.png" && bannerFile === "" ?
+                    <Image
+                      alt="group banner image"
+                      src={"/static/img/banner.png"}
+                      width={isSmallDevice ? 200 : 400}
+                      height={isSmallDevice ? 30 : 60}
+                    />
+                    :
+                    <>
+                      <Button variant="contained" color="primary" onClick={handleRollbackBanner} style={{ marginBottom: 8 }}>
+                        ลบรูปภาพ
+                      </Button>
+                      <div>{showPreviewBanner(values)}</div>
+                    </>
+                  }
+
                   <div>
                     <Image
                       alt="product image"
@@ -689,7 +700,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="phone" style={{ fontWeight: "bold" }}>
-                    เบอร์โทร 
+                    เบอร์โทร
                   </FormLabel>
                   <Field
                     name="phone"
@@ -709,7 +720,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
                 <Box sx={{ marginTop: 3 }}>
                   <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
-                    อีเมล 
+                    อีเมล
                   </FormLabel>
                   <Field
                     name="email"
@@ -1138,32 +1149,81 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
             </Paper>
           </Grid>
 
-          <Grid item xs={12} md={12} lg={12}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-                gap: 16,
-              }}
-            >
-              <MapContainer
-                center={center}
-                zoom={zoom}
-                style={{ height: "500px", width: "100%" }}
-              >
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <Marker position={center} draggable={true} eventHandlers={{
-                  dragend: handleMarkerDragEnd
+      
+          {center[0] !== 17.166984616793364 && center[1] !== 104.14777780025517 ? (
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
                 }}
+              >
+                <MapContainer
+                  center={center}
+                  zoom={zoom}
+                  style={{ height: '500px', width: '100%' }}
                 >
-                  <Popup autoClose={false}>
-                    <span>หมุดของคุณ</span>
-                  </Popup>
-                </Marker>
-              </MapContainer>
-            </Paper>
-          </Grid>
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                  <Marker position={center} draggable={true} eventHandlers={{
+                    dragend: handleMarkerDragEnd
+                  }}
+                  >
+                    <Popup autoClose={false}>
+                      <span>หมุดของคุณ</span>
+                    </Popup>
+                  </Marker>
+
+                </MapContainer>
+              </Paper>
+            </Grid>
+          ) : (
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  minHeight: '50px',
+                }}
+              >
+                <Typography variant="h5" color="error">
+                  กรุณาปักหมุดแผนที่ ของกลุ่มผู้ผลิตหรือร้านค้าของคุณ
+                </Typography>
+              </Paper>
+
+              <Paper
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
+                }}
+              >
+                <MapContainer
+                  center={[17.166984616793364, 104.14777780025517]}
+                  zoom={zoom}
+                  style={{ height: '500px', width: '100%' }}
+                >
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                  <Marker position={[17.166984616793364, 104.14777780025517]} draggable={true} eventHandlers={{
+                    dragend: handleMarkerDragEnd
+                  }}
+                  >
+                    <Popup autoClose={false}>
+                      <span>หมุดของคุณ</span>
+                    </Popup>
+                  </Marker>
+                </MapContainer>
+              </Paper>
+
+            </Grid>
+          )}
+
+
         </Grid>
       </Container>
       {showDialog()}
@@ -1182,7 +1242,7 @@ export const getServerSideProps: GetServerSideProps = async (
     const accessToken = context.req.cookies["access_token"];
     const provinces = await thaiAddressService.getProvinces();
     let sakonNakhonProvinces = provinces.filter(province => province.id === 35);
-  
+
     return {
       props: {
         groupData,
