@@ -73,6 +73,8 @@ import {
 import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 import { makeStyles } from "@material-ui/core/styles";
 import MenuItem from "@mui/material/MenuItem";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -394,9 +396,15 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleEditConfirm} variant="contained" color="primary">
-            ยืนยัน
-          </Button>
+          {isLoading ? (
+            <CircularProgress /> // Render the circular progress indicator while loading is true
+          ) : (
+            <Button onClick={handleEditConfirm} variant="contained" color="primary">
+              ยืนยัน
+            </Button>
+          )}
+
+
           <Button onClick={() => setOpenDialog(false)} variant="outlined" color="info">
             ยกเลิก
           </Button>
@@ -436,60 +444,90 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
       }
     }
   }
+  const [isLoading, setIsLoading] = React.useState(false);
 
+  // const handleEditConfirm = async () => {
+  //   setOpenDialog(false);
+  //   let formData: FormData = new FormData();
+
+  //   if (logoFile != "") {
+  //     const resizedImage = await resizeImage(logoFile, 1000, 1000);
+
+  //     formData.append("logoFile", resizedImage.file);
+  //   }
+
+  //   if (bannerFile != "") {
+  //     const resizedImage = await resizeImage(bannerFile, 1000, 1000);
+  //     formData.append("bannerFile", resizedImage.file);
+  //   }
+
+
+
+  //   formData.append('groupData', JSON.stringify({
+  //     'groupName': updateGroupData.groupName,
+  //     'groupType': groupTypeState,
+  //     'agency': updateGroupData.agency,
+  //     'phone': updateGroupData.phone,
+  //     'email': updateGroupData.email,
+  //     'hno': updateGroupData.hno,
+  //     'village': updateGroupData.village,
+  //     'lane': updateGroupData.lane,
+  //     'road': updateGroupData.road,
+  //     'subdistrict': selectedSubdistrict?.nameTH,
+  //     'district': selectedDistrict?.nameTH,
+  //     'province': updateGroupData.province,
+  //     'zipCode': zipCodeState,
+  //     'lat': currentLat,
+  //     'lng': currentLng,
+  //   }));
+
+  //   const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }))
+
+  //   if (updateStatus.meta.requestStatus === "fulfilled") {
+  //     toast.success("แก้ไขข้อมูลสำเร็จ")
+  //     // router.push("/panel/user/manage-group")
+  //   } else {
+  //     toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+  //   }
+
+
+  // };
 
   const handleEditConfirm = async () => {
-    let formData: FormData = new FormData();
-
-    if (logoFile != "") {
-      const resizedImage = await resizeImage(logoFile, 1000, 1000);
-     
-      formData.append("logoFile", resizedImage.file);
-    }
-    
-    if (bannerFile != "") {
-      const resizedImage = await resizeImage(bannerFile, 1000, 1000);
-      formData.append("bannerFile", resizedImage.file);
-    }
-  
-
-
-    formData.append('groupData', JSON.stringify({
-      'groupName': updateGroupData.groupName,
-      'groupType': groupTypeState,
-      'agency': updateGroupData.agency,
-      'phone': updateGroupData.phone,
-      'email': updateGroupData.email,
-      'hno': updateGroupData.hno,
-      'village': updateGroupData.village,
-      'lane': updateGroupData.lane,
-      'road': updateGroupData.road,
-      'subdistrict': selectedSubdistrict?.nameTH,
-      'district': selectedDistrict?.nameTH,
-      'province': updateGroupData.province,
-      'zipCode': zipCodeState,
-      'lat': currentLat,
-      'lng': currentLng,
-    }));
-    // console.log('Form Data:');
-    // 	for (const [key, value] of formData.entries()) {
-    // 		console.log(key, value);
-    // 	}
-    // console.log(logoFile)
-    // console.log(bannerFile)
-
-
-    const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }))
-
-    if (updateStatus.meta.requestStatus === "fulfilled") {
-      toast.success("แก้ไขข้อมูลสำเร็จ")
-      // router.push("/panel/user/manage-group")
-    } else {
-      toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
-    }
     setOpenDialog(false);
-    // }
+    let formData = new FormData();
+    let isLoading = true;
+
+    if (logoFile !== '') {
+      const resizedImage = await resizeImage(logoFile, 1000, 1000);
+      formData.append('logoFile', resizedImage.file);
+    }
+
+    if (bannerFile !== '') {
+      const resizedImage = await resizeImage(bannerFile, 1000, 1000);
+      formData.append('bannerFile', resizedImage.file);
+    }
+
+    formData.append('groupData', JSON.stringify({ /* group data properties */ }));
+
+    try {
+      setIsLoading(true); // Set the loading state to true to show the progress indicator
+
+      const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }));
+
+      if (updateStatus.meta.requestStatus === 'fulfilled') {
+        toast.success('แก้ไขข้อมูลสำเร็จ');
+        router.push('/panel/user/manage-group');
+      } else {
+        toast.error('แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง');
+      }
+    } catch (error) {
+      toast.error('เกิดข้อผิดพลาดในการแก้ไขข้อมูล');
+    } finally {
+      setIsLoading(false); // Set the loading state to false after the async operations are completed
+    }
   };
+
 
   const showForm = ({
     values,
@@ -1149,7 +1187,7 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
             </Paper>
           </Grid>
 
-      
+
           {center[0] !== 17.166984616793364 && center[1] !== 104.14777780025517 ? (
             <Grid item xs={12} md={12} lg={12}>
               <Paper
