@@ -123,12 +123,7 @@ function SignUpPage({}: Props) {
       }, 2000);
     }
   };
-  const paperStyle = {
-    padding: isSmallDevice ? 0 : 16,
-    height: isSmallDevice ? "" : "100vh",
-    width: "auto",
-    margin: "0 auto",
-  };
+
   const avatarStyle = { backgroundColor: "#103D81", alginContent: "center" };
   const btnStyle = {
     margin: "8px 0",
@@ -152,7 +147,15 @@ function SignUpPage({}: Props) {
     <MainLayout>
       <Box style={{ padding: 4 }}>
         <Grid container justifyContent="center">
-          <Paper elevation={6} style={paperStyle}>
+          <Paper elevation={6} style={{
+             padding: isSmallDevice ? 0 : 16,
+             marginBottom: 64,
+             marginTop: 32,
+             height: isSmallDevice ? "" : "100vh",
+             width: "auto",
+            //  margin: "0 auto",
+            overflow: 'hidden'
+          }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>
                 <div style={{ display: "flex", justifyContent: "center" }}>
@@ -269,10 +272,10 @@ function SignUpPage({}: Props) {
                               style={{ marginTop: 8 }}
                               as={TextField}
                               label="กรุณากรอก อีเมล"
-                              name="username"
+                              name="email"
                               placeholder="กรอก อีเมล"
                               fullWidth
-                              helperText={<ErrorMessage name="username" />}
+                              helperText={<ErrorMessage name="email" />}
                             />
                           </Box>
 

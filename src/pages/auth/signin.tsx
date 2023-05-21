@@ -54,12 +54,12 @@ function SignInPage({}: Props) {
   const dispatch = useAppDispatch();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 
-  const paperStyle = {
-    padding: isSmallDevice ? 0 : 16,
-    height: "100vh",
-    width: "auto",
-    margin: "0 auto",
-  };
+  // const paperStyle = {
+  //   padding: isSmallDevice ? 0 : 16,
+  //   height: "100vh",
+  //   width: "auto",
+  //   margin: "0 auto",
+  // };
   const avatarStyle = { backgroundColor: "#103D81", alginContent: "center" };
   const btnStyle = {
     margin: "8px 0",
@@ -142,8 +142,15 @@ function SignInPage({}: Props) {
 
   return (
     <MainLayout>
-      <Grid container>
-        <Paper style={paperStyle}>
+      <Grid container justifyContent="center">
+        <Paper style={{
+          padding: isSmallDevice ? 0 : 16,
+          height: "100vh",
+          width: "auto",
+           marginBottom: 64,
+           marginTop: 32,
+           overflow: 'hidden'
+        }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
               <div style={{ display: "flex", justifyContent: "center" }}>
