@@ -396,15 +396,9 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          {isLoading ? (
-            <CircularProgress /> // Render the circular progress indicator while loading is true
-          ) : (
-            <Button onClick={handleEditConfirm} variant="contained" color="primary">
-              ยืนยัน
-            </Button>
-          )}
-
-
+          <Button onClick={handleEditConfirm} variant="contained" color="primary">
+            ยืนยัน
+          </Button>
           <Button onClick={() => setOpenDialog(false)} variant="outlined" color="info">
             ยกเลิก
           </Button>
@@ -508,8 +502,23 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
       formData.append('bannerFile', resizedImage.file);
     }
 
-    formData.append('groupData', JSON.stringify({ /* group data properties */ }));
-
+    formData.append('groupData', JSON.stringify({
+      'groupName': updateGroupData.groupName,
+      'groupType': groupTypeState,
+      'agency': updateGroupData.agency,
+      'phone': updateGroupData.phone,
+      'email': updateGroupData.email,
+      'hno': updateGroupData.hno,
+      'village': updateGroupData.village,
+      'lane': updateGroupData.lane,
+      'road': updateGroupData.road,
+      'subdistrict': selectedSubdistrict?.nameTH,
+      'district': selectedDistrict?.nameTH,
+      'province': updateGroupData.province,
+      'zipCode': zipCodeState,
+      'lat': currentLat,
+      'lng': currentLng,
+    }));
     try {
       setIsLoading(true); // Set the loading state to true to show the progress indicator
 
@@ -1170,18 +1179,25 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
             >
               <Grid item xs={12} md={12} lg={12}>
                 <Box sx={{ padding: 4 }}>
-                  <Formik
-                    initialValues={groupData!}
-                    validationSchema={validationSchema}
-                    onSubmit={async (values, { setSubmitting }) => {
-                      setLogoFile(values?.logoFile)
-                      setBannerFile(values?.bannerFile)
-                      setOpenDialog(true);
-                      setSubmitting(false);
-                    }}
-                  >
-                    {(props) => showForm(props)}
-                  </Formik>
+
+                  {isLoading ? (
+                    <CircularProgress /> // Render the circular progress indicator while loading is true
+                  ) : (
+                    <Formik
+                      initialValues={groupData!}
+                      validationSchema={validationSchema}
+                      onSubmit={async (values, { setSubmitting }) => {
+                        setLogoFile(values?.logoFile)
+                        setBannerFile(values?.bannerFile)
+                        setOpenDialog(true);
+                        setSubmitting(false);
+                      }}
+                    >
+                      {(props) => showForm(props)}
+                    </Formik>
+                  )}
+
+
                 </Box>
               </Grid>
             </Paper>
@@ -1264,6 +1280,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
 
         </Grid>
       </Container>
+
+
       {showDialog()}
     </Layout>
   );

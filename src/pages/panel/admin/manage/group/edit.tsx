@@ -17,6 +17,7 @@ import {
   Button,
   TextField
 } from "@mui/material";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import GroupsIcon from "@mui/icons-material/Groups";
 import { RootState, useAppDispatch } from "@/store/store";
@@ -437,27 +438,21 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
     }
   }
 
+  const [isLoading, setIsLoading] = React.useState(false);
+const handleEditConfirm = async () => {
+    setOpenDialog(false);
+    let formData = new FormData();
+    let isLoading = true;
 
-  const handleEditConfirm = async () => {
-    let formData: FormData = new FormData();
-    // if (logoFile != "") {
-
-    //   formData.append("logoFile", logoFile);
-    // }
-    // if (bannerFile != "") {
-    //   formData.append("bannerFile", bannerFile);
-    // }
-    if (logoFile != "") {
+    if (logoFile !== '') {
       const resizedImage = await resizeImage(logoFile, 1000, 1000);
-     
-      formData.append("logoFile", resizedImage.file);
+      formData.append('logoFile', resizedImage.file);
     }
-    
-    if (bannerFile != "") {
+
+    if (bannerFile !== '') {
       const resizedImage = await resizeImage(bannerFile, 1000, 1000);
-      formData.append("bannerFile", resizedImage.file);
+      formData.append('bannerFile', resizedImage.file);
     }
-  
 
     formData.append('groupData', JSON.stringify({
       'groupName': updateGroupData.groupName,
@@ -476,22 +471,24 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
       'lat': currentLat,
       'lng': currentLng,
     }));
-    // console.log('Form Data:');
-    // 	for (const [key, value] of formData.entries()) {
-    // 		console.log(key, value);
-    // 	}
+    try {
+      setIsLoading(true); // Set the loading state to true to show the progress indicator
 
-    const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }))
+      const updateStatus = await dispatch(updateGroupDataAction({ id: updateGroupData.id, body: formData, accessToken }));
 
-    if (updateStatus.meta.requestStatus === "fulfilled") {
-      toast.success("แก้ไขข้อมูลสำเร็จ")
-      router.push("/panel/admin/manage/group")
-    } else {
-      toast.error("แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง")
+      if (updateStatus.meta.requestStatus === 'fulfilled') {
+        toast.success('แก้ไขข้อมูลสำเร็จ');
+        router.push("/panel/admin/manage/group")
+      } else {
+        toast.error('แก้ไขข้อมูลไม่สำเร็จ โปรดลองอีกครั้ง');
+      }
+    } catch (error) {
+      toast.error('เกิดข้อผิดพลาดในการแก้ไขข้อมูล');
+    } finally {
+      setIsLoading(false); // Set the loading state to false after the async operations are completed
     }
-    setOpenDialog(false);
-    // }
   };
+
 
   const showForm = ({
     values,
@@ -1133,7 +1130,12 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
             >
               <Grid item xs={12} md={12} lg={12}>
                 <Box sx={{ padding: 4 }}>
-                  <Formik
+                 
+
+                  {isLoading ? (
+            <CircularProgress /> // Render the circular progress indicator while loading is true
+          ) : (
+            <Formik
                     initialValues={groupData!}
                     validationSchema={validationSchema}
                     onSubmit={async (values, { setSubmitting }) => {
@@ -1145,6 +1147,8 @@ const UserPanelEditGroup: React.FC<PageProps> = ({
                   >
                     {(props) => showForm(props)}
                   </Formik>
+          )}
+
                 </Box>
               </Grid>
             </Paper>
