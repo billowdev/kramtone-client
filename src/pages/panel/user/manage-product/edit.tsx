@@ -214,7 +214,7 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
 
   const handleConfirmEditProduct = async () => {
     setShowConfirmation(false);
-    let isLoading = true;
+   
     const values = updateValue
     try {
       const formData = new FormData();

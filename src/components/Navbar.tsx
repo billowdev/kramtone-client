@@ -58,10 +58,11 @@ export default function Navbar() {
   // authData
   const navItems = [
     { href: '/', text: 'หน้าหลัก' },
-    { href: '/product', text: 'สินค้า' },
+    { href: '/product', text: 'ข้อมูลสินค้า' },
     { href: '/group', text: 'ข้อมูลกลุ่มผู้ผลิตหรือร้านค้า' },
     { href: '/color-scheme', text: 'ข้อมูลโทนสีครามธรรมชาติ' },
-
+    { href: '/auth/signin', text: authData.role ? 'จัดการกลุ่มผู้ผลิตหรือร้านค้า' : "เข้าสู่ระบบสำหรับกลุ่มผู้ผลิตหรือร้านค้า" },
+   
   ];
 
   const NavList = ({ style }: any) => (

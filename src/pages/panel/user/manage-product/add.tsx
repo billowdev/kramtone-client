@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
-import { TextField, Button, Box } from '@mui/material';
+import { TextField, Button, Box, CircularProgress } from '@mui/material';
 import { Card, CardContent, CardActions, Typography } from '@mui/material';
 import Link from 'next/link';
 import Layout from '@/components/Layouts/Layout';
@@ -109,26 +109,27 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 
 	const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>, setFieldValue: any, values: Product) => {
 		if (event.target.files && event.target.files.length > 0) {
-		  const files = event.target.files;
-		  const urls: string[] = [];
-		  
-		  // Check if adding the new images will exceed the limit of 3
-		  if (previewImages.length + files.length > 3) {
-			// Display an error message or take any desired action
-			console.log('Cannot add more than 3 images');
-			return;
-		  }
-		  
-		  for (let i = 0; i < files.length; i++) {
-			urls.push(URL.createObjectURL(files[i]));
-		  }
-		  
-		  setPreviewImages((prevPreviewImages) => [...prevPreviewImages, ...urls]);
-		  const existingFiles = values.images || [];
-		  setImages((prevImages) => [...prevImages, ...files]); // add new image files to state
+			const files = event.target.files;
+			const urls: string[] = [];
+
+			// Check if adding the new images will exceed the limit of 3
+			if (previewImages.length + files.length > 3) {
+				// Display an error message or take any desired action
+				console.log('Cannot add more than 3 images');
+				return;
+			}
+
+			for (let i = 0; i < files.length; i++) {
+				urls.push(URL.createObjectURL(files[i]));
+			}
+
+			setPreviewImages((prevPreviewImages) => [...prevPreviewImages, ...urls]);
+			const existingFiles = values.images || [];
+			setImages((prevImages) => [...prevImages, ...files]); // add new image files to state
 		}
-	  };
-	  
+	};
+
+	const [isLoading, setIsLoading] = React.useState(false);
 
 
 	const colorSchemeModal = () => {
@@ -259,19 +260,20 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 	const [showConfirmation, setShowConfirmation] = useState(false);
 
 	const handleAddProduct = () => {
-		// show confirmation dialog before editing product
 		setShowConfirmation(true);
 	};
 
 	const handleConfirmAddProduct = async () => {
+		setShowConfirmation(false);
+
 		try {
-			if(!selectedCategory.id){
+			if (!selectedCategory.id) {
 				setShowConfirmation(false);
 				return toast.error(
 					"กรุณาเลือกประเภทสินค้า"
 				);
 			}
-			if(!selectedColorScheme.id){
+			if (!selectedColorScheme.id) {
 				setShowConfirmation(false);
 				return toast.error(
 					"กรุณาเลือกโทนสีสำหรับสินค้า"
@@ -292,32 +294,40 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 					name: values.name,
 					desc: values.desc,
 					price: values.price,
-					publish:publish,
-					recommend:recommend,
+					publish: publish,
+					recommend: recommend,
 					categoryId: selectedCategory && selectedCategory?.id,
 					groupId: gid,
 					colorSchemeId: selectedColorScheme && selectedColorScheme?.id
 				})
 			);
 
-			const createStatus = await dispatch(
-				createProductAction({ body: formData, accessToken })
-			);
 
-			if (createStatus.meta.requestStatus === "fulfilled") {
-				toast.success("เพิ่มข้อมูลประเภทสินค้าสำเร็จ");
-				router.push("/panel/user/manage-product");
-			} else {
-				toast.error(
-					"เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง"
+			try {
+				setIsLoading(true); // Set the loading state to true to show the progress indicator
+				const createStatus = await dispatch(
+					createProductAction({ body: formData, accessToken })
 				);
+				if (createStatus.meta.requestStatus === "fulfilled") {
+					toast.success("เพิ่มข้อมูลประเภทสินค้าสำเร็จ");
+					router.push("/panel/user/manage-product");
+				} else {
+					toast.error(
+						"เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ โปรดลองอีกครั้ง"
+					);
+				}
+			} catch (error) {
+				toast.error('เกิดข้อผิดพลาดในการแก้ไขข้อมูล');
+			} finally {
+				setIsLoading(false); // Set the loading state to false after the async operations are completed
 			}
+
 		} catch (error) {
 			toast.error("เพิ่มข้อมูลประเภทสินค้าไม่สำเร็จ");
 			console.error("An error occurred:", error);
 			// Handle the error here
 		}
-		setShowConfirmation(false);
+
 	};
 
 	const handleCancelAddProduct = () => {
@@ -409,96 +419,96 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 									เพิ่มข้อมูลสินค้า
 								</Typography> */}
 
-<Grid item md={6}>
-              <Box style={{ marginTop: 16 }}>
-                <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
-                ชื่อสินค้า
-                  <span style={{ color: "red" }}>*</span>
-                </FormLabel>
-          <Field
-		  style={{ marginTop: 8 }}
-		  fullWidth
-		  as={TextField}
-		  name="name"
-		  type="text"
-		  label="กรุณากรอก ชื่อสินค้า"
-		  value={values.name}
-		  onChange={handleChange}
-		  onBlur={handleBlur}
-		/>
-		</Box>
-</Grid>
+											<Grid item md={6}>
+												<Box style={{ marginTop: 16 }}>
+													<FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+														ชื่อสินค้า
+														<span style={{ color: "red" }}>*</span>
+													</FormLabel>
+													<Field
+														style={{ marginTop: 8 }}
+														fullWidth
+														as={TextField}
+														name="name"
+														type="text"
+														label="กรุณากรอก ชื่อสินค้า"
+														value={values.name}
+														onChange={handleChange}
+														onBlur={handleBlur}
+													/>
+												</Box>
+											</Grid>
 
-<Grid item md={6}>
-              <Box style={{ marginTop: 16 }}>
-                <FormLabel htmlFor="desc" style={{ fontWeight: "bold" }}>
-                รายละเอียดสินค้า
-                  <span style={{ color: "red" }}>*</span>
-                </FormLabel>
-		<Field
-		  style={{ marginTop: 8 }}
-		  fullWidth
-		  as={TextField}
-		  name="desc"
-		  type="string"
-		  label="กรุณากรอก รายละเอียดสินค้า"
-		  value={values.desc}
-		  onChange={handleChange}
-		  onBlur={handleBlur}
-		/>
-		</Box>
-</Grid>
-<Grid item md={6}>
-              <Box style={{ marginTop: 16 }}>
-                <FormLabel htmlFor="price" style={{ fontWeight: "bold" }}>
-                ราคาสินค้า
-                  <span style={{ color: "red" }}>*</span>
-                </FormLabel>
-		<Field
-		  style={{ marginTop: 8 }}
-		  fullWidth
-		  as={TextField}
-		  name="price"
-		  type="number"
-		  label="กรุณากรอก ราคาสินค้า"
-		  value={values?.price}
-		  onChange={handleChange}
-		  onBlur={handleBlur}
-		/>
-			</Box>
-</Grid>
+											<Grid item md={6}>
+												<Box style={{ marginTop: 16 }}>
+													<FormLabel htmlFor="desc" style={{ fontWeight: "bold" }}>
+														รายละเอียดสินค้า
+														<span style={{ color: "red" }}>*</span>
+													</FormLabel>
+													<Field
+														style={{ marginTop: 8 }}
+														fullWidth
+														as={TextField}
+														name="desc"
+														type="string"
+														label="กรุณากรอก รายละเอียดสินค้า"
+														value={values.desc}
+														onChange={handleChange}
+														onBlur={handleBlur}
+													/>
+												</Box>
+											</Grid>
+											<Grid item md={6}>
+												<Box style={{ marginTop: 16 }}>
+													<FormLabel htmlFor="price" style={{ fontWeight: "bold" }}>
+														ราคาสินค้า
+														<span style={{ color: "red" }}>*</span>
+													</FormLabel>
+													<Field
+														style={{ marginTop: 8 }}
+														fullWidth
+														as={TextField}
+														name="price"
+														type="number"
+														label="กรุณากรอก ราคาสินค้า"
+														value={values?.price}
+														onChange={handleChange}
+														onBlur={handleBlur}
+													/>
+												</Box>
+											</Grid>
 
-							<Grid container direction="row">
-								<Grid item>
-									<Field
-									component={CheckboxWithLabel}
-									name="publish"
-									id="publish-checkbox"
-									checked={publish}
-									onChange={() => {
-										setPublish(!publish);
-									}}
-									Label={{
-										label: 'แสดงสินค้า',
-									}}
-									/>
-								</Grid>
+											<Grid container direction="row">
+												<Grid item>
+													<Field
+														component={CheckboxWithLabel}
+														name="publish"
+														id="publish-checkbox"
+														checked={publish}
+														onChange={() => {
+															setPublish(!publish);
+														}}
+														Label={{
+															label: 'แสดงสินค้า',
+														}}
+													/>
+												</Grid>
 
-								<Grid item>
-									<Field
-									component={CheckboxWithLabel}
-									name="recommend"
-									id="recommend-checkbox"
-									checked={recommend}
-									onChange={() => {
-										setRecommend(!recommend);
-									}}
-									Label={{
-										label: 'สินค้าแนะนำ',
-									}}
-									/>
-								</Grid>
-							</Grid>
+												<Grid item>
+													<Field
+														component={CheckboxWithLabel}
+														name="recommend"
+														id="recommend-checkbox"
+														checked={recommend}
+														onChange={() => {
+															setRecommend(!recommend);
+														}}
+														Label={{
+															label: 'สินค้าแนะนำ',
+														}}
+													/>
+												</Grid>
+											</Grid>
 
 
 
@@ -536,61 +546,69 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 												</Button>
 											</div>
 
-											<div style={{ marginTop: 16 }}>
-  {previewImages.length < 3 && (
-    <>
-      <input
-        type="file"
-        onChange={(event) => handleImageChange(event, setFieldValue, values)}
-        name="images"
-        multiple
-        accept="image/*"
-        id="files"
-        style={{ display: 'none' }}
-      />
+											{isLoading ? (
+												<><CircularProgress /> <Typography> กำลังโหลดกรุณารอสักครู่ </Typography></>
+											) : (
+												<div style={{ marginTop: 16 }}>
+													{previewImages.length < 3 && (
+														<>
+															<input
+																type="file"
+																onChange={(event) => handleImageChange(event, setFieldValue, values)}
+																name="images"
+																multiple
+																accept="image/*"
+																id="files"
+																style={{ display: 'none' }}
+															/>
 
-      <label htmlFor="files" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-        <CloudUpload style={{ marginRight: 10 }} />
-        <span style={{ color: '#00B0CD' }}>เพิ่มรูปภาพ</span>
-      </label>
-    </>
-  )}
+															<label htmlFor="files" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+																<CloudUpload style={{ marginRight: 10 }} />
+																<span style={{ color: '#00B0CD' }}>เพิ่มรูปภาพ</span>
+															</label>
+														</>
+													)}
 
-  {previewImages.map((url, index) => (
-    <div key={index} style={{ position: 'relative', display: 'inline-block' }}>
-      <Image
-        src={url}
-        alt="preview"
-        width={150}
-        height={150}
-        objectFit="cover"
-        className="preview-image"
-      />
-      <button
-        onClick={() => {
-          const newImages = [...images];
-          newImages.splice(index, 1);
-          setImages(newImages);
 
-          const newPreviews = [...previewImages];
-          newPreviews.splice(index, 1);
-          setPreviewImages(newPreviews);
-        }}
-        style={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          backgroundColor: 'transparent',
-          border: 'none',
-          color: 'red',
-          cursor: 'pointer',
-        }}
-      >
-        <Delete style={{ color: 'red' }} />
-      </button>
-    </div>
-  ))}
-</div>
+
+
+													{previewImages.map((url, index) => (
+														<div key={index} style={{ position: 'relative', display: 'inline-block' }}>
+															<Image
+																src={url}
+																alt="preview"
+																width={150}
+																height={150}
+																objectFit="cover"
+																className="preview-image"
+															/>
+															<button
+																onClick={() => {
+																	const newImages = [...images];
+																	newImages.splice(index, 1);
+																	setImages(newImages);
+
+																	const newPreviews = [...previewImages];
+																	newPreviews.splice(index, 1);
+																	setPreviewImages(newPreviews);
+																}}
+																style={{
+																	position: 'absolute',
+																	top: 0,
+																	right: 0,
+																	backgroundColor: 'transparent',
+																	border: 'none',
+																	color: 'red',
+																	cursor: 'pointer',
+																}}
+															>
+																<Delete style={{ color: 'red' }} />
+															</button>
+														</div>
+													))}
+												</div>
+											)}
+
 
 
 
