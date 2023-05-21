@@ -54,11 +54,12 @@ import * as groupDataService from "@/services/group-data.service";
 import * as authService from "@/services/auth.service";
 import { GroupDataPayload } from "@/models/group-data.model";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
+import LoadingProgress from '@/components/LoadingProgress';
 
 import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 
 type Props = {
-  // groupDataProp?: GroupDataPayload;
+  // groupDataSlice?.groupData?: GroupDataPayload;
 };
 
 const MapContainer = dynamic(
@@ -85,13 +86,12 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
   ssr: false, // disable server-side rendering
 });
 
-function UserPanelManageGroup({  }: Props) {
+function UserPanelManageGroup({   }: Props) {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const dispatch: any = useAppDispatch();
-  const { groupData } = useSelector(groupDataSelector);
+  const groupDataSlice = useSelector(groupDataSelector);
   const userData = useSelector(authSelector);
-  const isLoading = userData === undefined;
 
   React.useEffect(() => {
     dispatch(fetchSession());
@@ -106,6 +106,7 @@ function UserPanelManageGroup({  }: Props) {
     //  if(userData){
     //    fethData()
     //  }
+    console.log(userData)
     if (userData) {
       dispatch(getOneGroupDataAction(userData.gid));
     }
@@ -113,29 +114,29 @@ function UserPanelManageGroup({  }: Props) {
 
   const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
   const position: LatLngExpression = [
-    parseFloat(groupData?.lat!),
-    parseFloat(groupData?.lng!),
+    parseFloat(groupDataSlice?.groupData?.lat!),
+    parseFloat(groupDataSlice?.groupData?.lng!),
   ]; // Centered on Sakon Nakhon Province
   const zoom: number = 12;
 
   const initialValues: GroupDataPayload = {
-    groupName: groupData?.groupName,
-    groupType: groupData?.groupType,
-    agency: groupData?.agency,
-    logo: groupData?.logo,
-    banner: groupData?.banner,
-    phone: groupData?.phone,
-    email: groupData?.email,
-    hno: groupData?.hno,
-    village: groupData?.village,
-    lane: groupData?.lane,
-    road: groupData?.road,
-    subdistrict: groupData?.subdistrict,
-    district: groupData?.district,
-    province: groupData?.province,
-    zipCode: groupData?.zipCode,
-    lat: groupData?.lat,
-    lng: groupData?.lng,
+    groupName: groupDataSlice?.groupData?.groupName,
+    groupType: groupDataSlice?.groupData?.groupType,
+    agency: groupDataSlice?.groupData?.agency,
+    logo: groupDataSlice?.groupData?.logo,
+    banner: groupDataSlice?.groupData?.banner,
+    phone: groupDataSlice?.groupData?.phone,
+    email: groupDataSlice?.groupData?.email,
+    hno: groupDataSlice?.groupData?.hno,
+    village: groupDataSlice?.groupData?.village,
+    lane: groupDataSlice?.groupData?.lane,
+    road: groupDataSlice?.groupData?.road,
+    subdistrict: groupDataSlice?.groupData?.subdistrict,
+    district: groupDataSlice?.groupData?.district,
+    province: groupDataSlice?.groupData?.province,
+    zipCode: groupDataSlice?.groupData?.zipCode,
+    lat: groupDataSlice?.groupData?.lat,
+    lng: groupDataSlice?.groupData?.lng,
   };
 
   const typeographyHeaderStyle = {
@@ -167,7 +168,7 @@ function UserPanelManageGroup({  }: Props) {
             <Field
               style={{ marginTop: 16 }}
               fullWidth
-              value={groupData?.groupName}
+              value={groupDataSlice?.groupData?.groupName}
               component={TextField}
               name="groupName"
               type="text"
@@ -180,7 +181,7 @@ function UserPanelManageGroup({  }: Props) {
               <Field
                 style={{ marginTop: 16 }}
                 fullWidth
-                value={groupData?.groupName}
+                value={groupDataSlice?.groupData?.groupName}
                 component={TextField}
                 name="groupName"
                 type="text"
@@ -215,7 +216,7 @@ function UserPanelManageGroup({  }: Props) {
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
 
   const showDialog = () => {
-    if (groupData === null) {
+    if (groupDataSlice?.groupData === null) {
       return;
     }
 
@@ -348,7 +349,7 @@ function UserPanelManageGroup({  }: Props) {
             >
               <Image
                 alt="product image"
-                src={groupDataImageURL(groupData?.banner)}
+                src={groupDataImageURL(groupDataSlice?.groupData?.banner)}
                 width={1120}
                 height={160}
               />
@@ -371,7 +372,7 @@ function UserPanelManageGroup({  }: Props) {
                 <Image
                   style={{ objectFit: "cover" }}
                   alt="product image"
-                  src={groupDataImageURL(groupData?.logo)}
+                  src={groupDataImageURL(groupDataSlice?.groupData?.logo)}
                   width={250}
                   height={250}
                 />
@@ -384,7 +385,7 @@ function UserPanelManageGroup({  }: Props) {
                       ชื่อกลุ่ม / ร้านค้า
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.groupName}
+                      {groupDataSlice?.groupData?.groupName}
                     </Typography>
                   </Box>
                   <Box sx={boxStyle}>
@@ -392,7 +393,7 @@ function UserPanelManageGroup({  }: Props) {
                       ประเภทกลุ่ม
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.groupType === "shop"
+                      {groupDataSlice?.groupData?.groupType === "shop"
                         ? "ร้านค้า"
                         : "กลุ่มผู้ผลิต"}
                     </Typography>
@@ -403,7 +404,7 @@ function UserPanelManageGroup({  }: Props) {
                       ชื่อประธาน / เจ้าของร้าน
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.agency}
+                      {groupDataSlice?.groupData?.agency}
                     </Typography>
                   </Box>
 
@@ -412,14 +413,14 @@ function UserPanelManageGroup({  }: Props) {
                       เบอร์โทร
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.phone}
+                      {groupDataSlice?.groupData?.phone}
                     </Typography>
                   </Box>
 
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>อีเมล</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.email}
+                      {groupDataSlice?.groupData?.email}
                     </Typography>
                   </Box>
                 </React.Fragment>
@@ -441,10 +442,10 @@ function UserPanelManageGroup({  }: Props) {
                 
  <Box>
   <Typography style={typeographyHeaderStyle}>โทนสีที่มีในร้าน</Typography>
-  {groupData?.products && (
+  {groupDataSlice?.groupData?.products && (
     <>
-      {[...new Set(groupData?.products?.map((product: any) => product.colorScheme.id) ?? [])].map((colorSchemeId: string, index: number) => {
-        const product = groupData?.products?.find((product: any) => product.colorScheme.id === colorSchemeId);
+      {[...new Set(groupDataSlice?.groupData?.products?.map((product: any) => product.colorScheme.id) ?? [])].map((colorSchemeId: string, index: number) => {
+        const product = groupDataSlice?.groupData?.products?.find((product: any) => product.colorScheme.id === colorSchemeId);
         return (
           <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
             <div
@@ -492,7 +493,7 @@ function UserPanelManageGroup({  }: Props) {
                       บ้านเลขที่/หมู่
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.hno}
+                      {groupDataSlice?.groupData?.hno}
                     </Typography>
                   </Box>
                 </Grid>
@@ -501,7 +502,7 @@ function UserPanelManageGroup({  }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>ถนน</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.road}
+                      {groupDataSlice?.groupData?.road}
                     </Typography>
                   </Box>
                 </Grid>
@@ -510,7 +511,7 @@ function UserPanelManageGroup({  }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>ซอย</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.lane}
+                      {groupDataSlice?.groupData?.lane}
                     </Typography>
                   </Box>
                 </Grid>
@@ -521,7 +522,7 @@ function UserPanelManageGroup({  }: Props) {
                       หมู่บ้าน
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.village}
+                      {groupDataSlice?.groupData?.village}
                     </Typography>
                   </Box>
                 </Grid>
@@ -530,7 +531,7 @@ function UserPanelManageGroup({  }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>ตำบล</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.subdistrict}
+                      {groupDataSlice?.groupData?.subdistrict}
                     </Typography>
                   </Box>
                 </Grid>
@@ -538,7 +539,7 @@ function UserPanelManageGroup({  }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>อำเภอ</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.district}
+                      {groupDataSlice?.groupData?.district}
                     </Typography>
                   </Box>
                 </Grid>
@@ -546,7 +547,7 @@ function UserPanelManageGroup({  }: Props) {
                   <Box sx={boxStyle}>
                     <Typography sx={typeographyHeaderStyle}>จังหวัด</Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.province}
+                      {groupDataSlice?.groupData?.province}
                     </Typography>
                   </Box>
                 </Grid>
@@ -557,7 +558,7 @@ function UserPanelManageGroup({  }: Props) {
                       รหัสไปรษณีย์
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.zipCode}
+                      {groupDataSlice?.groupData?.zipCode}
                     </Typography>
                   </Box>
                 </Grid>
@@ -568,7 +569,7 @@ function UserPanelManageGroup({  }: Props) {
                       ละติจูด
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.lat}
+                      {groupDataSlice?.groupData?.lat}
                     </Typography>
                   </Box>
                 </Grid>
@@ -579,7 +580,7 @@ function UserPanelManageGroup({  }: Props) {
                       ลองจิจูด
                     </Typography>
                     <Typography sx={typeographyValueStyle}>
-                      {groupData?.lng}
+                      {groupDataSlice?.groupData?.lng}
                     </Typography>
                   </Box>
                 </Grid>
@@ -595,7 +596,7 @@ function UserPanelManageGroup({  }: Props) {
             maxWidth="lg"
             sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}
           >
-            <Link href={"/panel/user/manage-group/edit?gid=" + groupData.id}>
+           
               <Button
                 color="primary"
                 variant="contained"
@@ -613,10 +614,10 @@ function UserPanelManageGroup({  }: Props) {
               >
                 แก้ไขข้อมูล
               </Button>
-            </Link>
+     
           </Container>
 
-          {groupData?.lat && groupData?.lng ? (
+          {groupDataSlice?.groupData?.lat && groupDataSlice?.groupData?.lng ? (
   <Grid item xs={12} md={12} lg={12}>
     <Paper
       sx={{
@@ -658,9 +659,6 @@ function UserPanelManageGroup({  }: Props) {
     </Paper>
   </Grid>
 )}
-
-
-
         </Grid>
       </Container>
 
@@ -677,11 +675,11 @@ export default withAuth(UserPanelManageGroup);
 //   try {
 //     const accessToken = context.req.cookies["access_token"];
 //     const { gid } = await authService.getSessionServerSide(accessToken!);
-//     const groupDataProp = await groupDataService.getOneGroupData(gid);
+//     const groupDataProp = await groupDataSlice?.groupDataService.getOneGroupData(gid);
 
 //     return {
 //       props: {
-//         groupDataProp,
+//        groupDataProp,
 //       },
 //     };
 //   } catch (error) {
