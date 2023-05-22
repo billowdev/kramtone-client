@@ -42,9 +42,17 @@ async function signin(req: NextApiRequest, res: NextApiResponse<any>) {
 		// 	baseURL: process.env.NEXT_PUBLIC_BASE_URL_API
 		// });
 
-		// const decryptData = decryptAES<ISignIn>(response.payload)
-		// const { token } = decryptData;
-		const { token } = response.data.payload
+		const decryptData = decryptAES<ISignIn>(response.data.payload)
+		const { token } = decryptData;
+		// console.log("======= ตัวอย่างข้อมูลที่ถูกเข้ารหัส ==========")
+		// console.log(response.data.payload)
+		// console.log("======= ============ ==========")
+		
+		// console.log("======= หลังถอดรหัส ==========")
+		// console.log(decryptData)
+		// console.log("======= ============ ==========")
+
+		// const { token } = response.data.payload
 
 		// set the accessToken cookie
 
