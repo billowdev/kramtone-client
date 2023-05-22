@@ -168,7 +168,7 @@ function Layout({ children }: LayoutProps) {
   const userData = useSelector(authSelector);
   const groupData = useSelector(groupDataSelector);
   const isLoading = groupData?.groupData?.groupName === undefined;
-  
+
   const dispatch = useAppDispatch();
 
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
@@ -206,58 +206,66 @@ function Layout({ children }: LayoutProps) {
 
   return (
     // <ThemeProvider theme={theme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBarComponent open={open} onDrawerOpen={() => setOpen(!open)} />
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              px: [1],
-            }}
-          >
-        <IconButton size="small">
-           {userData.activated ? "ระบบจัดการข้อมูล" : "รอการยืนยัน"} 
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <AppBarComponent open={open} onDrawerOpen={() => setOpen(!open)} />
+      <Drawer variant="permanent" open={open}>
+        <Toolbar
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            px: [1],
+          }}
+        >
+          {/* <IconButton size="small">
+           ระบบจัดการข้อมูล
         </IconButton>
 
             <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
-            </IconButton>
-          </Toolbar>
-          <Divider />
-          <List component="nav">
-            
-              {userData && userData.role === "member" && (
-               <React.Fragment>
-                <CustomMenuListItem
+            </IconButton> */}
+          <button style={{ fontSize: "small" }}>
+            ระบบจัดการข้อมูล
+          </button>
+
+          <button onClick={toggleDrawer}>
+            <ChevronLeftIcon />
+          </button>
+
+        </Toolbar>
+        <Divider />
+        <List component="nav">
+
+          {userData && userData.role === "member" && (
+            <React.Fragment>
+              <CustomMenuListItem
                 href="/panel/user"
                 useStartWithPath={false}
                 icon={WidgetsIcon}
                 text="เมนูหลัก"
                 open={open}
-                />
+              />
 
-                <CustomMenuListItem   
+              <CustomMenuListItem
                 href="/panel/user/manage-group"
                 startWithPath="/panel/user/manage-group"
                 useStartWithPath={true}
-                  icon={GroupsIcon}
-                  text="จัดการข้อมูลกลุ่ม"
-                  open={open}
-                />
-                  {userData && userData.activated  && (
-                    <React.Fragment>
-                      <CustomMenuListItem   
-                      href="/panel/user/manage-product"
-                      useStartWithPath={true}
-                      startWithPath="/panel/user/manage-product"
-                        icon={ShoppingBagIcon}
-                        text="จัดการข้อมูลสินค้า"
-                        open={open}
-                      />
-                        {/* <CustomMenuListItem   
+                icon={GroupsIcon}
+                text="จัดการข้อมูลกลุ่ม"
+                open={open}
+              />
+              {userData && userData.activated && (
+                <React.Fragment>
+                  <CustomMenuListItem
+                    href="/panel/user/manage-product"
+                    useStartWithPath={true}
+                    startWithPath="/panel/user/manage-product"
+                    icon={ShoppingBagIcon}
+                    text="จัดการข้อมูลสินค้า"
+                    open={open}
+                  />
+                  {/* <CustomMenuListItem   
                         href="/panel/user/manage-category"
                         useStartWithPath={true}
                         startWithPath="/panel/user/manage-category"
@@ -273,145 +281,145 @@ function Layout({ children }: LayoutProps) {
                               text="จัดการโทนสีที่มีในร้าน"
                               open={open}
                             /> */}
-                    </React.Fragment>
-                  )}
-                        
-                  
-         
-         
-               </React.Fragment>
-
-                )}
-
-            <Divider sx={{ my: 1 }} />
+                </React.Fragment>
+              )}
 
 
-            
-            {userData && userData.role === "admin" && (
-                     
-                     <React.Fragment>
-
-                  <CustomMenuListItem
-                  href="/panel/admin"
-                  useStartWithPath={false}
-                  icon={WidgetsIcon}
-                  text="เมนูหลัก"
-                  open={open}
-                  />
-
-                        <CustomMenuListItem   
-                            href="/panel/admin/manage/user"
-                            icon={AccountBoxIcon}
-                            text="จัดการบัญชีผู้ใช้"
-                            open={open}
-                            useStartWithPath={true}
-                              startWithPath="/panel/admin/manage/user"
-                            />
-                    <CustomMenuListItem   
-                            href="/panel/admin/manage/group"
-                              icon={GroupsIcon}
-                              text="จัดการกลุ่ม/ร้านค้า"
-                              open={open}
-                              useStartWithPath={true}
-                              startWithPath="/panel/admin/manage/group"
-                            />
-                           <CustomMenuListItem   
-                        href="/panel/admin/manage/category"
-                        useStartWithPath={true}
-                        startWithPath="/panel/admin/manage/category"
-                        icon={CheckroomIcon}
-                        text="จัดการประเภทสินค้า"
-                        open={open}
-                      />
-                      <CustomMenuListItem   
-                            href="/panel/admin/manage/color-scheme"
-                            useStartWithPath={true}
-                            startWithPath="/panel/admin/manage/color-scheme"
-                              icon={ColorLensIcon}
-                              text="จัดการโทนสี"
-                              open={open}
-                            />
-
-                     </React.Fragment>
-                     )}
-     
 
 
-            <CustomMenuListItem
-                        href="/panel/profile"
-                        icon={SettingsIcon}
-                        useStartWithPath={false}
-                        text="ตั้งค่าบัญชีผู้ใช้"
-                        open={open}
-                      />
+            </React.Fragment>
 
-            <CustomMenuListItem
-              href="/aboutus"
-              icon={InfoIcon}
-              useStartWithPath={false}
-              text="เกี่ยวกับผู้พัฒนาระบบ"
-              open={open}
-            />
+          )}
 
-          <CustomMenuListItem   
-          href="/"
+          <Divider sx={{ my: 1 }} />
+
+
+
+          {userData && userData.role === "admin" && (
+
+            <React.Fragment>
+
+              <CustomMenuListItem
+                href="/panel/admin"
+                useStartWithPath={false}
+                icon={WidgetsIcon}
+                text="เมนูหลัก"
+                open={open}
+              />
+
+              <CustomMenuListItem
+                href="/panel/admin/manage/user"
+                icon={AccountBoxIcon}
+                text="จัดการบัญชีผู้ใช้"
+                open={open}
+                useStartWithPath={true}
+                startWithPath="/panel/admin/manage/user"
+              />
+              <CustomMenuListItem
+                href="/panel/admin/manage/group"
+                icon={GroupsIcon}
+                text="จัดการกลุ่ม/ร้านค้า"
+                open={open}
+                useStartWithPath={true}
+                startWithPath="/panel/admin/manage/group"
+              />
+              <CustomMenuListItem
+                href="/panel/admin/manage/category"
+                useStartWithPath={true}
+                startWithPath="/panel/admin/manage/category"
+                icon={CheckroomIcon}
+                text="จัดการประเภทสินค้า"
+                open={open}
+              />
+              <CustomMenuListItem
+                href="/panel/admin/manage/color-scheme"
+                useStartWithPath={true}
+                startWithPath="/panel/admin/manage/color-scheme"
+                icon={ColorLensIcon}
+                text="จัดการโทนสี"
+                open={open}
+              />
+
+            </React.Fragment>
+          )}
+
+
+
+          <CustomMenuListItem
+            href="/panel/profile"
+            icon={SettingsIcon}
+            useStartWithPath={false}
+            text="ตั้งค่าบัญชีผู้ใช้"
+            open={open}
+          />
+
+          <CustomMenuListItem
+            href="/aboutus"
+            icon={InfoIcon}
+            useStartWithPath={false}
+            text="เกี่ยวกับผู้พัฒนาระบบ"
+            open={open}
+          />
+
+          <CustomMenuListItem
+            href="/"
             icon={HomeIcon}
             text="กลับสู่หน้าหลัก"
           />
-      
 
-            <Box
-              boxShadow={2}
-              style={{ borderRadius: "50px", margin: "20px 10px" }}
-              onClick={() => {
-                setOpenDialog(true);
+
+          <Box
+            boxShadow={2}
+            style={{ borderRadius: "50px", margin: "20px 10px" }}
+            onClick={() => {
+              setOpenDialog(true);
+            }}
+          >
+            <ListItem
+              button
+              classes={{ selected: "Mui-selected" }}
+              style={{
+                backgroundColor: "#FFF",
+                borderRadius: "50px",
               }}
             >
-              <ListItem
-                button
-                classes={{ selected: "Mui-selected" }}
-                style={{
-                  backgroundColor: "#FFF",
-                  borderRadius: "50px",
-                }}
-              >
-                <ListItemIcon>
-                  <LogoutIcon
-                    style={{ color: theme.palette.grey[900] }}
-                  />
-                </ListItemIcon>
-                <ListItemText
-                  primary={"ออกจากระบบ"}
+              <ListItemIcon>
+                <LogoutIcon
                   style={{ color: theme.palette.grey[900] }}
                 />
-              </ListItem>
-            </Box>
-            
-          </List>
+              </ListItemIcon>
+              <ListItemText
+                primary={"ออกจากระบบ"}
+                style={{ color: theme.palette.grey[900] }}
+              />
+            </ListItem>
+          </Box>
 
-        </Drawer>
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[100],
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
-          }}
-        >
-          <Toolbar />
-          {loading && 
-            <div className={classes.container}>
+        </List>
+
+      </Drawer>
+      <Box
+        component="main"
+        sx={{
+          backgroundColor: (theme) =>
+            theme.palette.mode === "light"
+              ? theme.palette.grey[100]
+              : theme.palette.grey[100],
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+        }}
+      >
+        <Toolbar />
+        {loading &&
+          <div className={classes.container}>
             <CircularProgressWithLabel value={progress} />
-    </div>}
-          {children}
-          <Copyright sx={{ pt: 4 }} />
-        </Box>
-        {showSignOutDialog()}
+          </div>}
+        {children}
+        <Copyright sx={{ pt: 4 }} />
       </Box>
+      {showSignOutDialog()}
+    </Box>
     // </ThemeProvider>
   );
 }
