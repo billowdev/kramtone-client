@@ -151,7 +151,8 @@ function SignUpPage({ }: Props) {
             padding: isSmallDevice ? 0 : 16,
             marginBottom: 64,
             marginTop: 32,
-            height: isSmallDevice ? "" : "100vh",
+            // height: isSmallDevice ? "" : "100vh",
+            minHeight: "768",
             width: "auto",
             overflow: 'inherit'
           }}>

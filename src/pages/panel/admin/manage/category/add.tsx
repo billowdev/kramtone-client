@@ -72,7 +72,7 @@ const AdminPanelAddCategory = ({ accessToken }: Props) => {
       <Form>
         <Card>
           <CardContent sx={{ padding: 4 }}>
-       
+
             <Grid item md={6}>
               <Box style={{ marginTop: 0 }}>
                 <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
@@ -161,17 +161,17 @@ const AdminPanelAddCategory = ({ accessToken }: Props) => {
 
   const handleEditConfirm = async () => {
     if (addValue) {
-      let data = new FormData();
+      // let data = new FormData();
 
       // if (imageFile!="") {
       //   data.append("image", imageFile);
       // }
       // data.append("id", String(addValue.id));
-      data.append("name", String(addValue.name));
-      data.append("desc", String(addValue.desc));
+      // data.append("name", String(addValue.name));
+      // data.append("desc", String(addValue.desc));
 
       const createStatus = await dispatch(
-        createCategoryAction({ body: data, accessToken })
+        createCategoryAction({ body: { name: addValue.name, desc: addValue.desc }, accessToken })
       );
 
       if (createStatus.meta.requestStatus === "fulfilled") {

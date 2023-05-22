@@ -183,7 +183,7 @@ const AdminPanelEditUser = ({}: Props) => {
               name="password"
               type="text"
               label="รหัสผ่าน"
-              maxLength={120}
+              maxLength={64}
               required
             />
          </Box>
@@ -247,7 +247,8 @@ const AdminPanelEditUser = ({}: Props) => {
                 <span style={{ color: "red" }}>*</span>
               </FormLabel>
             <Field
-            
+                  maxLength={120}
+
               fullWidth
               component={TextField}
               name="email"
@@ -321,6 +322,7 @@ const AdminPanelEditUser = ({}: Props) => {
       fullWidth
       component={TextField}
       name="name"
+      maxLength={80}
       type="text"
       label="ชื่อ"
     />
@@ -334,6 +336,7 @@ const AdminPanelEditUser = ({}: Props) => {
       fullWidth
       component={TextField}
       name="surname"
+      maxLength={80}
       type="text"
       label="นามสกุล"
     />
@@ -352,6 +355,7 @@ const AdminPanelEditUser = ({}: Props) => {
         fullWidth
         component={TextField}
         name="phone"
+        maxLength={10}
         type="text"
         label="เบอร์โทร"
         required

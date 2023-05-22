@@ -84,13 +84,13 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
 
   const handleConfirmEdit = async () => {
     // Validate password field
-    if (password) {
-      const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
-      if (!passwordRegex.test(password)) {
-        toast.error("รหัสผ่านต้องประกอบด้วยตัวอักษรและตัวเลข อย่างน้อย 8 ตัว");
-        return;
-      }
-    }
+    // if (password) {
+    //   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    //   if (!passwordRegex.test(password)) {
+    //     toast.error("รหัสผ่านต้องประกอบด้วยตัวอักษรและตัวเลข อย่างน้อย 8 ตัว");
+    //     return;
+    //   }
+    // }
 
     const updateData = { ...updateValue, role: userRole, activated, password };
     const updateStatus = await dispatch(updateUser(updateData));
@@ -138,6 +138,7 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
 
               <Field
                 style={{ marginTop: 16 }}
+                maxLength="64"
                 fullWidth
                 component={TextField}
                 name="username"
@@ -155,6 +156,7 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
               </FormLabel>
               <Field
                 style={{ marginTop: 16 }}
+                maxLength="120"
                 fullWidth
                 component={TextField}
                 name="email"
@@ -266,6 +268,7 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
                 style={{ marginTop: 16 }}
                 fullWidth
                 component={TextField}
+                maxLength="10"
                 name="phone"
                 type="text"
                 label="กรุณากรอก เบอร์โทร"
