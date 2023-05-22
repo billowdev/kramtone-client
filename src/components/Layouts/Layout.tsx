@@ -256,7 +256,6 @@ function Layout({ children }: LayoutProps) {
                         icon={ShoppingBagIcon}
                         text="จัดการข้อมูลสินค้า"
                         open={open}
-
                       />
                         {/* <CustomMenuListItem   
                         href="/panel/user/manage-category"

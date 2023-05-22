@@ -149,7 +149,7 @@ export default function Navbar() {
                   </Grid>
                 ))}
 
-                {authData.role ? <> 
+                {/* {authData.role ? <> 
                 <Grid item>
                     <Link href={'/auth/signin'} passHref style={navLinkStyle}>
                         <Typography align="center">จัดการกลุ่มผู้ผลิตหรือร้านค้า</Typography>
@@ -162,7 +162,7 @@ export default function Navbar() {
                     </Link>
                   </Grid>
                 </>}
-                  
+                   */}
                   
 
               </Grid>
