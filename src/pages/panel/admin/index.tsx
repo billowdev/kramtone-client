@@ -121,13 +121,13 @@ function AdminPanel({ }: Props) {
                 p: 2,
                 display: "flex",
                 flexDirection: "column",
-                height: "100vh",
+                minHeight: "500px",
               }}
             >
 
               <Grid container spacing={2} columns={16}>
 
-                <Grid item xs={8}>
+                <Grid item xs={12} sm={12} md={6}>
                   <CustomMenuListItem
                     href="/panel/admin/manage/user"
                     icon={AccountBoxIcon}
@@ -139,7 +139,7 @@ function AdminPanel({ }: Props) {
                     text="จัดการกลุ่ม/ร้านค้า"
                   />
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={12} sm={12} md={6}>
                   <CustomMenuListItem
                     href="/panel/admin/manage/category"
                     icon={CheckroomIcon}
@@ -158,7 +158,7 @@ function AdminPanel({ }: Props) {
               <Divider sx={{ my: 1 }} />
 
               <Grid container spacing={2} columns={16}>
-                <Grid item xs={8}>
+                <Grid item xs={12} sm={12} md={6}>
 
                   <CustomMenuListItem
                     href="/manage-profile"
@@ -167,7 +167,7 @@ function AdminPanel({ }: Props) {
                   />
 
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={12} sm={12} md={6}>
                   <CustomMenuListItem
                     href="/aboutus"
                     icon={InfoIcon}

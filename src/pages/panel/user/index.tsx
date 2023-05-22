@@ -119,7 +119,7 @@ function GroupShopPanel({ }: Props) {
                 padding: 2,
                 display: "flex",
                 flexDirection: "column",
-                height: "100%",
+                minHeight: "500px",
               }}
             >
               {/* <Typography variant="h5" gutterBottom>
