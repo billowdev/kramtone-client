@@ -65,7 +65,7 @@ const initialValues: FormValues = {
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("กรุณากรอกชื่อ"),
   surname: Yup.string().required("กรุณากรอกนามสกุล"),
-  phone: Yup.string().required("กรุณากรอกเบอร์โทร"),
+  phone: Yup.string().required("กรุณากรอกเบอร์โทร").matches(/^\d+$/, 'เบอร์โทรศัพท์ต้องประกอบด้วยตัวเลขเท่านั้น'),
   username: Yup.string().required("กรุณากรอกชื่อผู้ใช้"),
   password: Yup.string().required("กรุณากรอกรหัสผ่าน"),
   passwordConfirmation: Yup.string()
@@ -98,6 +98,7 @@ function SignUpPage({ }: Props) {
     const response = await dispatch(signUp(values));
 
     if (response.meta.requestStatus === "rejected") {
+      console.log(response)
       toast.error("สมัครสมาชิกไม่สำเร็จ");
     } else {
       toast.success("สมัครสมาชิกสำเร็จ");
@@ -213,7 +214,8 @@ function SignUpPage({ }: Props) {
                               placeholder="กรุณากรอก ชื่อ"
                               fullWidth
                               required
-                              maxLength="80"
+                              // maxLength="80"
+                              inputProps={{ maxLength: 80 }}
                               helperText={<ErrorMessage name="name" />}
                             />
                           </Box>
@@ -258,7 +260,8 @@ function SignUpPage({ }: Props) {
                               placeholder="กรุณากรอกเบอร์โทร"
                               fullWidth
                               required
-                              helperText={<ErrorMessage name="phone" />}
+                              inputProps={{ maxLength: 10 }}
+                              helperText={<ErrorMessage style={{ color: 'red' }} name="phone" />}
                             />
                           </Box>
 
@@ -275,7 +278,7 @@ function SignUpPage({ }: Props) {
                               as={TextField}
                               label="กรุณากรอก อีเมล"
                               name="email"
-                              maxLength="120"
+                              inputProps={{ maxLength: 120 }}
                               placeholder="กรอก อีเมล"
                               fullWidth
                               helperText={<ErrorMessage name="email" />}
@@ -294,7 +297,7 @@ function SignUpPage({ }: Props) {
                             <Field
                               style={{ marginTop: 8 }}
                               as={TextField}
-                              maxLength={64}
+                              inputProps={{ maxLength: 64 }}
                               label="กรุณากรอก ชื่อผู้ใช้"
                               name="username"
                               placeholder="กรอก ชื่อผู้ใช้"
@@ -315,7 +318,7 @@ function SignUpPage({ }: Props) {
                             <Field
                               style={{ marginTop: 8 }}
                               as={TextField}
-                              maxLength="64"
+                              inputProps={{ maxLength: 64 }}
                               label="กรุณากรอก รหัสผ่าน"
                               name="password"
                               placeholder="กรอก รหัสผ่าน"
@@ -355,7 +358,8 @@ function SignUpPage({ }: Props) {
                             <Field
                               style={{ marginTop: 8 }}
                               as={TextField}
-                              maxLength={64}
+                              // maxLength={64}
+                              inputProps={{ maxLength: 64 }}
                               label="ยืนยันรหัสผ่าน"
                               name="passwordConfirmation"
                               placeholder="กรอกรหัสผ่านอีกครั้ง"

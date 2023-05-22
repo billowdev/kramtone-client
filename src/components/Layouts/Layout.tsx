@@ -218,20 +218,20 @@ function Layout({ children }: LayoutProps) {
             px: [1],
           }}
         >
-          {/* <IconButton size="small">
+          <IconButton size="small">
            ระบบจัดการข้อมูล
         </IconButton>
 
             <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
-            </IconButton> */}
-          <button style={{ fontSize: "small" }}>
+            </IconButton>
+          {/* <button style={{ fontSize: "small" }}>
             ระบบจัดการข้อมูล
           </button>
 
           <button onClick={toggleDrawer}>
             <ChevronLeftIcon />
-          </button>
+          </button> */}
 
         </Toolbar>
         <Divider />
