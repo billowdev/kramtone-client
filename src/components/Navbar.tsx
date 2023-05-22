@@ -120,7 +120,6 @@ export default function Navbar() {
   </IconButton>
 )}
         
-  
             <Drawer
               anchor="left"
               open={isDrawerOpen}

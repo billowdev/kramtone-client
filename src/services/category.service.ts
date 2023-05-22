@@ -39,7 +39,7 @@ export const createCategory = async ( data: FormData, accessToken: string): Prom
 };
 
 
-export const updateCategory = async (id: string, data: FormData, accessToken: string): Promise<void> => {
+export const updateCategory = async (id: string, data: any, accessToken: string): Promise<void> => {
 	const {data:response} = await axios.patch(`/categories/${id}`, data, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`

@@ -51,7 +51,7 @@ const AdminPanelEditCategory = ({ category, accessToken }: Props) => {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 
-  
+
   const [updateValue, setUpdateValue] = React.useState<CategoryPayload>(
     category!
   );
@@ -188,17 +188,17 @@ const AdminPanelEditCategory = ({ category, accessToken }: Props) => {
 
   const handleEditConfirm = async () => {
     if (category) {
-      let data = new FormData();
+      // let data = new FormData();
 
       // if (imageFile!="") {
       //   data.append("image", imageFile);
       // }
       // data.append("id", String(updateValue.id));
-      data.append("name", String(updateValue.name));
-      data.append("desc", String(updateValue.desc));
-
+      // data.append("name", String(updateValue.name));
+      // data.append("desc", String(updateValue.desc));
+      const body = { name: updateValue.name, desc: updateValue.desc }
       const updateStatus = await dispatch(
-        updateCategoryAction({ id: updateValue.id, body: data, accessToken })
+        updateCategoryAction({ id: updateValue.id, body, accessToken })
       );
 
       if (updateStatus.meta.requestStatus === "fulfilled") {
@@ -279,7 +279,7 @@ const AdminPanelEditCategory = ({ category, accessToken }: Props) => {
   return (
     <Layout>
 
-      
+
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -322,30 +322,30 @@ const AdminPanelEditCategory = ({ category, accessToken }: Props) => {
           </Grid>
 
           <Grid item xs={12} md={12} lg={12}>
-          <Formik
-        validate={(values) => {
-          let errors: any = {};
-          if (!values.name) errors.name = "กรุณากรอกชื่อประเภทสินค้า";
-          return errors;
-        }}
-        initialValues={category!}
-        onSubmit={async (values, { setSubmitting }) => {
-          setUpdateValue(values);
-          // setImageFile(values.image_file)
-          setOpenDialog(true);
-          setSubmitting(false);
-        }}
-      >
-        {(props) => showForm(props)}
-      </Formik>
+            <Formik
+              validate={(values) => {
+                let errors: any = {};
+                if (!values.name) errors.name = "กรุณากรอกชื่อประเภทสินค้า";
+                return errors;
+              }}
+              initialValues={category!}
+              onSubmit={async (values, { setSubmitting }) => {
+                setUpdateValue(values);
+                // setImageFile(values.image_file)
+                setOpenDialog(true);
+                setSubmitting(false);
+              }}
+            >
+              {(props) => showForm(props)}
+            </Formik>
           </Grid>
         </Grid>
       </Container>
 
-     
+
       {showDialog()}
 
-    
+
     </Layout>
   );
 };
