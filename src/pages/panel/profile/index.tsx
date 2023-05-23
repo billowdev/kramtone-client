@@ -94,13 +94,13 @@ function UserPanelProfile({
   const [passwordConfirmation, setPasswordConfirmation] = React.useState('');
   const [isPasswordValid, setIsPasswordValid] = React.useState(true);
 
-  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  // const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   const validatePassword = () => {
-    if (!passwordRegex.test(password)) {
-      toast.error('รหัสผ่านต้องประกอบด้วยตัวอักษรและตัวเลข อย่างน้อย 8 ตัว');
-      return false;
-    }
+    // if (!passwordRegex.test(password)) {
+    //   toast.error('รหัสผ่านต้องประกอบด้วยตัวอักษรและตัวเลข อย่างน้อย 8 ตัว');
+    //   return false;
+    // }
   
     const isValid = password === passwordConfirmation;
     setIsPasswordValid(isValid);
