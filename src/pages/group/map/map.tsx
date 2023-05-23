@@ -84,7 +84,6 @@ const GroupMap = ({ groupData }: MapProps) => {
 						<Image
 								src={group?.banner === "banner.png" ? "/static/img/banner.png" : groupDataImageURL(group?.banner)}
 								alt="banner image"
-								
 								width={275}
 								height={35}
 							/>

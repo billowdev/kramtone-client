@@ -85,6 +85,8 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
   ssr: false, // disable server-side rendering
 });
 
+
+
 function UserPanelManageGroup({ groupDataProp }: Props) {
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
@@ -92,6 +94,10 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
   const { groupData } = useSelector(groupDataSelector);
   const userData = useSelector(authSelector);
   const isLoading = userData === undefined;
+
+  const handleBackButtonClick = () => {
+    router.back();
+  };
 
   React.useEffect(() => {
     dispatch(fetchSession());
@@ -610,17 +616,19 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
             maxWidth="lg"
             sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}
           >
+              <Button
+              variant="contained"
+              color="primary"
+              onClick={handleBackButtonClick}
+            >
+              กลับสู่ก่อนหน้า
+            </Button>
+
             <Link href={"/panel/admin/manage/group/edit?id=" + groupDataProp?.id}>
               <Button
+              style={{marginLeft: "16px"}}
                 color="primary"
                 variant="contained"
-                style={{
-                  margin: "8px 0",
-                  backgroundColor: theme.palette.primary.main,
-                  color: "#fff",
-                  fontWeight: "bold",
-                  boxShadow: `0px 5px 10px rgba(0, 0, 0, 0.3)`,
-                }}
                 onClick={() => {
                   handleOnEditClick();
                   // setOpenDialog(true);
