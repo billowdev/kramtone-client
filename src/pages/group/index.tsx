@@ -402,7 +402,7 @@ const GroupItem = () => {
                           <Grid container spacing={2}>
                             <Grid item xs={12} sm={2}>
                               <Image
-                                src={group?.logo === "logo.png" ? "/static/img/logo.png" : groupDataImageURL(group?.logo)}
+                                src={group?.logo === "" || group?.logo === "logo.png"  ? "/static/img/logo.png" : groupDataImageURL(group?.logo)}
                                 alt="Group Image"
                                 width={100}
                                 height={100}

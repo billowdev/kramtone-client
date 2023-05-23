@@ -187,6 +187,15 @@ function UserPanelProfile({
     setShowConfirmation(false);
   };
 
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
+    }, 800);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+  
   const [progress, setProgress] = React.useState(10);
 
   if (loading) {
