@@ -12,7 +12,7 @@ import {
   Card,
   CardActions,
   Button,
-  Pagination 
+  Pagination
 } from "@mui/material";
 import GroupsIcon from "@mui/icons-material/Groups";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -59,13 +59,13 @@ import { useRouter } from 'next/router';
 import { LatLngExpression, LatLngBoundsExpression } from "leaflet";
 
 import {
-	FacebookShareButton,
-	TwitterShareButton,
-	LinkedinShareButton,
-	FacebookIcon,
-	TwitterIcon,
-	LinkedinIcon,
-  } from 'react-share';
+  FacebookShareButton,
+  TwitterShareButton,
+  LinkedinShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  LinkedinIcon,
+} from 'react-share';
 
 
 type Props = {
@@ -104,9 +104,9 @@ function GroupDataPage({ groupData }: Props) {
 
   const router = useRouter();
 
-const handleBackButtonClick = () => {
-  router.back();
-};
+  const handleBackButtonClick = () => {
+    router.back();
+  };
 
   const center: LatLngExpression = [17.1634, 104.1476]; // Centered on Sakon Nakhon Province
   const position: LatLngExpression = [
@@ -139,16 +139,16 @@ const handleBackButtonClick = () => {
     <MainLayout>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={3}>
-		<Grid item xs={12}>
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={handleBackButtonClick}
-     
-      >
-        ย้อนกลับ
-      </Button>
-    </Grid>
+          <Grid item xs={12}>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleBackButtonClick}
+
+            >
+              ย้อนกลับ
+            </Button>
+          </Grid>
           <Grid item xs={12}>
             <Paper
               sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}
@@ -169,7 +169,7 @@ const handleBackButtonClick = () => {
                     {" "}
                     หน้าข้อมูลกลุ่ม <br /> / ร้านค้า{" "}
                   </Typography>
-				  
+
                 ) : (
                   <Typography
                     variant="h5"
@@ -185,7 +185,7 @@ const handleBackButtonClick = () => {
               </React.Fragment>
             </Paper>
           </Grid>
-		
+
         </Grid>
 
         <Grid container spacing={2} style={{ marginTop: "16px" }}>
@@ -203,8 +203,8 @@ const handleBackButtonClick = () => {
               }}
             >
               <Image
-                alt="product image"
-                src={groupData?.banner ? groupDataImageURL(groupData?.banner) : "/static/img/banner.png"}
+                alt="banner image"
+                src={groupData?.banner === "banner.png" ? "/static/img/banner.png" : groupDataImageURL(groupData?.banner)}
                 width={1120}
                 height={160}
               />
@@ -227,7 +227,7 @@ const handleBackButtonClick = () => {
                 <Image
                   style={{ objectFit: "cover" }}
                   alt="product image"
-                  src={groupData?.logo ? groupDataImageURL(groupData?.logo) : "/static/img/logo.png"}
+                  src={groupData?.logo === "logo.png" ? "/static/img/logo.png" : groupDataImageURL(groupData?.logo)}
                   width={250}
                   height={250}
                 />
@@ -285,13 +285,56 @@ const handleBackButtonClick = () => {
 
                 </React.Fragment>
               </Grid>
-            
+
             </Paper>
-        
+
           </Grid>
 
-<Grid item xs= {12} md={12} lg = {12}>
-  <Paper sx={{
+          <Grid item xs={12} md={12} lg={12}>
+            <Paper sx={{
+              p: 2,
+              display: "flex",
+              gap: "4rem",
+              flexDirection: {
+                xs: "column",
+                md: "row",
+              },
+            }}>
+
+              <Box>
+                <Typography style={typeographyHeaderStyle}>โทนสีที่มีในร้าน</Typography>
+                {groupData?.products && (
+                  <>
+                    {[...new Set(groupData?.products?.map((product: any) => product.colorScheme.id) ?? [])].map((colorSchemeId: string, index: number) => {
+                      const product = groupData?.products?.find((product: any) => product.colorScheme.id === colorSchemeId);
+                      return (
+                        <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+                          <div
+                            style={{
+                              backgroundColor: product?.colorScheme?.hex,
+                              width: '25px',
+                              height: '25px',
+                              marginRight: '4px',
+                            }}
+                          ></div>
+                          <Typography variant="subtitle1">
+                            รหัสสี {product?.colorScheme?.id}
+                          </Typography>
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
+              </Box>
+
+            </Paper>
+          </Grid>
+
+
+
+          <Grid item xs={12} md={12} lg={12}>
+            <Paper
+              sx={{
                 p: 2,
                 display: "flex",
                 gap: "4rem",
@@ -299,70 +342,27 @@ const handleBackButtonClick = () => {
                   xs: "column",
                   md: "row",
                 },
-              }}>
-                
- <Box>
-  <Typography style={typeographyHeaderStyle}>โทนสีที่มีในร้าน</Typography>
-  {groupData?.products && (
-    <>
-      {[...new Set(groupData?.products?.map((product: any) => product.colorScheme.id) ?? [])].map((colorSchemeId: string, index: number) => {
-        const product = groupData?.products?.find((product: any) => product.colorScheme.id === colorSchemeId);
-        return (
-          <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
-            <div
-              style={{
-                backgroundColor: product?.colorScheme?.hex,
-                width: '25px',
-                height: '25px',
-                marginRight: '4px',
               }}
-            ></div>
-            <Typography variant="subtitle1">
-              รหัสสี {product?.colorScheme?.id}
-            </Typography>
-          </div>
-        );
-      })}
-    </>
-  )}
-</Box>
-
-    </Paper>
-  </Grid>
-
-
-
-  <Grid item xs={12} md={12} lg={12}>
-  <Paper
-    sx={{
-      p: 2,
-      display: "flex",
-      gap: "4rem",
-      flexDirection: {
-        xs: "column",
-        md: "row",
-      },
-    }}
-  >
-    <Box>
-      <Typography style={typeographyHeaderStyle}>สินค้าแนะนำ</Typography>
-      {groupData?.products && (
-        <>
-          {groupData?.products
-            .filter((product: any) => product.recommend === true)
-            .slice(0, 5)
-            .map((product: any, index: number) => (
-              <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
-                <Typography variant="subtitle1">
-                  {product.name}
-                </Typography>
-              </div>
-            ))}
-        </>
-      )}
-    </Box>
-  </Paper>
-</Grid>
+            >
+              <Box>
+                <Typography style={typeographyHeaderStyle}>สินค้าแนะนำ</Typography>
+                {groupData?.products && (
+                  <>
+                    {groupData?.products
+                      .filter((product: any) => product.recommend === true)
+                      .slice(0, 5)
+                      .map((product: any, index: number) => (
+                        <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+                          <Typography variant="subtitle1">
+                            {product.name}
+                          </Typography>
+                        </div>
+                      ))}
+                  </>
+                )}
+              </Box>
+            </Paper>
+          </Grid>
 
 
 
@@ -488,78 +488,78 @@ const handleBackButtonClick = () => {
 
 
 
-          {center[0] !== 17.166984616793364  && center[1] !== 104.14777780025517 ? (
-  <Grid item xs={12} md={12} lg={12}>
-    <Paper
-      sx={{
-        p: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
-      }}
-    >
-      <MapContainer
-        center={position}
-        zoom={zoom}
-        style={{ height: '500px', width: '100%' }}
-      >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <Marker position={position}>
-                  <Popup autoClose={false}>
-                    <span>หมุดของคุณ</span>
-                  </Popup>
-                </Marker>
+          {center[0] !== 17.166984616793364 && center[1] !== 104.14777780025517 ? (
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
+                }}
+              >
+                <MapContainer
+                  center={position}
+                  zoom={zoom}
+                  style={{ height: '500px', width: '100%' }}
+                >
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                  <Marker position={position}>
+                    <Popup autoClose={false}>
+                      <span>หมุดของคุณ</span>
+                    </Popup>
+                  </Marker>
 
-      </MapContainer>
-    </Paper>
-  </Grid>
-) : (
-  <Grid item xs={12} md={12} lg={12}>
-    <Paper
-      sx={{
-        p: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '50px',
-      }}
-    >
-      <Typography variant="h5" color="error">
-      กลุ่มผู้ผลิตหรือร้านค้า ยังไม่ปักหมุดแผนที่ ที่ถูกต้อง
-      </Typography>
-    </Paper>
+                </MapContainer>
+              </Paper>
+            </Grid>
+          ) : (
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  minHeight: '50px',
+                }}
+              >
+                <Typography variant="h5" color="error">
+                  กลุ่มผู้ผลิตหรือร้านค้า ยังไม่ปักหมุดแผนที่ ที่ถูกต้อง
+                </Typography>
+              </Paper>
 
-    <Paper
-      sx={{
-        p: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
-      }}
-    >
-      <MapContainer
-        center={[17.166984616793364, 104.14777780025517]}
-        zoom={zoom}
-        style={{ height: '500px', width: '100%' }}
-      >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <Marker position={[17.166984616793364, 104.14777780025517]}>
-                  <Popup autoClose={false}>
-                    <span>หมุดของคุณ</span>
-                  </Popup>
-                </Marker>
+              <Paper
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
+                }}
+              >
+                <MapContainer
+                  center={[17.166984616793364, 104.14777780025517]}
+                  zoom={zoom}
+                  style={{ height: '500px', width: '100%' }}
+                >
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                  <Marker position={[17.166984616793364, 104.14777780025517]}>
+                    <Popup autoClose={false}>
+                      <span>หมุดของคุณ</span>
+                    </Popup>
+                  </Marker>
 
-      </MapContainer>
-    </Paper>
+                </MapContainer>
+              </Paper>
 
-  </Grid>
-)}
+            </Grid>
+          )}
 
 
         </Grid>
 
-		<Box display="flex" justifyContent="space-between" padding={2}>
+        <Box display="flex" justifyContent="space-between" padding={2}>
           <Box display="flex" gap="8px">
             <FacebookShareButton url={shareUrl} quote={shareTitle}>
               <FacebookIcon size={32} round />
@@ -586,7 +586,7 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   try {
-	const params = context.params;
+    const params = context.params;
     const groupData = await groupDataService.getOneGroupData(params?.id?.toString());
     return {
       props: {

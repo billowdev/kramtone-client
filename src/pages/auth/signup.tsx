@@ -261,7 +261,7 @@ function SignUpPage({ }: Props) {
                               fullWidth
                               required
                               inputProps={{ maxLength: 10 }}
-                              helperText={<ErrorMessage style={{ color: 'red' }} name="phone" />}
+                              helperText={<ErrorMessage name="phone" />}
                             />
                           </Box>
 

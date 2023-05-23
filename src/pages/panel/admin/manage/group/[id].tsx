@@ -347,8 +347,8 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
               }}
             >
               <Image
-                alt="product image"
-                src={groupDataImageURL(groupDataProp?.banner)}
+                alt="banner image"
+                src={groupDataProp?.banner === "banner.png" ? "/static/img/banner.png" : groupDataImageURL(groupDataProp?.banner)}
                 width={1120}
                 height={160}
               />
@@ -370,8 +370,8 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
               <Grid item xs={12} md={4} lg={3}>
                 <Image
                   style={{ objectFit: "cover" }}
-                  alt="product image"
-                  src={groupDataImageURL(groupDataProp?.logo)}
+                  alt="logo image"
+                  src={groupDataProp?.logo === "logo.png" ? "/static/img/logo.png" : groupDataImageURL(groupDataProp?.logo)}
                   width={250}
                   height={250}
                 />
