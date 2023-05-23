@@ -327,7 +327,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
           }}
         >
           <Typography variant="h5" color="error">
-            ข้อมูลกลุ่มของคุณยังไม่ถูกยืนยัน กรุณากรอกข้อมูลให้ครบถ้วน รอแอดมินตรวจสอบ
+            ข้อมูลกลุ่มของคุณยังไม่ถูกยืนยัน กรุณากรอกข้อมูลให้ครบถ้วน รอผู้ดูแลระบบตรวจสอบ
           </Typography>
         </Paper>
       </Grid> 

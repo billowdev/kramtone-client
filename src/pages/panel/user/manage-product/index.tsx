@@ -293,7 +293,7 @@ const RecommendCellRenderer: React.FC<RecommendCellRendererProps> = ({ value }) 
     },
     {
       field: 'recommend',
-      headerName: 'แสดงบนกลุ่ม',
+      headerName: 'แสดงเป็นสินค้าแนะนำ',
       width: 100,
       renderCell: (params: GridCellParams<ProductPayload>) => <RecommendCellRenderer {...params} />,
     },
