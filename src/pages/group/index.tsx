@@ -278,7 +278,7 @@ const GroupItem = () => {
 
   return (
     <MainLayout>
-      <Box style={{ flexGrow: 1, padding: isSmallDevice ? 0 : 4, minHeight:"768px" }}>
+      <Box style={{ flexGrow: 1, padding: isSmallDevice ? 0 : 4, minHeight: "768px" }}>
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={3}>
@@ -342,7 +342,7 @@ const GroupItem = () => {
           <CategoryFilterModal />
           <ColorSchemeFilterModal />
 
-          <Paper elevation={3} style={{ padding: 2, marginTop:16 }}>
+          <Paper elevation={3} style={{ padding: 2, marginTop: 16 }}>
             <Grid
               container
               spacing={3}
@@ -402,7 +402,7 @@ const GroupItem = () => {
                           <Grid container spacing={2}>
                             <Grid item xs={12} sm={2}>
                               <Image
-                                src={groupDataImageURL(group?.logo)}
+                                src={group?.logo === "logo.png" ? "/static/img/logo.png" : groupDataImageURL(group?.logo)}
                                 alt="Group Image"
                                 width={100}
                                 height={100}
