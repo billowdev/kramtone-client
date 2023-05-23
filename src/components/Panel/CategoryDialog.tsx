@@ -18,19 +18,7 @@ export const CategoryDialog: React.FC<CategoryDialogProps> = ({ category, open, 
         <Typography variant="body1" gutterBottom>
          รายละเอียด : {category?.desc}
         </Typography>
-		<Typography variant="body1" gutterBottom style={{marginTop: "16px"}}>
-         รูปภาพประกอบ
-        </Typography>
-		<Divider />
-
-        {category?.image && (
-          <Image 
-		  src={categoryImageURL(category?.image.toString())} 
-		  alt={category?.name} 
-		  height={100}
-		  width={100}
-		  style={{ maxWidth: '100%', maxHeight: '400px' }} />
-        )}
+	
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary">
