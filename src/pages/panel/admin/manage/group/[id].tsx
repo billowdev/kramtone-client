@@ -621,7 +621,7 @@ function UserPanelManageGroup({ groupDataProp }: Props) {
               color="primary"
               onClick={handleBackButtonClick}
             >
-              กลับสู่ก่อนหน้า
+              ย้อนกลับ
             </Button>
 
             <Link href={"/panel/admin/manage/group/edit?id=" + groupDataProp?.id}>

@@ -691,7 +691,7 @@ function UserPanelProduct({ product }: Props) {
               color="primary"
               onClick={handleBackButtonClick}
             >
-              กลับสู่ก่อนหน้า
+              ย้อนกลับ
             </Button>
           </Box>
         </Paper>
