@@ -79,16 +79,24 @@ const GroupMap = ({ groupData }: MapProps) => {
 				<Marker key={group.id} position={[Number(group.lat), Number(group.lng)]}>
 					
 					<Popup>
+						
 						<div>
+						<Image
+								src={group?.banner === "banner.png" ? "/static/img/banner.png" : groupDataImageURL(group?.banner)}
+								alt="banner image"
+								
+								width={275}
+								height={35}
+							/>
+							<Image
+								src={group?.logo === "logo.png" ? "/static/img/logo.png" : groupDataImageURL(group?.logo)}
+								alt="logo image"
+								width={75}
+								height={75}
+							/>
 							<h3>{group.groupName}</h3>
 							<Typography>{`${group.type == "shop" ? "ร้านค้า" : "กลุ่มผู้ผลิต" } `}</Typography>
 							<Typography>{`ที่อยู่ : ${group.hno} ${group.village} ${group.subdistrict} ${group.district} ${group.province}`}</Typography>
-							<Image
-								src={groupDataImageURL(group.logo)}
-								alt="My Image"
-								width={100}
-								height={100}
-							/>
 							   <Button
                                     variant="contained"
                                     color="primary"
