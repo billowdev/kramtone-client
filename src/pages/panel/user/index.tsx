@@ -161,7 +161,7 @@ function GroupShopPanel({ }: Props) {
 
                 <Grid item xs={12} sm={12} md={6}>
                   <CustomMenuListItem
-                    href="/manage-profile"
+                    href="/panel/profile"
                     icon={SettingsIcon}
                     text="ตั้งค่าบัญชีผู้ใช้"
                   />
