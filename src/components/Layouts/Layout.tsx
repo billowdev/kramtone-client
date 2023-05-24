@@ -219,7 +219,7 @@ function Layout({ children }: LayoutProps) {
           }}
         >
           <IconButton size="small">
-           ระบบจัดการข้อมูล
+           KRAMTONE
         </IconButton>
 
             <IconButton onClick={toggleDrawer}>
