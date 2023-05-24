@@ -445,8 +445,8 @@ function UserPanelProduct({ product }: Props) {
               }}
             >
               <Image
-                alt="product image"
-                src={groupDataImageURL(product?.groupData?.banner)}
+                alt="banner image"
+                src={groupDataImageURL(product?.groupData?.banner === "banner.png" ? product?.groupData?.banner:"/static/img/banner.png")}
                 width={1120}
                 height={160}
               />
@@ -468,8 +468,8 @@ function UserPanelProduct({ product }: Props) {
               <Grid item xs={12} md={4} lg={3}>
                 <Image
                   style={{ objectFit: "cover" }}
-                  alt="product image"
-                  src={groupDataImageURL(product?.groupData?.logo)}
+                  alt="logo image"
+                  src={groupDataImageURL(product?.groupData?.logo === "logo.png" ? product?.groupData?.logo:"/static/img/banner.png")}
                   width={250}
                   height={250}
                 />
