@@ -446,7 +446,7 @@ function UserPanelProduct({ product }: Props) {
             >
               <Image
                 alt="banner image"
-                src={groupDataImageURL(product?.groupData?.banner === "banner.png" ? product?.groupData?.banner:"/static/img/banner.png")}
+                src={groupDataImageURL(product?.groupData?.banner === "banner.png" ? "/static/img/banner.png":product?.groupData?.banner)}
                 width={1120}
                 height={160}
               />
@@ -469,7 +469,7 @@ function UserPanelProduct({ product }: Props) {
                 <Image
                   style={{ objectFit: "cover" }}
                   alt="logo image"
-                  src={groupDataImageURL(product?.groupData?.logo === "logo.png" ? product?.groupData?.logo:"/static/img/banner.png")}
+                  src={groupDataImageURL(product?.groupData?.logo === "logo.png" ? "/static/img/banner.png":product?.groupData?.logo)}
                   width={250}
                   height={250}
                 />
