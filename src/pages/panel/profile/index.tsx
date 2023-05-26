@@ -198,16 +198,16 @@ function UserPanelProfile({
   
   const [progress, setProgress] = React.useState(10);
 
-  if (loading) {
-    return <Box style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100%',
-    }}>
-      <CircularProgressWithLabel value={progress} /> กำลังโหลด
-    </Box>
-  }
+  // if (loading) {
+  //   return <Box style={{
+  //     display: 'flex',
+  //     justifyContent: 'center',
+  //     alignItems: 'center',
+  //     height: '100%',
+  //   }}>
+  //     <CircularProgressWithLabel value={progress} /> กำลังโหลด
+  //   </Box>
+  // }
 
   const showForm = ({
     values,
