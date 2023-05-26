@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Paper, Tabs, Tab, Button, Grid, Card, CardContent, Typography } from '@mui/material';
+import { Box, Paper, Tabs, Tab, Button, Grid, Card, CardContent, Typography, CircularProgressProps, CircularProgress } from '@mui/material';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import {
   FacebookShareButton,
@@ -22,6 +22,37 @@ import { Pagination } from '@mui/material';
 import { TextField } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 
+
+
+
+
+function CircularProgressWithLabel(
+  props: CircularProgressProps & { value: number },
+) {
+  return (
+    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+      <CircularProgress variant="determinate" {...props} />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography
+          variant="caption"
+          component="div"
+          // color="text.secondary"
+        >{`${Math.round(props.value)}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
 
 const CustomTab = styled(Tab)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
@@ -52,11 +83,26 @@ const NaturalColorTonesPage = () => {
 
   const [colorSchemes, setColorSchemes] = useState<ColorSchemePayload[]>([]);
 
+  
+  
+  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = React.useState(10);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
+    }, 800);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
   useEffect(() => {
     async function fetchData() {
       try {
         const payload = await colorSchemeService.getAllColorScheme();
         setColorSchemes(payload);
+        setLoading(false)
       } catch (error) {
         console.error(error);
       }
@@ -280,75 +326,93 @@ const groups = Object.entries(schemesByPrefix).reduce(
             </Paper>
           </Grid>
         </Grid>
+        {
+
+          loading ? <Box style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '768px',
+      }}>
         <React.Fragment>
-          <Grid container spacing={2}>
-            <Grid
-              item
-              xs={12}
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <TextField
-                label='ค้นหาโทนสี'
-                variant='outlined'
-                value={search}
-                onChange={handleSearchChange}
-                fullWidth
-                style={{ height: '100%', marginTop: 16 }}
-              />
-            </Grid>
- 
+        <CircularProgressWithLabel value={progress} />
+        <Typography style={{ marginLeft: "16px" }}>กำลังโหลดข้อมูลกรุณารอสักครู่</Typography>
+        </React.Fragment>
+      </Box>
+       :
+       <React.Fragment>
+       <Grid container spacing={2}>
+         <Grid
+           item
+           xs={12}
+           style={{
+             display: 'flex',
+             justifyContent: 'center',
+             alignItems: 'center',
+           }}
+         >
+           <TextField
+             label='ค้นหาโทนสี'
+             variant='outlined'
+             value={search}
+             onChange={handleSearchChange}
+             fullWidth
+             style={{ height: '100%', marginTop: 16 }}
+           />
+         </Grid>
+
 
 <Grid container spacing={2}>
-  {groups.map((group, i) => (
-    <Grid key={i} item xs={12}>
+{groups.map((group, i) => (
+ <Grid key={i} item xs={12}>
 
-       <Typography variant='h5' gutterBottom>
-        {group.prefix === 'SK1/SK2'
-          ? `SK1 - ${group.schemes[0].nameTH} (${group.schemes[0].nameEN}) และ SK2 - ${group.schemes[1].nameTH} (${group.schemes[1].nameEN})`
-          : `${group.prefix} - ${group.schemes[0].nameTH} (${group.schemes[0].nameEN})`}
-      </Typography>
+    <Typography variant='h5' gutterBottom>
+     {group.prefix === 'SK1/SK2'
+       ? `SK1 - ${group.schemes[0].nameTH} (${group.schemes[0].nameEN}) และ SK2 - ${group.schemes[1].nameTH} (${group.schemes[1].nameEN})`
+       : `${group.prefix} - ${group.schemes[0].nameTH} (${group.schemes[0].nameEN})`}
+   </Typography>
 
-      <Grid container spacing={2}>
-        {group.schemes.map((scheme: ColorSchemePayload, j) => (
-          <Grid key={j} item xs={12} sm={6} md={4} lg={2} xl={2}>
-            <Card
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: 1,
-                backgroundColor: 'transparent',
-                boxShadow: 'none',
-              }}
-            >
-              <div
-                style={{
-                  width: 100,
-                  height: 100,
-                  backgroundColor: scheme.hex,
-                }}
-              />
-              <CardContent>
-                <Typography variant='h6'>{scheme.id}</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Grid>
-  ))}
+   <Grid container spacing={2}>
+     {group.schemes.map((scheme: ColorSchemePayload, j) => (
+       <Grid key={j} item xs={12} sm={6} md={4} lg={2} xl={2}>
+         <Card
+           sx={{
+             display: 'flex',
+             flexDirection: 'column',
+             alignItems: 'center',
+             justifyContent: 'space-between',
+             padding: 1,
+             backgroundColor: 'transparent',
+             boxShadow: 'none',
+           }}
+         >
+           <div
+             style={{
+               width: 100,
+               height: 100,
+               backgroundColor: scheme.hex,
+             }}
+           />
+           <CardContent>
+             <Typography variant='h6'>{scheme.id}</Typography>
+           </CardContent>
+         </Card>
+       </Grid>
+     ))}
+   </Grid>
+ </Grid>
+))}
 </Grid>
 
 
 
-          </Grid>
+       </Grid>
+  
+     </React.Fragment>
+        }
+
+
      
-        </React.Fragment>
       </Box>
     );
   };

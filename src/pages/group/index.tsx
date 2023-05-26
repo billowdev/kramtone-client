@@ -65,7 +65,7 @@ function CircularProgressWithLabel(
         <Typography
           variant="caption"
           component="div"
-          color="text.secondary"
+          // color="text.secondary"
         >{`${Math.round(props.value)}%`}</Typography>
       </Box>
     </Box>
@@ -74,6 +74,9 @@ function CircularProgressWithLabel(
 
 
 const GroupItem = () => {
+
+
+
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const router = useRouter();
