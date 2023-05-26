@@ -18,7 +18,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Pagination
+  Pagination,
+  CircularProgressProps,
+  CircularProgress
 } from "@mui/material";
 
 import { NextSeo } from "next-seo";
@@ -41,6 +43,35 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 type Props = {};
 
+
+function CircularProgressWithLabel(
+  props: CircularProgressProps & { value: number },
+) {
+  return (
+    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+      <CircularProgress variant="determinate" {...props} />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography
+          variant="caption"
+          component="div"
+          color="text.secondary"
+        >{`${Math.round(props.value)}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
 const useStyles = makeStyles((theme) => ({
   searchContainer: {
     marginBottom: theme.spacing(2),
@@ -52,6 +83,8 @@ const ProductTest = ({ }: Props) => {
   const [products, setProducts] = React.useState<any>([]);
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const [searchTerm, setSearchTerm] = useState("");
+
+ 
 
   const [categories, setCategories] = useState<any>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -90,30 +123,41 @@ const ProductTest = ({ }: Props) => {
     setIsColorSchemeModalOpen(false);
   };
 
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
+    }, 200);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
   useEffect(() => {
     async function fetchData() {
       try {
         const payload = await productService.getAllProduct();
         const categoriesPayload = await categoryService.getAllCategory();
         const colorSchemesPayload = await colorSchemeService.getAllColorScheme();
-
+        
         setProducts(payload);
         setCategories(categoriesPayload);
         setColorSchemes(colorSchemesPayload);
-
-        // setLoading(false);
+        setLoading(false)
+        
+       
       } catch (error) {
+      
         console.error(error);
       }
     }
     fetchData();
+   
   }, []);
 
-  const handleSearchInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setSearchTerm(event.target.value);
-  };
+ 
+
 
 
 
@@ -213,6 +257,25 @@ const ProductTest = ({ }: Props) => {
     );
   };
 
+  const [progress, setProgress] = React.useState(10);
+  if (loading) {
+    return <MainLayout>
+      <Box style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '768px',
+      }}>
+        <CircularProgressWithLabel value={progress} /> กำลังโหลดกรุณารอสักครู่
+      </Box>
+    </MainLayout>
+  }
+
+  const handleSearchInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSearchTerm(event.target.value);
+  };
 
   return (
     <MainLayout>
