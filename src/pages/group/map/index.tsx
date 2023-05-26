@@ -54,9 +54,7 @@ function GroupMapPage({ }: Props) {
   return (
 <MainLayout>
   <Box sx={{flexGrow: 1 }}>
-
-
-  <Container maxWidth="lg" style={{ padding: 16 }}>
+  <Container maxWidth="lg">
   <Grid container spacing={3}>
 		<Grid item xs={12}>
       <Button
@@ -106,7 +104,7 @@ function GroupMapPage({ }: Props) {
           <Box p={4}>
            
          
-          <Paper style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px', padding: 16,  background: 'none', boxShadow: 'none'   }}>
+          <Paper style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px', padding: 4,  background: 'none', boxShadow: 'none'   }}>
   <GroupMap groupData={groupData.groupDataArray} />
   
 </Paper>
