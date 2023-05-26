@@ -269,11 +269,11 @@ function UserPanelProduct({ product }: Props) {
           </Paper>
         </Grid>
       </Grid>
-  
+
       <Box sx={{ minHeight: "100vh" }}>
         <Grid container spacing={2}>
 
-        <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={4}>
             <Grid container spacing={2}>
               <Carousel
                 showArrows
@@ -288,7 +288,7 @@ function UserPanelProduct({ product }: Props) {
                 swipeable
                 dynamicHeight
                 selectedItem={currentImageIndex}
-                // width="100%"
+              // width="100%"
               >
                 {images &&
                   images.map((image: string, index: number) => (
@@ -298,7 +298,7 @@ function UserPanelProduct({ product }: Props) {
                         alt={`Product image ${index}`}
                         width={250}
                         height={250}
-                        style={{ borderRadius: "5%", objectFit: "contain", marginTop:8, marginBottom:8 }}
+                        style={{ borderRadius: "5%", objectFit: "contain", marginTop: 8, marginBottom: 8 }}
                       />
                     </div>
                   ))}
@@ -309,84 +309,84 @@ function UserPanelProduct({ product }: Props) {
 
 
           <Grid item xs={12} sm={8}>
-          <Typography variant="h4" className={classes.price}>
-            ฿{product?.price}
-          </Typography>
-
-          <Box display="flex" alignItems="center" my={1}>
-            <VisibilityIcon />
-            <Typography variant="body2">{product?.reloadCount?.toLocaleString()}</Typography>
-          </Box>
-
-          <Divider />
-
-          <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
-            ชื่อสินค้า
-          </Typography>
-          <Typography variant="body1" style={{  marginTop: '1em' }}>
-          {product?.name}
-          </Typography>
-          <Divider />
-          <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
-            ประเภทสินค้า
-          </Typography>
-          <Typography variant="body1" style={{  marginTop: '1em' }}>
-          {product?.category?.name}
-          </Typography>
-
-
-
-          <Divider />
-          <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
-            โทนสี
-          </Typography>
-          <Box display="flex" alignItems="center" my={1}>
-            <Box
-              sx={{
-                width: 50,
-                height: 50,
-                backgroundColor: product?.colorScheme?.hex,
-                borderRadius: "5%",
-                border: "1px solid black",
-                marginRight: 2,
-              }}
-            />
-            <Typography className={classes.colorScheme}>
-              รหัสสี {product?.colorScheme?.id} - สี{product?.colorScheme?.nameTH} ({product?.colorScheme?.nameEN})
+            <Typography variant="h4" className={classes.price}>
+              ฿{product?.price}
             </Typography>
-          </Box>
 
-          <Divider />
+            <Box display="flex" alignItems="center" my={1}>
+              <VisibilityIcon />
+              <Typography variant="body2">{product?.reloadCount?.toLocaleString()}</Typography>
+            </Box>
 
-          <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
-            ชื่อกลุ่มผู้ผลิตหรือร้านค้า
-          </Typography>
+            <Divider />
 
-          <Typography variant="body1" style={{  marginTop: '1em' }}>
-          {product?.groupData?.groupName}
-          </Typography>
-
-          <Divider />
-
-          <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
-            รายละเอียดเพิ่มเติม
-          </Typography>
-          
-          <Typography variant="body1" style={{  marginTop: '1em' }}>
-          {product?.desc}
-          </Typography>
-          <Divider />
-      </Grid>
+            <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
+              ชื่อสินค้า
+            </Typography>
+            <Typography variant="body1" style={{ marginTop: '1em' }}>
+              {product?.name}
+            </Typography>
+            <Divider />
+            <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
+              ประเภทสินค้า
+            </Typography>
+            <Typography variant="body1" style={{ marginTop: '1em' }}>
+              {product?.category?.name}
+            </Typography>
 
 
 
-      </Grid>
+            <Divider />
+            <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
+              โทนสี
+            </Typography>
+            <Box display="flex" alignItems="center" my={1}>
+              <Box
+                sx={{
+                  width: 50,
+                  height: 50,
+                  backgroundColor: product?.colorScheme?.hex,
+                  borderRadius: "5%",
+                  border: "1px solid black",
+                  marginRight: 2,
+                }}
+              />
+              <Typography className={classes.colorScheme}>
+                รหัสสี {product?.colorScheme?.id} - สี{product?.colorScheme?.nameTH} ({product?.colorScheme?.nameEN})
+              </Typography>
+            </Box>
+
+            <Divider />
+
+            <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
+              ชื่อกลุ่มผู้ผลิตหรือร้านค้า
+            </Typography>
+
+            <Typography variant="body1" style={{ marginTop: '1em' }}>
+              {product?.groupData?.groupName}
+            </Typography>
+
+            <Divider />
+
+            <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: '1em' }}>
+              รายละเอียดเพิ่มเติม
+            </Typography>
+
+            <Typography variant="body1" style={{ marginTop: '1em' }}>
+              {product?.desc}
+            </Typography>
+            <Divider />
+          </Grid>
+
+
+
+        </Grid>
+      </Box>
     </Box>
-  </Box>
-);  
+  );
 
   const renderProducerTab = () => (
-    <Box p={isSmallDevice ? 0 :2}>
+    <Box p={isSmallDevice ? 0 : 2}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Paper
@@ -410,7 +410,7 @@ function UserPanelProduct({ product }: Props) {
                   }}
                 >
                   {" "}
-                  หน้าข้อมูลกลุ่มผู้ผลิต : {product?.groupData?.groupName}
+                  {product?.groupData?.groupName}
                 </Typography>
               ) : (
                 <Typography
@@ -421,7 +421,7 @@ function UserPanelProduct({ product }: Props) {
                   }}
                 >
                   {" "}
-                  หน้าข้อมูลกลุ่มผู้ผลิต : {product?.groupData?.groupName}
+                  {product?.groupData?.groupName}
                 </Typography>
               )}
             </React.Fragment>
@@ -446,7 +446,7 @@ function UserPanelProduct({ product }: Props) {
             >
               <Image
                 alt="banner image"
-                src={product?.groupData?.banner === "banner.png" ? "/static/img/banner.png": groupDataImageURL(product?.groupData?.banner)}
+                src={product?.groupData?.banner === "banner.png" ? "/static/img/banner.png" : groupDataImageURL(product?.groupData?.banner)}
                 width={1120}
                 height={160}
               />
@@ -469,7 +469,7 @@ function UserPanelProduct({ product }: Props) {
                 <Image
                   style={{ objectFit: "cover" }}
                   alt="logo image"
-                  src={product?.groupData?.logo === "logo.png" ? "/static/img/logo.png":groupDataImageURL(product?.groupData?.logo)}
+                  src={product?.groupData?.logo === "logo.png" ? "/static/img/logo.png" : groupDataImageURL(product?.groupData?.logo)}
                   width={250}
                   height={250}
                 />
@@ -525,8 +525,8 @@ function UserPanelProduct({ product }: Props) {
             </Paper>
           </Grid>
 
-        
-  
+
+
 
           <Grid item xs={12} md={12} lg={12}>
             <Paper
@@ -673,7 +673,7 @@ function UserPanelProduct({ product }: Props) {
           </Tabs>
           {tabIndex === 0 && renderProductTab()}
           {tabIndex === 1 && renderProducerTab()}
-  
+
           <Box display="flex" justifyContent="space-between" padding={2}>
             <Box display="flex" gap="8px">
               <FacebookShareButton url={shareUrl} quote={shareTitle}>
@@ -698,8 +698,8 @@ function UserPanelProduct({ product }: Props) {
       </Box>
     </MainLayout>
   );
- 
-    
+
+
 }
 
 export const getServerSideProps: GetServerSideProps = async (

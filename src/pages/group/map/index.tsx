@@ -53,7 +53,7 @@ function GroupMapPage({ }: Props) {
  
   return (
 <MainLayout>
-  <Box sx={{flexGrow: 1, p: 5 }}>
+  <Box sx={{flexGrow: 1 }}>
 
 
   <Container maxWidth="lg" style={{ padding: 16 }}>
