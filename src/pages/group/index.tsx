@@ -31,8 +31,6 @@ import {
   DialogContent,
   DialogTitle,
   Pagination,
-  CircularProgressProps,
-  CircularProgress,
 } from "@mui/material";
 import {
   FormControl,
@@ -41,8 +39,6 @@ import {
   InputLabel,
   ListSubheader,
 } from "@mui/material";
-
-
 
 const GroupItem = () => {
   const theme = useTheme();
@@ -86,7 +82,6 @@ const GroupItem = () => {
 
   const [groups, setGroups] = useState<any>([]);
 
-
   // Function to fetch group data with filters
   useEffect(() => {
     async function fetchData() {
@@ -96,7 +91,7 @@ const GroupItem = () => {
           await colorSchemeService.getAllColorScheme();
         setCategories(categoriesPayload);
         setColorSchemes(colorSchemesPayload);
-   
+
         // Fetch initial group data without filters
         await fetchGroupData();
       } catch (error) {
@@ -293,7 +288,7 @@ const GroupItem = () => {
                 value={searchTerm}
                 onChange={handleSearchInputChange}
                 fullWidth
-                style={{ height: "64px" }}
+                style={{ height: "100%" }}
               />
             </Grid>
             {/* <Grid item xs={12} md={2}>
@@ -313,7 +308,7 @@ const GroupItem = () => {
                 variant="outlined"
                 onClick={handleOpenColorSchemeModal}
                 fullWidth
-                style={{ height: "64px" }}
+                style={{ height: "100%" }}
               >
                 {selectedColorScheme && selectedColorScheme.nameTH !== ""
                   ? selectedColorScheme.nameTH
@@ -327,7 +322,7 @@ const GroupItem = () => {
                   color="primary"
                   onClick={handleClearFilters}
                   fullWidth
-                  style={{ height: "64px" }}
+                  style={{ height: "100%" }}
                 >
                   ล้างตัวเลือก
                 </Button>
@@ -337,7 +332,7 @@ const GroupItem = () => {
                   // color="secondary"
                   onClick={handleClearFilters}
                   fullWidth
-                  style={{ height: "64px" }}
+                  style={{ height: "100%" }}
                 >
                   ล้างตัวเลือก
                 </Button>
@@ -390,13 +385,7 @@ const GroupItem = () => {
               </Grid>
             </Grid>
             <Divider />
-            
-
-
-     
             <Box p={4}>
-
-
               {filteredGroups &&
                 filteredGroups
                   .slice((page - 1) * groupsPerPage, page * groupsPerPage)
@@ -651,8 +640,6 @@ const GroupItem = () => {
                
               ))} */}
             </Box>
-
-
           </Paper>
         </Container>
       </Box>
