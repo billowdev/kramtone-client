@@ -83,9 +83,6 @@ const ProductTest = ({ }: Props) => {
   const [products, setProducts] = React.useState<any>([]);
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const [searchTerm, setSearchTerm] = useState("");
-
-
-
   const [categories, setCategories] = useState<any>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] =
