@@ -44,33 +44,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 type Props = {};
 
 
-function CircularProgressWithLabel(
-  props: CircularProgressProps & { value: number },
-) {
-  return (
-    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <CircularProgress variant="determinate" {...props} />
-      <Box
-        sx={{
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          position: 'absolute',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography
-          variant="caption"
-          component="div"
-          color="text.secondary"
-        >{`${Math.round(props.value)}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
+
 
 const useStyles = makeStyles((theme) => ({
   searchContainer: {
@@ -120,17 +94,6 @@ const ProductTest = ({ }: Props) => {
     setIsColorSchemeModalOpen(false);
   };
 
-  const [loading, setLoading] = useState(true);
-
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
-    }, 800);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
   useEffect(() => {
     async function fetchData() {
       try {
@@ -141,9 +104,6 @@ const ProductTest = ({ }: Props) => {
         setProducts(payload);
         setCategories(categoriesPayload);
         setColorSchemes(colorSchemesPayload);
-        setLoading(false)
-
-
       } catch (error) {
 
         console.error(error);
@@ -250,23 +210,6 @@ const ProductTest = ({ }: Props) => {
     );
   };
 
-  const [progress, setProgress] = React.useState(10);
-
-  // if (loading) {
-  //   return <MainLayout>
-  //     <Box style={{
-  //       display: 'flex',
-  //       justifyContent: 'center',
-  //       alignItems: 'center',
-  //       minHeight: '768px',
-  //     }}>
-  //       <React.Fragment>
-  //         <CircularProgressWithLabel value={progress} />
-  //         <Typography style={{ marginLeft: "16px" }}>กำลังโหลดกรุณารอสักครู่</Typography>
-  //       </React.Fragment>
-  //     </Box>
-  //   </MainLayout>
-  // }
 
   const handleSearchInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -297,7 +240,7 @@ const ProductTest = ({ }: Props) => {
                 value={searchTerm}
                 onChange={handleSearchInputChange}
                 fullWidth
-                style={{ height: '100%' }}
+                style={{ height: "64px"  }}
               />
             </Grid>
             <Grid item xs={12} md={2}>
@@ -305,7 +248,7 @@ const ProductTest = ({ }: Props) => {
                 variant="outlined"
                 onClick={handleOpenModal}
                 fullWidth
-                style={{ height: '100%' }}
+                style={{ height: "64px" }}
               >
                 {selectedCategory && selectedCategory.name !== ""
                   ? selectedCategory.name
@@ -317,7 +260,7 @@ const ProductTest = ({ }: Props) => {
                 variant="outlined"
                 onClick={handleOpenColorSchemeModal}
                 fullWidth
-                style={{ height: '100%' }}
+                style={{ height: "64px"  }}
               >
                 {selectedColorScheme && selectedColorScheme.nameTH !== ""
                   ? selectedColorScheme.nameTH
@@ -331,7 +274,7 @@ const ProductTest = ({ }: Props) => {
                   // color="secondary"
                   onClick={handleClearFilters}
                   fullWidth
-                  style={{ height: '100%' }}
+                  style={{ height: "64px" }}
                 >
                   ล้างตัวเลือก
                 </Button> : <Button
@@ -339,7 +282,7 @@ const ProductTest = ({ }: Props) => {
                   color="secondary"
                   onClick={handleClearFilters}
                   fullWidth
-                  style={{ height: '100%' }}
+                  style={{ height: "64px" }}
                 >
                   ล้างตัวเลือก
                 </Button>
@@ -352,25 +295,9 @@ const ProductTest = ({ }: Props) => {
 
         <ColorSchemeFilterModal />
 
-        {
-          loading ? <Box style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            minHeight: '768px',
-          }}>
-            <React.Fragment>
-            <CircularProgressWithLabel value={progress} />
-            <Typography style={{ marginLeft: "16px" }}>กำลังโหลดข้อมูลกรุณารอสักครู่</Typography>
-            </React.Fragment>
-          </Box>
-           
-          :
-
-
-            <Grid container spacing={2} minHeight={"100vh"}>
+            <Grid container spacing={2} minHeight={"768px"}>
               {currentProducts.length === 0 ? (
-                <Typography variant="h4" style={{ textAlign: "center", margin: "auto" }}>
+                <Typography variant="h4" style={{ textAlign: "center"}}>
                   ไม่พบข้อมูลสินค้า
                 </Typography>
               ) : (
@@ -393,7 +320,7 @@ const ProductTest = ({ }: Props) => {
                           transitionTime={350}
                           swipeable
                           dynamicHeight
-                          width="100%"
+                          width="250px"
                         >
                           {product?.productImages?.map((image: any, index: number) => (
                             <div key={index}>
@@ -466,10 +393,7 @@ const ProductTest = ({ }: Props) => {
                 ))
               )}
             </Grid>
-        }
-
-
-
+    
         {totalPages > 1 && (
           <Box display="flex" justifyContent="center" mt={4}>
             <Pagination count={totalPages} page={currentPage} onChange={(event, value) => setCurrentPage(value)} />

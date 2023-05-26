@@ -44,39 +44,7 @@ import {
 
 
 
-function CircularProgressWithLabel(
-  props: CircularProgressProps & { value: number },
-) {
-  return (
-    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <CircularProgress variant="determinate" {...props} />
-      <Box
-        sx={{
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          position: 'absolute',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography
-          variant="caption"
-          component="div"
-          // color="text.secondary"
-        >{`${Math.round(props.value)}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
-
-
 const GroupItem = () => {
-
-
-
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
   const router = useRouter();
@@ -118,18 +86,6 @@ const GroupItem = () => {
 
   const [groups, setGroups] = useState<any>([]);
 
-  
-  const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = React.useState(10);
-
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
-    }, 800);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
 
   // Function to fetch group data with filters
   useEffect(() => {
@@ -140,7 +96,7 @@ const GroupItem = () => {
           await colorSchemeService.getAllColorScheme();
         setCategories(categoriesPayload);
         setColorSchemes(colorSchemesPayload);
-        setLoading(false)
+   
         // Fetch initial group data without filters
         await fetchGroupData();
       } catch (error) {
@@ -337,7 +293,7 @@ const GroupItem = () => {
                 value={searchTerm}
                 onChange={handleSearchInputChange}
                 fullWidth
-                style={{ height: "100%" }}
+                style={{ height: "64px" }}
               />
             </Grid>
             {/* <Grid item xs={12} md={2}>
@@ -357,7 +313,7 @@ const GroupItem = () => {
                 variant="outlined"
                 onClick={handleOpenColorSchemeModal}
                 fullWidth
-                style={{ height: "100%" }}
+                style={{ height: "64px" }}
               >
                 {selectedColorScheme && selectedColorScheme.nameTH !== ""
                   ? selectedColorScheme.nameTH
@@ -371,7 +327,7 @@ const GroupItem = () => {
                   color="primary"
                   onClick={handleClearFilters}
                   fullWidth
-                  style={{ height: "100%" }}
+                  style={{ height: "64px" }}
                 >
                   ล้างตัวเลือก
                 </Button>
@@ -381,7 +337,7 @@ const GroupItem = () => {
                   // color="secondary"
                   onClick={handleClearFilters}
                   fullWidth
-                  style={{ height: "100%" }}
+                  style={{ height: "64px" }}
                 >
                   ล้างตัวเลือก
                 </Button>
@@ -435,19 +391,7 @@ const GroupItem = () => {
             </Grid>
             <Divider />
             
-{
-     loading ? <Box style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '768px',
-    }}>
-      <React.Fragment>
-      <CircularProgressWithLabel value={progress} />
-      <Typography style={{ marginLeft: "16px" }}>กำลังโหลดข้อมูลกรุณารอสักครู่</Typography>
-      </React.Fragment>
-    </Box>
-     :
+
 
      
             <Box p={4}>
@@ -707,7 +651,7 @@ const GroupItem = () => {
                
               ))} */}
             </Box>
-}
+
 
           </Paper>
         </Container>
