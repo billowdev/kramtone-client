@@ -292,26 +292,6 @@ function UserPanelProfile({
 
             <Grid item md={6}>
               <Box style={{ marginTop: 16 }}>
-                <FormLabel htmlFor="phone" style={{ fontWeight: "bold" }}>
-                  ชื่อผู้ใช้สำหรับเข้าสู่ระบบ (ไม่สามารถแก้ไขได้)
-
-                </FormLabel>
-                <Field
-                  style={{ marginTop: 8 }}
-                  fullWidth
-                  component={TextField}
-                  defaultValue={userPayload.username}
-                  name="username"
-                  disabled
-                  // onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('phone', event.target.value)}
-                  type="text"
-                  label="ชื่อผู้ใช้"
-                />
-              </Box>
-            </Grid>
-
-            <Grid item md={6}>
-              <Box style={{ marginTop: 16 }}>
                 <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
                   อีเมล
 
@@ -330,6 +310,28 @@ function UserPanelProfile({
               </Box>
             </Grid>
 
+
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="phone" style={{ fontWeight: "bold" }}>
+                  ชื่อผู้ใช้สำหรับเข้าสู่ระบบ (ไม่สามารถแก้ไขได้)
+
+                </FormLabel>
+                <Field
+                  style={{ marginTop: 8 }}
+                  fullWidth
+                  component={TextField}
+                  defaultValue={userPayload.username}
+                  name="username"
+                  disabled
+                  // onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('phone', event.target.value)}
+                  type="text"
+                  label="ชื่อผู้ใช้"
+                />
+              </Box>
+            </Grid>
+
+           
 
             <Typography style={{ marginTop: 24 }}>หมายเหตุ : หากต้องการเปลี่ยนรหัสผ่าน ให้กรอกข้อมูลด้านล่าง หากไม่ต้องการสามารถเว้นว่างได้</Typography>
 

@@ -128,7 +128,88 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
         <Card>
           <CardContent sx={{ padding: 4 }}>
        
+          
+     
+     
             <Grid container spacing={2} style={{ marginTop: 16 }}>
+            <Grid item sm={6}>
+            <Box style={{ marginTop: 3 }}>
+              <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+                ชื่อ
+                <span style={{ color: "red" }}>*</span>
+              </FormLabel>
+
+              <Field
+                style={{ marginTop: 16 }}
+                fullWidth
+                component={TextField}
+                name="name"
+                type="text"
+                label="กรุณากรอก ชื่อ"
+              />
+            </Box>
+            </Grid>
+
+            <Grid item sm={6}>
+            <Box style={{ marginTop: 3 }}>
+              <FormLabel htmlFor="surname" style={{ fontWeight: "bold" }}>
+                นามสกุล
+                <span style={{ color: "red" }}>*</span>
+              </FormLabel>
+              <Field
+                style={{ marginTop: 16 }}
+                fullWidth
+                component={TextField}
+                name="surname"
+                type="text"
+                label="กรุณากรอก นามสกุล"
+              />
+            </Box>
+            </Grid>
+</Grid>
+
+<Grid container spacing={2} style={{ marginTop: 16 }}>
+
+          <Grid item sm={6}>
+          <Box style={{ marginTop: 3 }}>
+              <FormLabel htmlFor="phone" style={{ fontWeight: "bold" }}>
+                เบอร์โทร
+                <span style={{ color: "red" }}>*</span>
+              </FormLabel>
+
+              <Field
+                style={{ marginTop: 16 }}
+                fullWidth
+                component={TextField}
+                maxLength="10"
+                name="phone"
+                type="text"
+                label="กรุณากรอก เบอร์โทร"
+                required
+              />
+            </Box>
+            </Grid>
+          
+            <Grid item sm={6}>
+           <Box style={{ marginTop: 3 }}>
+              <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
+                อีเมล
+                <span style={{ color: "red" }}>*</span>
+              </FormLabel>
+              <Field
+                style={{ marginTop: 16 }}
+                maxLength="120"
+                fullWidth
+                component={TextField}
+                name="email"
+                type="text"
+                label="กรุณากรอก อีเมล"
+              />
+            </Box>
+            </Grid>
+  </Grid>
+
+  <Grid container spacing={2} style={{ marginTop: 16 }}>
             <Grid item sm={6}>
             <Box style={{ marginTop: 3 }}>
               <FormLabel htmlFor="username" style={{ fontWeight: "bold" }}>
@@ -148,25 +229,9 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
               />
             </Box>
 </Grid>
-           <Grid item sm={6}>
-           <Box style={{ marginTop: 3 }}>
-              <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
-                อีเมล
-                <span style={{ color: "red" }}>*</span>
-              </FormLabel>
-              <Field
-                style={{ marginTop: 16 }}
-                maxLength="120"
-                fullWidth
-                component={TextField}
-                name="email"
-                type="text"
-                label="กรุณากรอก อีเมล"
-              />
-            </Box>
-            </Grid>
-</Grid>
-            <Grid item>
+      
+
+<Grid item sm={6}>
               <Box style={{ marginTop: 3 }}>
             
               <FormLabel htmlFor="role" style={{ fontWeight: "bold" }}>
@@ -219,64 +284,10 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
 
               </Box>
             </Grid>
-     
-     
-            <Grid container spacing={2} style={{ marginTop: 16 }}>
-            <Grid item sm={6}>
-            <Box style={{ marginTop: 3 }}>
-              <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
-                ชื่อ
-                <span style={{ color: "red" }}>*</span>
-              </FormLabel>
 
-              <Field
-                style={{ marginTop: 16 }}
-                fullWidth
-                component={TextField}
-                name="name"
-                type="text"
-                label="กรุณากรอก ชื่อ"
-              />
-            </Box>
-            </Grid>
-
-            <Grid item sm={6}>
-            <Box style={{ marginTop: 3 }}>
-              <FormLabel htmlFor="surname" style={{ fontWeight: "bold" }}>
-                นามสกุล
-                <span style={{ color: "red" }}>*</span>
-              </FormLabel>
-              <Field
-                style={{ marginTop: 16 }}
-                fullWidth
-                component={TextField}
-                name="surname"
-                type="text"
-                label="กรุณากรอก นามสกุล"
-              />
-            </Box>
-            </Grid>
 </Grid>
-          <Grid item sm={6}>
-          <Box style={{ marginTop: 3 }}>
-              <FormLabel htmlFor="phone" style={{ fontWeight: "bold" }}>
-                เบอร์โทร
-                <span style={{ color: "red" }}>*</span>
-              </FormLabel>
-
-              <Field
-                style={{ marginTop: 16 }}
-                fullWidth
-                component={TextField}
-                maxLength="10"
-                name="phone"
-                type="text"
-                label="กรุณากรอก เบอร์โทร"
-                required
-              />
-            </Box>
-            </Grid>
           
+
             <Grid container spacing={2} style={{ marginTop: 16 }}>
             <Grid item sm={6}>
        
@@ -326,7 +337,7 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
            
             </Grid>
 
-            <Box style={{ marginTop: 3 }}>
+            <Box style={{ marginTop: 16 }}>
                 <FormLabel htmlFor="activated" style={{ fontWeight: "bold" }}>
                   สถานะการยืนยันตัวตน
                   <span style={{ color: "red" }}>*</span>
