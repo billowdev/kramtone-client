@@ -179,7 +179,7 @@ const MainPage = ({}: Props) => {
             <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
               <Card
                 key={product.id}
-                style={{ padding: "20px", margin: "20px", maxWidth: "345" }}
+                style={{ padding: "20px", margin: "20px", maxWidth: "340px", minWidth: "340px", minHeight: "600px", maxHeight: "600px" }}
               >
                 <CardContent>
                   <Carousel

@@ -61,13 +61,13 @@ function GroupMapPage({ }: Props) {
         variant="outlined"
         color="primary"
         onClick={handleBackButtonClick}
-     
+        style={{marginTop: 32}}
       >
         ย้อนกลับ
       </Button>
     </Grid>
     </Grid>
-        <Paper elevation={3} style={{ padding: 2, marginTop: 16 }}>
+        <Paper elevation={3} style={{ padding: 2, marginTop: 16, marginBottom: 64 }}>
           <Grid
             container
             spacing={3}
