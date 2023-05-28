@@ -377,13 +377,13 @@ const AddProductForm = ({ accessToken, gid }: AddProductFormProps) => {
 										sx={{
 											fontWeight: 'bold', alignSelf: 'center',
 										}}
-									> หน้าจัดการข้อมูลสินค้า</Typography>
+									> หน้าเพิ่มสินค้า</Typography>
 								) : (
 									<Typography
 										variant='h5' sx={{
 											fontWeight: 'bold', alignSelf: 'center',
 										}}
-									> จัดการข้อมูลสินค้า</Typography>
+									> หน้าเพิ่มสินค้า</Typography>
 								)}
 							</React.Fragment>
 						</Paper>
