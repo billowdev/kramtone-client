@@ -489,7 +489,7 @@ const NaturalColorTonesPage = () => {
                 </LinkedinShareButton>
               </Box>
               <Button variant="contained" color="primary" onClick={handleBackButtonClick}>
-                กลับสู่ก่อนหน้า
+                ย้อนกลับ
               </Button>
             </Box>
           </React.Fragment>

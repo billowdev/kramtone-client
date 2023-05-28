@@ -107,7 +107,7 @@ The Management system for connecting color scheme of natural indigo dye with ind
               color="primary"
               onClick={handleBackButtonClick}
             >
-              กลับสู่ก่อนหน้า
+              ย้อนกลับ
             </Button>
           </Box>
         </ContentPaper>
