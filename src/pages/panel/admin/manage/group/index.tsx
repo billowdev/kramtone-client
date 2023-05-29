@@ -98,31 +98,31 @@ const useStyles = makeStyles({
 });
 
 
-const CustomToolbar: FunctionComponent<{
-  setFilterButtonEl: Dispatch<
-    SetStateAction<HTMLButtonElement | null>
-  >;
-}> = ({ setFilterButtonEl }) => (
-  <GridToolbarContainer>
-    <GridToolbarColumnsButton />
-    <GridToolbarDensitySelector />
-    <GridToolbarFilterButton ref={setFilterButtonEl} />
-    <Link href="/panel/admin/manage/category/add" passHref>
-      <Button
-        variant="contained"
-        color="primary"
-        aria-label="add"
-        sx={{
-          position: "absolute",
-          top: 10,
-          right: 10,
-        }}
-      >
-        <AddIcon />
-      </Button>
-    </Link>
-  </GridToolbarContainer>
-);
+// const CustomToolbar: FunctionComponent<{
+//   setFilterButtonEl: Dispatch<
+//     SetStateAction<HTMLButtonElement | null>
+//   >;
+// }> = ({ setFilterButtonEl }) => (
+//   <GridToolbarContainer>
+//     <GridToolbarColumnsButton />
+//     <GridToolbarDensitySelector />
+//     <GridToolbarFilterButton ref={setFilterButtonEl} />
+//     <Link href="/panel/admin/manage/category/add" passHref>
+//       <Button
+//         variant="contained"
+//         color="primary"
+//         aria-label="add"
+//         sx={{
+//           position: "absolute",
+//           top: 10,
+//           right: 10,
+//         }}
+//       >
+//         <AddIcon />
+//       </Button>
+//     </Link>
+//   </GridToolbarContainer>
+// );
 
 
 
@@ -315,9 +315,9 @@ function AdminPanelManageGroup({}: Props) {
                   sx={{ backgroundColor: "white",  width: "100%", height: "100%", minHeight: "200px" }}
                   rows={groupData.groupDataArray ?? []}
                   columns={columns}
-                  components={{
-                    Toolbar: CustomToolbar,
-                  }}
+                  // components={{
+                  //   Toolbar: CustomToolbar,
+                  // }}
                   componentsProps={{
                     panel: {
                       anchorEl: filterButtonEl,
