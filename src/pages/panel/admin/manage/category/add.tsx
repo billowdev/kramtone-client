@@ -149,7 +149,10 @@ const AdminPanelAddCategory = ({ accessToken }: Props) => {
               เพิ่ม
             </Button>
             <Link href="/panel/admin/manage/category" passHref>
-              <Button variant="outlined" fullWidth>
+              <Button 
+              variant="outlined"
+              //  fullWidth
+               >
                 ยกเลิก
               </Button>
             </Link>

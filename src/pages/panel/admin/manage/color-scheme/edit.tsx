@@ -170,7 +170,7 @@ const AdminPanelEditColorScheme = ({ colorScheme, accessToken }: Props) => {
             </Button>
             <Button
               variant="outlined"
-              fullWidth
+              // fullWidth
               onClick={() => router.back()}
             >
               ยกเลิก

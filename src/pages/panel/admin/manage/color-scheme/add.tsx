@@ -167,13 +167,13 @@ const AdminPanelAddColorScheme = ({ }: Props) => {
                 variant="contained"
                 color="primary"
                 type="submit"
-                sx={{ marginRight: 1 }}
+                style={{ marginRight: 1 }}
               >
                 เพิ่ม
               </Button>
               <Button
                 variant="outlined"
-                fullWidth
+                // fullWidth
                 onClick={() => router.back()}
               >
                 ยกเลิก
