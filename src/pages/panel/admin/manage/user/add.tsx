@@ -160,6 +160,8 @@ const AdminPanelEditUser = ({}: Props) => {
               <Field
                 style={{ marginTop: 16 }}
                 fullWidth
+                inputProps={{ maxLength: 100 }}
+
                 component={TextField}
                 name="name"
                 type="text"
@@ -176,6 +178,7 @@ const AdminPanelEditUser = ({}: Props) => {
               </FormLabel>
               <Field
                 style={{ marginTop: 16 }}
+                inputProps={{ maxLength: 100 }}
                 fullWidth
                 component={TextField}
                 name="surname"
@@ -202,6 +205,7 @@ const AdminPanelEditUser = ({}: Props) => {
                 maxLength="10"
                 name="phone"
                 type="text"
+                inputProps={{ maxLength: 10 }}
                 label="กรุณากรอก เบอร์โทร"
                 required
               />
@@ -238,6 +242,7 @@ const AdminPanelEditUser = ({}: Props) => {
               <Field
                 style={{ marginTop: 16 }}
                 maxLength="64"
+                inputProps={{ maxLength: 64 }}
                 fullWidth
                 component={TextField}
                 name="username"
@@ -322,6 +327,8 @@ const AdminPanelEditUser = ({}: Props) => {
              type="text"
              label="รหัสผ่าน"
              maxLength={64}
+             inputProps={{ maxLength: 64 }}
+
              required
            />
               </Box>

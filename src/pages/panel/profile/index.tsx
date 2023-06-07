@@ -312,12 +312,48 @@ function UserPanelProfile({
               </Box>
             </Grid>
 
-
             <Grid item md={6}>
               <Box style={{ marginTop: 16 }}>
-                <FormLabel htmlFor="phone" style={{ fontWeight: "bold" }}>
+                <FormLabel htmlFor="role" style={{ fontWeight: "bold" }}>
+                  บทบาท (ไม่สามารถแก้ไขได้)
+                </FormLabel>
+                <Field
+                  style={{ marginTop: 8 }}
+                  fullWidth
+                  component={TextField}
+                  defaultValue={userPayload.role === "member" ? "สมาชิก":"ผู้ดูแลระบบ"}
+                  name="role"
+                  disabled
+                  inputProps={{ maxLength: 64 }}
+                  // onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('phone', event.target.value)}
+                  type="text"
+                  label="บทบาท"
+                />
+              </Box>
+            </Grid>
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="activated" style={{ fontWeight: "bold" }}>
+                  สถานะบัญชี (ไม่สามารถแก้ไขได้)
+                </FormLabel>
+                <Field
+                  style={{ marginTop: 8 }}
+                  fullWidth
+                  component={TextField}
+                  defaultValue={userPayload.activated ? "ถูกยืนยันแล้ว":"รอการยืนยัน"}
+                  name="activated"
+                  disabled
+                  inputProps={{ maxLength: 64 }}
+                  // onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('phone', event.target.value)}
+                  type="text"
+                  label="สถานะบัญชี"
+                />
+              </Box>
+            </Grid>
+            <Grid item md={6}>
+              <Box style={{ marginTop: 16 }}>
+                <FormLabel htmlFor="username" style={{ fontWeight: "bold" }}>
                   ชื่อผู้ใช้สำหรับเข้าสู่ระบบ (ไม่สามารถแก้ไขได้)
-
                 </FormLabel>
                 <Field
                   style={{ marginTop: 8 }}
