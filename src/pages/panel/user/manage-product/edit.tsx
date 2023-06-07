@@ -1,6 +1,6 @@
 import { Formik, Form, Field, FieldArray, FormikProps } from "formik";
 import { TextField, Button, Box, Paper, CircularProgress } from "@mui/material";
-import { Card, CardContent, CardActions, Typography, Grid} from "@mui/material";
+import { Card, CardContent, CardActions, Typography, Grid } from "@mui/material";
 import Link from "next/link";
 import Layout from "@/components/Layouts/Layout";
 import withAuth from "@/components/withAuth";
@@ -74,7 +74,7 @@ const AddProductForm = ({
   });
   const [modalOpen, setModalOpen] = useState(false);
   const theme = useTheme();
-	const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
+  const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
 
   const [selectedColorScheme, setSelectedColorScheme] = useState<any>({
     id: product?.colorScheme?.id,
@@ -93,7 +93,7 @@ const AddProductForm = ({
   const [selectedImage, setSelectedImage] = useState(null);
   const totalImages = existingImages.length + images.length;
 
-const disableAddImage = totalImages === 3;
+  const disableAddImage = totalImages === 3;
 
   // Pass the product object as a prop to this component
 
@@ -105,8 +105,8 @@ const disableAddImage = totalImages === 3;
     recommend: product?.recommend,
     images: undefined,
   };
-const [publish, setPublish] = useState<boolean>(product?.publish!)
-const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
+  const [publish, setPublish] = useState<boolean>(product?.publish!)
+  const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
 
   const [updateValue, setUpdateValue] = useState<ProductPayload>(initialValues);
 
@@ -126,6 +126,8 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
   };
 
   const handleDeleteImage = (index: number) => {
+    console.log(index)
+
     const newPreviewImages = [...previewImages];
     newPreviewImages.splice(index, 1);
     setPreviewImages(newPreviewImages);
@@ -134,48 +136,50 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
     newImages.splice(index, 1);
     setImages(newImages);
   };
+
   const [deleteImage, setDeleteImage] = useState<any>({});
   const [openDeleteConfirmationDialog, setOpenDeleteConfirmationDialog] = useState(false)
 
-    const handleBackButtonClick = () => {
+  const handleBackButtonClick = () => {
     router.back();
   };
-  
-  const handleOpenDeleteConfirmationDialog = ()=>{
+
+  const handleOpenDeleteConfirmationDialog = () => {
     setOpenDeleteConfirmationDialog(true)
-    
+
   }
-  const handleCloseDeleteConfirmationDialog = ()=>{
+  const handleCloseDeleteConfirmationDialog = () => {
     setOpenDeleteConfirmationDialog(false)
   }
-  const showDeleteConfirmDialog = () =>{
-   return (
-    <Dialog open={openDeleteConfirmationDialog}>
-		<DialogTitle>ลบรูปภาพ</DialogTitle>
-		<DialogContent>
-		  <Typography>คุณต้องการลบรูปภาพ</Typography>
-		</DialogContent>
-		<DialogActions>
-		  <Button variant="outlined" onClick={handleCloseDeleteConfirmationDialog}>
-			ยกเลิก
-		  </Button>
-		  <Button variant="contained" onClick={handleDeleteExistImage} autoFocus>
-			ลบ
-		  </Button>
-		</DialogActions>
-	  </Dialog>
-   )
-  } 
- const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const showDeleteConfirmDialog = () => {
+    return (
+      <Dialog open={openDeleteConfirmationDialog}>
+        <DialogTitle>ลบรูปภาพ</DialogTitle>
+        <DialogContent>
+          <Typography>คุณต้องการลบรูปภาพ</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={handleCloseDeleteConfirmationDialog}>
+            ยกเลิก
+          </Button>
+          <Button variant="contained" onClick={handleDeleteExistImage} autoFocus>
+            ลบ
+          </Button>
+        </DialogActions>
+      </Dialog>
+    )
+  }
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   const handleDeleteExistImage = async () => {
-    const { id } = deleteImage
-    await dispatch(deleteProductImageAction({ productId: product?.id, id, accessToken, gid }));
-    const updatedImages = existingImages.filter((image: any) => image.id !== id);
+    console.log(deleteImage)
+      const deleteImageId: string = deleteImage?.id as string
+    await dispatch(deleteProductImageAction({ productId: product?.id, id:deleteImageId, accessToken, gid }));
+    const updatedImages = existingImages.filter((image: any) => image.id !== deleteImage.id);
     setExistingImages(updatedImages);
     setOpenDeleteConfirmationDialog(false)
     setShowSuccessAlert(true);
-   
+
   };
 
 
@@ -192,7 +196,7 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
     setModalOpen(false);
   };
 
-  
+
   const handleSelectColorScheme = (colorScheme: ColorSchemePayload) => {
     setSelectedColorScheme(colorScheme);
     setColorSchemeModalOpen(false);
@@ -214,7 +218,7 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
 
   const handleConfirmEditProduct = async () => {
     setShowConfirmation(false);
-   
+
     const values = updateValue
     try {
       const formData = new FormData();
@@ -239,7 +243,7 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
       );
       try {
         setIsLoading(true); // Set the loading state to true to show the progress indicator
-  
+
         const updateStatus = await dispatch(
           updateProductAction({
             id: product?.id, // pass the ID of the product being edited as a parameter
@@ -247,7 +251,7 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
             accessToken,
           })
         );
-  
+
         if (updateStatus.meta.requestStatus === "fulfilled") {
           toast.success("แก้ไขข้อมูลสินค้าสำเร็จ");
           // console.log(updateStatus)
@@ -262,14 +266,14 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
       }
 
 
-      
+
     } catch (error) {
       toast.error("แก้ไขข้อมูลสินค้าไม่สำเร็จ");
       console.error("An error occurred:", error);
-    
+
     }
 
-    
+
   };
 
   const handleCancelEditProduct = () => {
@@ -321,7 +325,7 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
           </List>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseModal}>Cancel</Button>
+          <Button onClick={handleCloseModal}>ยกเลิก</Button>
         </DialogActions>
       </Dialog>
     );
@@ -336,31 +340,31 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
             {colorschemes &&
               colorschemes.map((colorscheme: any) => (
                 <ListItem
-                button
-                key={colorscheme.id}
-                onClick={() => handleSelectColorScheme(colorscheme)}
-              >
-                <ListItemText
-                  primary={colorscheme.nameTH}
-                  secondary={colorscheme.id}
-                />
-                <Box
-                  sx={{
-                    width: 50,
-                    height: 50,
-                    backgroundColor: colorscheme.hex,
-                    borderRadius: "50%",
-                    border: "1px solid black",
-                    marginLeft: 2,
-                  }}
-                />
-              </ListItem>
-              
+                  button
+                  key={colorscheme.id}
+                  onClick={() => handleSelectColorScheme(colorscheme)}
+                >
+                  <ListItemText
+                    primary={colorscheme.nameTH}
+                    secondary={colorscheme.id}
+                  />
+                  <Box
+                    sx={{
+                      width: 50,
+                      height: 50,
+                      backgroundColor: colorscheme.hex,
+                      borderRadius: "50%",
+                      border: "1px solid black",
+                      marginLeft: 2,
+                    }}
+                  />
+                </ListItem>
+
               ))}
           </List>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseColorSchemeModal}>Cancel</Button>
+          <Button onClick={handleCloseColorSchemeModal}>ยกเลิก</Button>
         </DialogActions>
       </Dialog>
     );
@@ -368,203 +372,203 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
 
   const showForm = ({
     values,
-  handleChange,
-  handleBlur,
-  isSubmitting,
-  setFieldValue,
+    handleChange,
+    handleBlur,
+    isSubmitting,
+    setFieldValue,
   }: FormikProps<ProductPayload>) => {
     return (
       <Form>
         <Card>
           <CardContent sx={{ padding: 4 }}>
 
-          <Grid item md={6}>
+            <Grid item md={6}>
               <Box style={{ marginTop: 16 }}>
                 <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
-                ชื่อสินค้า
+                  ชื่อสินค้า
                   <span style={{ color: "red" }}>*</span>
                 </FormLabel>
-          <Field
-		  style={{ marginTop: 8 }}
-		  fullWidth
-		  as={TextField}
-		  name="name"
-		  type="text"
-		  label="กรุณากรอก ชื่อสินค้า"
-		  value={values.name}
-		  onChange={handleChange}
-		  onBlur={handleBlur}
-		/>
-		</Box>
-</Grid>
+                <Field
+                  style={{ marginTop: 8 }}
+                  fullWidth
+                  as={TextField}
+                  name="name"
+                  type="text"
+                  label="กรุณากรอก ชื่อสินค้า"
+                  value={values.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </Box>
+            </Grid>
 
-<Grid item md={6}>
+            <Grid item md={6}>
               <Box style={{ marginTop: 16 }}>
                 <FormLabel htmlFor="desc" style={{ fontWeight: "bold" }}>
-                รายละเอียดสินค้า
+                  รายละเอียดสินค้า
                   <span style={{ color: "red" }}>*</span>
                 </FormLabel>
-		<Field
-		  style={{ marginTop: 8 }}
-		  fullWidth
-		  as={TextField}
-		  name="desc"
-		  type="string"
-		  label="กรุณากรอก รายละเอียดสินค้า"
-		  value={values.desc}
-		  onChange={handleChange}
-		  onBlur={handleBlur}
-		/>
-		</Box>
-</Grid>
-<Grid item md={6}>
+                <Field
+                  style={{ marginTop: 8 }}
+                  fullWidth
+                  as={TextField}
+                  name="desc"
+                  type="string"
+                  label="กรุณากรอก รายละเอียดสินค้า"
+                  value={values.desc}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </Box>
+            </Grid>
+            <Grid item md={6}>
               <Box style={{ marginTop: 16 }}>
                 <FormLabel htmlFor="price" style={{ fontWeight: "bold" }}>
-                ราคาสินค้า
+                  ราคาสินค้า
                   <span style={{ color: "red" }}>*</span>
                 </FormLabel>
-		<Field
-		  style={{ marginTop: 8 }}
-		  fullWidth
-		  as={TextField}
-		  name="price"
-		  type="number"
-		  label="กรุณากรอก ราคาสินค้า"
-		  value={values?.price}
-		  onChange={handleChange}
-		  onBlur={handleBlur}
-		/>
-			</Box>
-</Grid>
-           
-    <Grid container direction="row">
-  <Grid item>
-    <Field
-      component={CheckboxWithLabel}
-      name="publish"
-      id="publish-checkbox"
-      checked={publish}
-      onChange={() => {
-        setPublish(!publish);
-      }}
-      Label={{
-        label: 'แสดงสินค้า',
-      }}
-    />
-  </Grid>
+                <Field
+                  style={{ marginTop: 8 }}
+                  fullWidth
+                  as={TextField}
+                  name="price"
+                  type="number"
+                  label="กรุณากรอก ราคาสินค้า"
+                  value={values?.price}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </Box>
+            </Grid>
 
-  <Grid item>
-    <Field
-      component={CheckboxWithLabel}
-      name="recommend"
-      id="recommend-checkbox"
-      checked={recommend}
-      onChange={() => {
-        setRecommend(!recommend);
-      }}
-      Label={{
-        label: 'สินค้าแนะนำ',
-      }}
-    />
-  </Grid>
-</Grid>
+            <Grid container direction="row">
+              <Grid item>
+                <Field
+                  component={CheckboxWithLabel}
+                  name="publish"
+                  id="publish-checkbox"
+                  checked={publish}
+                  onChange={() => {
+                    setPublish(!publish);
+                  }}
+                  Label={{
+                    label: 'แสดงสินค้า',
+                  }}
+                />
+              </Grid>
 
-
-    <Box mt={2}>
-        <Button variant="outlined" onClick={handleOpenModal}>
-          {selectedCategory && selectedCategory.name !== ""
-            ? selectedCategory.name
-            : "เลือกประเภทสินค้า"}
-        </Button>
-      </Box>
-      <Box mt={2}>
-        <Button variant="outlined" onClick={handleOpenColorSchemeModal}>
-          {selectedColorScheme ? (
-            <Box
-              sx={{
-                width: 50,
-                height: 50,
-                backgroundColor: selectedColorScheme.hex,
-                borderRadius: "50%",
-                border: "1px solid black",
-                marginRight: 2,
-              }}
-            />
-          ) : null}
-          {selectedColorScheme
-            ? `${selectedColorScheme.nameTH} / ${selectedColorScheme.nameEN} / ${selectedColorScheme.id}  `
-            : "เลือกโทนสี"}
-        </Button>
-      </Box>
-
-      <Box mt={2}>
-       
-    
-          <label
-            htmlFor="files"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              cursor: "pointer",
-            }}
-          >
-            {existingImages?.map((image: any) => (
-              <div key={image.id}>
-                {showPreviewImage({ image: image.image })}
-              
-                <Button onClick={() => {
-                  setDeleteImage(image)
-                  handleOpenDeleteConfirmationDialog()
-                }
-                } style={{ background: "none", border: "none", cursor: "pointer" }}>
-                  <Delete style={{ fontSize: 20 }} />
-                </Button>
-
-              </div>
-            ))}
-          </label>
-
-      </Box>
-
-          
-  
+              <Grid item>
+                <Field
+                  component={CheckboxWithLabel}
+                  name="recommend"
+                  id="recommend-checkbox"
+                  checked={recommend}
+                  onChange={() => {
+                    setRecommend(!recommend);
+                  }}
+                  Label={{
+                    label: 'สินค้าแนะนำ',
+                  }}
+                />
+              </Grid>
+            </Grid>
 
 
-{isLoading ? (
-                    <CircularProgress /> // Render the circular progress indicator while loading is true
-                  ) : (
-                    <FieldArray
-                    name="images"
-                    render={(arrayHelpers) => (
-                      <div style={{ marginTop: 16 }}>
-                        <Grid container spacing={2}>
-                          {previewImages.map((image:any, index:number) => (
-                            <Grid item key={index} xs={12} sm={6} md={4}>
-                              <Paper elevation={3}>
-                                <Box position="relative">
-                                {showPreviewImage({file_obj: image})}
-                                  {/* <Image src={productImageURL(image)} alt="preview" width={250} height={250} /> */}
-                                  <Box
-                                    position="absolute"
-                                    top={0}
-                                    right={0}
-                                    // zIndex="tooltip"
-                                    bgcolor="rgba(0, 0, 0, 0.5)"
-                                    borderRadius="0 0 0 5px"
-                                  >
-                                      
-                                  <Button onClick={() => handleDeleteImage(image)} style={{ background: "none", border: "none", cursor: "pointer" }}>
-                                    <Delete style={{ fontSize: 20 }} />
-                                  </Button>
-                                  </Box>
-                                </Box>
-                              </Paper>
-                            </Grid>
-                          ))}
-                  
-                           {!disableAddImage && (
-                           
-                          <Grid item xs={12} sm={6} md={4}>
+            <Box mt={2}>
+              <Button variant="outlined" onClick={handleOpenModal}>
+                {selectedCategory && selectedCategory.name !== ""
+                  ? selectedCategory.name
+                  : "เลือกประเภทสินค้า"}
+              </Button>
+            </Box>
+            <Box mt={2}>
+              <Button variant="outlined" onClick={handleOpenColorSchemeModal}>
+                {selectedColorScheme ? (
+                  <Box
+                    sx={{
+                      width: 50,
+                      height: 50,
+                      backgroundColor: selectedColorScheme.hex,
+                      borderRadius: "50%",
+                      border: "1px solid black",
+                      marginRight: 2,
+                    }}
+                  />
+                ) : null}
+                {selectedColorScheme
+                  ? `${selectedColorScheme.nameTH} / ${selectedColorScheme.nameEN} / ${selectedColorScheme.id}  `
+                  : "เลือกโทนสี"}
+              </Button>
+            </Box>
+
+            <Box mt={2}>
+
+
+              <label
+                htmlFor="files"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+              >
+                {existingImages?.map((image: any) => (
+                  <div key={image.id}>
+                    {showPreviewImage({ image: image.image })}
+
+                    <Button onClick={() => {
+                      setDeleteImage(image)
+                      handleOpenDeleteConfirmationDialog()
+                    }
+                    } style={{ background: "none", border: "none", cursor: "pointer" }}>
+                      <Delete style={{ fontSize: 20 }} />
+                    </Button>
+
+                  </div>
+                ))}
+              </label>
+
+            </Box>
+
+
+
+
+
+            {isLoading ? (
+              <CircularProgress /> // Render the circular progress indicator while loading is true
+            ) : (
+              <FieldArray
+                name="images"
+                render={(arrayHelpers) => (
+                  <div style={{ marginTop: 16 }}>
+                    <Grid container spacing={2}>
+                      {previewImages.map((image: any, index: number) => (
+                        <Grid item key={index} xs={12} sm={6} md={4}>
+                          <Paper elevation={3}>
+                            <Box position="relative">
+                              {showPreviewImage({ file_obj: image })}
+                              {/* <Image src={productImageURL(image)} alt="preview" width={250} height={250} /> */}
+                              <Box
+                                position="absolute"
+                                top={0}
+                                right={0}
+                                // zIndex="tooltip"
+                                bgcolor="rgba(0, 0, 0, 0.5)"
+                                borderRadius="0 0 0 5px"
+                              >
+
+                                <Button onClick={() => handleDeleteImage(image)} style={{ background: "none", border: "none", cursor: "pointer" }}>
+                                  <Delete style={{ fontSize: 20 }} />
+                                </Button>
+                              </Box>
+                            </Box>
+                          </Paper>
+                        </Grid>
+                      ))}
+
+                      {!disableAddImage && (
+
+                        <Grid item xs={12} sm={6} md={4}>
                           <label htmlFor="images" style={{ cursor: "pointer" }}>
                             <Box
                               display="flex"
@@ -593,13 +597,13 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
                             />
                           </label>
                         </Grid>
-                          )}
-                  
-                        </Grid>
-                      </div>
-                    )}
-                  />
-                  )}
+                      )}
+
+                    </Grid>
+                  </div>
+                )}
+              />
+            )}
 
           </CardContent>
           <CardActions>
@@ -614,11 +618,11 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
               แก้ไข
             </Button>
             {/* <Link href="/panel/user/manage-product" passHref> */}
-              <Button variant="outlined" fullWidth 
-               onClick={handleBackButtonClick}
-              >
-                ยกเลิก
-              </Button>
+            <Button variant="outlined" fullWidth
+              onClick={handleBackButtonClick}
+            >
+              ยกเลิก
+            </Button>
             {/* </Link> */}
           </CardActions>
         </Card>
@@ -630,85 +634,85 @@ const [recommend, setRecommend] = useState<boolean>(product?.recommend!)
   return (
     <Layout>
 
-<Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-     <Grid container spacing={3}>
-         <Grid item xs={12}>
-         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px'}}>
-         {isSmallDevice ? (
-             <ShoppingBagIcon sx={{fontSize:'1.5rem', marginLeft:'8px'}} />
-           ) : (
-             <ShoppingBagIcon sx={{fontSize:'2.5rem', marginLeft:'16px'}} />
-           )}
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'row', gap: '16px' }}>
+              {isSmallDevice ? (
+                <ShoppingBagIcon sx={{ fontSize: '1.5rem', marginLeft: '8px' }} />
+              ) : (
+                <ShoppingBagIcon sx={{ fontSize: '2.5rem', marginLeft: '16px' }} />
+              )}
 
-          
-         <React.Fragment> 
-           {isSmallDevice ? (
-             <Typography
-            sx={{
-               fontWeight: 'bold',  alignSelf:'center',
-           }}
-             > แก้ไขข้อมูลสินค้า</Typography>
-           ) : (
-             <Typography
-             variant='h5' sx={{
-               fontWeight: 'bold',  alignSelf:'center',
-           }}
-             > แก้ไขข้อมูลสินค้า</Typography>
-           )}
-         </React.Fragment>
-         </Paper>
-       </Grid> 
-       <Grid item xs={12} md={12} lg={12}>
-       <Formik
-        validate={(values) => {
-          let errors: any = {};
-          if (!values.name) errors.name = "กรุณากรอกชื่อสินค้า";
-          return errors;
-        }}
-        initialValues={initialValues!}
-        onSubmit={async (values, { setSubmitting }) => {
-          setUpdateValue(values)
-          handleEditProduct()
-          // handleUpdate(values); // call handleUpdate function for updating the product
-          setSubmitting(false);
-        }}
-      >
-        {(props) => showForm(props)}
-      </Formik>
 
-      {categoryModal()}
-      {colorSchemeModal()}
+              <React.Fragment>
+                {isSmallDevice ? (
+                  <Typography
+                    sx={{
+                      fontWeight: 'bold', alignSelf: 'center',
+                    }}
+                  > แก้ไขข้อมูลสินค้า</Typography>
+                ) : (
+                  <Typography
+                    variant='h5' sx={{
+                      fontWeight: 'bold', alignSelf: 'center',
+                    }}
+                  > แก้ไขข้อมูลสินค้า</Typography>
+                )}
+              </React.Fragment>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={12} lg={12}>
+            <Formik
+              validate={(values) => {
+                let errors: any = {};
+                if (!values.name) errors.name = "กรุณากรอกชื่อสินค้า";
+                return errors;
+              }}
+              initialValues={initialValues!}
+              onSubmit={async (values, { setSubmitting }) => {
+                setUpdateValue(values)
+                handleEditProduct()
+                // handleUpdate(values); // call handleUpdate function for updating the product
+                setSubmitting(false);
+              }}
+            >
+              {(props) => showForm(props)}
+            </Formik>
 
-      <ConfirmationDialog
-        title="ยืนยันการแก้ไขสินค้า"
-        message="คุณต้องการแก้ไขสินค้าใช่หรือไม่ ?"
-        open={showConfirmation}
-        onClose={handleCancelEditProduct}
-        onConfirm={handleConfirmEditProduct}
-      />
-  {showDeleteConfirmDialog()}
-  <Snackbar
-      open={showSuccessAlert}
-      autoHideDuration={6000}
-      onClose={() => setShowSuccessAlert(false)}
-    >
-      <MuiAlert
-        elevation={6}
-        variant="filled"
-        onClose={() => setShowSuccessAlert(false)}
-        severity="success"
-        sx={{ width: '100%' }}
-      >
-        {"ลบข้อมูลเรียบร้อย! รูปภาพของคุณถูกลบเรียบร้อยแล้ว"}
-      </MuiAlert>
-    </Snackbar>
-       </Grid>
-   
-     </Grid>
-   
-   </Container>
+            {categoryModal()}
+            {colorSchemeModal()}
 
-     
+            <ConfirmationDialog
+              title="ยืนยันการแก้ไขสินค้า"
+              message="คุณต้องการแก้ไขสินค้าใช่หรือไม่ ?"
+              open={showConfirmation}
+              onClose={handleCancelEditProduct}
+              onConfirm={handleConfirmEditProduct}
+            />
+            {showDeleteConfirmDialog()}
+            <Snackbar
+              open={showSuccessAlert}
+              autoHideDuration={6000}
+              onClose={() => setShowSuccessAlert(false)}
+            >
+              <MuiAlert
+                elevation={6}
+                variant="filled"
+                onClose={() => setShowSuccessAlert(false)}
+                severity="success"
+                sx={{ width: '100%' }}
+              >
+                {"ลบข้อมูลเรียบร้อย! รูปภาพของคุณถูกลบเรียบร้อยแล้ว"}
+              </MuiAlert>
+            </Snackbar>
+          </Grid>
+
+        </Grid>
+
+      </Container>
+
+
     </Layout>
   );
 };

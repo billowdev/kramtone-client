@@ -64,8 +64,8 @@ export const deleteProduct = async (id: string, accessToken: string): Promise<vo
 	});
 };
 
-export const deleteProductImage = async (productId: string, imageId: string, accessToken: string): Promise<void> => {
-	await httpClient.delete(`/products/${productId}/images/${imageId}`, {
+export const deleteProductImage = async (productId: string, id: string, accessToken: string): Promise<void> => {
+	await httpClient.delete(`/products/${productId}/images/${id}`, {
 		headers: {
 			Authorization: `Bearer ${accessToken}`
 		},
