@@ -324,7 +324,7 @@ const NaturalColorTonesPage = () => {
 
                   <Typography variant='h5' gutterBottom>
                     {group.prefix === 'SK1/SK2'
-                      ? `SK1 - ${group.schemes[0].nameTH} (${group.schemes[0].nameEN}) และ SK2 - ${group.schemes[1].nameTH} (${group.schemes[1].nameEN})`
+                      ? `SK1 - ${group.schemes[0].nameTH} (${group.schemes[0].nameEN}) และ SK2 - ฟ้า (Medium Blue)`
                       : `${group.prefix} - ${group.schemes[0].nameTH} (${group.schemes[0].nameEN})`}
                   </Typography>
 
