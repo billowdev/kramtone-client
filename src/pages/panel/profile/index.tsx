@@ -283,6 +283,7 @@ function UserPanelProfile({
                   defaultValue={userPayload.phone}
                   name="phone"
                   maxLength="10"
+                  inputProps={{ maxLength: 10 }}
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('phone', event.target.value)}
                   type="text"
                   label="เบอร์โทร"
@@ -305,6 +306,7 @@ function UserPanelProfile({
                   type="email"
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('email', event.target.value)}
                   maxLength="120"
+                  inputProps={{ maxLength: 120 }}
                   label="กรุณากรอก อีเมล"
                 />
               </Box>
@@ -324,6 +326,7 @@ function UserPanelProfile({
                   defaultValue={userPayload.username}
                   name="username"
                   disabled
+                  inputProps={{ maxLength: 64 }}
                   // onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFieldValue('phone', event.target.value)}
                   type="text"
                   label="ชื่อผู้ใช้"
