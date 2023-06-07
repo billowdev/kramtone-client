@@ -39,7 +39,7 @@ import {
   RadioGroup,
   FormControl,
   Container,
-  Paper 
+  Paper
 } from "@mui/material";
 
 import PersonIcon from "@mui/icons-material/Person";
@@ -67,7 +67,7 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
   const [openDialog, setOpenDialog] = React.useState<boolean>(false);
   const [updateValue, setUpdateValue] = React.useState<UserPayload>(user!);
   const dispatch = useAppDispatch();
-  const [userRole, setUserRole] = React.useState<String>(user?.role ??  "member");
+  const [userRole, setUserRole] = React.useState<String>(user?.role ?? "member");
   const sheets = new ServerStyleSheets();
   const theme = useTheme();
   const isSmallDevice = useMediaQuery(theme.breakpoints.down("xs"));
@@ -91,7 +91,10 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
     //     return;
     //   }
     // }
-
+    if (password !== passwordConfirmation) {
+      toast.error("รหัสผ่านไม่ตรงกัน");
+      return;
+    }
     const updateData = { ...updateValue, role: userRole, activated, password };
     const updateStatus = await dispatch(updateUser(updateData));
 
@@ -127,117 +130,117 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
       <Form>
         <Card>
           <CardContent sx={{ padding: 4 }}>
-       
-          
-     
-     
+
+
+
+
             <Grid container spacing={2} style={{ marginTop: 16 }}>
-            <Grid item sm={6}>
-            <Box style={{ marginTop: 3 }}>
-              <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
-                ชื่อ
-                <span style={{ color: "red" }}>*</span>
-              </FormLabel>
-
-              <Field
-                style={{ marginTop: 16 }}
-                fullWidth
-                component={TextField}
-                name="name"
-                type="text"
-                label="กรุณากรอก ชื่อ"
-              />
-            </Box>
-            </Grid>
-
-            <Grid item sm={6}>
-            <Box style={{ marginTop: 3 }}>
-              <FormLabel htmlFor="surname" style={{ fontWeight: "bold" }}>
-                นามสกุล
-                <span style={{ color: "red" }}>*</span>
-              </FormLabel>
-              <Field
-                style={{ marginTop: 16 }}
-                fullWidth
-                component={TextField}
-                name="surname"
-                type="text"
-                label="กรุณากรอก นามสกุล"
-              />
-            </Box>
-            </Grid>
-</Grid>
-
-<Grid container spacing={2} style={{ marginTop: 16 }}>
-
-          <Grid item sm={6}>
-          <Box style={{ marginTop: 3 }}>
-              <FormLabel htmlFor="phone" style={{ fontWeight: "bold" }}>
-                เบอร์โทร
-                <span style={{ color: "red" }}>*</span>
-              </FormLabel>
-
-              <Field
-                style={{ marginTop: 16 }}
-                fullWidth
-                component={TextField}
-                maxLength="10"
-                name="phone"
-                type="text"
-                label="กรุณากรอก เบอร์โทร"
-                required
-              />
-            </Box>
-            </Grid>
-          
-            <Grid item sm={6}>
-           <Box style={{ marginTop: 3 }}>
-              <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
-                อีเมล
-                <span style={{ color: "red" }}>*</span>
-              </FormLabel>
-              <Field
-                style={{ marginTop: 16 }}
-                maxLength="120"
-                fullWidth
-                component={TextField}
-                name="email"
-                type="text"
-                label="กรุณากรอก อีเมล"
-              />
-            </Box>
-            </Grid>
-  </Grid>
-
-  <Grid container spacing={2} style={{ marginTop: 16 }}>
-            <Grid item sm={6}>
-            <Box style={{ marginTop: 3 }}>
-              <FormLabel htmlFor="username" style={{ fontWeight: "bold" }}>
-                ชื่อผู้ใช้
-                <span style={{ color: "red" }}>*</span>
-              </FormLabel>
-
-              <Field
-                style={{ marginTop: 16 }}
-                maxLength="64"
-                fullWidth
-                component={TextField}
-                name="username"
-                type="text"
-                label="กรุณากรอก ชื่อผู้ใช้"
-                required
-              />
-            </Box>
-</Grid>
-      
-
-<Grid item sm={6}>
-              <Box style={{ marginTop: 3 }}>
-            
-              <FormLabel htmlFor="role" style={{ fontWeight: "bold" }}>
-                  สถานะ <span style={{ color: "red" }}>*</span>
+              <Grid item sm={6}>
+                <Box style={{ marginTop: 3 }}>
+                  <FormLabel htmlFor="name" style={{ fontWeight: "bold" }}>
+                    ชื่อ
+                    <span style={{ color: "red" }}>*</span>
                   </FormLabel>
-                {/* <div style={{ display: "flex" }}>
+
+                  <Field
+                    style={{ marginTop: 16 }}
+                    fullWidth
+                    component={TextField}
+                    name="name"
+                    type="text"
+                    label="กรุณากรอก ชื่อ"
+                  />
+                </Box>
+              </Grid>
+
+              <Grid item sm={6}>
+                <Box style={{ marginTop: 3 }}>
+                  <FormLabel htmlFor="surname" style={{ fontWeight: "bold" }}>
+                    นามสกุล
+                    <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+                  <Field
+                    style={{ marginTop: 16 }}
+                    fullWidth
+                    component={TextField}
+                    name="surname"
+                    type="text"
+                    label="กรุณากรอก นามสกุล"
+                  />
+                </Box>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={2} style={{ marginTop: 16 }}>
+
+              <Grid item sm={6}>
+                <Box style={{ marginTop: 3 }}>
+                  <FormLabel htmlFor="phone" style={{ fontWeight: "bold" }}>
+                    เบอร์โทร
+                    <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+
+                  <Field
+                    style={{ marginTop: 16 }}
+                    fullWidth
+                    component={TextField}
+                    maxLength="10"
+                    name="phone"
+                    type="text"
+                    label="กรุณากรอก เบอร์โทร"
+                    required
+                  />
+                </Box>
+              </Grid>
+
+              <Grid item sm={6}>
+                <Box style={{ marginTop: 3 }}>
+                  <FormLabel htmlFor="email" style={{ fontWeight: "bold" }}>
+                    อีเมล
+                    <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+                  <Field
+                    style={{ marginTop: 16 }}
+                    maxLength="120"
+                    fullWidth
+                    component={TextField}
+                    name="email"
+                    type="text"
+                    label="กรุณากรอก อีเมล"
+                  />
+                </Box>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={2} style={{ marginTop: 16 }}>
+              <Grid item sm={6}>
+                <Box style={{ marginTop: 3 }}>
+                  <FormLabel htmlFor="username" style={{ fontWeight: "bold" }}>
+                    ชื่อผู้ใช้
+                    <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+
+                  <Field
+                    style={{ marginTop: 16 }}
+                    maxLength="64"
+                    fullWidth
+                    component={TextField}
+                    name="username"
+                    type="text"
+                    label="กรุณากรอก ชื่อผู้ใช้"
+                    required
+                  />
+                </Box>
+              </Grid>
+
+
+              <Grid item sm={6}>
+                <Box style={{ marginTop: 3 }}>
+
+                  <FormLabel htmlFor="role" style={{ fontWeight: "bold" }}>
+                    สถานะ <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+                  {/* <div style={{ display: "flex" }}>
                   <div style={{ marginRight: "1rem" }}>
                     <input
                       type="radio"
@@ -260,102 +263,102 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
                   </div>
                 </div> */}
 
-                <RadioGroup
-                  row
-                  value={userRole}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    setUserRole(event.target.value);
-                  }}
-                  aria-labelledby="group-type-row-radio-buttons-group-label"
-                  name="role"
-                >
-                  <FormControlLabel
-                    value="member"
-                    control={<Radio />}
-                    label="สมาชิก"
-                  />
-                  <FormControlLabel
-                    value="admin"
-                    control={<Radio />}
-                    label="ผู้ดูแลระบบ"
-                  />
-                </RadioGroup>
+                  <RadioGroup
+                    row
+                    value={userRole}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setUserRole(event.target.value);
+                    }}
+                    aria-labelledby="group-type-row-radio-buttons-group-label"
+                    name="role"
+                  >
+                    <FormControlLabel
+                      value="member"
+                      control={<Radio />}
+                      label="สมาชิก"
+                    />
+                    <FormControlLabel
+                      value="admin"
+                      control={<Radio />}
+                      label="ผู้ดูแลระบบ"
+                    />
+                  </RadioGroup>
                   <ErrorMessage name="role" />
 
-              </Box>
+                </Box>
+              </Grid>
+
             </Grid>
 
-</Grid>
-          
 
             <Grid container spacing={2} style={{ marginTop: 16 }}>
-            <Grid item sm={6}>
-       
-              <Box style={{ marginTop: 3 }}>
-                <FormLabel htmlFor="password" style={{ fontWeight: "bold" }}>
-                  รหัสผ่าน
-                  <span style={{ color: "red" }}>*</span>
-                </FormLabel>
-                <Field
-                  style={{ marginTop: 16 }}
-                  fullWidth
-                  component={TextField}
-                  name="password"
-                  type="password"
-                  label="กรุณากรอก รหัสผ่าน"
-                  value={password}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                    setPassword(event.target.value)
-                  }
-                />
-              </Box>
+              <Grid item sm={6}>
+
+                <Box style={{ marginTop: 3 }}>
+                  <FormLabel htmlFor="password" style={{ fontWeight: "bold" }}>
+                    รหัสผ่าน
+                    <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
+                  <Field
+                    style={{ marginTop: 16 }}
+                    fullWidth
+                    component={TextField}
+                    name="password"
+                    type="password"
+                    label="กรุณากรอก รหัสผ่าน"
+                    value={password}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                      setPassword(event.target.value)
+                    }
+                  />
+                </Box>
               </Grid>
               <Grid item sm={6}>
-              <Box style={{ marginTop: 3 }}>
-                <FormLabel
-                  htmlFor="passwordConfirmation"
-                  style={{ fontWeight: "bold" }}
-                >
-                  ยืนยันรหัสผ่าน
-                  <span style={{ color: "red" }}>*</span>
-                </FormLabel>
+                <Box style={{ marginTop: 3 }}>
+                  <FormLabel
+                    htmlFor="passwordConfirmation"
+                    style={{ fontWeight: "bold" }}
+                  >
+                    ยืนยันรหัสผ่าน
+                    <span style={{ color: "red" }}>*</span>
+                  </FormLabel>
 
-                <Field
-                  style={{ marginTop: 16 }}
-                  fullWidth
-                  component={TextField}
-                  name="passwordConfirmation"
-                  type="password"
-                  label="กรุณากรอก รหัสผ่านอีกครั้ง"
-                  value={passwordConfirmation}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                    setPasswordConfirmation(event.target.value)
-                  }
-                />
-              </Box>
+                  <Field
+                    style={{ marginTop: 16 }}
+                    fullWidth
+                    component={TextField}
+                    name="passwordConfirmation"
+                    type="password"
+                    label="กรุณากรอก รหัสผ่านอีกครั้ง"
+                    value={passwordConfirmation}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                      setPasswordConfirmation(event.target.value)
+                    }
+                  />
+                </Box>
               </Grid>
-           
+
             </Grid>
 
             <Box style={{ marginTop: 16 }}>
-                <FormLabel htmlFor="activated" style={{ fontWeight: "bold" }}>
-                  สถานะการยืนยันตัวตน
-                  <span style={{ color: "red" }}>*</span>
-                </FormLabel>
-                <br />
-                <Field
-                  component={CheckboxWithLabel}
-                  name="activated"
-                  id="activated-checkbox"
-                  checked={activated}
-                  onChange={() => {
-                    setActivated(!activated);
-                  }}
-                  Label={{
-                    label: "สถานะการยืนยันตัวตน (Activate)",
-                  }}
-                />
-              </Box>
+              <FormLabel htmlFor="activated" style={{ fontWeight: "bold" }}>
+                สถานะการยืนยันตัวตน
+                <span style={{ color: "red" }}>*</span>
+              </FormLabel>
+              <br />
+              <Field
+                component={CheckboxWithLabel}
+                name="activated"
+                id="activated-checkbox"
+                checked={activated}
+                onChange={() => {
+                  setActivated(!activated);
+                }}
+                Label={{
+                  label: "สถานะการยืนยันตัวตน (Activate)",
+                }}
+              />
+            </Box>
           </CardContent>
           <CardActions sx={{ padding: 4 }}>
             <Button
@@ -382,10 +385,10 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
   return (
     <Layout>
 
-<Container maxWidth="lg" style={{ marginTop: 16, marginBottom: 4 }}>
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                <Paper
+      <Container maxWidth="lg" style={{ marginTop: 16, marginBottom: 4 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Paper
               sx={{ p: 2, display: "flex", flexDirection: "row", gap: "16px" }}
             >
               {isSmallDevice ? (
@@ -405,7 +408,7 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
                     }}
                   >
                     {" "}
-                 แก้ไขข้อมูลบัญชีผู้ใช้
+                    แก้ไขข้อมูลบัญชีผู้ใช้
                   </Typography>
                 ) : (
                   <Typography
@@ -416,37 +419,37 @@ const AdminPanelEditUser = ({ user, accessToken }: Props) => {
                     }}
                   >
                     {" "}
-                 แก้ไขข้อมูลบัญชีผู้ใช้
+                    แก้ไขข้อมูลบัญชีผู้ใช้
                   </Typography>
                 )}
               </React.Fragment>
             </Paper>
-                </Grid>
+          </Grid>
 
-              <Grid item xs={12} md={12} lg={12}>
-              <Formik
-        validate={(values) => {
-          let errors: any = {};
-          if (!values.username) errors.username = "กรุณากรอกชื่อผู้ใช้";
-          if (!values.name) errors.name = "กรุณากรอกชื่อ";
-          if (!values.surname) errors.surname = "กรุณากรอกนามสกุล";
-          return errors;
-        }}
-        initialValues={user!}
-        onSubmit={async (values, { setSubmitting }) => {
-          setUpdateValue(values);
-          // setOpenDialog(true);
-          handleEdit();
-          setSubmitting(false);
-        }}
-      >
-        {(props) => showForm(props)}
-      </Formik>
-              </Grid>
-            </Grid>
-          </Container>
+          <Grid item xs={12} md={12} lg={12}>
+            <Formik
+              validate={(values) => {
+                let errors: any = {};
+                if (!values.username) errors.username = "กรุณากรอกชื่อผู้ใช้";
+                if (!values.name) errors.name = "กรุณากรอกชื่อ";
+                if (!values.surname) errors.surname = "กรุณากรอกนามสกุล";
+                return errors;
+              }}
+              initialValues={user!}
+              onSubmit={async (values, { setSubmitting }) => {
+                setUpdateValue(values);
+                // setOpenDialog(true);
+                handleEdit();
+                setSubmitting(false);
+              }}
+            >
+              {(props) => showForm(props)}
+            </Formik>
+          </Grid>
+        </Grid>
+      </Container>
 
-    
+
       <ConfirmationDialog
         title="ยืนยันการแก้ไขบัญชีผู้ใช้"
         message="คุณต้องการแก้ไขบัญชีผู้ใช้ใช่หรือไม่ ?"
