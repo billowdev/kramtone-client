@@ -21,6 +21,7 @@ import Link from "next/link"
 import { Pagination } from '@mui/material';
 import { TextField } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
+import Iframe from 'react-iframe';
 
 
 const CustomTab = styled(Tab)(({ theme }) => ({
@@ -377,12 +378,23 @@ const NaturalColorTonesPage = () => {
   const renderHistoryOfColorScheme = () => {
     return (
       <React.Fragment>
-        <Typography variant={isSmallDevice ? 'h6' : 'h4'} style={{ padding: 16 }} gutterBottom>
+        {/* <Typography variant={isSmallDevice ? 'h6' : 'h4'} style={{ padding: 16 }} gutterBottom>
           แผนภาพโทนสีครามธรรมชาติ (Color Scheme of Natural Indigo Dye)
-        </Typography>
-        <Card style={{ background: 'none', boxShadow: 'none' }}>
+        </Typography> */}
+        <Card style={{ background: 'none', boxShadow: 'none', minHeight: "1000px" }}>
           <CardContent>
-            <Grid container spacing={isSmallDevice ? 1 : 2}>
+          <Box display="flex" justifyContent="center" padding={2}>
+            <Paper sx={{ height: "100vh", width: "100%" }}>
+              <Iframe
+                url="https://skkram.snru.ac.th/?page_id=7582"
+                width="100%"
+                height={isSmallDevice ? "1000px":"100%"}
+                
+                id="myId"
+              />
+            </Paper>
+          </Box>
+            {/* <Grid container spacing={isSmallDevice ? 1 : 2}>
               <Grid item xs={12} md={6}>
                 <div
                   style={{
@@ -440,7 +452,7 @@ const NaturalColorTonesPage = () => {
 
 
               </Grid>
-            </Grid>
+            </Grid> */}
           </CardContent>
         </Card>
       </React.Fragment>
@@ -457,9 +469,8 @@ const NaturalColorTonesPage = () => {
 
   return (
     <MainLayout>
-      <Box sx={{ flexGrow: 1, p: isSmallDevice ? 1 : 4 }}>
+      <Box sx={{ flexGrow: 1, p: isSmallDevice ? 0 : 4 }}>
         <Paper>
-
           <React.Fragment>
             <Box display="flex" justifyContent="space-between" alignItems="center" padding={1}>
               <h1>ข้อมูลโทนสีครามธรรมชาติ</h1>
